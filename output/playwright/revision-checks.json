@@ -1,0 +1,523 @@
+{
+  "date": "2026-10-16",
+  "unitTests": 9,
+  "build": "passed",
+  "browser": "local Chromium; emulated touch screens, not physical mobile hardware",
+  "checks": [
+    {
+      "name": "initial marker hidden",
+      "pass": true
+    },
+    {
+      "name": "initial no selected directory",
+      "pass": true
+    },
+    {
+      "name": "focus frame",
+      "pass": true
+    },
+    {
+      "name": "marker visible frame",
+      "pass": true
+    },
+    {
+      "name": "notes title frame",
+      "pass": true
+    },
+    {
+      "name": "notes sections frame",
+      "pass": true
+    },
+    {
+      "name": "dialog Escape frame",
+      "pass": true
+    },
+    {
+      "name": "dialog focus restored frame",
+      "pass": true
+    },
+    {
+      "name": "focus drums",
+      "pass": true
+    },
+    {
+      "name": "marker visible drums",
+      "pass": true
+    },
+    {
+      "name": "notes title drums",
+      "pass": true
+    },
+    {
+      "name": "notes sections drums",
+      "pass": true
+    },
+    {
+      "name": "dialog Escape drums",
+      "pass": true
+    },
+    {
+      "name": "dialog focus restored drums",
+      "pass": true
+    },
+    {
+      "name": "focus drive",
+      "pass": true
+    },
+    {
+      "name": "marker visible drive",
+      "pass": true
+    },
+    {
+      "name": "notes title drive",
+      "pass": true
+    },
+    {
+      "name": "notes sections drive",
+      "pass": true
+    },
+    {
+      "name": "dialog Escape drive",
+      "pass": true
+    },
+    {
+      "name": "dialog focus restored drive",
+      "pass": true
+    },
+    {
+      "name": "focus board",
+      "pass": true
+    },
+    {
+      "name": "marker visible board",
+      "pass": true
+    },
+    {
+      "name": "notes title board",
+      "pass": true
+    },
+    {
+      "name": "notes sections board",
+      "pass": true
+    },
+    {
+      "name": "dialog Escape board",
+      "pass": true
+    },
+    {
+      "name": "dialog focus restored board",
+      "pass": true
+    },
+    {
+      "name": "focus motor",
+      "pass": true
+    },
+    {
+      "name": "marker visible motor",
+      "pass": true
+    },
+    {
+      "name": "notes title motor",
+      "pass": true
+    },
+    {
+      "name": "notes sections motor",
+      "pass": true
+    },
+    {
+      "name": "dialog Escape motor",
+      "pass": true
+    },
+    {
+      "name": "dialog focus restored motor",
+      "pass": true
+    },
+    {
+      "name": "repeat directory clears selection",
+      "pass": true
+    },
+    {
+      "name": "overview note has five systems",
+      "pass": true
+    },
+    {
+      "name": "overview note starts exploded overview",
+      "pass": true
+    },
+    {
+      "name": "model pick preserves closeup",
+      "pass": true
+    },
+    {
+      "name": "blank click clears focus and marker",
+      "pass": true
+    },
+    {
+      "name": "reset hides marker",
+      "pass": true
+    },
+    {
+      "name": "mobile note opens",
+      "pass": true
+    },
+    {
+      "name": "mobile note has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "mobile close stays visible while reading",
+      "pass": true
+    },
+    {
+      "name": "mobile note focus action",
+      "pass": true
+    },
+    {
+      "name": "partial explosion supports true closeup",
+      "pass": true
+    },
+    {
+      "name": "overview restores all systems",
+      "pass": true
+    },
+    {
+      "name": "desktop 1366 has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "desktop key regions fit",
+      "pass": true,
+      "details": {
+        "viewport": [
+          1366,
+          768
+        ],
+        "scrollWidth": 1366,
+        "scrollHeight": 805,
+        "regions": [
+          {
+            "selector": "#viewer",
+            "bounds": {
+              "x": 392.625,
+              "y": 91,
+              "width": 918.75,
+              "height": 520,
+              "top": 91,
+              "right": 1311.375,
+              "bottom": 611,
+              "left": 392.625
+            }
+          },
+          {
+            "selector": ".console",
+            "bounds": {
+              "x": 54.625,
+              "y": 611,
+              "width": 1256.75,
+              "height": 119,
+              "top": 611,
+              "right": 1311.375,
+              "bottom": 730,
+              "left": 54.625
+            }
+          },
+          {
+            "selector": "#note-open",
+            "bounds": {
+              "x": 54.625,
+              "y": 452.203125,
+              "width": 310,
+              "height": 146.796875,
+              "top": 452.203125,
+              "right": 364.625,
+              "bottom": 599,
+              "left": 54.625
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "preset front",
+      "pass": true
+    },
+    {
+      "name": "preset back",
+      "pass": true
+    },
+    {
+      "name": "final focused marker frame",
+      "pass": true
+    },
+    {
+      "name": "final focused marker drums",
+      "pass": true
+    },
+    {
+      "name": "final focused marker drive",
+      "pass": true
+    },
+    {
+      "name": "final focused marker board",
+      "pass": true
+    },
+    {
+      "name": "final focused marker motor",
+      "pass": true
+    },
+    {
+      "name": "clear button hides marker",
+      "pass": true
+    },
+    {
+      "name": "run advances phase",
+      "pass": true
+    },
+    {
+      "name": "pause freezes phase",
+      "pass": true
+    },
+    {
+      "name": "zoom interrupts camera follow",
+      "pass": true
+    },
+    {
+      "name": "drag interrupts camera follow",
+      "pass": true
+    },
+    {
+      "name": "preset restores camera follow",
+      "pass": true
+    },
+    {
+      "name": "rapid mixed actions restore correctly",
+      "pass": true,
+      "details": {
+        "rounds": 15,
+        "elapsedMs": 26616
+      }
+    },
+    {
+      "name": "Escape clears selection",
+      "pass": true
+    },
+    {
+      "name": "note close button works",
+      "pass": true
+    },
+    {
+      "name": "runtime reduced motion stops continuous run",
+      "pass": true
+    },
+    {
+      "name": "reduced motion explode immediate",
+      "pass": true
+    },
+    {
+      "name": "reduced motion runs a stable single step",
+      "pass": true
+    },
+    {
+      "name": "range Home restores assembled state",
+      "pass": true
+    },
+    {
+      "name": "range End restores exploded state",
+      "pass": true
+    },
+    {
+      "name": "mobile 360 no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "updated help explains notes and selection",
+      "pass": true
+    },
+    {
+      "name": "archive still opens",
+      "pass": true
+    },
+    {
+      "name": "mobile 390 startup controls visible",
+      "pass": true
+    },
+    {
+      "name": "mobile 360 startup controls visible",
+      "pass": true
+    },
+    {
+      "name": "built release note and focus work",
+      "pass": true
+    },
+    {
+      "name": "built release has no network or console errors",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "no page errors during acceptance",
+      "pass": true,
+      "details": []
+    }
+  ],
+  "errors": [],
+  "resourceErrors": [],
+  "exploration": {
+    "rounds": 15,
+    "elapsedMs": 26616,
+    "log": [
+      {
+        "target": 0,
+        "selected": "frame",
+        "focus": null
+      },
+      {
+        "target": 1,
+        "selected": "drums",
+        "focus": "drums"
+      },
+      {
+        "target": 0,
+        "selected": "drive",
+        "focus": null
+      },
+      {
+        "target": 1,
+        "selected": "board",
+        "focus": "board"
+      },
+      {
+        "target": 0,
+        "selected": "motor",
+        "focus": null
+      },
+      {
+        "target": 1,
+        "selected": "frame",
+        "focus": "frame"
+      },
+      {
+        "target": 0,
+        "selected": "drums",
+        "focus": null
+      },
+      {
+        "target": 1,
+        "selected": "drive",
+        "focus": "drive"
+      },
+      {
+        "target": 0,
+        "selected": "board",
+        "focus": null
+      },
+      {
+        "target": 1,
+        "selected": "motor",
+        "focus": "motor"
+      },
+      {
+        "target": 0,
+        "selected": "frame",
+        "focus": null
+      },
+      {
+        "target": 1,
+        "selected": "drums",
+        "focus": "drums"
+      },
+      {
+        "target": 0,
+        "selected": "drive",
+        "focus": null
+      },
+      {
+        "target": 1,
+        "selected": "board",
+        "focus": "board"
+      },
+      {
+        "target": 0,
+        "selected": "motor",
+        "focus": null
+      }
+    ]
+  },
+  "desktopFit": {
+    "viewport": [
+      1366,
+      768
+    ],
+    "scrollWidth": 1366,
+    "scrollHeight": 805,
+    "regions": [
+      {
+        "selector": "#viewer",
+        "bounds": {
+          "x": 392.625,
+          "y": 91,
+          "width": 918.75,
+          "height": 520,
+          "top": 91,
+          "right": 1311.375,
+          "bottom": 611,
+          "left": 392.625
+        }
+      },
+      {
+        "selector": ".console",
+        "bounds": {
+          "x": 54.625,
+          "y": 611,
+          "width": 1256.75,
+          "height": 119,
+          "top": 611,
+          "right": 1311.375,
+          "bottom": 730,
+          "left": 54.625
+        }
+      },
+      {
+        "selector": "#note-open",
+        "bounds": {
+          "x": 54.625,
+          "y": 452.203125,
+          "width": 310,
+          "height": 146.796875,
+          "top": 452.203125,
+          "right": 364.625,
+          "bottom": 599,
+          "left": 54.625
+        }
+      }
+    ]
+  },
+  "stats": {
+    "target": 1,
+    "progress": 1,
+    "running": false,
+    "selected": "board",
+    "focus": "board",
+    "view": "three-quarter",
+    "follow": true,
+    "phase": 0,
+    "drums": 108,
+    "reducedMotion": false,
+    "calls": 9,
+    "triangles": 50508,
+    "geometries": 34,
+    "textures": 6,
+    "camera": [
+      16.118038268923257,
+      8.980897065687287,
+      12.466404482443062
+    ],
+    "cameraTarget": [
+      9,
+      6.349999964237213,
+      -0.3080625545978546
+    ],
+    "ready": true,
+    "contextLost": false
+  }
+}

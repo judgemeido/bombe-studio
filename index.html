@@ -33,22 +33,24 @@
         <p class="intro-copy">当逻辑成为齿轮，推理开始旋转。<br>走近二战时期的机电破译机，<br>看见藏在钢铁与接线之间的智慧。</p>
         <button class="archive-link" id="story-open">读懂它的故事 <span>↗</span></button>
 
-        <article class="part-card" aria-live="polite" aria-atomic="true">
-          <div class="part-kicker"><span><i id="part-swatch"></i>结构笔记</span><span><b id="part-number">02</b> / 05</span></div>
-          <h3 id="part-name">鼓轮阵列</h3><span class="part-english" id="part-english">THE DRUMS</span>
-          <p id="part-description"></p>
-          <div class="part-note"><span aria-hidden="true">↳</span><span id="part-note"></span></div>
-        </article>
+        <button class="part-card note-trigger" id="note-open" aria-haspopup="dialog" aria-controls="note-dialog">
+          <span class="part-kicker"><span><i id="part-swatch"></i>结构笔记</span><span><b id="part-number">00</b> / 05</span></span>
+          <span class="note-heading"><strong id="part-name">从整机，读到每个系统</strong><span class="part-english" id="part-english">START EXPLORING</span></span>
+          <span class="note-summary" id="part-description">点击目录或模型，选择一个结构。</span>
+          <span class="note-cta">展开结构笔记<svg><use href="#arrow"/></svg></span>
+        </button>
       </div>
 
       <div class="viewer" id="viewer">
         <div class="viewer-grid" aria-hidden="true"></div>
-        <div class="viewer-top"><span class="view-label"><i></i><span id="view-label">装配视图</span><span class="view-no"> / 01</span></span><div class="view-options" role="group" aria-label="相机视角"><button data-view="front" aria-pressed="false">正面</button><button data-view="three-quarter" aria-pressed="true">斜视</button><button data-view="back" aria-pressed="false">背面</button></div></div>
+        <div class="viewer-top"><span class="view-label"><i></i><span id="view-label">装配视图</span><span class="view-no"> / 01</span></span><div class="view-options" role="group" aria-label="相机视角"><button id="overview" aria-label="返回全部结构总览">总览</button><button data-view="front" aria-pressed="false">正面</button><button data-view="three-quarter" aria-pressed="true">斜视</button><button data-view="back" aria-pressed="false">背面</button></div></div>
+        <div class="assembly-progress" id="assembly-progress" hidden><span id="assembly-step">01</span><span id="assembly-caption">轴向抽离</span></div>
         <div class="background-type" aria-hidden="true">B–01</div>
         <canvas id="scene" aria-label="Bombe 破译机三维模型，可拖动旋转、滚轮缩放，也可使用下方按钮操作" tabindex="0"></canvas>
         <div class="loading" id="loading"><span></span>正在布置展品…</div>
         <div class="error-state" id="error-state" hidden><h3>暂时无法打开三维展品</h3><p>浏览器未能初始化 WebGL。你仍可使用部件目录与展品档案阅读结构说明。</p></div>
-        <button id="hotspot" class="hotspot" aria-label="查看鼓轮阵列"><span id="hotspot-number">02</span><span id="hotspot-label">鼓轮阵列</span></button>
+        <button id="hotspot" class="hotspot" aria-label="展开部件结构笔记" hidden><span id="hotspot-number">02</span><span id="hotspot-label">鼓轮阵列</span><svg><use href="#arrow"/></svg></button>
+        <button class="clear-selection" id="clear-selection" hidden aria-label="取消部件选择">取消选择 <span>×</span></button>
         <div class="viewer-tools" role="group" aria-label="视图工具"><button id="zoom-in" aria-label="放大模型">+</button><button id="zoom-out" aria-label="缩小模型">−</button><span></span><button id="reset" aria-label="重置全部状态" title="重置（R）"><svg><use href="#reset-icon"/></svg></button></div>
         <div class="viewer-bottom"><span class="gesture"><svg><use href="#drag"/></svg>拖动旋转 <i>·</i> 滚轮缩放 <i>·</i> 点击部件</span><span class="render-badge"><span></span>实时 3D</span></div>
         <div class="simulation" id="simulation" hidden><span class="live-dot"></span><span>示意转位</span><b id="rotor-readout">A A A</b><small>非实际密码运算</small></div>
@@ -57,7 +59,7 @@
 
     <section class="console" id="controls" aria-label="拆解与运转控制">
       <div class="parts-section"><div class="control-caption"><span>结构目录</span><span>选择一个部件探索</span></div><div class="parts-list" role="group" aria-label="选择部件">
-        <button data-part="frame" aria-pressed="false"><span>01</span>机架</button><button data-part="drums" aria-pressed="true"><span>02</span>鼓轮</button><button data-part="drive" aria-pressed="false"><span>03</span>传动</button><button data-part="board" aria-pressed="false"><span>04</span>接线</button><button data-part="motor" aria-pressed="false"><span>05</span>电机</button>
+        <button data-part="frame" aria-pressed="false"><span>01</span>机架</button><button data-part="drums" aria-pressed="false"><span>02</span>鼓轮</button><button data-part="drive" aria-pressed="false"><span>03</span>传动</button><button data-part="board" aria-pressed="false"><span>04</span>接线</button><button data-part="motor" aria-pressed="false"><span>05</span>电机</button>
       </div></div>
       <div class="explode-section"><div class="control-caption"><label for="explode-range">拆解程度</label><output id="explode-output" for="explode-range">000%</output></div><div class="range-row"><svg><use href="#cube"/></svg><input id="explode-range" type="range" min="0" max="100" value="0" aria-valuetext="完整装配，0%"><svg><use href="#expand-icon"/></svg></div></div>
       <div class="action-section"><button class="primary-button" id="explode" aria-pressed="false"><svg><use href="#expand-icon"/></svg><span id="explode-label">拆解机器</span><span class="key">E</span></button><button class="run-button" id="run" aria-pressed="false"><svg><use href="#play-icon"/></svg><span id="run-label">运转演示</span></button></div>
@@ -67,6 +69,15 @@
     <p class="sr-only" role="status" id="status">展品正在加载</p>
   </main>
 
+  <dialog id="note-dialog" class="note-dialog" aria-labelledby="note-title">
+    <div class="dialog-top"><span class="eyebrow">STRUCTURE NOTES <span id="note-index">00 / 05</span></span><button class="dialog-close" data-close aria-label="关闭结构笔记">×</button></div>
+    <div class="note-dialog-heading"><span id="note-english">A GUIDE TO THE ASSEMBLY</span><h2 id="note-title">从整机，读到每个系统</h2><p id="note-subtitle"></p></div>
+    <p class="dialog-lead" id="note-description"></p>
+    <section class="note-section"><div class="note-section-heading"><span>01</span><h3>结构组成</h3></div><ul id="note-components"></ul></section>
+    <section class="note-section"><div class="note-section-heading"><span>02</span><h3>如何观察</h3></div><ol id="note-steps"></ol></section>
+    <section class="note-section note-relation"><div class="note-section-heading"><span>03</span><h3>系统关系与展示说明</h3></div><p id="note-relationship"></p></section>
+    <p class="guide-note" id="note-limit"></p><button class="note-focus-button" id="note-focus">在模型中查看 <svg><use href="#arrow"/></svg></button>
+  </dialog>
   <dialog id="archive-dialog" aria-labelledby="archive-title">
     <div class="dialog-top"><span class="eyebrow">ARCHIVE / 001</span><button class="dialog-close" data-close aria-label="关闭展品档案">×</button></div>
     <h2 id="archive-title">让逻辑，<br><em>成为一台机器。</em></h2>
@@ -75,6 +86,6 @@
     <div class="reconstruction-note"><h3>关于这个重建</h3><p>保留三组、九行、十二列的鼓轮特征，按功能分为五个可拆解系统。尺寸、颜色、布线、齿轮和电机为程序化示意，拆解路径为观察内部而设计。这里不复刻原机的密码分析电路，也不作为制造图纸。</p></div>
     <div class="source-links"><span>史料与延伸阅读</span><a href="https://www.tnmoc.org/bombe" target="_blank" rel="noopener noreferrer">The National Museum of Computing ↗</a><a href="https://www.cryptomuseum.com/crypto/bombe/" target="_blank" rel="noopener noreferrer">Crypto Museum · Bombe ↗</a><a href="https://www.rutherfordjournal.org/article030108.html" target="_blank" rel="noopener noreferrer">The Rutherford Journal · The Turing Bombe ↗</a></div>
   </dialog>
-  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-top"><span class="eyebrow">VISITOR GUIDE</span><button class="dialog-close" data-close aria-label="关闭操作指南">×</button></div><h2 id="help-title">亲手，拆开看看。</h2><ul class="help-list"><li><b>观察</b><span>拖动模型旋转，滚轮或 + / − 缩放。使用正面、斜视、背面按钮切换视角。</span></li><li><b>拆解</b><span>点击“拆解机器”或拖动滑杆。点击部件目录、模型或编号标签查看说明。</span></li><li><b>运转</b><span>启动鼓轮示意动画，再次点击可暂停。系统减少动态效果时，使用逐步转位。</span></li><li><b>键盘</b><span><kbd>E</kbd> 拆解 / 合拢　<kbd>空格</kbd> 运转 / 暂停　<kbd>R</kbd> 重置。滑杆支持方向键，所有控件均可 Tab 访问。</span></li></ul><p class="guide-note">展示基于 Bombe 历史结构制作，运转画面只表达机械关系。</p></dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-top"><span class="eyebrow">VISITOR GUIDE</span><button class="dialog-close" data-close aria-label="关闭操作指南">×</button></div><h2 id="help-title">亲手，拆开看看。</h2><ul class="help-list"><li><b>观察</b><span>拖动模型旋转，滚轮或 + / − 缩放。使用正面、斜视、背面按钮切换视角；“总览”返回全部结构。</span></li><li><b>拆解</b><span>点击“拆解机器”或拖动滑杆。部件先从机柜抽离，再进入独立展位；反向操作沿原路径合拢。</span></li><li><b>探索</b><span>点击目录或模型后，部件标记才会显示。拆解状态点击目录可进入单件特写；再次点击同一目录、空白处或“取消选择”可隐藏标记。</span></li><li><b>笔记</b><span>点击“展开结构笔记”或玻璃标记，阅读组成、观察步骤和系统关系。笔记底部可直接进入模型特写。</span></li><li><b>运转</b><span>启动鼓轮示意动画，再次点击可暂停。系统减少动态效果时，使用逐步转位。</span></li><li><b>键盘</b><span><kbd>E</kbd> 拆解 / 合拢　<kbd>空格</kbd> 运转 / 暂停　<kbd>R</kbd> 重置　<kbd>Esc</kbd> 关闭弹窗或取消选择。滑杆支持方向键，所有控件均可 Tab 访问。</span></li></ul><p class="guide-note">展示基于 Bombe 历史结构制作，运转画面只表达机械关系。</p></dialog>
 </body>
 </html>

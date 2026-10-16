@@ -5,11 +5,11 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 // Display units, not surveyed CAD dimensions. Y is up; +Z faces the drums.
 export const DIM = Object.freeze({ width: 7.6, height: 6.6, depth: 2.05, columns: 12, banks: 3, rows: 3, drumRadius: .218, columnPitch: .545 });
 export const PARTS = Object.freeze([
-  { id: 'frame', index: '01', name: '钢制机架', english: 'THE FRAME', short: '机架', color: '#506052', subtitle: '给精密逻辑，一个坚实的骨架。', description: '钢制框架承载鼓轮、传动机构与后部接线。打开结构，可以看到各系统如何围绕同一副骨架协同工作。', note: '外壳、尺寸与拆分路径均为展示性重建。', offset: [-2.7, .4, -.8], anchor: [-3.75, 5.7, .8] },
-  { id: 'drums', index: '02', name: '鼓轮阵列', english: 'THE DRUMS', short: '鼓轮', color: '#a65c43', subtitle: '108 个鼓轮，铺开可能性。', description: '三组阵列，每组三行、每行十二个鼓轮。每一竖列的三个鼓轮对应一台 Enigma 的转子组，整机共对应 36 组。', note: '颜色与细部经过艺术化整理；转速仅作教学演示。', offset: [.1, .15, 2.55], anchor: [2.8, 5.5, 1.2] },
-  { id: 'drive', index: '03', name: '机械传动', english: 'THE DRIVE', short: '传动', color: '#93825f', subtitle: '把一次旋转，传给整面阵列。', description: '主轴、横轴与齿轮把电机的运动传给鼓轮。真实机器以机械联动改变鼓轮位置，在各个位置检验电路条件。', note: '传动几何与步进已简化，不表示真实齿比。', offset: [0, .15, .1], anchor: [3.15, 4, -.1] },
-  { id: 'board', index: '04', name: '接线与对角板', english: 'THE CONNECTIONS', short: '接线', color: '#ad7c44', subtitle: '把线索，连接成电路。', description: '操作员依据推测明文形成的“菜单”连接后部插线。Welchman 的对角板利用插线关系的互易性，帮助排除更多错误设置。', note: '接线板在拆解时翻转，便于观察；不执行密码分析。', offset: [4.5, .25, -1.75], anchor: [2.7, 5.4, -1.1] },
-  { id: 'motor', index: '05', name: '电机与底座', english: 'THE MOTOR', short: '电机', color: '#526c64', subtitle: '让抽象的推理，开始运动。', description: '底部电机提供机械动力，驱动机构进行连续搜索。停机提示的是值得进一步检查的候选设置，仍需要后续人工与机器验证。', note: '电机与底座为示意造型，未复刻原机电路。', offset: [2.85, 0, 1.25], anchor: [1.9, .85, .4] },
+  { id: 'frame', index: '01', name: '钢制机架', english: 'THE FRAME', short: '机架', color: '#506052', subtitle: '给精密逻辑，一个坚实的骨架。', description: '钢制框架承载鼓轮、传动机构与后部接线。打开结构，可以看到各系统如何围绕同一副骨架协同工作。', note: '外壳、尺寸与拆分路径均为展示性重建。', anchor: [-3.75, 5.7, .8] },
+  { id: 'drums', index: '02', name: '鼓轮阵列', english: 'THE DRUMS', short: '鼓轮', color: '#a65c43', subtitle: '108 个鼓轮，铺开可能性。', description: '三组阵列，每组三行、每行十二个鼓轮。每一竖列的三个鼓轮对应一台 Enigma 的转子组，整机共对应 36 组。', note: '颜色与细部经过艺术化整理；转速仅作教学演示。', anchor: [2.8, 5.5, 1.2] },
+  { id: 'drive', index: '03', name: '机械传动', english: 'THE DRIVE', short: '传动', color: '#93825f', subtitle: '把一次旋转，传给整面阵列。', description: '主轴、横轴与齿轮把电机的运动传给鼓轮。真实机器以机械联动改变鼓轮位置，在各个位置检验电路条件。', note: '传动几何与步进已简化，不表示真实齿比。', anchor: [3.15, 4, -.1] },
+  { id: 'board', index: '04', name: '接线与对角板', english: 'THE CONNECTIONS', short: '接线', color: '#ad7c44', subtitle: '把线索，连接成电路。', description: '操作员依据推测明文形成的“菜单”连接后部插线。Welchman 的对角板利用插线关系的互易性，帮助排除更多错误设置。', note: '接线板在拆解时翻转，便于观察；不执行密码分析。', anchor: [2.7, 5.4, -1.1] },
+  { id: 'motor', index: '05', name: '电机与底座', english: 'THE MOTOR', short: '电机', color: '#526c64', subtitle: '让抽象的推理，开始运动。', description: '底部电机提供机械动力，驱动机构进行连续搜索。停机提示的是值得进一步检查的候选设置，仍需要后续人工与机器验证。', note: '电机与底座为示意造型，未复刻原机电路。', anchor: [1.9, .85, .4] },
 ]);
 
 export function createProduct({ textures = {} } = {}) {
@@ -32,7 +32,7 @@ export function createProduct({ textures = {} } = {}) {
   };
   const parts = PARTS.map(record => {
     const group = new THREE.Group(); group.name = record.id; group.userData.partId = record.id;
-    group.userData.basePosition = group.position.clone(); group.userData.explodeOffset = new THREE.Vector3(...record.offset);
+    group.userData.basePosition = group.position.clone();
     root.add(group); return group;
   });
   const [frame, drums, drive, board, motor] = parts;
@@ -95,7 +95,7 @@ export function createProduct({ textures = {} } = {}) {
   for (const p of positions) for (let a = 0; a < 8; a++) screws.push({ position: [p.position[0] + Math.cos(a * Math.PI / 4) * .127, p.position[1] + Math.sin(a * Math.PI / 4) * .127, .973], rotation: [Math.PI / 2, 0, 0] });
   instances(drums, new THREE.CylinderGeometry(.009, .009, .01, 6), mats.dark, screws);
   // Simplified transmission.
-  cylinder(drive, .075, 5.5, mats.metal, [3.13, 3.15, -.27], [0, 0, 0]);
+  cylinder(drive, .075, 5.3, mats.metal, [3.13, 3.2, -.27], [0, 0, 0]);
   const gearShape = new THREE.Shape();
   for (let i = 0; i <= 64; i++) {
     const a = i / 64 * Math.PI * 2, r = i % 4 === 1 || i % 4 === 2 ? .17 : .143;
@@ -131,12 +131,12 @@ export function createProduct({ textures = {} } = {}) {
     for (const [x, y] of [[x1, y1], [x2, y2]]) cylinder(board, .048, .13, mats.bakelite, [x, y, -1.12]);
   }
   box(motor, [5.75, .14, 1.54], mats.paint, [0, .53, 0], .04);
-  cylinder(motor, .29, 1.18, mats.paint, [.55, .93, 0], [0, 0, Math.PI / 2], 32);
-  for (let i = 0; i < 12; i++) cylinder(motor, .32, .028, mats.edge, [.06 + i * .09, .93, 0], [0, 0, Math.PI / 2], 32);
-  cylinder(motor, .24, .07, mats.metal, [-.1, .93, 0], [0, 0, Math.PI / 2], 32);
-  box(motor, [.56, .19, .43], mats.dark, [.55, 1.22, 0]); box(motor, [1.4, .1, .74], mats.bronze, [.55, .65, 0]);
-  for (const x of [-1.8, 2]) { box(motor, [.56, .5, .7], mats.dark, [x, .85, 0]); box(motor, [.45, .1, .53], mats.metal, [x, 1.12, 0]); }
-  torus(motor, .32, .045, mats.dark, [1.32, .93, 0], [0, Math.PI / 2, 0]);
+  cylinder(motor, .16, 1.18, mats.paint, [.55, .73, 0], [0, 0, Math.PI / 2], 32);
+  for (let i = 0; i < 12; i++) cylinder(motor, .18, .028, mats.edge, [.06 + i * .09, .73, 0], [0, 0, Math.PI / 2], 32);
+  cylinder(motor, .145, .07, mats.metal, [-.1, .73, 0], [0, 0, Math.PI / 2], 32);
+  box(motor, [.56, .1, .32], mats.dark, [.55, .86, 0]); box(motor, [1.4, .1, .6], mats.bronze, [.55, .65, 0]);
+  for (const x of [-1.8, 2]) { box(motor, [.56, .25, .7], mats.dark, [x, .735, 0]); box(motor, [.45, .07, .53], mats.metal, [x, .895, 0]); }
+  torus(motor, .16, .025, mats.dark, [1.32, .73, 0], [0, Math.PI / 2, 0]);
   // Static geometry is merged only within its own movement group and material.
   for (const { group, mat, geometries: gs } of batches.values()) {
     const geometry = mergeGeometries(gs, false); geometries.add(geometry); gs.forEach(g => g.dispose());
@@ -144,13 +144,30 @@ export function createProduct({ textures = {} } = {}) {
   }
   let disposed = false, phase = 0, explode = 0;
   const matrix = new THREE.Matrix4(), q = new THREE.Quaternion(), scale = new THREE.Vector3(1, 1, 1), point = new THREE.Vector3(), z = new THREE.Vector3(0, 0, 1);
+  const boardPivot = new THREE.Vector3(0, 3.35, -.86), rotatedPivot = new THREE.Vector3();
+  const ramp = (p, start, end) => THREE.MathUtils.smoothstep(p, start, end);
   function setExplode(value) {
     explode = Number.isFinite(value) ? THREE.MathUtils.clamp(value, 0, 1) : 0;
-    for (const part of parts) part.position.copy(part.userData.basePosition).addScaledVector(part.userData.explodeOffset, explode);
-    frame.position.x -= explode * 1.2;
-    drums.position.x -= explode * 1.0;
-    drums.position.z += explode * .7;
-    board.rotation.y = Math.PI * explode;
+    for (const part of parts) { part.position.copy(part.userData.basePosition); part.rotation.set(0, 0, 0); }
+    // Reversible choreography: extract along clear axes before rearranging.
+    // 1. Front drums and rear wiring leave the cabinet without lateral motion.
+    drums.position.z = 3 * ramp(explode, 0, .28);
+    board.position.z = -4 * ramp(explode, 0, .28);
+    // 2. Lift the extracted drums; move the drive out through the open back.
+    drums.position.y = 9 * ramp(explode, .28, .62);
+    drive.position.z = -3 * ramp(explode, .28, .58) * (1 - ramp(explode, .9, 1));
+    drive.position.y = 2.5 * ramp(explode, .62, .9);
+    motor.position.z = 6 * ramp(explode, .4, .62);
+    // 3. Park the frame and connections in separate display bays.
+    frame.position.set(-9 * ramp(explode, .62, .88), 3 * ramp(explode, .62, .88), 0);
+    board.position.x = 9 * ramp(explode, .4, .74);
+    board.position.y = 3 * ramp(explode, .62, .88);
+    board.position.z += 4 * ramp(explode, .76, 1);
+    // Rotation starts only after the board is outside the cabinet; its own
+    // centre is the pivot, so it never sweeps through the drive or frame.
+    board.rotation.y = Math.PI * ramp(explode, .76, 1);
+    rotatedPivot.copy(boardPivot).applyAxisAngle(new THREE.Vector3(0, 1, 0), board.rotation.y);
+    board.position.add(boardPivot).sub(rotatedPivot);
     root.updateMatrixWorld(true);
   }
   function poseDrums(reset = false) {
@@ -163,10 +180,12 @@ export function createProduct({ textures = {} } = {}) {
   }
   return {
     root, parts, drumCount: positions.length, setExplode,
+    setFocus(id) { const selected = parts.find(p => p.name === id); parts.forEach(p => { p.visible = !selected || p === selected; }); },
     update(dt, running) { if (!running || !Number.isFinite(dt) || dt <= 0) return; phase = (phase + Math.min(dt, .1) * .8) % (Math.PI * 2 * 676); poseDrums(); },
     resetMotion() { phase = 0; poseDrums(true); },
     get phase() { return phase; }, get explode() { return explode; },
     getAnchor(id) { const i = PARTS.findIndex(p => p.id === id); return i < 0 ? null : parts[i].localToWorld(new THREE.Vector3(...PARTS[i].anchor)); },
+    getBounds(id) { const part = id ? parts.find(p => p.name === id) : root; return part ? new THREE.Box3().setFromObject(part) : null; },
     dispose() {
       if (disposed) return; disposed = true;
       root.traverse(o => { if (o.isInstancedMesh) o.dispose(); });
