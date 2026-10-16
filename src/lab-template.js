@@ -2,6 +2,7 @@ export default `
   <div class="lab-heading-row">
     <div class="lab-title"><span>02 / SIGNAL LAB</span><h1 id="lab-heading" tabindex="-1">信号实验室</h1></div>
     <div class="lab-heading-actions">
+      <a class="lab-quest-link" href="#/challenge" data-page="challenge">试试六关解密 →</a>
       <button id="lab-guide-open" aria-haspopup="dialog" aria-controls="lab-guide"><span aria-hidden="true">?</span> 完整指引</button>
       <button id="lab-reset" aria-label="全部复位"><svg><use href="#reset-icon"/></svg><span>复位</span></button>
     </div>

@@ -16,10 +16,10 @@ const mobileDetail = document.createElement('div'); mobileDetail.className = 'mo
 const mobileNote = document.createElement('button'); mobileNote.className = 'part-card note-trigger'; mobileNote.setAttribute('aria-haspopup', 'dialog'); mobileNote.setAttribute('aria-controls', 'note-dialog');
 mobileDetail.append(mobileNote); $('.parts-section').after(mobileDetail);
 let stage, product, stopped = false, raf = 0, previous = performance.now(), contextLost = false;
-let currentPage = 'exhibit', lab = null, labModule = null, navigation;
+let currentPage = 'exhibit', lab = null, labModule = null, challenge = null, challengeModule = null, navigation;
 on($('.skip-link'), 'click', event => {
   event.preventDefault();
-  const target = currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
+  const target = currentPage === 'challenge' ? $('#quest-question') : currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
   target.focus({ preventScroll: true }); target.scrollIntoView({ block: 'nearest' });
 });
 
@@ -173,32 +173,39 @@ function frame(now) {
   }
   raf = requestAnimationFrame(frame);
 }
-function dispose() { if (stopped) return; stopped = true; cancelAnimationFrame(raf); navigation?.dispose(); lab?.dispose(); cleanups.forEach(fn => fn()); product?.dispose(); stage?.dispose(); delete window.__BOMBE_INSPECT__; }
+function dispose() { if (stopped) return; stopped = true; cancelAnimationFrame(raf); navigation?.dispose(); lab?.dispose(); challenge?.dispose(); cleanups.forEach(fn => fn()); product?.dispose(); stage?.dispose(); delete window.__BOMBE_INSPECT__; }
 on(window, 'pagehide', event => { if (!event.persisted) dispose(); });
 window.__BOMBE_INSPECT__ = () => ({ ...state, page: currentPage, navigating: navigation?.busy || false, phase: product?.phase, drums: product?.drumCount, reducedMotion: motion.matches, calls: stage?.renderer.info.render.calls, triangles: stage?.renderer.info.render.triangles, geometries: stage?.renderer.info.memory.geometries, textures: stage?.renderer.info.memory.textures, camera: stage?.camera.position.toArray(), cameraTarget: stage?.controls.target.toArray(), ready: Boolean(stage && product), contextLost });
 updateNotes(); sync(); raf = requestAnimationFrame(frame);
 navigation = createNavigation({
   motion,
-  pause() { lab?.setActive(false); $('#exhibit-page').inert = $('#lab-page').inert = true; },
+  pause() { lab?.setActive(false); challenge?.setActive(false); for (const page of ['exhibit', 'lab', 'challenge']) $(`#${page}-page`).inert = true; },
   async prepare(route, report) {
     if (route.page === 'lab') {
       report(26, '载入可运行的信号回路'); labModule ||= import('./lab.js');
       let module; try { module = await labModule; } catch (error) { labModule = null; throw error; }
-      $('#exhibit-page').hidden = true; $('#lab-page').hidden = false;
+      for (const page of ['exhibit', 'lab', 'challenge']) $(`#${page}-page`).hidden = page !== 'lab';
       if (!lab) lab = await module.createLab($('#lab-page'), { motion, progress: report });
       else report(78, '恢复教学模型与实验记录');
       lab.setTopic(route.topic); lab.setActive(true);
+    } else if (route.page === 'challenge') {
+      report(26, '载入小小解密员的六关任务'); challengeModule ||= import('./challenge.js');
+      let module; try { module = await challengeModule; } catch (error) { challengeModule = null; throw error; }
+      for (const page of ['exhibit', 'lab', 'challenge']) $(`#${page}-page`).hidden = page !== 'challenge';
+      if (!challenge) challenge = await module.createChallenge($('#challenge-page'), { motion, progress: report });
+      else { challenge.startNewRound(); report(78, '新题与教学模型已准备'); }
+      challenge.setActive(true);
     } else {
-      report(52, '恢复展品与拆解状态'); $('#exhibit-page').hidden = false; $('#lab-page').hidden = true;
+      report(52, '恢复展品与拆解状态'); for (const page of ['exhibit', 'lab', 'challenge']) $(`#${page}-page`).hidden = page !== 'exhibit';
       stage?.resize(); frameCamera(true); report(78, '准备整机视角');
     }
   },
   activate(route) {
-    currentPage = route.page; $('#exhibit-page').hidden = route.page !== 'exhibit'; $('#lab-page').hidden = route.page !== 'lab';
-    $('#exhibit-page').inert = route.page !== 'exhibit'; $('#lab-page').inert = route.page !== 'lab';
-    $('#archive-open').hidden = route.page === 'lab'; document.body.dataset.page = route.page;
-    $('.skip-link').href = route.page === 'lab' ? '#lab-keyboard' : '#controls';
-    $('.skip-link').textContent = route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';
-    lab?.setActive(route.page === 'lab');
+    currentPage = route.page;
+    for (const page of ['exhibit', 'lab', 'challenge']) { $(`#${page}-page`).hidden = route.page !== page; $(`#${page}-page`).inert = route.page !== page; }
+    $('#archive-open').hidden = route.page !== 'exhibit'; document.body.dataset.page = route.page;
+    $('.skip-link').href = route.page === 'challenge' ? '#quest-question' : route.page === 'lab' ? '#lab-keyboard' : '#controls';
+    $('.skip-link').textContent = route.page === 'challenge' ? '跳至本关任务' : route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';
+    lab?.setActive(route.page === 'lab'); challenge?.setActive(route.page === 'challenge');
   },
 });

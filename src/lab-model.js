@@ -73,7 +73,7 @@ export function createLabModel() {
     // Ivory index pointer remains stationary while the alphabet ring turns.
     box(drum, [.1, .22, .09], bronze, [0, 1.36, .28], .015);
   }
-  const reflector = new THREE.Group(); reflector.position.set(-5.05, 3.65, 0); assembly.add(reflector);
+  const reflector = new THREE.Group(); reflector.userData = { kind: 'reflector' }; reflector.position.set(-5.05, 3.65, 0); assembly.add(reflector);
   box(reflector, [.6, 2.35, .6], paint, [0, 0, 0], .09);
   for (let n = 0; n < 26; n++) cylinder(reflector, .036, .055, bronze, [n % 2 ? .14 : -.14, 1 - Math.floor(n / 2) / 6, .33], undefined, 10);
   box(reflector, [.84, .13, 1.05], paint, [0, -1.6, -.1]);
@@ -138,6 +138,7 @@ export function createLabModel() {
       let parent = hit?.object; while (parent && !parent.userData.kind) parent = parent.parent;
       if (!parent) return null;
       if (parent.userData.kind === 'wiring') { const n = [...Array(26).keys()].find(n => portPoint(n).distanceTo(hit.point) < .16); return { kind: 'wiring', port: n ?? null }; }
+      if (parent.userData.kind === 'reflector') return { kind: 'reflector' };
       return { kind: 'rotor', index: parent.userData.index };
     },
     update(dt, progress, immediate = false) {

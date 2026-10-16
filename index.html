@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#eeede5"><meta name="description" content="拆开 Turing–Welchman Bombe：一个可旋转、可拆解的二战破译机 3D 交互展品。">
+  <meta name="theme-color" content="#eeede5"><meta name="description" content="从可拆解的 Bombe 三维展品到信号实验室，再到小学孩子也能完成的六关解密挑战，一步步看见密码里的逻辑。">
   <title>BOMBE · 译码档案 | 交互机械展</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232b4035'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23eee9d8' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23ba5e3e'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="lab.css"><script type="module" src="dist/app.js"></script>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="lab.css"><link rel="stylesheet" href="challenge.css"><script type="module" src="dist/app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#controls">跳至展品控制</a>
@@ -20,7 +20,7 @@
   <header class="site-header">
     <a class="brand" href="#/" data-page="exhibit" aria-label="译码档案首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>译码档案<small>DECODED ARCHIVE</small></span></a>
     <div class="header-center"><span class="live-dot"></span> 机械的记忆，逻辑的形状。</div>
-    <nav aria-label="展馆导航"><div class="chapter-nav"><a href="#/" data-page="exhibit" data-chapter="exhibit" aria-current="page"><small>01</small>机械全貌</a><a href="#/lab/drums" data-page="lab" data-topic="drums" data-chapter="lab"><small>02</small>信号实验室 <svg><use href="#arrow"/></svg></a></div><button id="archive-open" class="text-button">展品档案 <svg><use href="#arrow"/></svg></button></nav>
+    <nav aria-label="展馆导航"><div class="chapter-nav"><a href="#/" data-page="exhibit" data-chapter="exhibit" aria-current="page"><small>01</small>机械全貌</a><a href="#/lab/drums" data-page="lab" data-topic="drums" data-chapter="lab"><small>02</small>信号实验室</a><a href="#/challenge" data-page="challenge" data-chapter="challenge"><small>03</small>解密挑战 <svg><use href="#arrow"/></svg></a></div><button id="archive-open" class="text-button">展品档案 <svg><use href="#arrow"/></svg></button></nav>
   </header>
 
   <main id="exhibit-page">
@@ -70,6 +70,7 @@
   </main>
 
   <main id="lab-page" hidden></main>
+  <main id="challenge-page" hidden></main>
   <div id="page-transition" class="page-transition" hidden data-state="loading" role="status" aria-live="polite">
     <div class="transition-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="transition-content"><span id="route-chapter">02 / THE SIGNAL LAB</span><h2 id="route-title">让信号，穿过逻辑。</h2><div class="transition-meta"><span id="route-caption">准备章节</span><span id="route-count">01 / 04</span></div><progress id="route-progress" max="100" value="0" aria-label="章节准备进度"></progress><div class="route-error-actions"><button id="route-retry">重新准备 ↗</button><button id="route-back">返回机械全貌</button></div></div>
