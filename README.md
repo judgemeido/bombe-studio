@@ -1,6 +1,6 @@
 # BOMBE · 译码档案
 
-使用 `three-product-studio` 开发的可拆解 3D 展示页。对象为二战时期的 **Turing–Welchman Bombe** 机电破译机，区别于理论计算模型“图灵机”和 Enigma 加密机。
+使用 `three-product-studio` 开发的双章节 3D 展示页。第一章展示二战时期的 **Turing–Welchman Bombe** 机电破译机，第二章用一个可计算的 Enigma 三转子回路解释鼓轮和接线。Bombe、Enigma 与理论计算模型“图灵机”分别说明。
 
 ## 运行
 
@@ -13,6 +13,8 @@ npm.cmd run dev
 ```
 
 打开 `http://127.0.0.1:4173`。默认只监听本机。可设置 `$env:PORT = 4174` 更换端口。
+
+章节地址：`#/` 为整机，`#/lab/drums` 为鼓轮与完整回路，`#/lab/wiring` 为放大的接线板。支持直接刷新、浏览器前进后退。顶部章节入口和鼓轮/接线结构笔记都可以跳转。
 
 ```powershell
 npm.cmd test
@@ -33,8 +35,12 @@ npm.cmd run build
 - 鼓轮开始/暂停示意动画；系统减少动态效果时改为立即拆合、逐步转位。
 - 展品史料、来源链接、操作指南，原生 dialog 键盘行为。
 - 桌面与手机布局、原生 range、焦点样式、快捷键 E / 空格 / R / Esc。
+- 第二章包含三只 26 触点鼓轮、字母刻度、内部置换接线、固定后触点、可抽出的端面、B 反射器和 26 插孔接线板。
+- 调整三轮位置，点击两个插孔或端点菜单接入一对字母，按键实际计算；逐段、暂停与重播共享九段信号进度，不会再次转位。
+- 输入/输出记录、固定轮位互易验证、连续两次 A 的观察任务及接线互换小测。字母键可输入，右方向键逐段，空格播放/暂停。
+- 章节间使用淡入幕布、内容位移/模糊入场与上移揭幕；加载条对应导入、建模、材质预热和就绪阶段。支持系统减少动态效果。
 
-本模型为程序化教学重建。尺寸、颜色、布线、齿轮、电机和拆解路径均包含展示性简化；不执行实际密码分析，也不是可制造的工程模型。
+模型为程序化教学重建，尺寸和结构包含展示性简化。第二章按 Enigma I–II–III、反射器 B、固定环位 AAA 计算，UI 开放一对接线，包含按键前转位与中轮双步进；它用于讲解置换，不执行完整的 Bombe 菜单搜索或候选设置检查，也不是可制造的工程模型。
 
 ## 代码结构与后续扩展
 
@@ -44,12 +50,18 @@ npm.cmd run build
 | `src/textures.js` | 本地 Canvas 生成鼓轮刻字、金属铭牌、涂层细节 |
 | `src/scene.js` | 相机、OrbitControls、环境反射、主/补/轮廓灯、阴影、响应式构图 |
 | `src/framing.js` | 按包围盒八角与深度计算相机距离，预留水平/垂直安全区 |
-| `src/main.js` | 唯一应用状态、DOM 控制、部件拾取、偏好与生命周期 |
+| `src/main.js` | 整机状态、DOM 控制、部件拾取、章节装配、偏好与生命周期 |
+| `src/navigation.js` | Hash 路由、串行转场、真实准备阶段、滚动位置和焦点恢复 |
+| `src/lab.js` | 第二章实验状态、原生控件、九段讲解、教学任务和渲染生命周期 |
+| `src/lab-model.js` | 教学几何、26 触点、接线拾取、展开结构、动态信号和资源释放 |
+| `src/cipher.js` | 无 DOM 的置换、步进、接线与信号追踪算法 |
 | `src/notes.js` | 总览和五个部件的详细笔记数据 |
 | `index.html` / `styles.css` | 档案馆视觉、部件面板、控制台、移动布局和史料弹窗 |
 | `tests/model.test.mjs` | 几何边界与数量、拆合不漂移、输入边界、暂停/复位、资源释放 |
 | `tests/separation.test.mjs` | 拆解顺序、系统间距、手机/桌面构图与三种总览的投影分离 |
+| `tests/cipher.test.mjs` | 参考向量、双步进、九段衔接、互易性及非法输入 |
 | `QA.md` | 浏览器验收清单与结果，截图路径 |
+| `LAB_QA.md` / `docs/SIGNAL_LAB.md` | 第二章验收证据、模型与算法边界、教学操作及后续扩展说明 |
 
 以展示单位建模：Y 向上，+Z 为鼓轮正面，主体宽 7.6、高约 6.6、柜深 2.05；这些数值不代表原机实测米制尺寸。部件偏移每帧由原始位置计算，接线板翻转也用同一拆解进度驱动，防止反复拆合累积误差。
 
@@ -72,6 +84,8 @@ npm.cmd run build
 
 无后处理和外部 GLB，优先确保几何、材质和操作的清晰度。浏览器只读诊断：`window.__BOMBE_INSPECT__()`；报告状态、鼓轮数量、绘制调用、三角形、纹理和相机数据，不作为产品控制接口。
 
+第二章诊断为 `window.__BOMBE_LAB__()`。两章各自保留状态，隐藏章停止渲染；实验室首次进入时才动态导入。构建使用 ESM 分包，发布时完整保留 `dist/chunks/`。开发服务从内存发布一次成功构建的全部输出，并保留已被打开页面引用的旧哈希分包；加载失败可以返回整机，或刷新模块缓存重新准备。
+
 ## 史料依据
 
 查阅日期：2026-10-16。仅参考事实与结构，不下载或复制博物馆图片。
@@ -79,5 +93,7 @@ npm.cmd run build
 - [The National Museum of Computing — Turing–Welchman Bombe](https://www.tnmoc.org/bombe)：机电破译流程、三个独立 Enigma 电路组、对角板、检查过程。
 - [Crypto Museum — Bombe](https://www.cryptomuseum.com/crypto/bombe/)：三组、每组十二组三鼓轮，108 鼓轮与 36 组 Enigma 模拟特征。
 - [The Rutherford Journal — The Turing Bombe](https://www.rutherfordjournal.org/article030108.html)：首台 Victory 与改进型 Agnes 的 1940 年时间线、BTM 工程制造和对角板。
+- [Crypto Museum — Enigma wiring](https://www.cryptomuseum.com/crypto/enigma/wiring.htm)：I、II、III 的接线、转位缺口与 B 反射器置换。
+- [Crypto Museum — Enigma operation](https://www.cryptomuseum.com/crypto/enigma/working.htm)：按键、电流往返、接线互换与转位原理。
 
 建模与页面代码独立编写，没有复制 Cassette 项目代码或其媒体。Three.js 与 esbuild 版本在 package-lock.json 锁定，第三方许可见 `THIRD_PARTY_NOTICES.txt`。

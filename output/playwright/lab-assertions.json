@@ -1,0 +1,350 @@
+{
+  "date": "2026-10-16",
+  "environment": {
+    "browser": "Chromium",
+    "desktop": [
+      [
+        1600,
+        900
+      ],
+      [
+        1366,
+        768
+      ]
+    ],
+    "touchEmulation": [
+      [
+        390,
+        844
+      ],
+      [
+        360,
+        800
+      ]
+    ],
+    "dev": "http://127.0.0.1:4173",
+    "staticRelease": "http://127.0.0.1:4174"
+  },
+  "summary": {
+    "passed": 58,
+    "superseded": 1,
+    "unresolvedFailures": 0
+  },
+  "checks": [
+    {
+      "name": "直达第二页初始化",
+      "pass": true
+    },
+    {
+      "name": "暂停冻结演示",
+      "pass": true
+    },
+    {
+      "name": "首次A先转位到AAB并输出B",
+      "pass": true,
+      "details": {
+        "active": true,
+        "topic": "drums",
+        "positions": [
+          0,
+          0,
+          1
+        ],
+        "pairs": [],
+        "input": "A",
+        "output": "B",
+        "progress": -0.46037999999999457,
+        "playing": false,
+        "history": [
+          {
+            "input": "A",
+            "output": "B"
+          }
+        ],
+        "ready": true,
+        "reducedMotion": false,
+        "calls": 39,
+        "geometries": 39,
+        "textures": 5,
+        "contextLost": false
+      }
+    },
+    {
+      "name": "逐段不重复转位",
+      "pass": true
+    },
+    {
+      "name": "最后一段显示结果",
+      "pass": true
+    },
+    {
+      "name": "固定轮位互易验证",
+      "pass": true
+    },
+    {
+      "name": "重播不改变历史与轮位",
+      "pass": true
+    },
+    {
+      "name": "AAAAA参考结果BDZGO",
+      "pass": true
+    },
+    {
+      "name": "调轮清除旧轨迹和键盘高亮",
+      "pass": true
+    },
+    {
+      "name": "相同接线端点反馈",
+      "pass": true
+    },
+    {
+      "name": "接线进入A换为B",
+      "pass": true
+    },
+    {
+      "name": "拔线清空配对",
+      "pass": true
+    },
+    {
+      "name": "两次A教学任务给出B与D",
+      "pass": true
+    },
+    {
+      "name": "错误答案有讲解",
+      "pass": true
+    },
+    {
+      "name": "正确答案解释双向交换",
+      "pass": true
+    },
+    {
+      "name": "三维插孔选择第一个端点",
+      "pass": true
+    },
+    {
+      "name": "三维点击两孔实际连接A与B",
+      "pass": true
+    },
+    {
+      "name": "展开结构到100%",
+      "pass": true
+    },
+    {
+      "name": "源码构建稳定后直达刷新成功",
+      "pass": true
+    },
+    {
+      "name": "模型放大按钮改变镜头",
+      "pass": true
+    },
+    {
+      "name": "复位清除展开滑杆填充",
+      "pass": true
+    },
+    {
+      "name": "鼓轮拾取定位轮位控件",
+      "pass": true
+    },
+    {
+      "name": "鼓轮结构笔记提供第二页入口",
+      "pass": true
+    },
+    {
+      "name": "鼓轮笔记进入鼓轮教学",
+      "pass": true
+    },
+    {
+      "name": "后退恢复整机拆解与选择",
+      "pass": true
+    },
+    {
+      "name": "隐藏实验室停止渲染与播放进度",
+      "pass": true
+    },
+    {
+      "name": "前进恢复实验记录",
+      "pass": true
+    },
+    {
+      "name": "接线结构笔记提供对应入口",
+      "pass": true
+    },
+    {
+      "name": "接线笔记进入放大接线",
+      "pass": true
+    },
+    {
+      "name": "加载中反向导航采用最后请求",
+      "pass": true
+    },
+    {
+      "name": "20轮换线与按键后几何纹理稳定",
+      "pass": true,
+      "details": {
+        "before": 49,
+        "after": 49,
+        "textures": 5,
+        "calls": 48,
+        "triangles": 219158
+      }
+    },
+    {
+      "name": "播放中调轮清除演示",
+      "pass": true
+    },
+    {
+      "name": "运行中减少动态效果立即显示结果",
+      "pass": true
+    },
+    {
+      "name": "减少动态效果仍支持逐段教学",
+      "pass": true
+    },
+    {
+      "name": "字母与方向键操作",
+      "pass": true
+    },
+    {
+      "name": "Tab可到达教学视图入口",
+      "pass": true
+    },
+    {
+      "name": "手机390首屏无横向溢出",
+      "pass": true
+    },
+    {
+      "name": "手机按键与减少动态效果初始生效",
+      "pass": true
+    },
+    {
+      "name": "手机第九段可横向滚动到达",
+      "pass": true
+    },
+    {
+      "name": "手机接线操作可达",
+      "pass": true
+    },
+    {
+      "name": "手机360无横向溢出",
+      "pass": true
+    },
+    {
+      "name": "1366桌面无横向溢出",
+      "pass": true
+    },
+    {
+      "name": "模拟分包失败显示恢复操作",
+      "pass": true
+    },
+    {
+      "name": "加载失败可返回整机",
+      "pass": true
+    },
+    {
+      "name": "失败后重新准备能恢复教学页",
+      "pass": true
+    },
+    {
+      "name": "无WebGL仍保留可计算教学与文字",
+      "pass": true
+    },
+    {
+      "name": "无WebGL隐藏模型标注并停用视角控件",
+      "pass": true
+    },
+    {
+      "name": "缩放并恢复原始镜头",
+      "pass": false,
+      "details": {
+        "restoredCam": [
+          -0.930271881128452,
+          3.3723702846527273,
+          11.387393503599116
+        ],
+        "enlargedCam": [
+          -0.8009746372032902,
+          3.239836814621243,
+          9.654814215900258
+        ]
+      },
+      "supersededBy": "镜头收敛后缩放恢复验证"
+    },
+    {
+      "name": "镜头收敛后缩放恢复验证",
+      "pass": true
+    },
+    {
+      "name": "图形上下文中断保留按键计算",
+      "pass": true
+    },
+    {
+      "name": "图形上下文可恢复",
+      "pass": true
+    },
+    {
+      "name": "独立dist静态目录可加载分包与计算",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "代码更新后旧页面仍能延迟载入旧分包",
+      "pass": true
+    },
+    {
+      "name": "正常播放自动完成并显示输出",
+      "pass": true
+    },
+    {
+      "name": "另一章交互时实验室进度不再推进",
+      "pass": true
+    },
+    {
+      "name": "播放期间换线清除过期轨迹",
+      "pass": true
+    },
+    {
+      "name": "手机可返回第一页",
+      "pass": true
+    },
+    {
+      "name": "图形恢复后重新生成环境反射纹理",
+      "pass": true
+    },
+    {
+      "name": "环境恢复后输入与逐段教学正常",
+      "pass": true
+    }
+  ],
+  "normalErrors": {
+    "page": [],
+    "console": [],
+    "requests": []
+  },
+  "injectedFailureLogs": {
+    "moduleLoad": [
+      "Failed to load resource: net::ERR_FAILED",
+      "Chapter preparation failed: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4173/dist/chunks/lab-CU4MSRP6.js",
+      "Chapter preparation failed: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4173/dist/chunks/lab-CU4MSRP6.js"
+    ],
+    "webGL": [
+      "THREE.WebGLRenderer: Error creating WebGL context.",
+      "Error: Error creating WebGL context.\n    at new WebGLRenderer (http://127.0.0.1:4173/dist/chunks/chunk-7HLOECF2.js:27640:19)\n    at createStage (http://127.0.0.1:4173/dist/chunks/chunk-7HLOECF2.js:30007:20)\n    at http://127.0.0.1:4173/dist/app.js:715:11",
+      "THREE.WebGLRenderer: Error creating WebGL context.",
+      "Teaching model unavailable: Error: Error creating WebGL context.\n    at new WebGLRenderer (http://127.0.0.1:4173/dist/chunks/chunk-7HLOECF2.js:27640:19)\n    at createStage (http://127.0.0.1:4173/dist/chunks/chunk-7HLOECF2.js:30007:20)\n    at Module.createLab (http://127.0.0.1:4173/dist/chunks/lab-CU4MSRP6.js:634:13)\n    at prepare (http://127.0.0.1:4173/dist/app.js:843:36)\n    at async run2 (http://127.0.0.1:4173/dist/app.js:434:9)"
+    ]
+  },
+  "harnessNotes": [
+    "上一轮验收等待表达式引用错误已修正；恢复会话时一次等待超时并重建会话",
+    "一次镜头恢复断言在缓动结束前取样；改用镜头收敛条件后复验"
+  ],
+  "correctedProductIssues": [
+    "开发重新构建时旧哈希分包404：内存同步发布并保留旧哈希分包，回归通过",
+    "失败ESM导入缓存：重新准备刷新文档，注入失败后回归通过",
+    "WebGL上下文恢复后PMREM目标内容丢失：重新生成环境反射，材质视觉与输入回归通过"
+  ],
+  "limits": [
+    "触摸模拟，不是物理手机测试",
+    "未测Safari/Firefox或移动GPU帧率",
+    "未公开发布"
+  ]
+}

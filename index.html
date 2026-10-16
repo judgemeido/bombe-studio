@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#eeede5"><meta name="description" content="拆开 Turing–Welchman Bombe：一个可旋转、可拆解的二战破译机 3D 交互展品。">
   <title>BOMBE · 译码档案 | 交互机械展</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232b4035'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23eee9d8' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23ba5e3e'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css"><script defer src="dist/app.js"></script>
+  <link rel="stylesheet" href="styles.css"><script type="module" src="dist/app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#controls">跳至展品控制</a>
@@ -18,16 +18,16 @@
     <symbol id="drag" viewBox="0 0 24 24"><path d="M8 11V5a2 2 0 0 1 4 0v6-7a2 2 0 0 1 4 0v8-4a2 2 0 0 1 4 0v7c0 4-2 6-6 6h-2c-2 0-3-1-4-2l-5-6a2 2 0 0 1 3-2l2 2"/></symbol>
   </defs></svg>
   <header class="site-header">
-    <a class="brand" href="./" aria-label="译码档案首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>译码档案<small>DECODED ARCHIVE</small></span></a>
+    <a class="brand" href="#/" data-page="exhibit" aria-label="译码档案首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>译码档案<small>DECODED ARCHIVE</small></span></a>
     <div class="header-center"><span class="live-dot"></span> 机械的记忆，逻辑的形状。</div>
-    <nav aria-label="展馆导航"><span class="edition">交互藏品 <b>001</b></span><button id="archive-open" class="text-button">展品档案 <svg><use href="#arrow"/></svg></button></nav>
+    <nav aria-label="展馆导航"><div class="chapter-nav"><a href="#/" data-page="exhibit" data-chapter="exhibit" aria-current="page"><small>01</small>机械全貌</a><a href="#/lab/drums" data-page="lab" data-topic="drums" data-chapter="lab"><small>02</small>信号实验室 <svg><use href="#arrow"/></svg></a></div><button id="archive-open" class="text-button">展品档案 <svg><use href="#arrow"/></svg></button></nav>
   </header>
 
-  <main>
+  <main id="exhibit-page">
     <section class="exhibit" aria-label="Bombe 三维交互展品">
       <div class="intro">
         <div class="eyebrow"><span>英国 · 布莱切利园</span><span class="date">1940 — 1945</span></div>
-        <h1>The<br><em>Bombe.</em><span class="title-dot">✳</span></h1>
+        <h1 id="exhibit-heading" tabindex="-1">The<br><em>Bombe.</em><span class="title-dot">✳</span></h1>
         <p class="byline">TURING–WELCHMAN</p>
         <h2>拆开机器，看见逻辑。</h2>
         <p class="intro-copy">当逻辑成为齿轮，推理开始旋转。<br>走近二战时期的机电破译机，<br>看见藏在钢铁与接线之间的智慧。</p>
@@ -69,6 +69,11 @@
     <p class="sr-only" role="status" id="status">展品正在加载</p>
   </main>
 
+  <main id="lab-page" hidden></main>
+  <div id="page-transition" class="page-transition" hidden data-state="loading" role="status" aria-live="polite">
+    <div class="transition-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="transition-content"><span id="route-chapter">02 / THE SIGNAL LAB</span><h2 id="route-title">让信号，穿过逻辑。</h2><div class="transition-meta"><span id="route-caption">准备章节</span><span id="route-count">01 / 04</span></div><progress id="route-progress" max="100" value="0" aria-label="章节准备进度"></progress><div class="route-error-actions"><button id="route-retry">重新准备 ↗</button><button id="route-back">返回机械全貌</button></div></div>
+  </div>
   <dialog id="note-dialog" class="note-dialog" aria-labelledby="note-title">
     <div class="dialog-top"><span class="eyebrow">STRUCTURE NOTES <span id="note-index">00 / 05</span></span><button class="dialog-close" data-close aria-label="关闭结构笔记">×</button></div>
     <div class="note-dialog-heading"><span id="note-english">A GUIDE TO THE ASSEMBLY</span><h2 id="note-title">从整机，读到每个系统</h2><p id="note-subtitle"></p></div>
@@ -77,6 +82,7 @@
     <section class="note-section"><div class="note-section-heading"><span>02</span><h3>如何观察</h3></div><ol id="note-steps"></ol></section>
     <section class="note-section note-relation"><div class="note-section-heading"><span>03</span><h3>系统关系与展示说明</h3></div><p id="note-relationship"></p></section>
     <p class="guide-note" id="note-limit"></p><button class="note-focus-button" id="note-focus">在模型中查看 <svg><use href="#arrow"/></svg></button>
+    <a class="note-lab-link" id="note-lab" href="#/lab/drums" data-page="lab" data-topic="drums" hidden><span><small>第二章 / 动手理解</small><strong id="note-lab-label">进入鼓轮实验</strong></span><svg><use href="#arrow"/></svg></a>
   </dialog>
   <dialog id="archive-dialog" aria-labelledby="archive-title">
     <div class="dialog-top"><span class="eyebrow">ARCHIVE / 001</span><button class="dialog-close" data-close aria-label="关闭展品档案">×</button></div>

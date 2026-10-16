@@ -3,6 +3,7 @@ import { createProduct, PARTS } from './model.js';
 import { createStage } from './scene.js';
 import { createTextures } from './textures.js';
 import { NOTES } from './notes.js';
+import { createNavigation } from './navigation.js';
 
 const $ = selector => document.querySelector(selector);
 const canvas = $('#scene'), viewer = $('#viewer'), status = $('#status');
@@ -15,6 +16,7 @@ const mobileDetail = document.createElement('div'); mobileDetail.className = 'mo
 const mobileNote = document.createElement('button'); mobileNote.className = 'part-card note-trigger'; mobileNote.setAttribute('aria-haspopup', 'dialog'); mobileNote.setAttribute('aria-controls', 'note-dialog');
 mobileDetail.append(mobileNote); $('.parts-section').after(mobileDetail);
 let stage, product, stopped = false, raf = 0, previous = performance.now(), contextLost = false;
+let currentPage = 'exhibit', lab = null, labModule = null, navigation;
 
 function recordFor(id) { return id ? { ...PARTS.find(p => p.id === id), ...NOTES[id] } : NOTES.overview; }
 function updateNotes() {
@@ -33,6 +35,11 @@ function updateNotes() {
   $('#note-relationship').textContent = record.relationship;
   $('#note-limit').textContent = record.note || '本展品为教学性结构重建，拆分与运动路径服务于观察，不作为真实拆装指南。';
   $('#note-focus').innerHTML = `${state.selected ? '在模型中查看' : '开始拆解探索'} <svg><use href="#arrow"/></svg>`;
+  const teachable = state.selected === 'drums' || state.selected === 'board';
+  $('#note-lab').hidden = !teachable;
+  $('#note-lab').dataset.topic = state.selected === 'board' ? 'wiring' : 'drums';
+  $('#note-lab').href = state.selected === 'board' ? '#/lab/wiring' : '#/lab/drums';
+  $('#note-lab-label').textContent = state.selected === 'board' ? '进入接线实验' : '进入鼓轮实验';
 }
 function frameCamera(immediate = motion.matches) {
   if (!stage || !product) return;
@@ -104,6 +111,7 @@ on($('#explode-range'), 'input', event => setExplode(Number(event.target.value) 
 on($('#run'), 'click', run); on($('#reset'), 'click', reset);
 for (const [id, direction] of [['#zoom-in', 1], ['#zoom-out', -1]]) on($(id), 'click', () => { state.follow = false; stage?.zoom(direction); });
 on(window, 'keydown', event => {
+  if (currentPage !== 'exhibit' || navigation?.busy) return;
   if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || document.querySelector('dialog[open]') || event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
   if (event.key === ' ' && event.target.closest('button,a')) return;
   const action = { e: () => setExplode(state.target > 0 ? 0 : 1), r: reset, ' ': run, escape: () => selectPart(null) }[event.key.toLowerCase()];
@@ -140,7 +148,7 @@ on(canvas, 'webglcontextrestored', () => { contextLost = false; $('#error-state'
 function frame(now) {
   if (stopped) return;
   const dt = Math.min((now - previous) / 1000, .05); previous = now;
-  if (stage && product && !contextLost && !document.hidden) {
+  if (currentPage === 'exhibit' && !navigation?.busy && stage && product && !contextLost && !document.hidden) {
     state.progress = motion.matches ? state.target : state.progress + (state.target - state.progress) * (1 - Math.exp(-4.5 * dt));
     if (Math.abs(state.progress - state.target) < .0001) state.progress = state.target;
     product.setExplode(state.progress); product.setFocus(state.focus);
@@ -160,7 +168,30 @@ function frame(now) {
   }
   raf = requestAnimationFrame(frame);
 }
-function dispose() { if (stopped) return; stopped = true; cancelAnimationFrame(raf); cleanups.forEach(fn => fn()); product?.dispose(); stage?.dispose(); delete window.__BOMBE_INSPECT__; }
+function dispose() { if (stopped) return; stopped = true; cancelAnimationFrame(raf); navigation?.dispose(); lab?.dispose(); cleanups.forEach(fn => fn()); product?.dispose(); stage?.dispose(); delete window.__BOMBE_INSPECT__; }
 on(window, 'pagehide', event => { if (!event.persisted) dispose(); });
-window.__BOMBE_INSPECT__ = () => ({ ...state, phase: product?.phase, drums: product?.drumCount, reducedMotion: motion.matches, calls: stage?.renderer.info.render.calls, triangles: stage?.renderer.info.render.triangles, geometries: stage?.renderer.info.memory.geometries, textures: stage?.renderer.info.memory.textures, camera: stage?.camera.position.toArray(), cameraTarget: stage?.controls.target.toArray(), ready: Boolean(stage && product), contextLost });
+window.__BOMBE_INSPECT__ = () => ({ ...state, page: currentPage, navigating: navigation?.busy || false, phase: product?.phase, drums: product?.drumCount, reducedMotion: motion.matches, calls: stage?.renderer.info.render.calls, triangles: stage?.renderer.info.render.triangles, geometries: stage?.renderer.info.memory.geometries, textures: stage?.renderer.info.memory.textures, camera: stage?.camera.position.toArray(), cameraTarget: stage?.controls.target.toArray(), ready: Boolean(stage && product), contextLost });
 updateNotes(); sync(); raf = requestAnimationFrame(frame);
+navigation = createNavigation({
+  motion,
+  pause() { lab?.setActive(false); $('#exhibit-page').inert = $('#lab-page').inert = true; },
+  async prepare(route, report) {
+    if (route.page === 'lab') {
+      report(26, '载入可运行的信号回路'); labModule ||= import('./lab.js');
+      let module; try { module = await labModule; } catch (error) { labModule = null; throw error; }
+      $('#exhibit-page').hidden = true; $('#lab-page').hidden = false;
+      if (!lab) lab = await module.createLab($('#lab-page'), { motion, progress: report });
+      else report(78, '恢复教学模型与实验记录');
+      lab.setTopic(route.topic); lab.setActive(true);
+    } else {
+      report(52, '恢复展品与拆解状态'); $('#exhibit-page').hidden = false; $('#lab-page').hidden = true;
+      stage?.resize(); frameCamera(true); report(78, '准备整机视角');
+    }
+  },
+  activate(route) {
+    currentPage = route.page; $('#exhibit-page').hidden = route.page !== 'exhibit'; $('#lab-page').hidden = route.page !== 'lab';
+    $('#exhibit-page').inert = route.page !== 'exhibit'; $('#lab-page').inert = route.page !== 'lab';
+    $('#archive-open').hidden = route.page === 'lab'; document.body.dataset.page = route.page;
+    lab?.setActive(route.page === 'lab');
+  },
+});

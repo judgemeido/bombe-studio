@@ -10,8 +10,18 @@ export function createStage(canvas, container) {
   camera.position.set(9.2, 6.6, 16.5);
   const controls = new OrbitControls(camera, canvas); controls.target.copy(target); controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = .07;
   controls.minDistance = 3; controls.maxDistance = 140; controls.minPolarAngle = .35; controls.maxPolarAngle = Math.PI / 2 - .035; controls.rotateSpeed = .65;
-  const envScene = new RoomEnvironment(), pmrem = new THREE.PMREMGenerator(renderer), environment = pmrem.fromScene(envScene, .04);
-  scene.environment = environment.texture; scene.environmentIntensity = .85; envScene.dispose(); pmrem.dispose();
+  let environment;
+  function restoreEnvironment() {
+    const envScene = new RoomEnvironment(), pmrem = new THREE.PMREMGenerator(renderer);
+    try {
+      const next = pmrem.fromScene(envScene, .04), previous = environment;
+      scene.environment = next.texture; environment = next; previous?.dispose();
+    } finally { envScene.dispose(); pmrem.dispose(); }
+  }
+  restoreEnvironment(); scene.environmentIntensity = .85;
+  // Render-target contents are lost with the context; regenerate the reflection
+  // environment after Three.js restores its renderer, before the next frame.
+  canvas.addEventListener('webglcontextrestored', restoreEnvironment);
   scene.add(new THREE.HemisphereLight(0xfaf3dd, 0x666958, 2));
   const key = new THREE.DirectionalLight(0xfff4de, 3.5); key.position.set(-6, 12, 10); key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
   Object.assign(key.shadow.camera, { left: -22, right: 22, top: 22, bottom: -22, near: .1, far: 70 }); key.shadow.normalBias = .025; key.shadow.bias = -.0002; key.shadow.radius = 4; scene.add(key);
@@ -50,6 +60,6 @@ export function createStage(canvas, container) {
       }
       controls.update(dt); renderer.render(scene, camera);
     },
-    dispose() { observer.disconnect(); controls.dispose(); key.shadow.map?.dispose(); environment.dispose(); floor.geometry.dispose(); floor.material.dispose(); contact.geometry.dispose(); contact.material.dispose(); contactTexture.dispose(); renderer.dispose(); },
+    dispose() { observer.disconnect(); canvas.removeEventListener('webglcontextrestored', restoreEnvironment); controls.dispose(); key.shadow.map?.dispose(); environment.dispose(); floor.geometry.dispose(); floor.material.dispose(); contact.geometry.dispose(); contact.material.dispose(); contactTexture.dispose(); renderer.dispose(); },
   };
 }

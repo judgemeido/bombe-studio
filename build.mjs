@@ -3,7 +3,8 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { copyFile, readFile, writeFile } from 'node:fs/promises';
 export const options = {
-  entryPoints: ['src/main.js'], bundle: true, outfile: 'dist/app.js', format: 'iife',
+  entryPoints: { app: 'src/main.js' }, bundle: true, outdir: 'dist', format: 'esm', splitting: true,
+  chunkNames: 'chunks/[name]-[hash]',
   target: ['chrome110', 'firefox110', 'safari16'], minify: false,
   sourcemap: true, legalComments: 'eof', logLevel: 'info',
 };
