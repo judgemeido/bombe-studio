@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#eeede5"><meta name="description" content="拆开 Turing–Welchman Bombe：一个可旋转、可拆解的二战破译机 3D 交互展品。">
   <title>BOMBE · 译码档案 | 交互机械展</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232b4035'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23eee9d8' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23ba5e3e'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css"><script type="module" src="dist/app.js"></script>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="lab.css"><script type="module" src="dist/app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#controls">跳至展品控制</a>
@@ -57,7 +57,7 @@
       </div>
     </section>
 
-    <section class="console" id="controls" aria-label="拆解与运转控制">
+    <section class="console" id="controls" tabindex="-1" aria-label="拆解与运转控制">
       <div class="parts-section"><div class="control-caption"><span>结构目录</span><span>选择一个部件探索</span></div><div class="parts-list" role="group" aria-label="选择部件">
         <button data-part="frame" aria-pressed="false"><span>01</span>机架</button><button data-part="drums" aria-pressed="false"><span>02</span>鼓轮</button><button data-part="drive" aria-pressed="false"><span>03</span>传动</button><button data-part="board" aria-pressed="false"><span>04</span>接线</button><button data-part="motor" aria-pressed="false"><span>05</span>电机</button>
       </div></div>

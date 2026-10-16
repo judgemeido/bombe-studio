@@ -28,7 +28,7 @@ const server = createServer(async (req, res) => {
   try {
     const requested = decodeURIComponent((req.url || '/').split('?')[0]);
     const parts = requested.split(/[\\/]/).filter(Boolean);
-    if (parts.some(p => p === '..' || p.startsWith('.')) || !['index.html', 'styles.css', 'dist'].includes(parts[0] || 'index.html')) { res.writeHead(403).end('Forbidden'); return; }
+    if (parts.some(p => p === '..' || p.startsWith('.')) || !['index.html', 'styles.css', 'lab.css', 'dist'].includes(parts[0] || 'index.html')) { res.writeHead(403).end('Forbidden'); return; }
     if (parts[0] === 'dist') {
       const output = outputs.get(resolve(root, '.' + requested));
       if (!output) { res.writeHead(404).end('Not found'); return; }

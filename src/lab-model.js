@@ -18,6 +18,8 @@ export function createLabModel() {
   const socket = mat({ color: '#17261e', roughness: .7, metalness: .1 });
   const outbound = mat({ color: '#da8745', emissive: '#d98032', emissiveIntensity: .8, roughness: .4 });
   const returning = mat({ color: '#719584', emissive: '#578772', emissiveIntensity: .7, roughness: .4 });
+  const outboundTrail = mat({ color: '#c18b4b', transparent: true, opacity: .22, depthWrite: false, roughness: .5 });
+  const returningTrail = mat({ color: '#719584', transparent: true, opacity: .22, depthWrite: false, roughness: .5 });
   function batch(parent, geometry, material, position = [0, 0, 0], rotation = [0, 0, 0]) {
     if (geometry.index) { const old = geometry; geometry = old.toNonIndexed(); old.dispose(); }
     geometry.applyMatrix4(new THREE.Matrix4().compose(new THREE.Vector3(...position), new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation)), new THREE.Vector3(1, 1, 1)));
@@ -141,7 +143,10 @@ export function createLabModel() {
     update(dt, progress, immediate = false) {
       rotators.forEach((rotor, i) => { const target = positions[i] / 26 * Math.PI * 2, difference = THREE.MathUtils.euclideanModulo(target - rotor.rotation.z + Math.PI, Math.PI * 2) - Math.PI; rotor.rotation.z += difference * (immediate ? 1 : 1 - Math.exp(-9 * dt)); });
       const current = Math.min(8, Math.max(0, Math.ceil(progress) - 1)), local = Math.max(0, Math.min(1, progress - current));
-      paths.forEach(p => { p.mesh.visible = progress >= 0 && p.index <= current && (topic !== 'wiring' || p.index === 0 || p.index === 8); });
+      paths.forEach(p => {
+        p.mesh.visible = progress >= 0 && p.index <= current && (topic !== 'wiring' || p.index === 0 || p.index === 8);
+        p.mesh.material = p.index === current ? p.index < 5 ? outbound : returning : p.index < 5 ? outboundTrail : returningTrail;
+      });
       pulse.visible = progress >= 0 && progress < 9 && paths.length > 0 && (topic !== 'wiring' || current === 0 || current === 8);
       if (pulse.visible) { pulse.position.copy(paths[current].curve.getPointAt(local)); pulse.material = current < 5 ? outbound : returning; }
       root.updateMatrixWorld(true);

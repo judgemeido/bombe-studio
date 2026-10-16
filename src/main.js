@@ -17,6 +17,11 @@ const mobileNote = document.createElement('button'); mobileNote.className = 'par
 mobileDetail.append(mobileNote); $('.parts-section').after(mobileDetail);
 let stage, product, stopped = false, raf = 0, previous = performance.now(), contextLost = false;
 let currentPage = 'exhibit', lab = null, labModule = null, navigation;
+on($('.skip-link'), 'click', event => {
+  event.preventDefault();
+  const target = currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
+  target.focus({ preventScroll: true }); target.scrollIntoView({ block: 'nearest' });
+});
 
 function recordFor(id) { return id ? { ...PARTS.find(p => p.id === id), ...NOTES[id] } : NOTES.overview; }
 function updateNotes() {
@@ -192,6 +197,8 @@ navigation = createNavigation({
     currentPage = route.page; $('#exhibit-page').hidden = route.page !== 'exhibit'; $('#lab-page').hidden = route.page !== 'lab';
     $('#exhibit-page').inert = route.page !== 'exhibit'; $('#lab-page').inert = route.page !== 'lab';
     $('#archive-open').hidden = route.page === 'lab'; document.body.dataset.page = route.page;
+    $('.skip-link').href = route.page === 'lab' ? '#lab-keyboard' : '#controls';
+    $('.skip-link').textContent = route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';
     lab?.setActive(route.page === 'lab');
   },
 });

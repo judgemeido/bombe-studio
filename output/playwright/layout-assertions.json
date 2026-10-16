@@ -1,0 +1,1226 @@
+{
+  "date": "2026-10-16",
+  "runtime": "Playwright Chromium 149.0.7827.55",
+  "checks": [
+    {
+      "name": "1366×768核心控件全在一屏",
+      "pass": true,
+      "details": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 768,
+        "controls": [
+          {
+            "selector": "#lab-canvas",
+            "x": 54.625,
+            "y": 177.1672821044922,
+            "width": 920.75,
+            "height": 419,
+            "bottom": 596.1672821044922,
+            "right": 975.375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 1007.375,
+            "y": 352.80792236328125,
+            "width": 304,
+            "height": 109,
+            "bottom": 461.80792236328125,
+            "right": 1311.375
+          },
+          {
+            "selector": ".lab-result",
+            "x": 1007.375,
+            "y": 155.5110321044922,
+            "width": 304,
+            "height": 150.29689025878906,
+            "bottom": 305.80792236328125,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-play",
+            "x": 1007.375,
+            "y": 480.80792236328125,
+            "width": 160.359375,
+            "height": 36,
+            "bottom": 516.8079223632812,
+            "right": 1167.734375
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1177.734375,
+            "y": 480.80792236328125,
+            "width": 133.640625,
+            "height": 36,
+            "bottom": 516.8079223632812,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 1007.375,
+            "y": 535.8079223632812,
+            "width": 304,
+            "height": 39,
+            "bottom": 574.8079223632812,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 54.625,
+            "y": 683.1672973632812,
+            "width": 1256.75,
+            "height": 34,
+            "bottom": 717.1672973632812,
+            "right": 1311.375
+          }
+        ]
+      }
+    },
+    {
+      "name": "设置弹层可打开",
+      "pass": true
+    },
+    {
+      "name": "设置摘要同步轮位和配对",
+      "pass": true
+    },
+    {
+      "name": "关闭设置恢复触发按钮焦点",
+      "pass": true
+    },
+    {
+      "name": "紧凑轨道仍可定位任意段",
+      "pass": true
+    },
+    {
+      "name": "当前部件标注突出",
+      "pass": true
+    },
+    {
+      "name": "1600×900一屏边界",
+      "pass": true,
+      "details": {
+        "width": 1600,
+        "height": 900,
+        "scrollWidth": 1600,
+        "scrollHeight": 900,
+        "controls": [
+          {
+            "selector": "#lab-canvas",
+            "x": 64,
+            "y": 177.00576782226562,
+            "width": 1136,
+            "height": 551,
+            "bottom": 728.0057678222656,
+            "right": 1200
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 1232,
+            "y": 418.6463928222656,
+            "width": 304,
+            "height": 109.00003051757812,
+            "bottom": 527.6464233398438,
+            "right": 1536
+          },
+          {
+            "selector": ".lab-result",
+            "x": 1232,
+            "y": 221.34951782226562,
+            "width": 304,
+            "height": 150.296875,
+            "bottom": 371.6463928222656,
+            "right": 1536
+          },
+          {
+            "selector": "#lab-play",
+            "x": 1232,
+            "y": 546.6464233398438,
+            "width": 160.359375,
+            "height": 36,
+            "bottom": 582.6464233398438,
+            "right": 1392.359375
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1402.359375,
+            "y": 546.6464233398438,
+            "width": 133.640625,
+            "height": 36,
+            "bottom": 582.6464233398438,
+            "right": 1536
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 1232,
+            "y": 601.6464233398438,
+            "width": 304,
+            "height": 39,
+            "bottom": 640.6464233398438,
+            "right": 1536
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 64,
+            "y": 815.0057983398438,
+            "width": 1472,
+            "height": 34,
+            "bottom": 849.0057983398438,
+            "right": 1536
+          }
+        ]
+      }
+    },
+    {
+      "name": "1366×768一屏边界",
+      "pass": true,
+      "details": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 768,
+        "controls": [
+          {
+            "selector": "#lab-canvas",
+            "x": 54.625,
+            "y": 177,
+            "width": 920.75,
+            "height": 419,
+            "bottom": 596,
+            "right": 975.375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 1007.375,
+            "y": 352.640625,
+            "width": 304,
+            "height": 109,
+            "bottom": 461.640625,
+            "right": 1311.375
+          },
+          {
+            "selector": ".lab-result",
+            "x": 1007.375,
+            "y": 155.34375,
+            "width": 304,
+            "height": 150.296875,
+            "bottom": 305.640625,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-play",
+            "x": 1007.375,
+            "y": 480.640625,
+            "width": 160.359375,
+            "height": 36,
+            "bottom": 516.640625,
+            "right": 1167.734375
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1177.734375,
+            "y": 480.640625,
+            "width": 133.640625,
+            "height": 36,
+            "bottom": 516.640625,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 1007.375,
+            "y": 535.640625,
+            "width": 304,
+            "height": 39,
+            "bottom": 574.640625,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 54.625,
+            "y": 683,
+            "width": 1256.75,
+            "height": 34,
+            "bottom": 717,
+            "right": 1311.375
+          }
+        ]
+      }
+    },
+    {
+      "name": "1280×720一屏边界",
+      "pass": true,
+      "details": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 720,
+        "controls": [
+          {
+            "selector": "#lab-canvas",
+            "x": 51.1875,
+            "y": 157,
+            "width": 841.625,
+            "height": 413,
+            "bottom": 570,
+            "right": 892.8125
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 924.8125,
+            "y": 327.59375,
+            "width": 304,
+            "height": 94,
+            "bottom": 421.59375,
+            "right": 1228.8125
+          },
+          {
+            "selector": ".lab-result",
+            "x": 924.8125,
+            "y": 176.40625,
+            "width": 304,
+            "height": 114.1875,
+            "bottom": 290.59375,
+            "right": 1228.8125
+          },
+          {
+            "selector": "#lab-play",
+            "x": 924.8125,
+            "y": 433.59375,
+            "width": 160.359375,
+            "height": 36,
+            "bottom": 469.59375,
+            "right": 1085.171875
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1095.171875,
+            "y": 433.59375,
+            "width": 133.640625,
+            "height": 36,
+            "bottom": 469.59375,
+            "right": 1228.8125
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 924.8125,
+            "y": 481.59375,
+            "width": 304,
+            "height": 35,
+            "bottom": 516.59375,
+            "right": 1228.8125
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 51.1875,
+            "y": 646,
+            "width": 1177.625,
+            "height": 34,
+            "bottom": 680,
+            "right": 1228.8125
+          }
+        ]
+      }
+    },
+    {
+      "name": "1024×768一屏边界",
+      "pass": true,
+      "details": {
+        "width": 1024,
+        "height": 768,
+        "scrollWidth": 1024,
+        "scrollHeight": 768,
+        "controls": [
+          {
+            "selector": "#lab-canvas",
+            "x": 40.953125,
+            "y": 177,
+            "width": 642.09375,
+            "height": 419,
+            "bottom": 596,
+            "right": 683.046875
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 707.046875,
+            "y": 352.640625,
+            "width": 276,
+            "height": 109,
+            "bottom": 461.640625,
+            "right": 983.046875
+          },
+          {
+            "selector": ".lab-result",
+            "x": 707.046875,
+            "y": 155.34375,
+            "width": 276,
+            "height": 150.296875,
+            "bottom": 305.640625,
+            "right": 983.046875
+          },
+          {
+            "selector": "#lab-play",
+            "x": 707.046875,
+            "y": 480.640625,
+            "width": 145.078125,
+            "height": 36,
+            "bottom": 516.640625,
+            "right": 852.125
+          },
+          {
+            "selector": "#lab-step",
+            "x": 862.125,
+            "y": 480.640625,
+            "width": 120.921875,
+            "height": 36,
+            "bottom": 516.640625,
+            "right": 983.046875
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 707.046875,
+            "y": 535.640625,
+            "width": 276,
+            "height": 39,
+            "bottom": 574.640625,
+            "right": 983.046875
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 40.953125,
+            "y": 683,
+            "width": 942.09375,
+            "height": 34,
+            "bottom": 717,
+            "right": 983.046875
+          }
+        ]
+      }
+    },
+    {
+      "name": "1366×640一屏边界",
+      "pass": true,
+      "details": {
+        "width": 1366,
+        "height": 640,
+        "scrollWidth": 1366,
+        "scrollHeight": 640,
+        "controls": [
+          {
+            "selector": "#lab-canvas",
+            "x": 54.625,
+            "y": 157,
+            "width": 920.75,
+            "height": 333,
+            "bottom": 490,
+            "right": 975.375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 1007.375,
+            "y": 287.59375,
+            "width": 304,
+            "height": 94,
+            "bottom": 381.59375,
+            "right": 1311.375
+          },
+          {
+            "selector": ".lab-result",
+            "x": 1007.375,
+            "y": 136.40625,
+            "width": 304,
+            "height": 114.1875,
+            "bottom": 250.59375,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-play",
+            "x": 1007.375,
+            "y": 393.59375,
+            "width": 160.359375,
+            "height": 36,
+            "bottom": 429.59375,
+            "right": 1167.734375
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1177.734375,
+            "y": 393.59375,
+            "width": 133.640625,
+            "height": 36,
+            "bottom": 429.59375,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 1007.375,
+            "y": 441.59375,
+            "width": 304,
+            "height": 35,
+            "bottom": 476.59375,
+            "right": 1311.375
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 54.625,
+            "y": 566,
+            "width": 1256.75,
+            "height": 34,
+            "bottom": 600,
+            "right": 1311.375
+          }
+        ]
+      }
+    },
+    {
+      "name": "教学指南默认只展开一个主题",
+      "pass": true
+    },
+    {
+      "name": "小测错误反馈可达",
+      "pass": true
+    },
+    {
+      "name": "小测正确反馈可达",
+      "pass": true
+    },
+    {
+      "name": "准备实验后关闭指南并聚焦A",
+      "pass": true
+    },
+    {
+      "name": "教学反馈留在实验台",
+      "pass": true
+    },
+    {
+      "name": "互易验证移入记录弹层仍正常",
+      "pass": true
+    },
+    {
+      "name": "手机九段轨道可点击",
+      "pass": true
+    },
+    {
+      "name": "跳过导航保留实验室路由并聚焦键盘",
+      "pass": true
+    },
+    {
+      "name": "减法保留AAAAA→BDZGO",
+      "pass": true
+    },
+    {
+      "name": "打开弹层暂停背景信号",
+      "pass": true
+    },
+    {
+      "name": "点击鼓轮打开对应轮位设置",
+      "pass": true
+    },
+    {
+      "name": "展开控件一屏可操作",
+      "pass": true
+    },
+    {
+      "name": "减少动态效果保留直接结果",
+      "pass": true
+    },
+    {
+      "name": "390×844手机一屏且全部控件可见",
+      "pass": true,
+      "details": {
+        "w": 390,
+        "h": 844,
+        "sw": 390,
+        "sh": 844,
+        "controls": [
+          {
+            "y": 141,
+            "bottom": 473,
+            "right": 370.5,
+            "x": 19.5
+          },
+          {
+            "y": 513,
+            "bottom": 654,
+            "right": 103.5,
+            "x": 19.5
+          },
+          {
+            "y": 534,
+            "bottom": 654,
+            "right": 370.5,
+            "x": 116.5
+          },
+          {
+            "y": 663,
+            "bottom": 695,
+            "right": 206.03125,
+            "x": 19.5
+          },
+          {
+            "y": 663,
+            "bottom": 695,
+            "right": 370.5,
+            "x": 215.03125
+          },
+          {
+            "y": 704,
+            "bottom": 730,
+            "right": 370.5,
+            "x": 19.5
+          },
+          {
+            "y": 769,
+            "bottom": 796,
+            "right": 370.5,
+            "x": 19.5
+          }
+        ]
+      }
+    },
+    {
+      "name": "360×800手机一屏且全部控件可见",
+      "pass": true,
+      "details": {
+        "w": 360,
+        "h": 800,
+        "sw": 360,
+        "sh": 800,
+        "controls": [
+          {
+            "y": 141,
+            "bottom": 429,
+            "right": 342,
+            "x": 18
+          },
+          {
+            "y": 469,
+            "bottom": 610,
+            "right": 102,
+            "x": 18
+          },
+          {
+            "y": 490,
+            "bottom": 610,
+            "right": 342,
+            "x": 115
+          },
+          {
+            "y": 619,
+            "bottom": 651,
+            "right": 189.8125,
+            "x": 18
+          },
+          {
+            "y": 619,
+            "bottom": 651,
+            "right": 341.984375,
+            "x": 198.8125
+          },
+          {
+            "y": 660,
+            "bottom": 686,
+            "right": 342,
+            "x": 18
+          },
+          {
+            "y": 725,
+            "bottom": 752,
+            "right": 342,
+            "x": 18
+          }
+        ]
+      }
+    },
+    {
+      "name": "手机设置内相同端点有明确错误",
+      "pass": true
+    },
+    {
+      "name": "手机配线后摘要同步且页面不增长",
+      "pass": true
+    },
+    {
+      "name": "手机教学任务反馈不撑开页面",
+      "pass": true
+    },
+    {
+      "name": "弹层中返回整机会关闭弹层并恢复自然滚动",
+      "pass": true
+    },
+    {
+      "name": "重新进入一屏实验室保留记录",
+      "pass": true
+    },
+    {
+      "name": "精简布局仍能选择三维插孔",
+      "pass": true
+    },
+    {
+      "name": "三维两孔接线同步设置摘要",
+      "pass": true
+    },
+    {
+      "name": "设置中拔线恢复默认摘要",
+      "pass": true
+    },
+    {
+      "name": "暂停信号保持进度",
+      "pass": true
+    },
+    {
+      "name": "重播不改变轮位与历史",
+      "pass": true
+    },
+    {
+      "name": "弹层内按字母不会触发后台实验",
+      "pass": true
+    },
+    {
+      "name": "极矮窗口允许滚动而不隐藏底部功能",
+      "pass": true
+    },
+    {
+      "name": "极矮窗口记录与关闭仍可到达",
+      "pass": true
+    },
+    {
+      "name": "最终刷新：桌面无文档溢出",
+      "pass": true
+    },
+    {
+      "name": "最终刷新：页面与资源无错误",
+      "pass": true
+    },
+    {
+      "name": "生产构建：lab.css 可独立加载",
+      "pass": true
+    },
+    {
+      "name": "生产构建：A→B 与轮位 AAB 正常",
+      "pass": true
+    },
+    {
+      "name": "生产构建：轮位弹层正常",
+      "pass": true
+    },
+    {
+      "name": "生产构建：全部核心区域一屏可见",
+      "pass": true,
+      "details": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 900,
+        "controls": [
+          {
+            "selector": "#lab-canvas",
+            "left": 57.59375,
+            "top": 177,
+            "right": 1046.40625,
+            "bottom": 728,
+            "width": 988.8125,
+            "height": 551
+          },
+          {
+            "selector": "#lab-keyboard",
+            "left": 1078.40625,
+            "top": 418.640625,
+            "right": 1382.40625,
+            "bottom": 527.640625,
+            "width": 304,
+            "height": 109
+          },
+          {
+            "selector": ".lab-result",
+            "left": 1078.40625,
+            "top": 221.34375,
+            "right": 1382.40625,
+            "bottom": 371.640625,
+            "width": 304,
+            "height": 150.296875
+          },
+          {
+            "selector": "#lab-play",
+            "left": 1078.40625,
+            "top": 546.640625,
+            "right": 1238.765625,
+            "bottom": 582.640625,
+            "width": 160.359375,
+            "height": 36
+          },
+          {
+            "selector": "#lab-step",
+            "left": 1248.765625,
+            "top": 546.640625,
+            "right": 1382.40625,
+            "bottom": 582.640625,
+            "width": 133.640625,
+            "height": 36
+          },
+          {
+            "selector": "#lab-settings-open",
+            "left": 1078.40625,
+            "top": 601.640625,
+            "right": 1382.40625,
+            "bottom": 640.640625,
+            "width": 304,
+            "height": 39
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "left": 57.59375,
+            "top": 815,
+            "right": 1382.40625,
+            "bottom": 849,
+            "width": 1324.8125,
+            "height": 34
+          }
+        ]
+      }
+    },
+    {
+      "name": "最终刷新及生产验收：无页面、控制台或资源加载错误",
+      "pass": true
+    }
+  ],
+  "total": 46,
+  "passed": 46,
+  "desktopFit": [
+    {
+      "width": 1600,
+      "height": 900,
+      "scrollWidth": 1600,
+      "scrollHeight": 900,
+      "controls": [
+        {
+          "selector": "#lab-canvas",
+          "x": 64,
+          "y": 177.00576782226562,
+          "width": 1136,
+          "height": 551,
+          "bottom": 728.0057678222656,
+          "right": 1200
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 1232,
+          "y": 418.6463928222656,
+          "width": 304,
+          "height": 109.00003051757812,
+          "bottom": 527.6464233398438,
+          "right": 1536
+        },
+        {
+          "selector": ".lab-result",
+          "x": 1232,
+          "y": 221.34951782226562,
+          "width": 304,
+          "height": 150.296875,
+          "bottom": 371.6463928222656,
+          "right": 1536
+        },
+        {
+          "selector": "#lab-play",
+          "x": 1232,
+          "y": 546.6464233398438,
+          "width": 160.359375,
+          "height": 36,
+          "bottom": 582.6464233398438,
+          "right": 1392.359375
+        },
+        {
+          "selector": "#lab-step",
+          "x": 1402.359375,
+          "y": 546.6464233398438,
+          "width": 133.640625,
+          "height": 36,
+          "bottom": 582.6464233398438,
+          "right": 1536
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 1232,
+          "y": 601.6464233398438,
+          "width": 304,
+          "height": 39,
+          "bottom": 640.6464233398438,
+          "right": 1536
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 64,
+          "y": 815.0057983398438,
+          "width": 1472,
+          "height": 34,
+          "bottom": 849.0057983398438,
+          "right": 1536
+        }
+      ]
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "scrollWidth": 1366,
+      "scrollHeight": 768,
+      "controls": [
+        {
+          "selector": "#lab-canvas",
+          "x": 54.625,
+          "y": 177,
+          "width": 920.75,
+          "height": 419,
+          "bottom": 596,
+          "right": 975.375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 1007.375,
+          "y": 352.640625,
+          "width": 304,
+          "height": 109,
+          "bottom": 461.640625,
+          "right": 1311.375
+        },
+        {
+          "selector": ".lab-result",
+          "x": 1007.375,
+          "y": 155.34375,
+          "width": 304,
+          "height": 150.296875,
+          "bottom": 305.640625,
+          "right": 1311.375
+        },
+        {
+          "selector": "#lab-play",
+          "x": 1007.375,
+          "y": 480.640625,
+          "width": 160.359375,
+          "height": 36,
+          "bottom": 516.640625,
+          "right": 1167.734375
+        },
+        {
+          "selector": "#lab-step",
+          "x": 1177.734375,
+          "y": 480.640625,
+          "width": 133.640625,
+          "height": 36,
+          "bottom": 516.640625,
+          "right": 1311.375
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 1007.375,
+          "y": 535.640625,
+          "width": 304,
+          "height": 39,
+          "bottom": 574.640625,
+          "right": 1311.375
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 54.625,
+          "y": 683,
+          "width": 1256.75,
+          "height": 34,
+          "bottom": 717,
+          "right": 1311.375
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1280,
+      "scrollHeight": 720,
+      "controls": [
+        {
+          "selector": "#lab-canvas",
+          "x": 51.1875,
+          "y": 157,
+          "width": 841.625,
+          "height": 413,
+          "bottom": 570,
+          "right": 892.8125
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 924.8125,
+          "y": 327.59375,
+          "width": 304,
+          "height": 94,
+          "bottom": 421.59375,
+          "right": 1228.8125
+        },
+        {
+          "selector": ".lab-result",
+          "x": 924.8125,
+          "y": 176.40625,
+          "width": 304,
+          "height": 114.1875,
+          "bottom": 290.59375,
+          "right": 1228.8125
+        },
+        {
+          "selector": "#lab-play",
+          "x": 924.8125,
+          "y": 433.59375,
+          "width": 160.359375,
+          "height": 36,
+          "bottom": 469.59375,
+          "right": 1085.171875
+        },
+        {
+          "selector": "#lab-step",
+          "x": 1095.171875,
+          "y": 433.59375,
+          "width": 133.640625,
+          "height": 36,
+          "bottom": 469.59375,
+          "right": 1228.8125
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 924.8125,
+          "y": 481.59375,
+          "width": 304,
+          "height": 35,
+          "bottom": 516.59375,
+          "right": 1228.8125
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 51.1875,
+          "y": 646,
+          "width": 1177.625,
+          "height": 34,
+          "bottom": 680,
+          "right": 1228.8125
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "scrollWidth": 1024,
+      "scrollHeight": 768,
+      "controls": [
+        {
+          "selector": "#lab-canvas",
+          "x": 40.953125,
+          "y": 177,
+          "width": 642.09375,
+          "height": 419,
+          "bottom": 596,
+          "right": 683.046875
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 707.046875,
+          "y": 352.640625,
+          "width": 276,
+          "height": 109,
+          "bottom": 461.640625,
+          "right": 983.046875
+        },
+        {
+          "selector": ".lab-result",
+          "x": 707.046875,
+          "y": 155.34375,
+          "width": 276,
+          "height": 150.296875,
+          "bottom": 305.640625,
+          "right": 983.046875
+        },
+        {
+          "selector": "#lab-play",
+          "x": 707.046875,
+          "y": 480.640625,
+          "width": 145.078125,
+          "height": 36,
+          "bottom": 516.640625,
+          "right": 852.125
+        },
+        {
+          "selector": "#lab-step",
+          "x": 862.125,
+          "y": 480.640625,
+          "width": 120.921875,
+          "height": 36,
+          "bottom": 516.640625,
+          "right": 983.046875
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 707.046875,
+          "y": 535.640625,
+          "width": 276,
+          "height": 39,
+          "bottom": 574.640625,
+          "right": 983.046875
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 40.953125,
+          "y": 683,
+          "width": 942.09375,
+          "height": 34,
+          "bottom": 717,
+          "right": 983.046875
+        }
+      ]
+    },
+    {
+      "width": 1366,
+      "height": 640,
+      "scrollWidth": 1366,
+      "scrollHeight": 640,
+      "controls": [
+        {
+          "selector": "#lab-canvas",
+          "x": 54.625,
+          "y": 157,
+          "width": 920.75,
+          "height": 333,
+          "bottom": 490,
+          "right": 975.375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 1007.375,
+          "y": 287.59375,
+          "width": 304,
+          "height": 94,
+          "bottom": 381.59375,
+          "right": 1311.375
+        },
+        {
+          "selector": ".lab-result",
+          "x": 1007.375,
+          "y": 136.40625,
+          "width": 304,
+          "height": 114.1875,
+          "bottom": 250.59375,
+          "right": 1311.375
+        },
+        {
+          "selector": "#lab-play",
+          "x": 1007.375,
+          "y": 393.59375,
+          "width": 160.359375,
+          "height": 36,
+          "bottom": 429.59375,
+          "right": 1167.734375
+        },
+        {
+          "selector": "#lab-step",
+          "x": 1177.734375,
+          "y": 393.59375,
+          "width": 133.640625,
+          "height": 36,
+          "bottom": 429.59375,
+          "right": 1311.375
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 1007.375,
+          "y": 441.59375,
+          "width": 304,
+          "height": 35,
+          "bottom": 476.59375,
+          "right": 1311.375
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 54.625,
+          "y": 566,
+          "width": 1256.75,
+          "height": 34,
+          "bottom": 600,
+          "right": 1311.375
+        }
+      ]
+    }
+  ],
+  "productionFit": {
+    "width": 1440,
+    "height": 900,
+    "scrollWidth": 1440,
+    "scrollHeight": 900,
+    "controls": [
+      {
+        "selector": "#lab-canvas",
+        "left": 57.59375,
+        "top": 177,
+        "right": 1046.40625,
+        "bottom": 728,
+        "width": 988.8125,
+        "height": 551
+      },
+      {
+        "selector": "#lab-keyboard",
+        "left": 1078.40625,
+        "top": 418.640625,
+        "right": 1382.40625,
+        "bottom": 527.640625,
+        "width": 304,
+        "height": 109
+      },
+      {
+        "selector": ".lab-result",
+        "left": 1078.40625,
+        "top": 221.34375,
+        "right": 1382.40625,
+        "bottom": 371.640625,
+        "width": 304,
+        "height": 150.296875
+      },
+      {
+        "selector": "#lab-play",
+        "left": 1078.40625,
+        "top": 546.640625,
+        "right": 1238.765625,
+        "bottom": 582.640625,
+        "width": 160.359375,
+        "height": 36
+      },
+      {
+        "selector": "#lab-step",
+        "left": 1248.765625,
+        "top": 546.640625,
+        "right": 1382.40625,
+        "bottom": 582.640625,
+        "width": 133.640625,
+        "height": 36
+      },
+      {
+        "selector": "#lab-settings-open",
+        "left": 1078.40625,
+        "top": 601.640625,
+        "right": 1382.40625,
+        "bottom": 640.640625,
+        "width": 304,
+        "height": 39
+      },
+      {
+        "selector": "#lab-trace-stages",
+        "left": 57.59375,
+        "top": 815,
+        "right": 1382.40625,
+        "bottom": 849,
+        "width": 1324.8125,
+        "height": 34
+      }
+    ]
+  },
+  "pageErrors": [],
+  "finalReloadAndProductionConsoleErrors": [],
+  "finalReloadAndProductionRequestFailures": [],
+  "limitations": [
+    "手机为 Chromium 触摸模拟，未使用物理手机验收。",
+    "未测试 Safari 与 Firefox。",
+    "高度不足 560 CSS px 的窗口保留自然滚动以保证操作可达。",
+    "控制台和请求失败监听用于最后刷新与生产构建验收，pageerror 覆盖本轮功能检查。"
+  ]
+}

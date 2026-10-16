@@ -12,5 +12,6 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   await build(options);
   await writeFile('dist/index.html', (await readFile('index.html', 'utf8')).replace('src="dist/app.js"', 'src="app.js"'));
   await copyFile('styles.css', 'dist/styles.css');
+  await copyFile('lab.css', 'dist/lab.css');
   await copyFile('THIRD_PARTY_NOTICES.txt', 'dist/THIRD_PARTY_NOTICES.txt');
 }

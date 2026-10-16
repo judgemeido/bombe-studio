@@ -3,30 +3,7 @@ import { createStage } from './scene.js';
 import { createLabModel } from './lab-model.js';
 import { ALPHABET, ROTORS, letter, pressKey, traceLetter } from './cipher.js';
 
-const template = `
-  <div class="lab-heading-row">
-    <div><div class="lab-eyebrow"><span>第二章 / 可运行的教学单元</span><span>THE SIGNAL LAB</span></div><h1 id="lab-heading" tabindex="-1">让一个字母，<em>走完一条回路。</em></h1></div>
-    <p>从 108 个鼓轮，走近一组。<br>放大触点、改变接线，亲手观察一次转换。</p>
-  </div>
-  <div class="lab-workspace">
-    <section class="lab-model-panel" aria-label="放大的鼓轮与接线教学模型">
-      <div class="lab-model-top"><div class="lab-topic-tabs" aria-label="教学模型视图"><a href="#/lab/drums" data-page="lab" data-topic="drums">鼓轮与完整回路</a><a href="#/lab/wiring" data-page="lab" data-topic="wiring">接线局部</a></div><span class="lab-scale">01 UNIT / 26 CONTACTS</span></div>
-      <div class="lab-viewer" id="lab-viewer"><div class="lab-background-type" aria-hidden="true">a → b</div><canvas id="lab-canvas" tabindex="0" aria-label="三鼓轮与接线板，可拖动旋转。点击接线板触点选择接线端点。"></canvas><div class="lab-annotations" aria-hidden="true"><span data-lab-anchor="reflector">B <small>反射器</small></span><span data-lab-anchor="0">I <small>慢轮</small></span><span data-lab-anchor="1">II <small>中轮</small></span><span data-lab-anchor="2">III <small>快轮</small></span><span data-lab-anchor="board">A–Z <small>成对接线</small></span></div><div id="lab-error" class="lab-error" hidden>三维画面暂不可用。字母转换、逐步追踪与教学任务仍可操作。</div><div class="lab-view-tools"><button id="lab-zoom-in" aria-label="放大教学模型">+</button><button id="lab-zoom-out" aria-label="缩小教学模型">−</button><button id="lab-home" aria-label="恢复教学模型视角">↺</button></div><div class="lab-scene-bottom"><span id="lab-view-hint">拖动观察 · 点击鼓轮定位设置</span><span><i></i>实时教学模型</span></div></div>
-      <div class="lab-model-footer"><label for="lab-spread">展开触点结构</label><input type="range" id="lab-spread" min="0" max="100" value="0"><output id="lab-spread-value" for="lab-spread">0%</output><span class="signal-legend"><i></i>去程 <i></i>返回</span></div>
-    </section>
-    <aside class="lab-desk" aria-label="实验控制台">
-      <div class="lab-desk-title"><span>动手试验</span><button id="lab-reset">全部复位 ↺</button></div>
-      <fieldset class="lab-fieldset"><legend><b>01</b> 设置轮位 <small>从左到右 I / II / III</small></legend><div id="lab-position-controls" class="lab-position-controls"></div><p>每次按键，先转位，再让信号通过。</p></fieldset>
-      <fieldset class="lab-fieldset lab-wiring-controls"><legend><b>02</b> 接上一对字母</legend><div class="lab-plugs"><label><span>端点一</span><select id="lab-plug-a" aria-label="接线端点一"></select></label><span>↔</span><label><span>端点二</span><select id="lab-plug-b" aria-label="接线端点二"></select></label><button id="lab-connect">接入</button></div><div class="lab-wire-meta"><span id="lab-wire-status" role="status">未接线 · 所有字母原样通过</span><button id="lab-disconnect" hidden>拔下</button></div></fieldset>
-      <fieldset class="lab-fieldset"><legend><b>03</b> 按一个字母 <small>按键会推进轮位</small></legend><div id="lab-keyboard" class="lab-keyboard" aria-label="字母输入键盘"></div></fieldset>
-      <div class="lab-result" aria-label="本次输入输出"><div><span>输入 / INPUT</span><output id="lab-input">—</output></div><span class="lab-result-arrow">→</span><div><span>输出 / OUTPUT</span><output id="lab-output">—</output></div><i id="lab-result-state">等待按键</i></div>
-      <div class="lab-play-controls"><button id="lab-play" disabled>播放信号</button><button id="lab-step" disabled>下一段 →</button></div><p class="lab-play-note">逐段播放同一次转换，不会再次推进鼓轮。</p>
-    </aside>
-  </div>
-  <section class="lab-trace" aria-labelledby="lab-trace-title"><div class="lab-section-heading"><div><span class="lab-section-number">01 — 09</span><h2 id="lab-trace-title">把看不见的信号，逐段点亮。</h2></div><span class="lab-current-position" id="lab-current-position">轮位 A · A · A</span></div><div class="lab-trace-stages" id="lab-trace-stages"></div><div class="lab-trace-narration"><span id="lab-stage-number">—</span><p id="lab-stage-description" role="status">先按下右侧的任意字母，再点击一段回路，或用“下一段”逐步观察。</p><progress id="lab-signal-progress" max="9" value="0" aria-label="信号演示进度"></progress></div><div class="lab-history"><span>输入记录 <b id="lab-history-input">—</b></span><span>输出记录 <b id="lab-history-output">—</b></span><button id="lab-verify" disabled>验证当前轮位的互易性 ↔</button></div><p id="lab-verification" class="lab-feedback" role="status" hidden></p></section>
-  <section class="lab-lessons" aria-labelledby="lab-lessons-title"><div class="lab-section-heading"><div><span class="lab-section-number">LEARN BY DOING</span><h2 id="lab-lessons-title">三个小实验，理解这台机器。</h2></div><span>可以观察，也可以验证。</span></div><div class="lab-lesson-grid"><article><span class="lab-lesson-no">01</span><h3>同一个 A，为何不同？</h3><p>从 AAA、无接线开始，连续按两次 A。观察快轮的位置，以及两次亮起的输出。</p><button id="lab-exercise-start">准备这个实验 <span>↗</span></button><p id="lab-exercise-result" class="lab-exercise-result" role="status">目标：记录 A → ?，再记录 A → ?。</p></article><article><span class="lab-lesson-no">02</span><h3>接线会改变字母顺序吗？</h3><p>接上 A ↔ B。电流从 A 进入接线板，就从 B 离开；从 B 进入，会从哪里离开？</p><div class="lab-quiz" role="group" aria-label="接线互换小测"><button data-answer="A">A</button><button data-answer="C">C</button><button data-answer="B">B</button></div><p id="lab-quiz-result" class="lab-exercise-result" role="status">选择一个答案，再在三维模型中接线试试。</p></article><article><span class="lab-lesson-no">03</span><h3>这和 Bombe 有什么关系？</h3><p>这里用一组 Enigma I–II–III、反射器 B 与接线板讲解置换。Bombe 鼓轮用于模拟转子关系；整机还要结合菜单电路与候选设置检查。</p><a href="#/" data-page="exhibit">带着原理，回看整机 <span>↗</span></a><p class="lab-exercise-result">本单元固定环位 AAA，只开放一对接线；几何为放大的剖解示意。</p></article></div></section>
-  <footer class="lab-footer"><a href="#/" data-page="exhibit">← 第一章 · 机械全貌</a><span>接线数据：Enigma I / UKW B · 三维结构为教学重建</span><a href="https://www.cryptomuseum.com/crypto/enigma/wiring.htm" target="_blank" rel="noopener noreferrer">接线与轮位资料 ↗</a></footer>
-  <p class="sr-only" id="lab-status" role="status"></p>`;
+import template from './lab-template.js';
 
 export async function createLab(container, { motion, progress }) {
   container.innerHTML = template;
@@ -35,6 +12,26 @@ export async function createLab(container, { motion, progress }) {
   let active = false, disposed = false, stage = null, model = null, raf, previous = performance.now(), visibleStage = -2, contextLost = false, pendingPort = null;
   const on = (el, name, handler, options) => { el.addEventListener(name, handler, options); cleanups.push(() => el.removeEventListener(name, handler, options)); };
   const announce = value => { $('#lab-status').textContent = value; };
+  function openDialog(dialog) { state.playing = false; syncProgress(); dialog.showModal(); }
+  function openSettings(index) {
+    if (!$('#lab-settings').open) openDialog($('#lab-settings'));
+    if (Number.isInteger(index)) $(`#lab-position-${index}`).focus({ preventScroll: true });
+  }
+  on($('#lab-settings-open'), 'click', () => openSettings());
+  on($('#lab-guide-open'), 'click', () => openDialog($('#lab-guide')));
+  on($('#lab-history-open'), 'click', () => openDialog($('#lab-records')));
+  container.querySelectorAll('dialog').forEach(dialog => {
+    dialog.querySelectorAll('[data-lab-close]').forEach(button => on(button, 'click', () => dialog.close()));
+    on(dialog, 'click', event => {
+      if (event.target !== dialog) return;
+      const r = dialog.getBoundingClientRect();
+      if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close();
+    });
+  });
+  container.querySelectorAll('[data-guide-tab]').forEach(button => on(button, 'click', () => {
+    container.querySelectorAll('[data-guide-tab]').forEach(tab => tab.setAttribute('aria-pressed', String(tab === button)));
+    container.querySelectorAll('[data-guide-panel]').forEach(panel => { panel.hidden = panel.dataset.guidePanel !== button.dataset.guideTab; });
+  }));
   const options = () => [...ALPHABET].map(char => { const item = document.createElement('option'); item.value = char; item.textContent = char; return item; });
   for (const id of ['#lab-plug-a', '#lab-plug-b']) $(id).replaceChildren(...options()); $('#lab-plug-b').value = 'B';
   ROTORS.forEach((rotor, i) => {
@@ -51,12 +48,15 @@ export async function createLab(container, { motion, progress }) {
     $('#lab-current-position').textContent = '轮位 ' + state.positions.map(letter).join(' · ');
     $('#lab-disconnect').hidden = state.pairs.length === 0;
     $('#lab-wire-status').textContent = state.pairs.length ? `已接入 ${state.pairs[0].join(' ↔ ')} · 双向互换` : '未接线 · 所有字母原样通过';
+    $('#lab-setting-summary').textContent = `${state.positions.map(letter).join('')} · ${state.pairs.length ? state.pairs[0].join('↔') : '无接线'}`;
+    $('#lab-keyboard [data-letter="A"]').classList.toggle('is-suggested', !state.trace);
     model?.setPositions(state.positions, motion.matches);
   }
   function syncTrace() {
     const names = ['接线进入', '鼓轮 III', '鼓轮 II', '鼓轮 I', '反射器 B', '鼓轮 I', '鼓轮 II', '鼓轮 III', '接线输出'];
     $('#lab-trace-stages').replaceChildren(...names.map((name, i) => {
       const button = document.createElement('button'), pass = state.trace?.stages[i]; button.dataset.traceStage = i; button.disabled = !pass;
+      button.setAttribute('aria-label', `第 ${i + 1} 段，${name}${pass ? '，' + letter(pass.input) + ' 到 ' + letter(pass.output) : ''}`);
       button.innerHTML = `<span>${String(i + 1).padStart(2, '0')} <i>${i < 4 ? '去程' : i === 4 ? '折返' : '返回'}</i></span><b>${name}</b><strong>${pass ? letter(pass.input) + ' → ' + letter(pass.output) : '—'}</strong>`;
       return button;
     }));
@@ -68,15 +68,17 @@ export async function createLab(container, { motion, progress }) {
   }
   function syncProgress() {
     const current = state.trace ? Math.min(8, Math.max(0, Math.ceil(state.progress) - 1)) : -1, finished = state.progress >= 9;
-    $('#lab-play').textContent = state.playing ? '暂停信号' : finished ? '重播这次信号' : '播放信号';
+    $('#lab-play').textContent = state.playing ? '暂停信号' : finished ? '重播信号' : '播放信号';
     $('#lab-play').setAttribute('aria-pressed', String(state.playing));
     $('#lab-signal-progress').value = Math.max(0, state.progress);
     $('#lab-output').textContent = finished ? state.trace.output : '—';
-    $('#lab-result-state').textContent = !state.trace ? '等待按键' : finished ? '回路完成' : state.playing ? '信号经过中' : '逐段观察';
+    $('#lab-result-state').textContent = !state.trace ? '按 A，开始实验' : finished ? '回路完成' : state.playing ? '信号经过中' : '逐段观察';
     if (visibleStage === current) return; visibleStage = current;
     $('#lab-trace-stages').querySelectorAll('button').forEach((button, i) => { button.classList.toggle('is-current', i === current); button.classList.toggle('is-complete', i < current); button.setAttribute('aria-pressed', String(i === current)); });
     $('#lab-stage-number').textContent = current < 0 ? '—' : String(current + 1).padStart(2, '0');
-    if (current < 0) { $('#lab-stage-description').textContent = '先按下右侧的任意字母，再点击一段回路，或用“下一段”逐步观察。'; return; }
+    const anchor = current < 0 ? null : state.trace.stages[current].rotor ?? (current === 4 ? 'reflector' : 'board');
+    container.querySelectorAll('[data-lab-anchor]').forEach(label => label.classList.toggle('is-signal-focus', anchor !== null && label.dataset.labAnchor === String(anchor)));
+    if (current < 0) { $('#lab-stage-description').textContent = '按下一个字母，观察信号如何往返。'; return; }
     const pass = state.trace.stages[current], pair = `${letter(pass.input)} → ${letter(pass.output)}`;
     const explanation = pass.id.startsWith('plug') ? pass.input === pass.output ? '这个字母没有连接跳线，保持原样通过。' : '跳线交换这一对字母，反向进入也会成对交换。' : pass.id === 'reflector' ? '反射器将信号送回，接下来按相反方向通过三只鼓轮。' : `在轮位 ${letter(state.positions[pass.rotor])}，沿${pass.reverse ? '反向' : '正向'}内部接线找到另一个触点。`;
     $('#lab-stage-description').textContent = `${pass.name}：${pair}。${explanation}`;
@@ -84,6 +86,7 @@ export async function createLab(container, { motion, progress }) {
   function invalidate(message) {
     state.trace = null; state.progress = -1; state.playing = false; state.history = []; state.exercise = false; pendingPort = null;
     $('#lab-keyboard').querySelectorAll('button').forEach(button => button.classList.remove('is-key-active'));
+    $('#lab-quick-note').textContent = '按键先转位，回放不转位。'; $('#lab-quick-note').classList.remove('is-task-active');
     model?.setTrace(null); configure(); syncTrace(); announce(message);
   }
   function input(char) {
@@ -95,6 +98,7 @@ export async function createLab(container, { motion, progress }) {
     if (state.exercise) {
       const first = state.history.slice(0, 2);
       $('#lab-exercise-result').textContent = first.some(r => r.input !== 'A') ? '这次按了其他字母。重新准备后，连续按两次 A 再比较。' : first.length === 1 ? `第一次 A → ${first[0].output}，快轮转到 B。再按一次 A。` : `观察完成：A → ${first[0].output}，A → ${first[1].output}。快轮从 B 转到 C，电路映射随之改变。`;
+      $('#lab-quick-note').textContent = first.some(r => r.input !== 'A') ? '请从教学指南重新准备，连续按两次 A。' : first.length === 1 ? `A → ${first[0].output}。再按一次 A，比较输出。` : `A → ${first[0].output}，A → ${first[1].output}。轮位改变了映射。`;
     }
     announce(`输入 ${char}，轮位变为 ${state.positions.map(letter).join('')}。${motion.matches ? '输出 ' + result.output : '信号演示开始。'}`);
   }
@@ -108,12 +112,13 @@ export async function createLab(container, { motion, progress }) {
   function connect(a, b) {
     if (a === b) { $('#lab-wire-status').textContent = '请选择两个不同的字母端点。'; return; }
     state.pairs = [[a, b]]; $('#lab-plug-a').value = a; $('#lab-plug-b').value = b; model?.setConnection(state.pairs[0]); invalidate(`已接入 ${a} 与 ${b}。`);
+    if (state.topic === 'wiring') $('#lab-view-hint').textContent = `${a} ↔ ${b} 已接入 · 点击两个插孔可更换`;
   }
   function reset() {
     state.positions = [0, 0, 0]; state.pairs = []; $('#lab-plug-a').value = 'A'; $('#lab-plug-b').value = 'B';
     model?.setConnection(null); model?.setPositions(state.positions, true); model?.setSpread(0); $('#lab-spread').value = 0; $('#lab-spread-value').textContent = '0%';
     $('#lab-spread').style.setProperty('--range-progress', '0%');
-    $('#lab-view-hint').textContent = state.topic === 'wiring' ? '点击两个插孔接线 · 也可使用右侧端点菜单' : '拖动观察 · 点击鼓轮定位设置';
+    $('#lab-view-hint').textContent = state.topic === 'wiring' ? '点击两个插孔接线 · 端点菜单在“轮位与接线”中' : '拖动观察 · 点击鼓轮调整轮位';
     invalidate('已复位至 AAA，无接线。');
     $('#lab-exercise-result').textContent = '目标：记录 A → ?，再记录 A → ?。'; state.follow = true; frameCamera();
   }
@@ -125,16 +130,20 @@ export async function createLab(container, { motion, progress }) {
   }
   on($('#lab-play'), 'click', play); on($('#lab-step'), 'click', step); on($('#lab-reset'), 'click', reset);
   on($('#lab-connect'), 'click', () => connect($('#lab-plug-a').value, $('#lab-plug-b').value));
-  on($('#lab-disconnect'), 'click', () => { state.pairs = []; model?.setConnection(null); invalidate('接线已拔下。'); });
+  on($('#lab-disconnect'), 'click', () => { state.pairs = []; model?.setConnection(null); invalidate('接线已拔下。'); if (state.topic === 'wiring') $('#lab-view-hint').textContent = '点击两个插孔接线 · 端点菜单在“轮位与接线”中'; });
   on($('#lab-trace-stages'), 'click', event => { const button = event.target.closest('[data-trace-stage]'); if (!button || !state.trace) return; state.playing = false; state.progress = Number(button.dataset.traceStage) + 1; syncProgress(); });
   on($('#lab-verify'), 'click', verify);
-  on($('#lab-exercise-start'), 'click', () => { reset(); state.exercise = true; $('#lab-exercise-result').textContent = '已准备：轮位 AAA，无接线。请连续按两次 A。'; $('#lab-keyboard [data-letter="A"]').focus({ preventScroll: true }); });
+  on($('#lab-exercise-start'), 'click', () => {
+    reset(); state.exercise = true; $('#lab-exercise-result').textContent = '已准备：轮位 AAA，无接线。请连续按两次 A。';
+    $('#lab-quick-note').textContent = '已准备 AAA。连续按两次 A，比较输出。'; $('#lab-quick-note').classList.add('is-task-active');
+    $('#lab-guide').close(); $('#lab-keyboard [data-letter="A"]').focus({ preventScroll: true });
+  });
   container.querySelectorAll('[data-answer]').forEach(button => on(button, 'click', () => { const correct = button.dataset.answer === 'A'; container.querySelectorAll('[data-answer]').forEach(b => b.setAttribute('aria-pressed', String(b === button))); $('#lab-quiz-result').textContent = correct ? '正确。A ↔ B 是双向交换，从 B 进入就从 A 离开。' : '再试一次：一根跳线连接两个端点，进入其中一个，就从另一个离开。'; }));
-  on($('#lab-spread'), 'input', event => { model?.setSpread(Number(event.target.value) / 100); $('#lab-spread-value').textContent = event.target.value + '%'; $('#lab-spread').style.setProperty('--range-progress', event.target.value + '%'); $('#lab-view-hint').textContent = Number(event.target.value) > 0 ? '端面已抽出 · 拖动到侧面观察固定触点' : '拖动观察 · 点击鼓轮定位设置'; state.follow = true; frameCamera(); });
+  on($('#lab-spread'), 'input', event => { model?.setSpread(Number(event.target.value) / 100); $('#lab-spread-value').textContent = event.target.value + '%'; $('#lab-spread').style.setProperty('--range-progress', event.target.value + '%'); $('#lab-view-hint').textContent = Number(event.target.value) > 0 ? '端面已抽出 · 拖动到侧面观察固定触点' : '拖动观察 · 点击鼓轮调整轮位'; state.follow = true; frameCamera(); });
   for (const [selector, direction] of [['#lab-zoom-in', 1], ['#lab-zoom-out', -1]]) on($(selector), 'click', () => { state.follow = false; stage?.zoom(direction); });
   on($('#lab-home'), 'click', () => { state.follow = true; frameCamera(); });
   on(window, 'keydown', event => {
-    if (!active || document.body.hasAttribute('aria-busy') || event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.target.closest('button,a,input,select,textarea,[contenteditable]')) return;
+    if (!active || document.body.hasAttribute('aria-busy') || container.querySelector('dialog[open]') || event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.target.closest('button,a,input,select,textarea,[contenteditable]')) return;
     if (/^[a-z]$/i.test(event.key)) { event.preventDefault(); input(event.key.toUpperCase()); }
     else if (event.key === 'ArrowRight') { event.preventDefault(); step(); }
     else if (event.key === ' ') { event.preventDefault(); play(); }
@@ -158,10 +167,10 @@ export async function createLab(container, { motion, progress }) {
     if (!down || !stage || !model || Math.hypot(event.clientX - down.x, event.clientY - down.y) > 5) { down = null; return; } down = null;
     const r = $('#lab-canvas').getBoundingClientRect(); pointer.set((event.clientX - r.left) / r.width * 2 - 1, 1 - (event.clientY - r.top) / r.height * 2);
     raycaster.setFromCamera(pointer, stage.camera); const hit = raycaster.intersectObjects(model.pickables.filter(p => p.visible), true)[0], picked = model.pick(hit);
-    if (picked?.kind === 'rotor') { $(`#lab-position-${picked.index}`).focus({ preventScroll: true }); announce(`已定位鼓轮 ${ROTORS[picked.index].name} 的轮位设置。`); }
+    if (picked?.kind === 'rotor') { openSettings(picked.index); announce(`已定位鼓轮 ${ROTORS[picked.index].name} 的轮位设置。`); }
     if (picked?.kind === 'wiring' && picked.port !== null) {
       const char = letter(picked.port);
-      if (pendingPort === null) { pendingPort = char; $('#lab-plug-a').value = char; $('#lab-wire-status').textContent = `已选择 ${char}，请再点一个不同触点。`; }
+      if (pendingPort === null) { pendingPort = char; $('#lab-plug-a').value = char; $('#lab-wire-status').textContent = `已选择 ${char}，请再点一个不同触点。`; $('#lab-view-hint').textContent = `已选择 ${char} · 再点一个不同插孔完成接线`; }
       else if (pendingPort !== char) connect(pendingPort, char);
     }
   });
@@ -191,7 +200,7 @@ export async function createLab(container, { motion, progress }) {
     setTopic(value) {
       state.topic = value === 'wiring' ? 'wiring' : 'drums'; model?.setTopic(state.topic);
       container.querySelectorAll('.lab-topic-tabs a').forEach(a => a.setAttribute('aria-current', String(a.dataset.topic === state.topic)));
-      $('#lab-view-hint').textContent = state.topic === 'wiring' ? '点击两个插孔接线 · 也可使用右侧端点菜单' : '拖动观察 · 点击鼓轮定位设置';
+      $('#lab-view-hint').textContent = state.topic === 'wiring' ? '点击两个插孔接线 · 端点菜单在“轮位与接线”中' : '拖动观察 · 点击鼓轮调整轮位';
       $('#lab-spread').disabled = state.topic === 'wiring' || !model; state.follow = true; stage?.resize(); frameCamera();
     },
     dispose() { disposed = true; cancelAnimationFrame(raf); cleanups.forEach(remove => remove()); model?.dispose(); stage?.dispose(); delete window.__BOMBE_LAB__; },
