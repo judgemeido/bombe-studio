@@ -1,0 +1,3539 @@
+{
+  "date": "2026-10-16",
+  "runtime": "Playwright Chromium 149.0.7827.55",
+  "checks": [
+    {
+      "name": "准备统一轮位和接线",
+      "pass": true
+    },
+    {
+      "name": "第一次按A暂停在第一段",
+      "pass": true
+    },
+    {
+      "name": "逐段追踪到输出B",
+      "pass": true
+    },
+    {
+      "name": "不复位第二次A输出D",
+      "pass": true
+    },
+    {
+      "name": "接线步骤统一回到AAA并显示具体指引",
+      "pass": true
+    },
+    {
+      "name": "接错一对仍可看到更正指引",
+      "pass": true
+    },
+    {
+      "name": "接入A与C进入验证步骤",
+      "pass": true
+    },
+    {
+      "name": "相同AAA起点接线后A输出Q",
+      "pass": true
+    },
+    {
+      "name": "完成教学保留结果并进入自由探索",
+      "pass": true
+    },
+    {
+      "name": "恢复指引先提示准备不静默重置",
+      "pass": true
+    },
+    {
+      "name": "1366×768默认引导及全部核心控件一屏",
+      "pass": true,
+      "details": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 768,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 56.625,
+            "y": 144,
+            "right": 973.375,
+            "bottom": 290.390625,
+            "width": 916.75,
+            "height": 146.390625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 870.859375,
+            "y": 225.1875,
+            "right": 957.375,
+            "bottom": 264.1875,
+            "width": 86.515625,
+            "height": 39
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 72.625,
+            "y": 212,
+            "right": 320.703125,
+            "bottom": 233,
+            "width": 248.078125,
+            "height": 21
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 72.625,
+            "y": 238,
+            "right": 320.703125,
+            "bottom": 258.390625,
+            "width": 248.078125,
+            "height": 20.390625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 72.625,
+            "y": 260.390625,
+            "right": 320.703125,
+            "bottom": 277.390625,
+            "width": 248.078125,
+            "height": 17
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 56.625,
+            "y": 325.390625,
+            "right": 973.375,
+            "bottom": 591,
+            "width": 916.75,
+            "height": 265.609375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 1018.375,
+            "y": 369.140625,
+            "right": 1300.375,
+            "bottom": 478.140625,
+            "width": 282,
+            "height": 109
+          },
+          {
+            "selector": ".lab-result",
+            "x": 1007.375,
+            "y": 171.84375,
+            "right": 1311.375,
+            "bottom": 326.140625,
+            "width": 304,
+            "height": 154.296875
+          },
+          {
+            "selector": "#lab-play",
+            "x": 1007.375,
+            "y": 506.140625,
+            "right": 1167.734375,
+            "bottom": 542.140625,
+            "width": 160.359375,
+            "height": 36
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1177.734375,
+            "y": 506.140625,
+            "right": 1311.375,
+            "bottom": 542.140625,
+            "width": 133.640625,
+            "height": 36
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 1007.375,
+            "y": 558.140625,
+            "right": 1311.375,
+            "bottom": 597.140625,
+            "width": 304,
+            "height": 39
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 54.625,
+            "y": 641,
+            "right": 1311.375,
+            "bottom": 752,
+            "width": 1256.75,
+            "height": 111
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 67.625,
+            "y": 679,
+            "right": 1298.375,
+            "bottom": 713,
+            "width": 1230.75,
+            "height": 34
+          }
+        ]
+      }
+    },
+    {
+      "name": "1280×720默认一屏",
+      "pass": true,
+      "details": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 720,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 53.1875,
+            "y": 124,
+            "right": 890.8125,
+            "bottom": 270.390625,
+            "width": 837.625,
+            "height": 146.390625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 788.296875,
+            "y": 205.1875,
+            "right": 874.8125,
+            "bottom": 244.1875,
+            "width": 86.515625,
+            "height": 39
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 69.1875,
+            "y": 192,
+            "right": 317.265625,
+            "bottom": 213,
+            "width": 248.078125,
+            "height": 21
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 69.1875,
+            "y": 218,
+            "right": 317.265625,
+            "bottom": 238.390625,
+            "width": 248.078125,
+            "height": 20.390625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 69.1875,
+            "y": 240.390625,
+            "right": 317.265625,
+            "bottom": 257.390625,
+            "width": 248.078125,
+            "height": 17
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 53.1875,
+            "y": 305.390625,
+            "right": 890.8125,
+            "bottom": 564,
+            "width": 837.625,
+            "height": 258.609375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 935.8125,
+            "y": 339.09375,
+            "right": 1217.8125,
+            "bottom": 433.09375,
+            "width": 282,
+            "height": 94
+          },
+          {
+            "selector": ".lab-result",
+            "x": 924.8125,
+            "y": 181.90625,
+            "right": 1228.8125,
+            "bottom": 300.09375,
+            "width": 304,
+            "height": 118.1875
+          },
+          {
+            "selector": "#lab-play",
+            "x": 924.8125,
+            "y": 457.09375,
+            "right": 1085.171875,
+            "bottom": 493.09375,
+            "width": 160.359375,
+            "height": 36
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1095.171875,
+            "y": 457.09375,
+            "right": 1228.8125,
+            "bottom": 493.09375,
+            "width": 133.640625,
+            "height": 36
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 924.8125,
+            "y": 505.09375,
+            "right": 1228.8125,
+            "bottom": 540.09375,
+            "width": 304,
+            "height": 35
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 51.1875,
+            "y": 610,
+            "right": 1228.8125,
+            "bottom": 710,
+            "width": 1177.625,
+            "height": 100
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 64.1875,
+            "y": 642,
+            "right": 1215.8125,
+            "bottom": 676,
+            "width": 1151.625,
+            "height": 34
+          }
+        ]
+      }
+    },
+    {
+      "name": "1366×640默认一屏",
+      "pass": true,
+      "details": {
+        "width": 1366,
+        "height": 640,
+        "scrollWidth": 1366,
+        "scrollHeight": 640,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 56.625,
+            "y": 124,
+            "right": 973.375,
+            "bottom": 270.390625,
+            "width": 916.75,
+            "height": 146.390625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 870.859375,
+            "y": 205.1875,
+            "right": 957.375,
+            "bottom": 244.1875,
+            "width": 86.515625,
+            "height": 39
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 72.625,
+            "y": 192,
+            "right": 320.703125,
+            "bottom": 213,
+            "width": 248.078125,
+            "height": 21
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 72.625,
+            "y": 218,
+            "right": 320.703125,
+            "bottom": 238.390625,
+            "width": 248.078125,
+            "height": 20.390625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 72.625,
+            "y": 240.390625,
+            "right": 320.703125,
+            "bottom": 257.390625,
+            "width": 248.078125,
+            "height": 17
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 56.625,
+            "y": 305.390625,
+            "right": 973.375,
+            "bottom": 484,
+            "width": 916.75,
+            "height": 178.609375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 1018.375,
+            "y": 299.09375,
+            "right": 1300.375,
+            "bottom": 393.09375,
+            "width": 282,
+            "height": 94
+          },
+          {
+            "selector": ".lab-result",
+            "x": 1007.375,
+            "y": 141.90625,
+            "right": 1311.375,
+            "bottom": 260.09375,
+            "width": 304,
+            "height": 118.1875
+          },
+          {
+            "selector": "#lab-play",
+            "x": 1007.375,
+            "y": 417.09375,
+            "right": 1167.734375,
+            "bottom": 453.09375,
+            "width": 160.359375,
+            "height": 36
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1177.734375,
+            "y": 417.09375,
+            "right": 1311.375,
+            "bottom": 453.09375,
+            "width": 133.640625,
+            "height": 36
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 1007.375,
+            "y": 465.09375,
+            "right": 1311.375,
+            "bottom": 500.09375,
+            "width": 304,
+            "height": 35
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 54.625,
+            "y": 530,
+            "right": 1311.375,
+            "bottom": 630,
+            "width": 1256.75,
+            "height": 100
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 67.625,
+            "y": 562,
+            "right": 1298.375,
+            "bottom": 596,
+            "width": 1230.75,
+            "height": 34
+          }
+        ]
+      }
+    },
+    {
+      "name": "1024×768默认一屏",
+      "pass": true,
+      "details": {
+        "width": 1024,
+        "height": 768,
+        "scrollWidth": 1024,
+        "scrollHeight": 768,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 42.953125,
+            "y": 144,
+            "right": 681.046875,
+            "bottom": 290.390625,
+            "width": 638.09375,
+            "height": 146.390625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 578.53125,
+            "y": 225.1875,
+            "right": 665.046875,
+            "bottom": 264.1875,
+            "width": 86.515625,
+            "height": 39
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 58.953125,
+            "y": 212,
+            "right": 307.03125,
+            "bottom": 233,
+            "width": 248.078125,
+            "height": 21
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 58.953125,
+            "y": 238,
+            "right": 307.03125,
+            "bottom": 258.390625,
+            "width": 248.078125,
+            "height": 20.390625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 58.953125,
+            "y": 260.390625,
+            "right": 307.03125,
+            "bottom": 277.390625,
+            "width": 248.078125,
+            "height": 17
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 42.953125,
+            "y": 325.390625,
+            "right": 681.046875,
+            "bottom": 591,
+            "width": 638.09375,
+            "height": 265.609375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 718.046875,
+            "y": 369.140625,
+            "right": 972.046875,
+            "bottom": 478.140625,
+            "width": 254,
+            "height": 109
+          },
+          {
+            "selector": ".lab-result",
+            "x": 707.046875,
+            "y": 171.84375,
+            "right": 983.046875,
+            "bottom": 326.140625,
+            "width": 276,
+            "height": 154.296875
+          },
+          {
+            "selector": "#lab-play",
+            "x": 707.046875,
+            "y": 506.140625,
+            "right": 852.125,
+            "bottom": 542.140625,
+            "width": 145.078125,
+            "height": 36
+          },
+          {
+            "selector": "#lab-step",
+            "x": 862.125,
+            "y": 506.140625,
+            "right": 983.046875,
+            "bottom": 542.140625,
+            "width": 120.921875,
+            "height": 36
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 707.046875,
+            "y": 558.140625,
+            "right": 983.046875,
+            "bottom": 597.140625,
+            "width": 276,
+            "height": 39
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 40.953125,
+            "y": 641,
+            "right": 983.046875,
+            "bottom": 752,
+            "width": 942.09375,
+            "height": 111
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 53.953125,
+            "y": 679,
+            "right": 970.046875,
+            "bottom": 713,
+            "width": 916.09375,
+            "height": 34
+          }
+        ]
+      }
+    },
+    {
+      "name": "360×800默认指引一屏",
+      "pass": true,
+      "details": {
+        "width": 360,
+        "height": 800,
+        "scrollWidth": 360,
+        "scrollHeight": 800,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 20,
+            "y": 113,
+            "right": 340,
+            "bottom": 273.640625,
+            "width": 320,
+            "height": 160.640625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 30,
+            "y": 233.640625,
+            "right": 330,
+            "bottom": 263.640625,
+            "width": 300,
+            "height": 30
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 30,
+            "y": 168,
+            "right": 330,
+            "bottom": 186,
+            "width": 300,
+            "height": 18
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 30,
+            "y": 189,
+            "right": 330,
+            "bottom": 207.140625,
+            "width": 300,
+            "height": 18.140625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 30,
+            "y": 210.140625,
+            "right": 330,
+            "bottom": 226.640625,
+            "width": 300,
+            "height": 16.5
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 20,
+            "y": 303.640625,
+            "right": 340,
+            "bottom": 422,
+            "width": 320,
+            "height": 118.359375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 122,
+            "y": 483,
+            "right": 335,
+            "bottom": 603,
+            "width": 213,
+            "height": 120
+          },
+          {
+            "selector": ".lab-result",
+            "x": 18,
+            "y": 464,
+            "right": 102,
+            "bottom": 610,
+            "width": 84,
+            "height": 146
+          },
+          {
+            "selector": "#lab-play",
+            "x": 18,
+            "y": 619,
+            "right": 189.8125,
+            "bottom": 651,
+            "width": 171.8125,
+            "height": 32
+          },
+          {
+            "selector": "#lab-step",
+            "x": 198.8125,
+            "y": 619,
+            "right": 341.984375,
+            "bottom": 651,
+            "width": 143.171875,
+            "height": 32
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 18,
+            "y": 660,
+            "right": 342,
+            "bottom": 686,
+            "width": 324,
+            "height": 26
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 18,
+            "y": 695,
+            "right": 342,
+            "bottom": 790,
+            "width": 324,
+            "height": 95
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 27,
+            "y": 724,
+            "right": 333,
+            "bottom": 751,
+            "width": 306,
+            "height": 27
+          }
+        ]
+      }
+    },
+    {
+      "name": "手机准备后突出字母键盘",
+      "pass": true
+    },
+    {
+      "name": "手机输入指引一屏",
+      "pass": true,
+      "details": {
+        "width": 360,
+        "height": 800,
+        "scrollWidth": 360,
+        "scrollHeight": 800,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 20,
+            "y": 113,
+            "right": 340,
+            "bottom": 273.640625,
+            "width": 320,
+            "height": 160.640625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 30,
+            "y": 233.640625,
+            "right": 330,
+            "bottom": 263.640625,
+            "width": 300,
+            "height": 30
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 30,
+            "y": 168,
+            "right": 330,
+            "bottom": 186,
+            "width": 300,
+            "height": 18
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 30,
+            "y": 189,
+            "right": 330,
+            "bottom": 207.140625,
+            "width": 300,
+            "height": 18.140625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 30,
+            "y": 210.140625,
+            "right": 330,
+            "bottom": 226.640625,
+            "width": 300,
+            "height": 16.5
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 20,
+            "y": 303.640625,
+            "right": 340,
+            "bottom": 422,
+            "width": 320,
+            "height": 118.359375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 122,
+            "y": 483,
+            "right": 335,
+            "bottom": 603,
+            "width": 213,
+            "height": 120
+          },
+          {
+            "selector": ".lab-result",
+            "x": 18,
+            "y": 464,
+            "right": 102,
+            "bottom": 610,
+            "width": 84,
+            "height": 146
+          },
+          {
+            "selector": "#lab-play",
+            "x": 18,
+            "y": 619,
+            "right": 189.8125,
+            "bottom": 651,
+            "width": 171.8125,
+            "height": 32
+          },
+          {
+            "selector": "#lab-step",
+            "x": 198.8125,
+            "y": 619,
+            "right": 341.984375,
+            "bottom": 651,
+            "width": 143.171875,
+            "height": 32
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 18,
+            "y": 660,
+            "right": 342,
+            "bottom": 686,
+            "width": 324,
+            "height": 26
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 18,
+            "y": 695,
+            "right": 342,
+            "bottom": 790,
+            "width": 324,
+            "height": 95
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 27,
+            "y": 724,
+            "right": 333,
+            "bottom": 751,
+            "width": 306,
+            "height": 27
+          }
+        ]
+      }
+    },
+    {
+      "name": "手机追踪指引一屏",
+      "pass": true,
+      "details": {
+        "width": 360,
+        "height": 800,
+        "scrollWidth": 360,
+        "scrollHeight": 800,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 20,
+            "y": 113,
+            "right": 340,
+            "bottom": 273.640625,
+            "width": 320,
+            "height": 160.640625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 30,
+            "y": 233.640625,
+            "right": 330,
+            "bottom": 263.640625,
+            "width": 300,
+            "height": 30
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 30,
+            "y": 168,
+            "right": 330,
+            "bottom": 186,
+            "width": 300,
+            "height": 18
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 30,
+            "y": 189,
+            "right": 330,
+            "bottom": 207.140625,
+            "width": 300,
+            "height": 18.140625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 30,
+            "y": 210.140625,
+            "right": 330,
+            "bottom": 226.640625,
+            "width": 300,
+            "height": 16.5
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 20,
+            "y": 303.640625,
+            "right": 340,
+            "bottom": 422,
+            "width": 320,
+            "height": 118.359375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 122,
+            "y": 483,
+            "right": 335,
+            "bottom": 603,
+            "width": 213,
+            "height": 120
+          },
+          {
+            "selector": ".lab-result",
+            "x": 18,
+            "y": 464,
+            "right": 102,
+            "bottom": 610,
+            "width": 84,
+            "height": 146
+          },
+          {
+            "selector": "#lab-play",
+            "x": 18,
+            "y": 619,
+            "right": 189.8125,
+            "bottom": 651,
+            "width": 171.8125,
+            "height": 32
+          },
+          {
+            "selector": "#lab-step",
+            "x": 198.8125,
+            "y": 619,
+            "right": 341.984375,
+            "bottom": 651,
+            "width": 143.171875,
+            "height": 32
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 18,
+            "y": 660,
+            "right": 342,
+            "bottom": 686,
+            "width": 324,
+            "height": 26
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 18,
+            "y": 695,
+            "right": 342,
+            "bottom": 790,
+            "width": 324,
+            "height": 95
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 27,
+            "y": 724,
+            "right": 333,
+            "bottom": 751,
+            "width": 306,
+            "height": 27
+          }
+        ]
+      }
+    },
+    {
+      "name": "手机减少动态效果仍保留逐段教学与比较D",
+      "pass": true
+    },
+    {
+      "name": "手机比较完成一屏",
+      "pass": true,
+      "details": {
+        "width": 360,
+        "height": 800,
+        "scrollWidth": 360,
+        "scrollHeight": 800,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 20,
+            "y": 113,
+            "right": 340,
+            "bottom": 273.640625,
+            "width": 320,
+            "height": 160.640625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 30,
+            "y": 233.640625,
+            "right": 330,
+            "bottom": 263.640625,
+            "width": 300,
+            "height": 30
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 30,
+            "y": 168,
+            "right": 330,
+            "bottom": 186,
+            "width": 300,
+            "height": 18
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 30,
+            "y": 189,
+            "right": 330,
+            "bottom": 207.140625,
+            "width": 300,
+            "height": 18.140625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 30,
+            "y": 210.140625,
+            "right": 330,
+            "bottom": 226.640625,
+            "width": 300,
+            "height": 16.5
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 20,
+            "y": 303.640625,
+            "right": 340,
+            "bottom": 422,
+            "width": 320,
+            "height": 118.359375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 122,
+            "y": 483,
+            "right": 335,
+            "bottom": 603,
+            "width": 213,
+            "height": 120
+          },
+          {
+            "selector": ".lab-result",
+            "x": 18,
+            "y": 464,
+            "right": 102,
+            "bottom": 610,
+            "width": 84,
+            "height": 146
+          },
+          {
+            "selector": "#lab-play",
+            "x": 18,
+            "y": 619,
+            "right": 189.8125,
+            "bottom": 651,
+            "width": 171.8125,
+            "height": 32
+          },
+          {
+            "selector": "#lab-step",
+            "x": 198.8125,
+            "y": 619,
+            "right": 341.984375,
+            "bottom": 651,
+            "width": 143.171875,
+            "height": 32
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 18,
+            "y": 660,
+            "right": 342,
+            "bottom": 686,
+            "width": 324,
+            "height": 26
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 18,
+            "y": 695,
+            "right": 342,
+            "bottom": 790,
+            "width": 324,
+            "height": 95
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 27,
+            "y": 724,
+            "right": 333,
+            "bottom": 751,
+            "width": 306,
+            "height": 27
+          }
+        ]
+      }
+    },
+    {
+      "name": "手机接线前说明一屏",
+      "pass": true,
+      "details": {
+        "width": 360,
+        "height": 800,
+        "scrollWidth": 360,
+        "scrollHeight": 800,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 20,
+            "y": 113,
+            "right": 340,
+            "bottom": 291.78125,
+            "width": 320,
+            "height": 178.78125
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 30,
+            "y": 251.78125,
+            "right": 330,
+            "bottom": 281.78125,
+            "width": 300,
+            "height": 30
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 30,
+            "y": 168,
+            "right": 330,
+            "bottom": 186,
+            "width": 300,
+            "height": 18
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 30,
+            "y": 189,
+            "right": 330,
+            "bottom": 225.28125,
+            "width": 300,
+            "height": 36.28125
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 30,
+            "y": 228.28125,
+            "right": 330,
+            "bottom": 244.78125,
+            "width": 300,
+            "height": 16.5
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 20,
+            "y": 321.78125,
+            "right": 340,
+            "bottom": 422,
+            "width": 320,
+            "height": 100.21875
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 122,
+            "y": 483,
+            "right": 335,
+            "bottom": 603,
+            "width": 213,
+            "height": 120
+          },
+          {
+            "selector": ".lab-result",
+            "x": 18,
+            "y": 464,
+            "right": 102,
+            "bottom": 610,
+            "width": 84,
+            "height": 146
+          },
+          {
+            "selector": "#lab-play",
+            "x": 18,
+            "y": 619,
+            "right": 189.8125,
+            "bottom": 651,
+            "width": 171.8125,
+            "height": 32
+          },
+          {
+            "selector": "#lab-step",
+            "x": 198.8125,
+            "y": 619,
+            "right": 341.984375,
+            "bottom": 651,
+            "width": 143.171875,
+            "height": 32
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 18,
+            "y": 660,
+            "right": 342,
+            "bottom": 686,
+            "width": 324,
+            "height": 26
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 18,
+            "y": 695,
+            "right": 342,
+            "bottom": 790,
+            "width": 324,
+            "height": 95
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 27,
+            "y": 724,
+            "right": 333,
+            "bottom": 751,
+            "width": 306,
+            "height": 27
+          }
+        ]
+      }
+    },
+    {
+      "name": "手机接线后说明一屏",
+      "pass": true,
+      "details": {
+        "width": 360,
+        "height": 800,
+        "scrollWidth": 360,
+        "scrollHeight": 800,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 20,
+            "y": 113,
+            "right": 340,
+            "bottom": 273.640625,
+            "width": 320,
+            "height": 160.640625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 30,
+            "y": 233.640625,
+            "right": 330,
+            "bottom": 263.640625,
+            "width": 300,
+            "height": 30
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 30,
+            "y": 168,
+            "right": 330,
+            "bottom": 186,
+            "width": 300,
+            "height": 18
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 30,
+            "y": 189,
+            "right": 330,
+            "bottom": 207.140625,
+            "width": 300,
+            "height": 18.140625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 30,
+            "y": 210.140625,
+            "right": 330,
+            "bottom": 226.640625,
+            "width": 300,
+            "height": 16.5
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 20,
+            "y": 303.640625,
+            "right": 340,
+            "bottom": 422,
+            "width": 320,
+            "height": 118.359375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 122,
+            "y": 483,
+            "right": 335,
+            "bottom": 603,
+            "width": 213,
+            "height": 120
+          },
+          {
+            "selector": ".lab-result",
+            "x": 18,
+            "y": 464,
+            "right": 102,
+            "bottom": 610,
+            "width": 84,
+            "height": 146
+          },
+          {
+            "selector": "#lab-play",
+            "x": 18,
+            "y": 619,
+            "right": 189.8125,
+            "bottom": 651,
+            "width": 171.8125,
+            "height": 32
+          },
+          {
+            "selector": "#lab-step",
+            "x": 198.8125,
+            "y": 619,
+            "right": 341.984375,
+            "bottom": 651,
+            "width": 143.171875,
+            "height": 32
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 18,
+            "y": 660,
+            "right": 342,
+            "bottom": 686,
+            "width": 324,
+            "height": 26
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 18,
+            "y": 695,
+            "right": 342,
+            "bottom": 790,
+            "width": 324,
+            "height": 95
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 27,
+            "y": 724,
+            "right": 333,
+            "bottom": 751,
+            "width": 306,
+            "height": 27
+          }
+        ]
+      }
+    },
+    {
+      "name": "手机教学完成一屏",
+      "pass": true,
+      "details": {
+        "width": 360,
+        "height": 800,
+        "scrollWidth": 360,
+        "scrollHeight": 800,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 20,
+            "y": 113,
+            "right": 340,
+            "bottom": 273.640625,
+            "width": 320,
+            "height": 160.640625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 30,
+            "y": 233.640625,
+            "right": 330,
+            "bottom": 263.640625,
+            "width": 300,
+            "height": 30
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 30,
+            "y": 168,
+            "right": 330,
+            "bottom": 186,
+            "width": 300,
+            "height": 18
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 30,
+            "y": 189,
+            "right": 330,
+            "bottom": 207.140625,
+            "width": 300,
+            "height": 18.140625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 30,
+            "y": 210.140625,
+            "right": 330,
+            "bottom": 226.640625,
+            "width": 300,
+            "height": 16.5
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 20,
+            "y": 303.640625,
+            "right": 340,
+            "bottom": 422,
+            "width": 320,
+            "height": 118.359375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 122,
+            "y": 483,
+            "right": 335,
+            "bottom": 603,
+            "width": 213,
+            "height": 120
+          },
+          {
+            "selector": ".lab-result",
+            "x": 18,
+            "y": 464,
+            "right": 102,
+            "bottom": 610,
+            "width": 84,
+            "height": 146
+          },
+          {
+            "selector": "#lab-play",
+            "x": 18,
+            "y": 619,
+            "right": 189.8125,
+            "bottom": 651,
+            "width": 171.8125,
+            "height": 32
+          },
+          {
+            "selector": "#lab-step",
+            "x": 198.8125,
+            "y": 619,
+            "right": 341.984375,
+            "bottom": 651,
+            "width": 143.171875,
+            "height": 32
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 18,
+            "y": 660,
+            "right": 342,
+            "bottom": 686,
+            "width": 324,
+            "height": 26
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 18,
+            "y": 695,
+            "right": 342,
+            "bottom": 790,
+            "width": 324,
+            "height": 95
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 27,
+            "y": 724,
+            "right": 333,
+            "bottom": 751,
+            "width": 306,
+            "height": 27
+          }
+        ]
+      }
+    },
+    {
+      "name": "手机完整教学得到B/D/Q对照",
+      "pass": true
+    },
+    {
+      "name": "当前追踪目标和路径边框同步",
+      "pass": true
+    },
+    {
+      "name": "中途额外输入明确提示重新准备",
+      "pass": true
+    },
+    {
+      "name": "改轮位后引导恢复到准备步骤",
+      "pass": true
+    },
+    {
+      "name": "完整指引默认显示五步及术语说明",
+      "pass": true
+    },
+    {
+      "name": "完整说明能返回首步并聚焦准备",
+      "pass": true
+    },
+    {
+      "name": "指导模式仍支持空格自动播放",
+      "pass": true
+    },
+    {
+      "name": "指导模式保留记录和互易验证",
+      "pass": true
+    },
+    {
+      "name": "动画中可直接查看比较结果",
+      "pass": true
+    },
+    {
+      "name": "动画中可直接查看接线结果",
+      "pass": true
+    },
+    {
+      "name": "手机完整步骤可以在弹层内滚动",
+      "pass": true
+    },
+    {
+      "name": "手机完整步骤底部重启入口可达",
+      "pass": true
+    },
+    {
+      "name": "完整指引接线小测错误有解释",
+      "pass": true
+    },
+    {
+      "name": "完整指引接线小测正确",
+      "pass": true
+    },
+    {
+      "name": "原两次A任务与五步教程不会同时引导",
+      "pass": true
+    },
+    {
+      "name": "原两次A任务结果仍为B/D",
+      "pass": true
+    },
+    {
+      "name": "说明中返回整机关闭弹层",
+      "pass": true
+    },
+    {
+      "name": "重入实验室保留原记录",
+      "pass": true
+    },
+    {
+      "name": "从接线局部开始教学回到完整回路",
+      "pass": true
+    },
+    {
+      "name": "390×844输入指引一屏",
+      "pass": true,
+      "details": {
+        "width": 390,
+        "height": 844,
+        "scrollWidth": 390,
+        "scrollHeight": 844,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 21.5,
+            "y": 113,
+            "right": 368.5,
+            "bottom": 273.640625,
+            "width": 347,
+            "height": 160.640625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 31.5,
+            "y": 233.640625,
+            "right": 358.5,
+            "bottom": 263.640625,
+            "width": 327,
+            "height": 30
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 31.5,
+            "y": 168,
+            "right": 358.5,
+            "bottom": 186,
+            "width": 327,
+            "height": 18
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 31.5,
+            "y": 189,
+            "right": 358.5,
+            "bottom": 207.140625,
+            "width": 327,
+            "height": 18.140625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 31.5,
+            "y": 210.140625,
+            "right": 358.5,
+            "bottom": 226.640625,
+            "width": 327,
+            "height": 16.5
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 21.5,
+            "y": 303.640625,
+            "right": 368.5,
+            "bottom": 466,
+            "width": 347,
+            "height": 162.359375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 123.5,
+            "y": 527,
+            "right": 363.5,
+            "bottom": 647,
+            "width": 240,
+            "height": 120
+          },
+          {
+            "selector": ".lab-result",
+            "x": 19.5,
+            "y": 508,
+            "right": 103.5,
+            "bottom": 654,
+            "width": 84,
+            "height": 146
+          },
+          {
+            "selector": "#lab-play",
+            "x": 19.5,
+            "y": 663,
+            "right": 206.03125,
+            "bottom": 695,
+            "width": 186.53125,
+            "height": 32
+          },
+          {
+            "selector": "#lab-step",
+            "x": 215.03125,
+            "y": 663,
+            "right": 370.5,
+            "bottom": 695,
+            "width": 155.46875,
+            "height": 32
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 19.5,
+            "y": 704,
+            "right": 370.5,
+            "bottom": 730,
+            "width": 351,
+            "height": 26
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 19.5,
+            "y": 739,
+            "right": 370.5,
+            "bottom": 834,
+            "width": 351,
+            "height": 95
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 28.5,
+            "y": 768,
+            "right": 361.5,
+            "bottom": 795,
+            "width": 333,
+            "height": 27
+          }
+        ]
+      }
+    },
+    {
+      "name": "四个重要区域有明确深色外边框",
+      "pass": true,
+      "details": [
+        {
+          "selector": ".lab-model-panel",
+          "width": "2px",
+          "color": "rgb(120, 138, 108)"
+        },
+        {
+          "selector": ".lab-result",
+          "width": "2px",
+          "color": "rgb(135, 92, 41)"
+        },
+        {
+          "selector": ".lab-keyboard-field",
+          "width": "1px",
+          "color": "rgb(125, 145, 107)"
+        },
+        {
+          "selector": ".lab-trace",
+          "width": "1px",
+          "color": "rgb(120, 138, 108)"
+        }
+      ]
+    },
+    {
+      "name": "生产构建显示默认五步指引",
+      "pass": true
+    },
+    {
+      "name": "生产构建1366×768一屏",
+      "pass": true,
+      "details": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 768,
+        "regions": [
+          {
+            "selector": "#lab-walkthrough",
+            "x": 56.625,
+            "y": 144,
+            "right": 973.375,
+            "bottom": 290.390625,
+            "width": 916.75,
+            "height": 146.390625
+          },
+          {
+            "selector": "#lab-walkthrough-action",
+            "x": 870.859375,
+            "y": 225.1875,
+            "right": 957.375,
+            "bottom": 264.1875,
+            "width": 86.515625,
+            "height": 39
+          },
+          {
+            "selector": "#lab-walkthrough-title",
+            "x": 72.625,
+            "y": 212,
+            "right": 320.703125,
+            "bottom": 233,
+            "width": 248.078125,
+            "height": 21
+          },
+          {
+            "selector": "#lab-walkthrough-do",
+            "x": 72.625,
+            "y": 238,
+            "right": 320.703125,
+            "bottom": 258.390625,
+            "width": 248.078125,
+            "height": 20.390625
+          },
+          {
+            "selector": "#lab-walkthrough-observe",
+            "x": 72.625,
+            "y": 260.390625,
+            "right": 320.703125,
+            "bottom": 277.390625,
+            "width": 248.078125,
+            "height": 17
+          },
+          {
+            "selector": "#lab-canvas",
+            "x": 56.625,
+            "y": 325.390625,
+            "right": 973.375,
+            "bottom": 591,
+            "width": 916.75,
+            "height": 265.609375
+          },
+          {
+            "selector": "#lab-keyboard",
+            "x": 1018.375,
+            "y": 369.140625,
+            "right": 1300.375,
+            "bottom": 478.140625,
+            "width": 282,
+            "height": 109
+          },
+          {
+            "selector": ".lab-result",
+            "x": 1007.375,
+            "y": 171.84375,
+            "right": 1311.375,
+            "bottom": 326.140625,
+            "width": 304,
+            "height": 154.296875
+          },
+          {
+            "selector": "#lab-play",
+            "x": 1007.375,
+            "y": 506.140625,
+            "right": 1167.734375,
+            "bottom": 542.140625,
+            "width": 160.359375,
+            "height": 36
+          },
+          {
+            "selector": "#lab-step",
+            "x": 1177.734375,
+            "y": 506.140625,
+            "right": 1311.375,
+            "bottom": 542.140625,
+            "width": 133.640625,
+            "height": 36
+          },
+          {
+            "selector": "#lab-settings-open",
+            "x": 1007.375,
+            "y": 558.140625,
+            "right": 1311.375,
+            "bottom": 597.140625,
+            "width": 304,
+            "height": 39
+          },
+          {
+            "selector": ".lab-trace",
+            "x": 54.625,
+            "y": 641,
+            "right": 1311.375,
+            "bottom": 752,
+            "width": 1256.75,
+            "height": 111
+          },
+          {
+            "selector": "#lab-trace-stages",
+            "x": 67.625,
+            "y": 679,
+            "right": 1298.375,
+            "bottom": 713,
+            "width": 1230.75,
+            "height": 34
+          }
+        ]
+      }
+    },
+    {
+      "name": "生产构建首次输入停在第一段",
+      "pass": true
+    },
+    {
+      "name": "生产构建原逐段按钮推进教学至B",
+      "pass": true
+    },
+    {
+      "name": "追踪支持任意段回看并同步指引",
+      "pass": true
+    },
+    {
+      "name": "生产构建完成B/D/Q真实教学对照",
+      "pass": true
+    },
+    {
+      "name": "自由探索模式说明同步更新",
+      "pass": true
+    },
+    {
+      "name": "自由探索仍保留AAAAA到BDZGO",
+      "pass": true
+    },
+    {
+      "name": "本轮无页面与控制台错误或失败请求",
+      "pass": true
+    },
+    {
+      "name": "最新构建：追踪中切到接线局部有明确回路提示",
+      "pass": true
+    },
+    {
+      "name": "最新构建：回完整回路保留输入和信号进度",
+      "pass": true
+    },
+    {
+      "name": "最终生产构建包含视图切换提示",
+      "pass": true
+    },
+    {
+      "name": "最终构建无页面控制台错误或资源失败",
+      "pass": true
+    }
+  ],
+  "total": 57,
+  "passed": 57,
+  "invalidatedRuns": [
+    {
+      "name": "追踪中切到接线局部有明确回路提示",
+      "pass": false,
+      "invalidated": true,
+      "reason": "开发增量构建尚未完成时刷新，验收页仍载入旧 lab-RZA2L2CE.js；下方在新 lab-P4DWTVMF.js 上重跑。"
+    }
+  ],
+  "viewportFits": [
+    {
+      "name": "1366×768默认引导及全部核心控件一屏",
+      "width": 1366,
+      "height": 768,
+      "scrollWidth": 1366,
+      "scrollHeight": 768,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 56.625,
+          "y": 144,
+          "right": 973.375,
+          "bottom": 290.390625,
+          "width": 916.75,
+          "height": 146.390625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 870.859375,
+          "y": 225.1875,
+          "right": 957.375,
+          "bottom": 264.1875,
+          "width": 86.515625,
+          "height": 39
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 72.625,
+          "y": 212,
+          "right": 320.703125,
+          "bottom": 233,
+          "width": 248.078125,
+          "height": 21
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 72.625,
+          "y": 238,
+          "right": 320.703125,
+          "bottom": 258.390625,
+          "width": 248.078125,
+          "height": 20.390625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 72.625,
+          "y": 260.390625,
+          "right": 320.703125,
+          "bottom": 277.390625,
+          "width": 248.078125,
+          "height": 17
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 56.625,
+          "y": 325.390625,
+          "right": 973.375,
+          "bottom": 591,
+          "width": 916.75,
+          "height": 265.609375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 1018.375,
+          "y": 369.140625,
+          "right": 1300.375,
+          "bottom": 478.140625,
+          "width": 282,
+          "height": 109
+        },
+        {
+          "selector": ".lab-result",
+          "x": 1007.375,
+          "y": 171.84375,
+          "right": 1311.375,
+          "bottom": 326.140625,
+          "width": 304,
+          "height": 154.296875
+        },
+        {
+          "selector": "#lab-play",
+          "x": 1007.375,
+          "y": 506.140625,
+          "right": 1167.734375,
+          "bottom": 542.140625,
+          "width": 160.359375,
+          "height": 36
+        },
+        {
+          "selector": "#lab-step",
+          "x": 1177.734375,
+          "y": 506.140625,
+          "right": 1311.375,
+          "bottom": 542.140625,
+          "width": 133.640625,
+          "height": 36
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 1007.375,
+          "y": 558.140625,
+          "right": 1311.375,
+          "bottom": 597.140625,
+          "width": 304,
+          "height": 39
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 54.625,
+          "y": 641,
+          "right": 1311.375,
+          "bottom": 752,
+          "width": 1256.75,
+          "height": 111
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 67.625,
+          "y": 679,
+          "right": 1298.375,
+          "bottom": 713,
+          "width": 1230.75,
+          "height": 34
+        }
+      ]
+    },
+    {
+      "name": "1280×720默认一屏",
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1280,
+      "scrollHeight": 720,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 53.1875,
+          "y": 124,
+          "right": 890.8125,
+          "bottom": 270.390625,
+          "width": 837.625,
+          "height": 146.390625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 788.296875,
+          "y": 205.1875,
+          "right": 874.8125,
+          "bottom": 244.1875,
+          "width": 86.515625,
+          "height": 39
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 69.1875,
+          "y": 192,
+          "right": 317.265625,
+          "bottom": 213,
+          "width": 248.078125,
+          "height": 21
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 69.1875,
+          "y": 218,
+          "right": 317.265625,
+          "bottom": 238.390625,
+          "width": 248.078125,
+          "height": 20.390625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 69.1875,
+          "y": 240.390625,
+          "right": 317.265625,
+          "bottom": 257.390625,
+          "width": 248.078125,
+          "height": 17
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 53.1875,
+          "y": 305.390625,
+          "right": 890.8125,
+          "bottom": 564,
+          "width": 837.625,
+          "height": 258.609375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 935.8125,
+          "y": 339.09375,
+          "right": 1217.8125,
+          "bottom": 433.09375,
+          "width": 282,
+          "height": 94
+        },
+        {
+          "selector": ".lab-result",
+          "x": 924.8125,
+          "y": 181.90625,
+          "right": 1228.8125,
+          "bottom": 300.09375,
+          "width": 304,
+          "height": 118.1875
+        },
+        {
+          "selector": "#lab-play",
+          "x": 924.8125,
+          "y": 457.09375,
+          "right": 1085.171875,
+          "bottom": 493.09375,
+          "width": 160.359375,
+          "height": 36
+        },
+        {
+          "selector": "#lab-step",
+          "x": 1095.171875,
+          "y": 457.09375,
+          "right": 1228.8125,
+          "bottom": 493.09375,
+          "width": 133.640625,
+          "height": 36
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 924.8125,
+          "y": 505.09375,
+          "right": 1228.8125,
+          "bottom": 540.09375,
+          "width": 304,
+          "height": 35
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 51.1875,
+          "y": 610,
+          "right": 1228.8125,
+          "bottom": 710,
+          "width": 1177.625,
+          "height": 100
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 64.1875,
+          "y": 642,
+          "right": 1215.8125,
+          "bottom": 676,
+          "width": 1151.625,
+          "height": 34
+        }
+      ]
+    },
+    {
+      "name": "1366×640默认一屏",
+      "width": 1366,
+      "height": 640,
+      "scrollWidth": 1366,
+      "scrollHeight": 640,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 56.625,
+          "y": 124,
+          "right": 973.375,
+          "bottom": 270.390625,
+          "width": 916.75,
+          "height": 146.390625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 870.859375,
+          "y": 205.1875,
+          "right": 957.375,
+          "bottom": 244.1875,
+          "width": 86.515625,
+          "height": 39
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 72.625,
+          "y": 192,
+          "right": 320.703125,
+          "bottom": 213,
+          "width": 248.078125,
+          "height": 21
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 72.625,
+          "y": 218,
+          "right": 320.703125,
+          "bottom": 238.390625,
+          "width": 248.078125,
+          "height": 20.390625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 72.625,
+          "y": 240.390625,
+          "right": 320.703125,
+          "bottom": 257.390625,
+          "width": 248.078125,
+          "height": 17
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 56.625,
+          "y": 305.390625,
+          "right": 973.375,
+          "bottom": 484,
+          "width": 916.75,
+          "height": 178.609375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 1018.375,
+          "y": 299.09375,
+          "right": 1300.375,
+          "bottom": 393.09375,
+          "width": 282,
+          "height": 94
+        },
+        {
+          "selector": ".lab-result",
+          "x": 1007.375,
+          "y": 141.90625,
+          "right": 1311.375,
+          "bottom": 260.09375,
+          "width": 304,
+          "height": 118.1875
+        },
+        {
+          "selector": "#lab-play",
+          "x": 1007.375,
+          "y": 417.09375,
+          "right": 1167.734375,
+          "bottom": 453.09375,
+          "width": 160.359375,
+          "height": 36
+        },
+        {
+          "selector": "#lab-step",
+          "x": 1177.734375,
+          "y": 417.09375,
+          "right": 1311.375,
+          "bottom": 453.09375,
+          "width": 133.640625,
+          "height": 36
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 1007.375,
+          "y": 465.09375,
+          "right": 1311.375,
+          "bottom": 500.09375,
+          "width": 304,
+          "height": 35
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 54.625,
+          "y": 530,
+          "right": 1311.375,
+          "bottom": 630,
+          "width": 1256.75,
+          "height": 100
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 67.625,
+          "y": 562,
+          "right": 1298.375,
+          "bottom": 596,
+          "width": 1230.75,
+          "height": 34
+        }
+      ]
+    },
+    {
+      "name": "1024×768默认一屏",
+      "width": 1024,
+      "height": 768,
+      "scrollWidth": 1024,
+      "scrollHeight": 768,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 42.953125,
+          "y": 144,
+          "right": 681.046875,
+          "bottom": 290.390625,
+          "width": 638.09375,
+          "height": 146.390625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 578.53125,
+          "y": 225.1875,
+          "right": 665.046875,
+          "bottom": 264.1875,
+          "width": 86.515625,
+          "height": 39
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 58.953125,
+          "y": 212,
+          "right": 307.03125,
+          "bottom": 233,
+          "width": 248.078125,
+          "height": 21
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 58.953125,
+          "y": 238,
+          "right": 307.03125,
+          "bottom": 258.390625,
+          "width": 248.078125,
+          "height": 20.390625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 58.953125,
+          "y": 260.390625,
+          "right": 307.03125,
+          "bottom": 277.390625,
+          "width": 248.078125,
+          "height": 17
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 42.953125,
+          "y": 325.390625,
+          "right": 681.046875,
+          "bottom": 591,
+          "width": 638.09375,
+          "height": 265.609375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 718.046875,
+          "y": 369.140625,
+          "right": 972.046875,
+          "bottom": 478.140625,
+          "width": 254,
+          "height": 109
+        },
+        {
+          "selector": ".lab-result",
+          "x": 707.046875,
+          "y": 171.84375,
+          "right": 983.046875,
+          "bottom": 326.140625,
+          "width": 276,
+          "height": 154.296875
+        },
+        {
+          "selector": "#lab-play",
+          "x": 707.046875,
+          "y": 506.140625,
+          "right": 852.125,
+          "bottom": 542.140625,
+          "width": 145.078125,
+          "height": 36
+        },
+        {
+          "selector": "#lab-step",
+          "x": 862.125,
+          "y": 506.140625,
+          "right": 983.046875,
+          "bottom": 542.140625,
+          "width": 120.921875,
+          "height": 36
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 707.046875,
+          "y": 558.140625,
+          "right": 983.046875,
+          "bottom": 597.140625,
+          "width": 276,
+          "height": 39
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 40.953125,
+          "y": 641,
+          "right": 983.046875,
+          "bottom": 752,
+          "width": 942.09375,
+          "height": 111
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 53.953125,
+          "y": 679,
+          "right": 970.046875,
+          "bottom": 713,
+          "width": 916.09375,
+          "height": 34
+        }
+      ]
+    },
+    {
+      "name": "360×800默认指引一屏",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 20,
+          "y": 113,
+          "right": 340,
+          "bottom": 273.640625,
+          "width": 320,
+          "height": 160.640625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 30,
+          "y": 233.640625,
+          "right": 330,
+          "bottom": 263.640625,
+          "width": 300,
+          "height": 30
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 30,
+          "y": 168,
+          "right": 330,
+          "bottom": 186,
+          "width": 300,
+          "height": 18
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 30,
+          "y": 189,
+          "right": 330,
+          "bottom": 207.140625,
+          "width": 300,
+          "height": 18.140625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 30,
+          "y": 210.140625,
+          "right": 330,
+          "bottom": 226.640625,
+          "width": 300,
+          "height": 16.5
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 20,
+          "y": 303.640625,
+          "right": 340,
+          "bottom": 422,
+          "width": 320,
+          "height": 118.359375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 122,
+          "y": 483,
+          "right": 335,
+          "bottom": 603,
+          "width": 213,
+          "height": 120
+        },
+        {
+          "selector": ".lab-result",
+          "x": 18,
+          "y": 464,
+          "right": 102,
+          "bottom": 610,
+          "width": 84,
+          "height": 146
+        },
+        {
+          "selector": "#lab-play",
+          "x": 18,
+          "y": 619,
+          "right": 189.8125,
+          "bottom": 651,
+          "width": 171.8125,
+          "height": 32
+        },
+        {
+          "selector": "#lab-step",
+          "x": 198.8125,
+          "y": 619,
+          "right": 341.984375,
+          "bottom": 651,
+          "width": 143.171875,
+          "height": 32
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 18,
+          "y": 660,
+          "right": 342,
+          "bottom": 686,
+          "width": 324,
+          "height": 26
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 18,
+          "y": 695,
+          "right": 342,
+          "bottom": 790,
+          "width": 324,
+          "height": 95
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 27,
+          "y": 724,
+          "right": 333,
+          "bottom": 751,
+          "width": 306,
+          "height": 27
+        }
+      ]
+    },
+    {
+      "name": "手机输入指引一屏",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 20,
+          "y": 113,
+          "right": 340,
+          "bottom": 273.640625,
+          "width": 320,
+          "height": 160.640625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 30,
+          "y": 233.640625,
+          "right": 330,
+          "bottom": 263.640625,
+          "width": 300,
+          "height": 30
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 30,
+          "y": 168,
+          "right": 330,
+          "bottom": 186,
+          "width": 300,
+          "height": 18
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 30,
+          "y": 189,
+          "right": 330,
+          "bottom": 207.140625,
+          "width": 300,
+          "height": 18.140625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 30,
+          "y": 210.140625,
+          "right": 330,
+          "bottom": 226.640625,
+          "width": 300,
+          "height": 16.5
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 20,
+          "y": 303.640625,
+          "right": 340,
+          "bottom": 422,
+          "width": 320,
+          "height": 118.359375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 122,
+          "y": 483,
+          "right": 335,
+          "bottom": 603,
+          "width": 213,
+          "height": 120
+        },
+        {
+          "selector": ".lab-result",
+          "x": 18,
+          "y": 464,
+          "right": 102,
+          "bottom": 610,
+          "width": 84,
+          "height": 146
+        },
+        {
+          "selector": "#lab-play",
+          "x": 18,
+          "y": 619,
+          "right": 189.8125,
+          "bottom": 651,
+          "width": 171.8125,
+          "height": 32
+        },
+        {
+          "selector": "#lab-step",
+          "x": 198.8125,
+          "y": 619,
+          "right": 341.984375,
+          "bottom": 651,
+          "width": 143.171875,
+          "height": 32
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 18,
+          "y": 660,
+          "right": 342,
+          "bottom": 686,
+          "width": 324,
+          "height": 26
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 18,
+          "y": 695,
+          "right": 342,
+          "bottom": 790,
+          "width": 324,
+          "height": 95
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 27,
+          "y": 724,
+          "right": 333,
+          "bottom": 751,
+          "width": 306,
+          "height": 27
+        }
+      ]
+    },
+    {
+      "name": "手机追踪指引一屏",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 20,
+          "y": 113,
+          "right": 340,
+          "bottom": 273.640625,
+          "width": 320,
+          "height": 160.640625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 30,
+          "y": 233.640625,
+          "right": 330,
+          "bottom": 263.640625,
+          "width": 300,
+          "height": 30
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 30,
+          "y": 168,
+          "right": 330,
+          "bottom": 186,
+          "width": 300,
+          "height": 18
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 30,
+          "y": 189,
+          "right": 330,
+          "bottom": 207.140625,
+          "width": 300,
+          "height": 18.140625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 30,
+          "y": 210.140625,
+          "right": 330,
+          "bottom": 226.640625,
+          "width": 300,
+          "height": 16.5
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 20,
+          "y": 303.640625,
+          "right": 340,
+          "bottom": 422,
+          "width": 320,
+          "height": 118.359375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 122,
+          "y": 483,
+          "right": 335,
+          "bottom": 603,
+          "width": 213,
+          "height": 120
+        },
+        {
+          "selector": ".lab-result",
+          "x": 18,
+          "y": 464,
+          "right": 102,
+          "bottom": 610,
+          "width": 84,
+          "height": 146
+        },
+        {
+          "selector": "#lab-play",
+          "x": 18,
+          "y": 619,
+          "right": 189.8125,
+          "bottom": 651,
+          "width": 171.8125,
+          "height": 32
+        },
+        {
+          "selector": "#lab-step",
+          "x": 198.8125,
+          "y": 619,
+          "right": 341.984375,
+          "bottom": 651,
+          "width": 143.171875,
+          "height": 32
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 18,
+          "y": 660,
+          "right": 342,
+          "bottom": 686,
+          "width": 324,
+          "height": 26
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 18,
+          "y": 695,
+          "right": 342,
+          "bottom": 790,
+          "width": 324,
+          "height": 95
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 27,
+          "y": 724,
+          "right": 333,
+          "bottom": 751,
+          "width": 306,
+          "height": 27
+        }
+      ]
+    },
+    {
+      "name": "手机比较完成一屏",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 20,
+          "y": 113,
+          "right": 340,
+          "bottom": 273.640625,
+          "width": 320,
+          "height": 160.640625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 30,
+          "y": 233.640625,
+          "right": 330,
+          "bottom": 263.640625,
+          "width": 300,
+          "height": 30
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 30,
+          "y": 168,
+          "right": 330,
+          "bottom": 186,
+          "width": 300,
+          "height": 18
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 30,
+          "y": 189,
+          "right": 330,
+          "bottom": 207.140625,
+          "width": 300,
+          "height": 18.140625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 30,
+          "y": 210.140625,
+          "right": 330,
+          "bottom": 226.640625,
+          "width": 300,
+          "height": 16.5
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 20,
+          "y": 303.640625,
+          "right": 340,
+          "bottom": 422,
+          "width": 320,
+          "height": 118.359375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 122,
+          "y": 483,
+          "right": 335,
+          "bottom": 603,
+          "width": 213,
+          "height": 120
+        },
+        {
+          "selector": ".lab-result",
+          "x": 18,
+          "y": 464,
+          "right": 102,
+          "bottom": 610,
+          "width": 84,
+          "height": 146
+        },
+        {
+          "selector": "#lab-play",
+          "x": 18,
+          "y": 619,
+          "right": 189.8125,
+          "bottom": 651,
+          "width": 171.8125,
+          "height": 32
+        },
+        {
+          "selector": "#lab-step",
+          "x": 198.8125,
+          "y": 619,
+          "right": 341.984375,
+          "bottom": 651,
+          "width": 143.171875,
+          "height": 32
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 18,
+          "y": 660,
+          "right": 342,
+          "bottom": 686,
+          "width": 324,
+          "height": 26
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 18,
+          "y": 695,
+          "right": 342,
+          "bottom": 790,
+          "width": 324,
+          "height": 95
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 27,
+          "y": 724,
+          "right": 333,
+          "bottom": 751,
+          "width": 306,
+          "height": 27
+        }
+      ]
+    },
+    {
+      "name": "手机接线前说明一屏",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 20,
+          "y": 113,
+          "right": 340,
+          "bottom": 291.78125,
+          "width": 320,
+          "height": 178.78125
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 30,
+          "y": 251.78125,
+          "right": 330,
+          "bottom": 281.78125,
+          "width": 300,
+          "height": 30
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 30,
+          "y": 168,
+          "right": 330,
+          "bottom": 186,
+          "width": 300,
+          "height": 18
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 30,
+          "y": 189,
+          "right": 330,
+          "bottom": 225.28125,
+          "width": 300,
+          "height": 36.28125
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 30,
+          "y": 228.28125,
+          "right": 330,
+          "bottom": 244.78125,
+          "width": 300,
+          "height": 16.5
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 20,
+          "y": 321.78125,
+          "right": 340,
+          "bottom": 422,
+          "width": 320,
+          "height": 100.21875
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 122,
+          "y": 483,
+          "right": 335,
+          "bottom": 603,
+          "width": 213,
+          "height": 120
+        },
+        {
+          "selector": ".lab-result",
+          "x": 18,
+          "y": 464,
+          "right": 102,
+          "bottom": 610,
+          "width": 84,
+          "height": 146
+        },
+        {
+          "selector": "#lab-play",
+          "x": 18,
+          "y": 619,
+          "right": 189.8125,
+          "bottom": 651,
+          "width": 171.8125,
+          "height": 32
+        },
+        {
+          "selector": "#lab-step",
+          "x": 198.8125,
+          "y": 619,
+          "right": 341.984375,
+          "bottom": 651,
+          "width": 143.171875,
+          "height": 32
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 18,
+          "y": 660,
+          "right": 342,
+          "bottom": 686,
+          "width": 324,
+          "height": 26
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 18,
+          "y": 695,
+          "right": 342,
+          "bottom": 790,
+          "width": 324,
+          "height": 95
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 27,
+          "y": 724,
+          "right": 333,
+          "bottom": 751,
+          "width": 306,
+          "height": 27
+        }
+      ]
+    },
+    {
+      "name": "手机接线后说明一屏",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 20,
+          "y": 113,
+          "right": 340,
+          "bottom": 273.640625,
+          "width": 320,
+          "height": 160.640625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 30,
+          "y": 233.640625,
+          "right": 330,
+          "bottom": 263.640625,
+          "width": 300,
+          "height": 30
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 30,
+          "y": 168,
+          "right": 330,
+          "bottom": 186,
+          "width": 300,
+          "height": 18
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 30,
+          "y": 189,
+          "right": 330,
+          "bottom": 207.140625,
+          "width": 300,
+          "height": 18.140625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 30,
+          "y": 210.140625,
+          "right": 330,
+          "bottom": 226.640625,
+          "width": 300,
+          "height": 16.5
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 20,
+          "y": 303.640625,
+          "right": 340,
+          "bottom": 422,
+          "width": 320,
+          "height": 118.359375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 122,
+          "y": 483,
+          "right": 335,
+          "bottom": 603,
+          "width": 213,
+          "height": 120
+        },
+        {
+          "selector": ".lab-result",
+          "x": 18,
+          "y": 464,
+          "right": 102,
+          "bottom": 610,
+          "width": 84,
+          "height": 146
+        },
+        {
+          "selector": "#lab-play",
+          "x": 18,
+          "y": 619,
+          "right": 189.8125,
+          "bottom": 651,
+          "width": 171.8125,
+          "height": 32
+        },
+        {
+          "selector": "#lab-step",
+          "x": 198.8125,
+          "y": 619,
+          "right": 341.984375,
+          "bottom": 651,
+          "width": 143.171875,
+          "height": 32
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 18,
+          "y": 660,
+          "right": 342,
+          "bottom": 686,
+          "width": 324,
+          "height": 26
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 18,
+          "y": 695,
+          "right": 342,
+          "bottom": 790,
+          "width": 324,
+          "height": 95
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 27,
+          "y": 724,
+          "right": 333,
+          "bottom": 751,
+          "width": 306,
+          "height": 27
+        }
+      ]
+    },
+    {
+      "name": "手机教学完成一屏",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 20,
+          "y": 113,
+          "right": 340,
+          "bottom": 273.640625,
+          "width": 320,
+          "height": 160.640625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 30,
+          "y": 233.640625,
+          "right": 330,
+          "bottom": 263.640625,
+          "width": 300,
+          "height": 30
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 30,
+          "y": 168,
+          "right": 330,
+          "bottom": 186,
+          "width": 300,
+          "height": 18
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 30,
+          "y": 189,
+          "right": 330,
+          "bottom": 207.140625,
+          "width": 300,
+          "height": 18.140625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 30,
+          "y": 210.140625,
+          "right": 330,
+          "bottom": 226.640625,
+          "width": 300,
+          "height": 16.5
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 20,
+          "y": 303.640625,
+          "right": 340,
+          "bottom": 422,
+          "width": 320,
+          "height": 118.359375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 122,
+          "y": 483,
+          "right": 335,
+          "bottom": 603,
+          "width": 213,
+          "height": 120
+        },
+        {
+          "selector": ".lab-result",
+          "x": 18,
+          "y": 464,
+          "right": 102,
+          "bottom": 610,
+          "width": 84,
+          "height": 146
+        },
+        {
+          "selector": "#lab-play",
+          "x": 18,
+          "y": 619,
+          "right": 189.8125,
+          "bottom": 651,
+          "width": 171.8125,
+          "height": 32
+        },
+        {
+          "selector": "#lab-step",
+          "x": 198.8125,
+          "y": 619,
+          "right": 341.984375,
+          "bottom": 651,
+          "width": 143.171875,
+          "height": 32
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 18,
+          "y": 660,
+          "right": 342,
+          "bottom": 686,
+          "width": 324,
+          "height": 26
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 18,
+          "y": 695,
+          "right": 342,
+          "bottom": 790,
+          "width": 324,
+          "height": 95
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 27,
+          "y": 724,
+          "right": 333,
+          "bottom": 751,
+          "width": 306,
+          "height": 27
+        }
+      ]
+    },
+    {
+      "name": "390×844输入指引一屏",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "scrollHeight": 844,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 21.5,
+          "y": 113,
+          "right": 368.5,
+          "bottom": 273.640625,
+          "width": 347,
+          "height": 160.640625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 31.5,
+          "y": 233.640625,
+          "right": 358.5,
+          "bottom": 263.640625,
+          "width": 327,
+          "height": 30
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 31.5,
+          "y": 168,
+          "right": 358.5,
+          "bottom": 186,
+          "width": 327,
+          "height": 18
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 31.5,
+          "y": 189,
+          "right": 358.5,
+          "bottom": 207.140625,
+          "width": 327,
+          "height": 18.140625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 31.5,
+          "y": 210.140625,
+          "right": 358.5,
+          "bottom": 226.640625,
+          "width": 327,
+          "height": 16.5
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 21.5,
+          "y": 303.640625,
+          "right": 368.5,
+          "bottom": 466,
+          "width": 347,
+          "height": 162.359375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 123.5,
+          "y": 527,
+          "right": 363.5,
+          "bottom": 647,
+          "width": 240,
+          "height": 120
+        },
+        {
+          "selector": ".lab-result",
+          "x": 19.5,
+          "y": 508,
+          "right": 103.5,
+          "bottom": 654,
+          "width": 84,
+          "height": 146
+        },
+        {
+          "selector": "#lab-play",
+          "x": 19.5,
+          "y": 663,
+          "right": 206.03125,
+          "bottom": 695,
+          "width": 186.53125,
+          "height": 32
+        },
+        {
+          "selector": "#lab-step",
+          "x": 215.03125,
+          "y": 663,
+          "right": 370.5,
+          "bottom": 695,
+          "width": 155.46875,
+          "height": 32
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 19.5,
+          "y": 704,
+          "right": 370.5,
+          "bottom": 730,
+          "width": 351,
+          "height": 26
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 19.5,
+          "y": 739,
+          "right": 370.5,
+          "bottom": 834,
+          "width": 351,
+          "height": 95
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 28.5,
+          "y": 768,
+          "right": 361.5,
+          "bottom": 795,
+          "width": 333,
+          "height": 27
+        }
+      ]
+    },
+    {
+      "name": "生产构建1366×768一屏",
+      "width": 1366,
+      "height": 768,
+      "scrollWidth": 1366,
+      "scrollHeight": 768,
+      "regions": [
+        {
+          "selector": "#lab-walkthrough",
+          "x": 56.625,
+          "y": 144,
+          "right": 973.375,
+          "bottom": 290.390625,
+          "width": 916.75,
+          "height": 146.390625
+        },
+        {
+          "selector": "#lab-walkthrough-action",
+          "x": 870.859375,
+          "y": 225.1875,
+          "right": 957.375,
+          "bottom": 264.1875,
+          "width": 86.515625,
+          "height": 39
+        },
+        {
+          "selector": "#lab-walkthrough-title",
+          "x": 72.625,
+          "y": 212,
+          "right": 320.703125,
+          "bottom": 233,
+          "width": 248.078125,
+          "height": 21
+        },
+        {
+          "selector": "#lab-walkthrough-do",
+          "x": 72.625,
+          "y": 238,
+          "right": 320.703125,
+          "bottom": 258.390625,
+          "width": 248.078125,
+          "height": 20.390625
+        },
+        {
+          "selector": "#lab-walkthrough-observe",
+          "x": 72.625,
+          "y": 260.390625,
+          "right": 320.703125,
+          "bottom": 277.390625,
+          "width": 248.078125,
+          "height": 17
+        },
+        {
+          "selector": "#lab-canvas",
+          "x": 56.625,
+          "y": 325.390625,
+          "right": 973.375,
+          "bottom": 591,
+          "width": 916.75,
+          "height": 265.609375
+        },
+        {
+          "selector": "#lab-keyboard",
+          "x": 1018.375,
+          "y": 369.140625,
+          "right": 1300.375,
+          "bottom": 478.140625,
+          "width": 282,
+          "height": 109
+        },
+        {
+          "selector": ".lab-result",
+          "x": 1007.375,
+          "y": 171.84375,
+          "right": 1311.375,
+          "bottom": 326.140625,
+          "width": 304,
+          "height": 154.296875
+        },
+        {
+          "selector": "#lab-play",
+          "x": 1007.375,
+          "y": 506.140625,
+          "right": 1167.734375,
+          "bottom": 542.140625,
+          "width": 160.359375,
+          "height": 36
+        },
+        {
+          "selector": "#lab-step",
+          "x": 1177.734375,
+          "y": 506.140625,
+          "right": 1311.375,
+          "bottom": 542.140625,
+          "width": 133.640625,
+          "height": 36
+        },
+        {
+          "selector": "#lab-settings-open",
+          "x": 1007.375,
+          "y": 558.140625,
+          "right": 1311.375,
+          "bottom": 597.140625,
+          "width": 304,
+          "height": 39
+        },
+        {
+          "selector": ".lab-trace",
+          "x": 54.625,
+          "y": 641,
+          "right": 1311.375,
+          "bottom": 752,
+          "width": 1256.75,
+          "height": 111
+        },
+        {
+          "selector": "#lab-trace-stages",
+          "x": 67.625,
+          "y": 679,
+          "right": 1298.375,
+          "bottom": 713,
+          "width": 1230.75,
+          "height": 34
+        }
+      ]
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "requestFailures": [],
+  "limitations": [
+    "手机是 Chromium 触摸模拟；未验收物理手机、Safari 或 Firefox。",
+    "高度不足 560 CSS px 继续使用已有的自然滚动回退。",
+    "最终视图提示修改后等待新构建就绪再复测；旧脚本上的一次无效断言保留在 invalidatedRuns。"
+  ]
+}

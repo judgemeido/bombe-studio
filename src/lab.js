@@ -4,6 +4,7 @@ import { createLabModel } from './lab-model.js';
 import { ALPHABET, ROTORS, letter, pressKey, traceLetter } from './cipher.js';
 
 import template from './lab-template.js';
+import { createWalkthrough } from './lab-walkthrough.js';
 
 export async function createLab(container, { motion, progress }) {
   container.innerHTML = template;
@@ -12,6 +13,18 @@ export async function createLab(container, { motion, progress }) {
   let active = false, disposed = false, stage = null, model = null, raf, previous = performance.now(), visibleStage = -2, contextLost = false, pendingPort = null;
   const on = (el, name, handler, options) => { el.addEventListener(name, handler, options); cleanups.push(() => el.removeEventListener(name, handler, options)); };
   const announce = value => { $('#lab-status').textContent = value; };
+  const walkthrough = createWalkthrough(container, on, {
+    prepare() {
+      reset({ keepGuide: true });
+      if (state.topic === 'wiring') $('.lab-topic-tabs [data-topic="drums"]').click();
+      $('#lab-keyboard [data-letter="A"]').focus({ preventScroll: true });
+    },
+    input, step,
+    fullCircuit() { $('.lab-topic-tabs [data-topic="drums"]').click(); },
+    finish() { state.progress = 9; state.playing = false; syncProgress(); },
+    prepareWiring() { reset({ keepGuide: true }); $('#lab-plug-a').value = 'A'; $('#lab-plug-b').value = 'C'; openSettings(); $('#lab-plug-b').focus({ preventScroll: true }); },
+    openSettings,
+  });
   function openDialog(dialog) { state.playing = false; syncProgress(); dialog.showModal(); }
   function openSettings(index) {
     if (!$('#lab-settings').open) openDialog($('#lab-settings'));
@@ -72,7 +85,8 @@ export async function createLab(container, { motion, progress }) {
     $('#lab-play').setAttribute('aria-pressed', String(state.playing));
     $('#lab-signal-progress').value = Math.max(0, state.progress);
     $('#lab-output').textContent = finished ? state.trace.output : '—';
-    $('#lab-result-state').textContent = !state.trace ? '按 A，开始实验' : finished ? '回路完成' : state.playing ? '信号经过中' : '逐段观察';
+    $('#lab-result-state').textContent = !state.trace ? walkthrough.state.enabled && walkthrough.state.step === 0 ? '先点击“准备实验”' : '按 A，开始实验' : finished ? '回路完成' : state.playing ? '信号经过中' : '逐段观察';
+    walkthrough.sync({ progress: state.progress, trace: state.trace, topic: state.topic });
     if (visibleStage === current) return; visibleStage = current;
     $('#lab-trace-stages').querySelectorAll('button').forEach((button, i) => { button.classList.toggle('is-current', i === current); button.classList.toggle('is-complete', i < current); button.setAttribute('aria-pressed', String(i === current)); });
     $('#lab-stage-number').textContent = current < 0 ? '—' : String(current + 1).padStart(2, '0');
@@ -83,24 +97,26 @@ export async function createLab(container, { motion, progress }) {
     const explanation = pass.id.startsWith('plug') ? pass.input === pass.output ? '这个字母没有连接跳线，保持原样通过。' : '跳线交换这一对字母，反向进入也会成对交换。' : pass.id === 'reflector' ? '反射器将信号送回，接下来按相反方向通过三只鼓轮。' : `在轮位 ${letter(state.positions[pass.rotor])}，沿${pass.reverse ? '反向' : '正向'}内部接线找到另一个触点。`;
     $('#lab-stage-description').textContent = `${pass.name}：${pair}。${explanation}`;
   }
-  function invalidate(message) {
+  function invalidate(message, keepGuide = false) {
     state.trace = null; state.progress = -1; state.playing = false; state.history = []; state.exercise = false; pendingPort = null;
     $('#lab-keyboard').querySelectorAll('button').forEach(button => button.classList.remove('is-key-active'));
     $('#lab-quick-note').textContent = '按键先转位，回放不转位。'; $('#lab-quick-note').classList.remove('is-task-active');
+    walkthrough.invalidate(keepGuide, message);
     model?.setTrace(null); configure(); syncTrace(); announce(message);
   }
   function input(char) {
     const result = pressKey(char, state.positions, state.pairs); state.positions = result.positions; state.trace = result;
     state.progress = motion.matches ? 9 : -.65; state.playing = !motion.matches;
+    if (walkthrough.input(char, result.output)) { state.progress = 1; state.playing = false; }
     state.history.push({ input: char, output: result.output }); state.history = state.history.slice(-24);
     model?.setTrace(result); configure(); syncTrace();
     $('#lab-keyboard').querySelectorAll('button').forEach(button => button.classList.toggle('is-key-active', button.dataset.letter === char));
     if (state.exercise) {
       const first = state.history.slice(0, 2);
       $('#lab-exercise-result').textContent = first.some(r => r.input !== 'A') ? '这次按了其他字母。重新准备后，连续按两次 A 再比较。' : first.length === 1 ? `第一次 A → ${first[0].output}，快轮转到 B。再按一次 A。` : `观察完成：A → ${first[0].output}，A → ${first[1].output}。快轮从 B 转到 C，电路映射随之改变。`;
-      $('#lab-quick-note').textContent = first.some(r => r.input !== 'A') ? '请从教学指南重新准备，连续按两次 A。' : first.length === 1 ? `A → ${first[0].output}。再按一次 A，比较输出。` : `A → ${first[0].output}，A → ${first[1].output}。轮位改变了映射。`;
+      $('#lab-quick-note').textContent = first.some(r => r.input !== 'A') ? '请从完整指引的“转位”重新准备，连续按两次 A。' : first.length === 1 ? `A → ${first[0].output}。再按一次 A，比较输出。` : `A → ${first[0].output}，A → ${first[1].output}。轮位改变了映射。`;
     }
-    announce(`输入 ${char}，轮位变为 ${state.positions.map(letter).join('')}。${motion.matches ? '输出 ' + result.output : '信号演示开始。'}`);
+    announce(`输入 ${char}，轮位变为 ${state.positions.map(letter).join('')}。${state.progress >= 9 ? '输出 ' + result.output : state.playing ? '信号演示开始。' : '信号停在第 1 段，点击下一段逐步观察。'}`);
   }
   function play() {
     if (!state.trace) return;
@@ -111,15 +127,16 @@ export async function createLab(container, { motion, progress }) {
   function step() { if (!state.trace) return; state.playing = false; state.progress = Math.min(9, Math.max(0, Math.floor(state.progress)) + 1); syncProgress(); }
   function connect(a, b) {
     if (a === b) { $('#lab-wire-status').textContent = '请选择两个不同的字母端点。'; return; }
-    state.pairs = [[a, b]]; $('#lab-plug-a').value = a; $('#lab-plug-b').value = b; model?.setConnection(state.pairs[0]); invalidate(`已接入 ${a} 与 ${b}。`);
+    const keepGuide = walkthrough.connection(a, b, state.positions);
+    state.pairs = [[a, b]]; $('#lab-plug-a').value = a; $('#lab-plug-b').value = b; model?.setConnection(state.pairs[0]); invalidate(`已接入 ${a} 与 ${b}。`, keepGuide);
     if (state.topic === 'wiring') $('#lab-view-hint').textContent = `${a} ↔ ${b} 已接入 · 点击两个插孔可更换`;
   }
-  function reset() {
+  function reset({ keepGuide = false } = {}) {
     state.positions = [0, 0, 0]; state.pairs = []; $('#lab-plug-a').value = 'A'; $('#lab-plug-b').value = 'B';
     model?.setConnection(null); model?.setPositions(state.positions, true); model?.setSpread(0); $('#lab-spread').value = 0; $('#lab-spread-value').textContent = '0%';
     $('#lab-spread').style.setProperty('--range-progress', '0%');
     $('#lab-view-hint').textContent = state.topic === 'wiring' ? '点击两个插孔接线 · 端点菜单在“轮位与接线”中' : '拖动观察 · 点击鼓轮调整轮位';
-    invalidate('已复位至 AAA，无接线。');
+    invalidate('已复位至 AAA，无接线。', keepGuide);
     $('#lab-exercise-result').textContent = '目标：记录 A → ?，再记录 A → ?。'; state.follow = true; frameCamera();
   }
   function verify() {
@@ -134,7 +151,7 @@ export async function createLab(container, { motion, progress }) {
   on($('#lab-trace-stages'), 'click', event => { const button = event.target.closest('[data-trace-stage]'); if (!button || !state.trace) return; state.playing = false; state.progress = Number(button.dataset.traceStage) + 1; syncProgress(); });
   on($('#lab-verify'), 'click', verify);
   on($('#lab-exercise-start'), 'click', () => {
-    reset(); state.exercise = true; $('#lab-exercise-result').textContent = '已准备：轮位 AAA，无接线。请连续按两次 A。';
+    reset(); walkthrough.free(); state.exercise = true; $('#lab-exercise-result').textContent = '已准备：轮位 AAA，无接线。请连续按两次 A。';
     $('#lab-quick-note').textContent = '已准备 AAA。连续按两次 A，比较输出。'; $('#lab-quick-note').classList.add('is-task-active');
     $('#lab-guide').close(); $('#lab-keyboard [data-letter="A"]').focus({ preventScroll: true });
   });
@@ -194,7 +211,7 @@ export async function createLab(container, { motion, progress }) {
     raf = requestAnimationFrame(frame);
   }
   configure(); syncTrace(); raf = requestAnimationFrame(frame);
-  window.__BOMBE_LAB__ = () => ({ active, topic: state.topic, positions: [...state.positions], pairs: state.pairs.map(p => [...p]), input: state.trace?.input || null, output: state.trace?.output || null, progress: state.progress, playing: state.playing, history: state.history.map(r => ({ ...r })), ready: Boolean(model && stage), reducedMotion: motion.matches, calls: stage?.renderer.info.render.calls, triangles: stage?.renderer.info.render.triangles, geometries: stage?.renderer.info.memory.geometries, textures: stage?.renderer.info.memory.textures, camera: stage?.camera.position.toArray(), contextLost });
+  window.__BOMBE_LAB__ = () => ({ active, topic: state.topic, positions: [...state.positions], pairs: state.pairs.map(p => [...p]), input: state.trace?.input || null, output: state.trace?.output || null, progress: state.progress, playing: state.playing, history: state.history.map(r => ({ ...r })), walkthrough: walkthrough.state, ready: Boolean(model && stage), reducedMotion: motion.matches, calls: stage?.renderer.info.render.calls, triangles: stage?.renderer.info.render.triangles, geometries: stage?.renderer.info.memory.geometries, textures: stage?.renderer.info.memory.textures, camera: stage?.camera.position.toArray(), contextLost });
   return {
     setActive(value) { active = value; if (value && stage) { stage.resize(); state.follow = true; frameCamera(true); } },
     setTopic(value) {
@@ -202,6 +219,7 @@ export async function createLab(container, { motion, progress }) {
       container.querySelectorAll('.lab-topic-tabs a').forEach(a => a.setAttribute('aria-current', String(a.dataset.topic === state.topic)));
       $('#lab-view-hint').textContent = state.topic === 'wiring' ? '点击两个插孔接线 · 端点菜单在“轮位与接线”中' : '拖动观察 · 点击鼓轮调整轮位';
       $('#lab-spread').disabled = state.topic === 'wiring' || !model; state.follow = true; stage?.resize(); frameCamera();
+      syncProgress();
     },
     dispose() { disposed = true; cancelAnimationFrame(raf); cleanups.forEach(remove => remove()); model?.dispose(); stage?.dispose(); delete window.__BOMBE_LAB__; },
   };
