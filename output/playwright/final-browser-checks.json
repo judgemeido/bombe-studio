@@ -1,0 +1,143 @@
+{
+  "qa": [
+    {
+      "name": "reduced motion immediate explosion",
+      "pass": true
+    },
+    {
+      "name": "reduced motion step",
+      "pass": true
+    },
+    {
+      "name": "reduced motion immediate camera",
+      "pass": true
+    },
+    {
+      "name": "step does not auto-run",
+      "pass": true
+    },
+    {
+      "name": "mobile tap selection",
+      "pass": true
+    },
+    {
+      "name": "mobile archive opens",
+      "pass": true
+    },
+    {
+      "name": "mobile no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "rapid transitions restore assembly",
+      "pass": true
+    },
+    {
+      "name": "camera reset after interrupted views",
+      "pass": true
+    },
+    {
+      "name": "static release ready",
+      "pass": true
+    },
+    {
+      "name": "compact desktop note stays above controls",
+      "pass": true,
+      "data": {
+        "width": 1366,
+        "scrollWidth": 1366,
+        "heroBottom": 611,
+        "cardBottom": 599,
+        "actions": {
+          "x": 1038.375,
+          "y": 646.5,
+          "width": 273,
+          "height": 48,
+          "top": 646.5,
+          "right": 1311.375,
+          "bottom": 694.5,
+          "left": 1038.375
+        }
+      }
+    },
+    {
+      "name": "compact primary controls visible",
+      "pass": true,
+      "data": {
+        "width": 1366,
+        "scrollWidth": 1366,
+        "heroBottom": 611,
+        "cardBottom": 599,
+        "actions": {
+          "x": 1038.375,
+          "y": 646.5,
+          "width": 273,
+          "height": 48,
+          "top": 646.5,
+          "right": 1311.375,
+          "bottom": 694.5,
+          "left": 1038.375
+        }
+      }
+    },
+    {
+      "name": "360px layout no horizontal overflow",
+      "pass": true,
+      "data": {
+        "w": 360,
+        "sw": 360,
+        "hero": {
+          "x": 12.09375,
+          "y": 318.390625,
+          "width": 335.8125,
+          "height": 390,
+          "top": 318.390625,
+          "right": 347.90625,
+          "bottom": 708.390625,
+          "left": 12.09375
+        },
+        "actions": {
+          "x": 21.59375,
+          "y": 729.390625,
+          "width": 316.8125,
+          "height": 64,
+          "top": 729.390625,
+          "right": 338.40625,
+          "bottom": 793.390625,
+          "left": 21.59375
+        }
+      }
+    },
+    {
+      "name": "actual ray pick changes frame to drums",
+      "pass": true
+    },
+    {
+      "name": "mobile sticky close button reachable",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "mobileErrors": [],
+  "diagnostics": {
+    "target": 0,
+    "progress": 0,
+    "running": false,
+    "selected": "drums",
+    "view": "three-quarter",
+    "phase": 0,
+    "drums": 108,
+    "reducedMotion": false,
+    "calls": 34,
+    "triangles": 268528,
+    "geometries": 34,
+    "textures": 6,
+    "camera": [
+      9.200000000000001,
+      6.599999999999998,
+      16.5
+    ],
+    "ready": true,
+    "contextLost": false
+  }
+}

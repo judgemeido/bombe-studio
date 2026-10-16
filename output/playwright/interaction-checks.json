@@ -1,0 +1,46 @@
+{
+  "explorationSeconds": 31.994,
+  "cycles": 18,
+  "errors": [],
+  "mobileErrors": [],
+  "qa": {
+    "items": [
+      {
+        "name": "reduced motion immediate explosion",
+        "pass": true
+      },
+      {
+        "name": "reduced motion step",
+        "pass": true
+      },
+      {
+        "name": "reduced motion immediate camera",
+        "pass": true
+      },
+      {
+        "name": "step does not auto-run",
+        "pass": true
+      },
+      {
+        "name": "mobile tap selection",
+        "pass": true
+      },
+      {
+        "name": "mobile archive opens",
+        "pass": true
+      },
+      {
+        "name": "mobile no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "rapid transitions restore assembly",
+        "pass": true
+      },
+      {
+        "name": "camera reset after interrupted views",
+        "pass": true
+      }
+    ]
+  }
+}

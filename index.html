@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eeede5"><meta name="description" content="拆开 Turing–Welchman Bombe：一个可旋转、可拆解的二战破译机 3D 交互展品。">
+  <title>BOMBE · 译码档案 | 交互机械展</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232b4035'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23eee9d8' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23ba5e3e'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css"><script defer src="dist/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#controls">跳至展品控制</a>
+  <svg class="icon-library" aria-hidden="true"><defs>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 19 19 5M5 5h14v14"/></symbol>
+    <symbol id="reset-icon" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
+    <symbol id="play-icon" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+    <symbol id="cube" viewBox="0 0 24 24"><path d="m12 3 9 5v8l-9 5-9-5V8Zm0 9v9M3 8l9 5 9-5M7 5.8l9 5.4"/></symbol>
+    <symbol id="expand-icon" viewBox="0 0 24 24"><path d="m3 8 9-5 9 5-9 5Zm0 5 9 5 9-5M3 18l9 5 9-5"/></symbol>
+    <symbol id="drag" viewBox="0 0 24 24"><path d="M8 11V5a2 2 0 0 1 4 0v6-7a2 2 0 0 1 4 0v8-4a2 2 0 0 1 4 0v7c0 4-2 6-6 6h-2c-2 0-3-1-4-2l-5-6a2 2 0 0 1 3-2l2 2"/></symbol>
+  </defs></svg>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="译码档案首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>译码档案<small>DECODED ARCHIVE</small></span></a>
+    <div class="header-center"><span class="live-dot"></span> 机械的记忆，逻辑的形状。</div>
+    <nav aria-label="展馆导航"><span class="edition">交互藏品 <b>001</b></span><button id="archive-open" class="text-button">展品档案 <svg><use href="#arrow"/></svg></button></nav>
+  </header>
+
+  <main>
+    <section class="exhibit" aria-label="Bombe 三维交互展品">
+      <div class="intro">
+        <div class="eyebrow"><span>英国 · 布莱切利园</span><span class="date">1940 — 1945</span></div>
+        <h1>The<br><em>Bombe.</em><span class="title-dot">✳</span></h1>
+        <p class="byline">TURING–WELCHMAN</p>
+        <h2>拆开机器，看见逻辑。</h2>
+        <p class="intro-copy">当逻辑成为齿轮，推理开始旋转。<br>走近二战时期的机电破译机，<br>看见藏在钢铁与接线之间的智慧。</p>
+        <button class="archive-link" id="story-open">读懂它的故事 <span>↗</span></button>
+
+        <article class="part-card" aria-live="polite" aria-atomic="true">
+          <div class="part-kicker"><span><i id="part-swatch"></i>结构笔记</span><span><b id="part-number">02</b> / 05</span></div>
+          <h3 id="part-name">鼓轮阵列</h3><span class="part-english" id="part-english">THE DRUMS</span>
+          <p id="part-description"></p>
+          <div class="part-note"><span aria-hidden="true">↳</span><span id="part-note"></span></div>
+        </article>
+      </div>
+
+      <div class="viewer" id="viewer">
+        <div class="viewer-grid" aria-hidden="true"></div>
+        <div class="viewer-top"><span class="view-label"><i></i><span id="view-label">装配视图</span><span class="view-no"> / 01</span></span><div class="view-options" role="group" aria-label="相机视角"><button data-view="front" aria-pressed="false">正面</button><button data-view="three-quarter" aria-pressed="true">斜视</button><button data-view="back" aria-pressed="false">背面</button></div></div>
+        <div class="background-type" aria-hidden="true">B–01</div>
+        <canvas id="scene" aria-label="Bombe 破译机三维模型，可拖动旋转、滚轮缩放，也可使用下方按钮操作" tabindex="0"></canvas>
+        <div class="loading" id="loading"><span></span>正在布置展品…</div>
+        <div class="error-state" id="error-state" hidden><h3>暂时无法打开三维展品</h3><p>浏览器未能初始化 WebGL。你仍可使用部件目录与展品档案阅读结构说明。</p></div>
+        <button id="hotspot" class="hotspot" aria-label="查看鼓轮阵列"><span id="hotspot-number">02</span><span id="hotspot-label">鼓轮阵列</span></button>
+        <div class="viewer-tools" role="group" aria-label="视图工具"><button id="zoom-in" aria-label="放大模型">+</button><button id="zoom-out" aria-label="缩小模型">−</button><span></span><button id="reset" aria-label="重置全部状态" title="重置（R）"><svg><use href="#reset-icon"/></svg></button></div>
+        <div class="viewer-bottom"><span class="gesture"><svg><use href="#drag"/></svg>拖动旋转 <i>·</i> 滚轮缩放 <i>·</i> 点击部件</span><span class="render-badge"><span></span>实时 3D</span></div>
+        <div class="simulation" id="simulation" hidden><span class="live-dot"></span><span>示意转位</span><b id="rotor-readout">A A A</b><small>非实际密码运算</small></div>
+      </div>
+    </section>
+
+    <section class="console" id="controls" aria-label="拆解与运转控制">
+      <div class="parts-section"><div class="control-caption"><span>结构目录</span><span>选择一个部件探索</span></div><div class="parts-list" role="group" aria-label="选择部件">
+        <button data-part="frame" aria-pressed="false"><span>01</span>机架</button><button data-part="drums" aria-pressed="true"><span>02</span>鼓轮</button><button data-part="drive" aria-pressed="false"><span>03</span>传动</button><button data-part="board" aria-pressed="false"><span>04</span>接线</button><button data-part="motor" aria-pressed="false"><span>05</span>电机</button>
+      </div></div>
+      <div class="explode-section"><div class="control-caption"><label for="explode-range">拆解程度</label><output id="explode-output" for="explode-range">000%</output></div><div class="range-row"><svg><use href="#cube"/></svg><input id="explode-range" type="range" min="0" max="100" value="0" aria-valuetext="完整装配，0%"><svg><use href="#expand-icon"/></svg></div></div>
+      <div class="action-section"><button class="primary-button" id="explode" aria-pressed="false"><svg><use href="#expand-icon"/></svg><span id="explode-label">拆解机器</span><span class="key">E</span></button><button class="run-button" id="run" aria-pressed="false"><svg><use href="#play-icon"/></svg><span id="run-label">运转演示</span></button></div>
+    </section>
+
+    <footer class="site-footer"><span>以结构理解历史<span class="footer-divider">/</span>教学性三维重建</span><div><span>THREE BANKS.</span><span>108 DRUMS.</span><span>ONE IDEA.</span></div><button id="help-open">操作指南 <span>?</span></button></footer>
+    <p class="sr-only" role="status" id="status">展品正在加载</p>
+  </main>
+
+  <dialog id="archive-dialog" aria-labelledby="archive-title">
+    <div class="dialog-top"><span class="eyebrow">ARCHIVE / 001</span><button class="dialog-close" data-close aria-label="关闭展品档案">×</button></div>
+    <h2 id="archive-title">让逻辑，<br><em>成为一台机器。</em></h2>
+    <p class="dialog-lead">Bombe 是二战时期帮助寻找 Enigma 密钥设置的机电设备。本展页中的对象是 Turing–Welchman Bombe；“图灵机”在计算理论中另有所指。</p>
+    <div class="timeline"><article><span>1939</span><div><h3>从线索到机械</h3><p>在波兰密码学家先行工作的基础上，图灵发展了基于推测明文（crib）的 Bombe 方案。英国 BTM 公司承担工程制造。</p></div></article><article><span>1940</span><div><h3>从推理到电路</h3><p>第一台 Bombe“Victory”在这一年投入使用。Welchman 提出的对角板进一步减少了无效停机，改进型“Agnes”于同年 8 月运行。</p></div></article><article><span>机电协作</span><div><h3>一次停机，还不是答案</h3><p>鼓轮搜索转子位置，接线表达线索中的逻辑关系。机器找到的候选设置，需要检查机和操作人员继续验证。</p></div></article></div>
+    <div class="reconstruction-note"><h3>关于这个重建</h3><p>保留三组、九行、十二列的鼓轮特征，按功能分为五个可拆解系统。尺寸、颜色、布线、齿轮和电机为程序化示意，拆解路径为观察内部而设计。这里不复刻原机的密码分析电路，也不作为制造图纸。</p></div>
+    <div class="source-links"><span>史料与延伸阅读</span><a href="https://www.tnmoc.org/bombe" target="_blank" rel="noopener noreferrer">The National Museum of Computing ↗</a><a href="https://www.cryptomuseum.com/crypto/bombe/" target="_blank" rel="noopener noreferrer">Crypto Museum · Bombe ↗</a><a href="https://www.rutherfordjournal.org/article030108.html" target="_blank" rel="noopener noreferrer">The Rutherford Journal · The Turing Bombe ↗</a></div>
+  </dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-top"><span class="eyebrow">VISITOR GUIDE</span><button class="dialog-close" data-close aria-label="关闭操作指南">×</button></div><h2 id="help-title">亲手，拆开看看。</h2><ul class="help-list"><li><b>观察</b><span>拖动模型旋转，滚轮或 + / − 缩放。使用正面、斜视、背面按钮切换视角。</span></li><li><b>拆解</b><span>点击“拆解机器”或拖动滑杆。点击部件目录、模型或编号标签查看说明。</span></li><li><b>运转</b><span>启动鼓轮示意动画，再次点击可暂停。系统减少动态效果时，使用逐步转位。</span></li><li><b>键盘</b><span><kbd>E</kbd> 拆解 / 合拢　<kbd>空格</kbd> 运转 / 暂停　<kbd>R</kbd> 重置。滑杆支持方向键，所有控件均可 Tab 访问。</span></li></ul><p class="guide-note">展示基于 Bombe 历史结构制作，运转画面只表达机械关系。</p></dialog>
+</body>
+</html>
