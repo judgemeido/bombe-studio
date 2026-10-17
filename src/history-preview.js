@@ -1,3 +1,5 @@
+import { createHistoryScenes } from './history-scenes.js';
+
 const STATUS_TEXT = {
   loading: '正在载入档案影像，正文与跳过入口可直接使用。',
   ready: '档案影像已就绪。',
@@ -12,8 +14,7 @@ export function createHistoryPreview(root, { image, motion, timeoutMs = 3000 }) 
   let settled = false;
   let timer;
 
-  // Scene motion is intentionally left to CSS progressive enhancement. No text
-  // is hidden, and no observer or animation is required (including reduced motion).
+  // Preserve the loader API; the separate scene controller owns motion enhancement.
   void motion;
 
   function update(state) {
@@ -82,10 +83,18 @@ if (typeof document !== 'undefined') {
 
     function mount() {
       if (controller) return;
-      controller = createHistoryPreview(root, {
+      const motion = view?.matchMedia?.('(prefers-reduced-motion: reduce)');
+      const preview = createHistoryPreview(root, {
         image: root.querySelector('[data-history-image]'),
-        motion: view?.matchMedia?.('(prefers-reduced-motion: reduce)'),
+        motion,
       });
+      const scenes = createHistoryScenes(root, { motion });
+      controller = {
+        destroy() {
+          preview.destroy();
+          scenes.destroy();
+        },
+      };
     }
 
     function onPageHide(event) {

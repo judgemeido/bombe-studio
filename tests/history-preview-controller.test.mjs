@@ -333,3 +333,61 @@ for (const outcome of ['resolve', 'timeout']) {
     assert.equal(attempts.length, 4, 'non-persisted departure disposes auto lifecycle');
   });
 }
+
+test('auto lifecycle coordinates scenes and image loader exactly once across bfcache restores', async t => {
+  const window = await withDocument(t, `<main data-history-preview>
+    <p data-load-status>可读</p><img data-history-image>
+    <nav aria-label="历史章节"><a data-scene-link href="#lifeline">海运</a><a data-scene-link href="#intercept">截获</a></nav>
+    <article data-history-scene id="lifeline">正文</article><article data-history-scene id="intercept">正文</article></main>`);
+  const root = window.document.querySelector('main');
+  const scenes = [...root.querySelectorAll('[data-history-scene]')];
+  const observers = [];
+  window.IntersectionObserver = class {
+    constructor(callback) { this.callback = callback; this.targets = []; observers.push(this); }
+    observe(target) { this.targets.push(target); }
+    disconnect() { this.disconnected = true; }
+  };
+  const motionListeners = new Set();
+  let queries = 0;
+  window.matchMedia = () => {
+    queries++;
+    return { matches: false, addEventListener: (_, fn) => motionListeners.add(fn), removeEventListener: (_, fn) => motionListeners.delete(fn) };
+  };
+  const attempts = [];
+  root.querySelector('img').decode = () => { const attempt = deferred(); attempts.push(attempt); return attempt.promise; };
+  await import('../src/history-preview.js?auto-scenes-lifecycle');
+  assert.equal(observers.length, 1, 'auto mount must create a scene observer');
+  assert.equal(attempts.length, 1);
+  assert.equal(queries, 1, 'one shared motion preference per mount');
+  for (let cycle = 0; cycle < 3; cycle++) {
+    const old = observers.at(-1);
+    assert.deepEqual(old.targets, scenes);
+    assert.equal(motionListeners.size, 1);
+    old.callback([{ target: scenes[0], isIntersecting: true, time: 1 }]);
+    assert.equal(scenes[0].classList.contains('is-current'), true);
+    pageTransition(window, 'pagehide', true);
+    assert.equal(old.disconnected, true);
+    assert.equal(motionListeners.size, 0);
+    assert.equal(root.classList.contains('history-enhanced'), false);
+    const snapshot = root.outerHTML;
+    old.callback([{ target: scenes[1], isIntersecting: true, time: 2 }]);
+    attempts[cycle].resolve(); await flush();
+    assert.equal(root.outerHTML, snapshot);
+    pageTransition(window, 'pageshow', false);
+    assert.equal(observers.length, cycle + 1);
+    pageTransition(window, 'pageshow', true);
+    pageTransition(window, 'pageshow', true);
+    assert.equal(observers.length, cycle + 2);
+    assert.equal(attempts.length, cycle + 2);
+    assert.equal(queries, cycle + 2);
+    old.callback([{ target: scenes[1], isIntersecting: true, time: 3 }]);
+    assert.equal(root.querySelectorAll('.is-current').length, 0, 'old callbacks cannot mutate a restored instance');
+  }
+  attempts.at(-1).resolve(); await flush();
+  assert.equal(state(root), 'ready');
+  pageTransition(window, 'pagehide', false);
+  assert.equal(observers.at(-1).disconnected, true);
+  assert.equal(motionListeners.size, 0);
+  pageTransition(window, 'pageshow', true);
+  assert.equal(observers.length, 4, 'final departure disposes both auto controllers');
+});
