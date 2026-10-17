@@ -1,0 +1,252 @@
+{
+  "checkedAt": "2026-10-17T10:55:29.360Z",
+  "method": "WCAG sRGB relative-luminance calculation over explicit static CSS palette; not computed browser styles or a full accessibility audit",
+  "palette": {
+    "sea": "#142633",
+    "paper": "#E4E7E2",
+    "green": "#52614D",
+    "brass": "#B69A67"
+  },
+  "pairs": [
+    {
+      "foreground": "#E4E7E2",
+      "background": "#142633",
+      "ratio": 12.421,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#b8c4ca",
+      "background": "#142633",
+      "ratio": 8.7,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#B69A67",
+      "background": "#142633",
+      "ratio": 5.763,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#E4E7E2",
+      "background": "#10212c",
+      "ratio": 13.188,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#b8c4ca",
+      "background": "#10212c",
+      "ratio": 9.238,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#B69A67",
+      "background": "#10212c",
+      "ratio": 6.119,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#E4E7E2",
+      "background": "#192a30",
+      "ratio": 11.89,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#b8c4ca",
+      "background": "#192a30",
+      "ratio": 8.329,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#B69A67",
+      "background": "#192a30",
+      "ratio": 5.517,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#20313a",
+      "background": "#E4E7E2",
+      "ratio": 10.774,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#52614D",
+      "background": "#E4E7E2",
+      "ratio": 5.299,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#4c5c53",
+      "background": "#E4E7E2",
+      "ratio": 5.679,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#435348",
+      "background": "#E4E7E2",
+      "ratio": 6.549,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#20313a",
+      "background": "#d9ddd4",
+      "ratio": 9.76,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#52614D",
+      "background": "#d9ddd4",
+      "ratio": 4.8,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#4c5c53",
+      "background": "#d9ddd4",
+      "ratio": 5.145,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#435348",
+      "background": "#d9ddd4",
+      "ratio": 5.932,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#20313a",
+      "background": "#d3d8cf",
+      "ratio": 9.28,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#52614D",
+      "background": "#d3d8cf",
+      "ratio": 4.564,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#4c5c53",
+      "background": "#d3d8cf",
+      "ratio": 4.891,
+      "threshold": 4.5
+    },
+    {
+      "foreground": "#435348",
+      "background": "#d3d8cf",
+      "ratio": 5.64,
+      "threshold": 4.5
+    },
+    {
+      "context": "photo-date: sea #142633e8 composited over worst-case white photograph",
+      "foreground": "#E4E7E2",
+      "backgroundRGB": [
+        41.196078431372555,
+        57.57254901960785,
+        69.4
+      ],
+      "ratio": 9.461,
+      "threshold": 4.5
+    }
+  ],
+  "allListedTextPairsPass": true,
+  "minimumRatio": 4.564,
+  "resources": {
+    "entry": "dist/history-preview.html",
+    "filesChecked": 10,
+    "references": [
+      {
+        "from": "dist\\history-preview.html",
+        "url": "history-preview.css",
+        "exists": true
+      },
+      {
+        "from": "dist\\history-preview.html",
+        "url": "historyPreview.js",
+        "exists": true
+      },
+      {
+        "from": "dist\\history-preview.html",
+        "url": "assets/history/atlantic-aquila-1941.jpg",
+        "exists": true
+      },
+      {
+        "from": "dist\\history-preview.html",
+        "url": "assets/history/atlantic-schematic.svg",
+        "exists": true
+      },
+      {
+        "from": "dist\\history-preview.html",
+        "url": "assets/history/intercept-relay.svg",
+        "exists": true
+      },
+      {
+        "from": "dist\\history-preview.html",
+        "url": "assets/history/pioneers-relay.svg",
+        "exists": true
+      },
+      {
+        "from": "dist\\history-preview.html",
+        "url": "assets/history/constraint-loop.svg",
+        "exists": true
+      },
+      {
+        "from": "dist\\history-preview.html",
+        "url": "assets/history/intelligence-chain.svg",
+        "exists": true
+      },
+      {
+        "from": "dist\\history-preview.html",
+        "url": "assets/history/bombe-outline.svg",
+        "exists": true
+      }
+    ],
+    "missing": [],
+    "htmlMatchesSource": true,
+    "cssMatchesSource": true
+  },
+  "diagrams": [
+    {
+      "file": "assets/history/intercept-relay.svg",
+      "geometryMatchesCanonical": true,
+      "distBytesMatch": true,
+      "unsafeExternalContent": false
+    },
+    {
+      "file": "assets/history/pioneers-relay.svg",
+      "geometryMatchesCanonical": true,
+      "distBytesMatch": true,
+      "unsafeExternalContent": false
+    },
+    {
+      "file": "assets/history/constraint-loop.svg",
+      "geometryMatchesCanonical": true,
+      "distBytesMatch": true,
+      "unsafeExternalContent": false
+    },
+    {
+      "file": "assets/history/intelligence-chain.svg",
+      "geometryMatchesCanonical": true,
+      "distBytesMatch": true,
+      "unsafeExternalContent": false
+    },
+    {
+      "file": "assets/history/bombe-outline.svg",
+      "geometryMatchesCanonical": true,
+      "distBytesMatch": true,
+      "unsafeExternalContent": false
+    }
+  ],
+  "snapshots": [
+    "desktop-constraints.jpg",
+    "desktop-hero.jpg",
+    "desktop-onward.jpg",
+    "desktop-pioneers.jpg",
+    "mobile-constraints.jpg",
+    "mobile-hero.jpg",
+    "mobile-onward.jpg",
+    "mobile-pioneers.jpg",
+    "mobile-turing-copy.jpg"
+  ],
+  "sourceSHA256": {
+    "html": "84ba990157f75f2ec4291b8165a640c527deae54d2f8de799020537ac25fcfa9",
+    "css": "56397ee5ed2902127b6b512987c9753e9b686d824b1c57bcb41b28b2839ca8da"
+  }
+}
