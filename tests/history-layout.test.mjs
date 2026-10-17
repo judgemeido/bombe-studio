@@ -14,3 +14,8 @@ test('editorial headings balance Chinese line endings and responsive header has 
 test('history stylesheet still compiles without warnings',async()=>{
  const result=await transform(css,{loader:'css'});assert.deepEqual(result.warnings,[]);
 });
+test('all seven rooms share one editorial left rail including nested first room and Turing',()=>{
+ assert.match(css,/\.lifeline-context\s*\{[^}]*padding-inline:\s*0/s);
+ assert.match(css,/\.turing,\s*:where\(\[data-history-preview\]\) \.sources,[^{]+\{ padding-inline: var\(--archive-gutter\)/s);
+ assert.match(css,/\.chapter-nav a\s*\{[^}]*align-items:\s*baseline/s);
+});

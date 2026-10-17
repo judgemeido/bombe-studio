@@ -934,3 +934,26 @@ body[data-page="history"], body[data-history-preview] { margin:0; background:#14
   :where([data-history-preview]) .archive-chapters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
   :where([data-history-preview]) .archive-chapters a { font-size: 10px; white-space: nowrap; gap: 3px; }
 }
+
+/* One left rail for 01–07: nested room 01 must not add a second gutter. */
+:where([data-history-preview]) { --archive-gutter: clamp(24px, 6vw, 112px); }
+:where([data-history-preview]) .hero,
+:where([data-history-preview]) .scene,
+:where([data-history-preview]) .turing,
+:where([data-history-preview]) .sources,
+:where([data-history-preview]) .masthead,
+:where([data-history-preview]) .chapter-nav { padding-inline: var(--archive-gutter); }
+:where([data-history-preview]) .lifeline-context { padding-inline: 0; }
+:where([data-history-preview]) .scene-heading .chapter-kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+:where([data-history-preview]) .scene-number {
+  display: inline-block;
+  min-width: 2ch;
+  margin-right: 0;
+  font-variant-numeric: tabular-nums;
+}
+:where([data-history-preview]) .chapter-nav a { align-items: baseline; line-height: 1.7; }
+:where([data-history-preview]) .chapter-nav a span { line-height: inherit; font-variant-numeric: tabular-nums; }
