@@ -46,3 +46,23 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+HISTORY PREVIEW — A1 historical image
+Local file: assets/history/atlantic-aquila-1941.jpg
+U.S. Navy / National Archives & NHHC, catalog 80-G-405290.
+USS Aquila (AK-47), rolling heavily with a North Atlantic convoy leaving
+Halifax, December 1941. Original JPEG, 1200 x 941, 224323 bytes.
+Retrieved via Wikimedia Commons on 2026-10-17:
+https://commons.wikimedia.org/wiki/File:USS_AQUILA_(AK-47)_In_heavy_seas,_while_steaming_with_a_North_Atlantic_Convoy,_December_1941.jpeg
+Primary catalog independently cross-checked by the main agent on 2026-10-17:
+https://www.history.navy.mil/our-collections/photography/numerical-list-of-images/nhhc-series/nh-series/80-G-405000/80-G-405290.html
+NHHC Copyright Owner: National Archives. Commons: PD-USGov-Military-Navy.
+Public domain in the United States as a U.S. federal Navy work; this is not
+CC BY and is not a claim of public-domain status in every jurisdiction.
+Original image bytes retained; responsive CSS cropping and grayscale display.
+
+HISTORY PREVIEW — original artwork
+assets/history/atlantic-schematic.svg is original project artwork, 2026-10-17.
+Simplified transport relationship, not an actual route or precise map.
+The Turing type composition is original layout, not an archival portrait.
+A2 portrait remains pending and is not distributed.

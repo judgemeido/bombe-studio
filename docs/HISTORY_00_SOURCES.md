@@ -34,16 +34,17 @@
 
 “可选用候选”表示元数据有明确依据，**不是全球所有法域的法律保证**；上线前保留来源、许可记录与最终版本。当前未下载或纳入任何历史图片。
 
-### A1 · 护航照片 / 优先候选
+### A1 · 护航照片 / P1 已采用
 
 - 文件：[USS AQUILA (AK-47) In heavy seas… December 1941](https://commons.wikimedia.org/wiki/File:USS_AQUILA_(AK-47)_In_heavy_seas,_while_steaming_with_a_North_Atlantic_Convoy,_December_1941.jpeg)。
 - 作者：U.S.N.；日期：1941 年 12 月；原档案号：80-G-405290。
-- Commons 来源指向 [NHHC 原档案页](https://www.history.navy.mil/our-collections/photography/numerical-list-of-images/nhhc-series/nh-series/80-G-405000/80-G-405290.html)；本次已读 Commons 元数据，尚未独立打开 NHHC 核对。
+- Commons 来源指向 [NHHC 原档案页](https://www.history.navy.mil/our-collections/photography/numerical-list-of-images/nhhc-series/nh-series/80-G-405000/80-G-405290.html)；2026-10-17 主代理已独立打开 NHHC 核对：标题 USS AQUILA AK47，档案 80-G-405290，图注为 1941 年 12 月从 Halifax 出发的北大西洋护航运输船在大浪中倾侧；Copyright Owner: National Archives。与 Commons 元数据一致。
 - 文件页许可：美国海军职务作品，美国公有领域（PD-USGov-Military-Navy），另有 Public Domain Mark 标签。保留司法辖区限定，不把 PD 当作 CC BY。
 - 分辨率：1200×941，约 219 KB；适合嵌入式影像，非 4K 横向铺满素材。
 - 建议署名：U.S. Navy / National Archives & NHHC, 80-G-405290；经 Wikimedia Commons。
-- 允许设计操作待最终记录：响应式缩放、轻裁切；不移除重要船体，不生成填补“档案画面”。
-- 状态：来源及许可标签已核，可优先进入素材复核；最终资产落盘、原站交叉核对与发布范围复核尚未完成。
+- 本地文件：`assets/history/atlantic-aquila-1941.jpg`，取得日期 2026-10-17；224323 字节，1200×941，保留原始 JPEG，不转码。原文件名 `USS_AQUILA_(AK-47)_In_heavy_seas,_while_steaming_with_a_North_Atlantic_Convoy,_December_1941.jpeg`。
+- 设计操作：嵌入式影像窗响应式 object-fit 裁切，居中偏下 52%；不移除主要船体，不生成填补画面。原图完整保存在本地。
+- 状态：P1 已落盘，原站交叉核对由主代理完成；美国公有领域（PD-USGov-Military-Navy），并非 CC BY。美国以外司法辖区的发布范围仍须另行判断，不能宣称全球授权。
 
 ### A2 · 图灵肖像 / 存在权利矛盾，暂缓采用
 
@@ -78,3 +79,8 @@
 3. 未决 A2/A3 不可通过删除“待核”字样变成已授权。
 4. 仅在本地资源、构建复制、图注与 alt 全部到位后，才验收图文版本。
 5. 发布前补 S6；本轮草稿允许审阅，不等于已完成史实终审。
+
+### P1 原创排版与 A4 资产
+
+- `assets/history/atlantic-schematic.svg`：2026-10-17 为本站原创，简化北美—英国运输关系，不临摹外部地图；非历史照片、非实际航迹、非精确地理坐标。
+- 图灵人物窗为姓名、年代、待定说明的原创编辑排版，不是肖像。A2 仍未解决。

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 270" role="img" aria-labelledby="title desc">
+<title id="title">大西洋运输关系示意</title><desc id="desc">原创简化关系图，非历史照片，非真实航迹，非精确地图。</desc>
+<defs><pattern id="grid" width="60" height="45" patternUnits="userSpaceOnUse"><path d="M60 0H0V45" fill="none" stroke="#E4E7E2" stroke-opacity=".12"/></pattern></defs>
+<rect width="720" height="270" fill="#142633"/><rect width="720" height="270" fill="url(#grid)"/>
+<g fill="#52614D" stroke="#97A99B" stroke-width="1.4"><path d="M0 0H166L160 30 189 48 175 68 205 91 184 119 152 124 137 160 105 176 98 205 73 220 46 270H0Z"/><path d="M720 0H608L590 21 602 43 576 67 592 91 565 122 576 151 557 174 583 190 569 212 595 270H720Z"/><path d="m545 58 9 12-8 14 7 12-12 10-11-13 7-11-2-12Z"/><path d="m523 79 7 7-6 14-9-4Z"/></g>
+<g fill="none" stroke="#B69A67" stroke-width="2"><path d="M166 145Q340 45 535 108" stroke-dasharray="7 7"/><path d="m520 97 15 11-18 5"/></g>
+<g fill="#E4E7E2" font-family="sans-serif" font-size="17"><text x="34" y="75">北美</text><text x="571" y="90">英国</text><text x="265" y="187" font-size="22" letter-spacing="12">大西洋</text><text x="259" y="219" font-size="13">运输关系示意 / 非真实航迹</text></g>
+<g fill="#E4E7E2"><circle cx="166" cy="145" r="4"/><circle cx="535" cy="108" r="4"/></g>
+</svg>
