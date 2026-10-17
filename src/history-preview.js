@@ -108,4 +108,3 @@ if (typeof document !== 'undefined') {
     mount();
   }
 }
-

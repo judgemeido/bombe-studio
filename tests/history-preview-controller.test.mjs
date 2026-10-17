@@ -333,4 +333,3 @@ for (const outcome of ['resolve', 'timeout']) {
     assert.equal(attempts.length, 4, 'non-persisted departure disposes auto lifecycle');
   });
 }
-

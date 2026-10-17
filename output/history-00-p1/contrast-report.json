@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-17",
+  "method": "Static source-color WCAG sRGB relative luminance; threshold 4.5:1. No browser pixel sampling or computed-style emulation.",
+  "source": "history-preview.css and assets/history/atlantic-schematic.svg",
+  "results": [
+    {
+      "usage": "Main hero text / primary button / skip link",
+      "foreground": "#E4E7E2",
+      "background": "#142633",
+      "ratio": 12.4206,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Muted captions, loading status and footer",
+      "foreground": "#b8c4ca",
+      "background": "#142633",
+      "ratio": 8.7001,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Hero introduction",
+      "foreground": "#ced6d8",
+      "background": "#142633",
+      "ratio": 10.5068,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Reading note",
+      "foreground": "#b8c4ca",
+      "background": "#142633",
+      "ratio": 8.7001,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Bridge copy",
+      "foreground": "#b9c7cc",
+      "background": "#142633",
+      "ratio": 8.9343,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Turing body / timeline",
+      "foreground": "#20313a",
+      "background": "#E4E7E2",
+      "ratio": 10.7741,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Turing role, source, timeline metadata",
+      "foreground": "#52614D",
+      "background": "#E4E7E2",
+      "ratio": 5.2986,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Portrait body",
+      "foreground": "#20313a",
+      "background": "#d3d8cf",
+      "ratio": 9.2795,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Portrait small metadata and caption",
+      "foreground": "#4c5c53",
+      "background": "#d3d8cf",
+      "ratio": 4.8913,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Portrait name study",
+      "foreground": "#52614D",
+      "background": "#d3d8cf",
+      "ratio": 4.5636,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Brass brand mark",
+      "foreground": "#B69A67",
+      "background": "#142633",
+      "ratio": 5.7626,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Primary button hover",
+      "foreground": "#142633",
+      "background": "#ffffff",
+      "ratio": 15.5005,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Schematic white text over green land",
+      "foreground": "#E4E7E2",
+      "background": "#52614D",
+      "ratio": 5.2986,
+      "normalTextAA": true
+    },
+    {
+      "usage": "Photo date label: paper over #142633e8, conservative white underlying image",
+      "foreground": "#E4E7E2",
+      "background": "alpha-composite over white",
+      "ratio": 9.4607,
+      "normalTextAA": true
+    }
+  ],
+  "limitations": [
+    "Photo-id text over variable photograph/gradient not assigned a fixed contrast pass; needs pixel-level check.",
+    "Decorative low-opacity chapter index, borders, grid, and non-text symbols are not normal body text and excluded.",
+    "This is not full WCAG conformance certification."
+  ]
+}
