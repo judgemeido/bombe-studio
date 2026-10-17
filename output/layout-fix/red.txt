@@ -15,7 +15,7 @@
 test at tests\history-layout.test.mjs:6:1
 ✖ mobile history index is a contained single-row scroller rather than a tall grid (1.2764ms)
   AssertionError [ERR_ASSERTION]: The input did not match the regular expression /\.chapter-nav ol\s*\{[^}]*flex-wrap:\s*nowrap[^}]*overflow-x:\s*auto/s. Input:
-  
+
   ':where([data-history-preview]) {\r\n' +
     '  color-scheme: dark;\r\n' +
     '  --sea:#142633;\r\n' +
@@ -419,7 +419,7 @@ test at tests\history-layout.test.mjs:6:1
     '}\r\n' +
     ':where([data-history-preview]) .person-copy > p:not(.person-role) {\r\n' +
     '  font-size'... 22605 more characters
-  
+
       at TestContext.<anonymous> (file:///C:/Codex/city/bombe-studio/tests/history-layout.test.mjs:7:9)
       at Test.runInAsyncScope (node:async_hooks:228:14)
       at Test.run (node:internal/test_runner/test:1118:25)
@@ -436,7 +436,7 @@ test at tests\history-layout.test.mjs:6:1
 test at tests\history-layout.test.mjs:10:1
 ✖ editorial headings balance Chinese line endings and responsive header has explicit tracks (0.3617ms)
   AssertionError [ERR_ASSERTION]: The input did not match the regular expression /\.scene-heading h2\s*\{[^}]*text-wrap:\s*balance/s. Input:
-  
+
   ':where([data-history-preview]) {\r\n' +
     '  color-scheme: dark;\r\n' +
     '  --sea:#142633;\r\n' +
@@ -840,7 +840,7 @@ test at tests\history-layout.test.mjs:10:1
     '}\r\n' +
     ':where([data-history-preview]) .person-copy > p:not(.person-role) {\r\n' +
     '  font-size'... 22605 more characters
-  
+
       at TestContext.<anonymous> (file:///C:/Codex/city/bombe-studio/tests/history-layout.test.mjs:11:9)
       at Test.runInAsyncScope (node:async_hooks:228:14)
       at Test.run (node:internal/test_runner/test:1118:25)
