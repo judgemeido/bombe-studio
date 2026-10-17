@@ -293,18 +293,6 @@ h1 {
   font-size: 12px;
   padding: 10px 0;
 }
-.sample-bridge {
-  padding: 22px 8%;
-  color: #b9c7cc;
-  font-size: 12px;
-  line-height: 1.9;
-  border-top: 1px solid #e4e7e21a;
-}
-.sample-bridge span {
-  display: inline-block;
-  color: var(--paper);
-  margin-right: 20px;
-}
 .turing {
   background: var(--paper);
   color: var(--ink);
@@ -640,13 +628,6 @@ h1 {
   .status-index {
     letter-spacing: 0;
   }
-  .sample-bridge {
-    padding: 20px 6%;
-  }
-  .sample-bridge span {
-    display: block;
-    margin-bottom: 8px;
-  }
   .turing {
     display: block;
     padding: 45px 7% 30px;
@@ -709,4 +690,159 @@ h1 {
     animation: none !important;
     transition: none !important;
   }
+}
+/* P2 / seven reading rooms. Labels live in HTML, never inside scaled drawings. */
+.photo-id {
+  background: var(--sea);
+  color: var(--paper);
+  padding: 7px 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  max-width: calc(100% - 30px);
+}
+.chapter-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 16px 4.5%;
+  border-bottom: 1px solid #e4e7e22b;
+  background: var(--sea);
+}
+.nav-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.chapter-nav ol { display: flex; flex-wrap: wrap; gap: 8px 25px; list-style: none; padding: 0; margin: 0; }
+.chapter-nav a { display: inline-flex; gap: 8px; padding: 10px 0; font-size: 13px; text-decoration: none; border-bottom: 2px solid transparent; }
+.chapter-nav a span { font: 12px/1.7 Georgia,serif; color: var(--brass); }
+.chapter-nav a.is-current,
+.chapter-nav a[aria-current="location"] { border-color: var(--brass); font-weight: 700; }
+[data-history-scene].is-current .scene-number { text-decoration: underline; text-underline-offset: .22em; }
+.lifeline-context {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 7%;
+  padding: 55px 4% 65px;
+  margin-top: 30px;
+  border-top: 1px solid #e4e7e244;
+}
+.scene-heading h2 {
+  font: 500 clamp(31px, 3.2vw, 50px)/1.5 var(--serif);
+  letter-spacing: -.025em;
+  margin: 24px 0 0;
+  text-wrap: pretty;
+}
+.scene-number { font: 24px/1 Georgia,serif; margin-right: 14px; color: var(--brass); }
+.chapter-copy { min-width: 0; }
+.chapter-copy > p { font-size: 18px; line-height: 2; max-width: 38em; }
+.background-detail { border-block: 1px solid #e4e7e244; margin-top: 30px; }
+.background-detail summary { padding: 19px 0; cursor: pointer; font-size: 15px; line-height: 1.8; }
+.background-detail p { font-size: 16px; line-height: 1.95; padding: 0 0 22px; max-width: 40em; }
+.chapter-source { display: inline-block; color: var(--muted); font-size: 13px; line-height: 1.8; margin-top: 20px; }
+.scene { padding: 90px 8%; position: relative; }
+.scene > * { min-width: 0; }
+.story-diagram { min-width: 0; }
+.story-diagram svg { display: block; width: 100%; height: auto; color: var(--brass); }
+.story-diagram figcaption { font-size: 13px; line-height: 1.85; color: var(--muted); margin-top: 22px; max-width: 46em; }
+.diagram-labels { list-style: none; padding: 0; margin: 18px 0 0; display: flex; justify-content: space-between; gap: 12px; font-size: 15px; line-height: 1.7; }
+.diagram-labels li { flex: 1; border-top: 1px solid currentColor; padding-top: 12px; }
+/* 02 / wide radio spread: image sits below the split editorial opening. */
+.intercept { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 45px 8%; background: #10212c; border-block: 1px solid #e4e7e22b; }
+.intercept .story-diagram { grid-column: 1/-1; display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); column-gap: 8%; align-items: center; border-top: 1px solid #e4e7e233; padding-top: 25px; }
+.intercept svg { grid-row: 1/3; }
+.intercept .diagram-labels { display: block; margin: 0; counter-reset: receiver; }
+.intercept .diagram-labels li { padding: 14px 0; counter-increment: receiver; }
+.intercept .diagram-labels li::before { content: "0" counter(receiver) " / "; color: var(--brass); margin-right: 15px; font-family: Georgia,serif; }
+/* 03 / ruled archive register: no substitute portraits. */
+.pioneers { background: #d9ddd4; color: var(--ink); color-scheme: light; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 38px 8%; }
+.pioneers .scene-number { color: var(--green); }
+.pioneers .story-diagram svg { color: var(--green); }
+.pioneers .story-diagram figcaption, .pioneers .chapter-source { color: #435348; }
+.name-register { grid-column: 1/-1; list-style: none; margin: 10px 0 0; padding: 0; border-bottom: 1px solid #52614d77; }
+.name-register li { display: grid; grid-template-columns: 60px minmax(0,1fr) minmax(0,1fr); align-items: baseline; gap: 20px; padding: 22px 0; border-top: 1px solid #52614d77; }
+.name-register span { font: 15px/1.7 Georgia,serif; color: var(--green); }
+.name-register strong { font: 500 clamp(21px,2vw,30px)/1.7 var(--serif); }
+.name-register i { font: italic 24px/1.6 Georgia,serif; }
+.pioneers .story-diagram { grid-column: 1; }
+.pioneer-detail { align-self: center; }
+.pioneers .background-detail { border-color: #52614d77; }
+/* 05 / a machine-room plate, with a bounded logical loop rather than a simulation. */
+.constraints { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 30px 9%; background: #192a30; }
+.constraints .scene-heading { grid-column: 1; }
+.constraints .chapter-copy { grid-column: 1; }
+.constraints .story-diagram { grid-column: 2; grid-row: 1/3; align-self: center; padding: 30px 0; border-block: 1px solid #b69a6766; }
+.constraints .diagram-labels { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; counter-reset: logic; }
+.constraints .diagram-labels li { counter-increment: logic; }
+.constraints .diagram-labels li::before { content: "0" counter(logic); display: block; font: 26px/1.6 Georgia,serif; color: var(--brass); }
+/* 06 / the process steps form a vertical editorial spine, distinct from the loop. */
+.intelligence { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,.8fr); gap: 35px 12%; background: #e4e7e2; color: var(--ink); color-scheme: light; }
+.intelligence .scene-heading, .intelligence .chapter-copy { grid-column: 1; }
+.intelligence .scene-number { color: var(--green); }
+.intelligence .background-detail { border-color: #52614d77; }
+.intelligence .chapter-source, .intelligence figcaption { color: #435348; }
+.intelligence .story-diagram { grid-column: 2; grid-row: 1/3; border-left: 1px solid #52614d77; padding-left: 35px; }
+.intelligence svg { color: var(--green); max-height: 110px; }
+.intelligence .diagram-labels { display: block; counter-reset: intelligence; margin-top: 0; }
+.intelligence .diagram-labels li { display: flex; align-items: baseline; gap: 25px; padding: 12px 0; border-top: 1px solid #52614d44; font: 500 23px/1.5 var(--serif); counter-increment: intelligence; }
+.intelligence .diagram-labels li::before { content: "0" counter(intelligence); color: var(--green); font: 14px/1.8 Georgia,serif; }
+/* 07 / machine silhouette, generous exit and actual existing routes. */
+.onward { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr); gap: 35px 5%; padding-top: 100px; padding-bottom: 65px; }
+.onward .scene-heading { grid-column: 1/-1; }
+.onward h2 { font-size: clamp(28px,3vw,46px); }
+.onward .chapter-copy { align-self: center; }
+.onward .story-diagram { align-self: center; }
+.exit-links { margin-top: 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.exit-links > a:not(.primary-link) { font-size: 15px; padding: 10px 0; }
+.onward-note { grid-column: 1/-1; font-size: 13px; line-height: 1.9; color: var(--muted); max-width: 58em; padding-top: 25px; border-top: 1px solid #e4e7e233; }
+/* Static paths are complete. Only geometry gets a finite progressive enhancement. */
+.history-enhanced [data-history-scene] .diagram-trace { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.history-enhanced [data-history-scene].is-revealed .diagram-trace { stroke-dashoffset: 0; animation: history-trace 1.25s ease-out both; }
+@keyframes history-trace { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (max-width: 1050px) {
+  .chapter-nav { display: block; }
+  .nav-label { display: block; margin-bottom: 8px; }
+  .chapter-nav ol { gap: 5px 20px; }
+  .scene { padding-inline: 6%; }
+  .name-register li { grid-template-columns: 40px minmax(0,1.2fr) minmax(0,1fr); }
+  .name-register i { font-size: 21px; }
+}
+@media (max-width: 700px) {
+  html { scroll-padding-top: 20px; }
+  .chapter-nav { padding: 18px 6%; }
+  .chapter-nav ol { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 3px 20px; }
+  .chapter-nav a { width: 100%; font-size: 14px; padding: 10px 0; }
+  .lifeline-context { display: block; padding: 35px 0 45px; margin-top: 25px; }
+  .lifeline-context .chapter-copy { margin-top: 25px; }
+  .scene { display: block; padding: 55px 7%; }
+  .scene-heading h2 { margin-top: 20px; font-size: clamp(29px,7.5vw,39px); }
+  .chapter-copy { margin-top: 28px; }
+  .chapter-copy > p { font-size: 17px; line-height: 1.95; }
+  .background-detail p { font-size: 16px; }
+  .chapter-kicker { letter-spacing: .05em; }
+  .scene-number { font-size: 23px; margin-right: 8px; }
+  .story-diagram { margin-top: 35px; }
+  .story-diagram figcaption { font-size: 13px; }
+  .intercept .story-diagram { display: block; }
+  .intercept .diagram-labels { margin-top: 15px; }
+  .name-register { margin-top: 35px; }
+  .name-register li { grid-template-columns: 30px minmax(0,1fr); gap: 2px 10px; padding: 20px 0; }
+  .name-register strong { font-size: 22px; }
+  .name-register i { grid-column: 2; font-size: 21px; overflow-wrap: anywhere; }
+  .pioneers .diagram-labels { display: block; }
+  .pioneers .diagram-labels li { padding: 12px 0; }
+  .pioneer-detail { margin-top: 30px; }
+  .constraints .story-diagram { padding-block: 20px; }
+  .constraints .diagram-labels { gap: 20px 15px; font-size: 16px; }
+  .intelligence .story-diagram { padding-left: 20px; margin-top: 35px; }
+  .intelligence .diagram-labels li { font-size: 23px; padding: 15px 0; }
+  .onward h2 { font-size: 27px; }
+  .onward-note { margin-top: 35px; }
+  .exit-links .primary-link { padding: 17px 20px; font-size: 16px; }
+  .photo-id { font-size: 11px; padding: 6px 9px; }
+  .ocean-note p, .ocean-window figcaption, .person-role, .portrait-reservation p, .portrait-placeholder figcaption, .person-footnote, .sources p { font-size: 13px; }
+  .reading-note, .archive-status { font-size: 12px; }
+  .archive-status { flex-wrap: wrap; }
+  .status-index { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .history-enhanced [data-history-scene] .diagram-trace,
+  .history-enhanced [data-history-scene].is-revealed .diagram-trace { stroke-dashoffset: 0; animation: none; }
 }

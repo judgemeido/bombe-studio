@@ -11,7 +11,7 @@
 | S3 | [University of St Andrews · MacTutor: Alan Turing](https://mathshistory.st-andrews.ac.uk/Biographies/Turing/)，已阅读；J J O’Connor、E F Robertson | 生卒日期；可计算性论文；战时工作；战后 NPL/Manchester；1950 论文；1952 定罪和激素治疗 | 区分 1936 写作与 1937 印行；不用“全部空军报文均被破解”的宽泛说法；不采用死亡细节推测。2013 赦免未在本轮取得独立来源，文案不加入 |
 | S4 | [MDN · Scroll-driven animations](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations)，已阅读 | 滚动驱动动画的能力与实现研究 | 技术参考而非历史史料；需特性检测及旧浏览器回退 |
 | S5 | [Commons · USS Aquila](https://commons.wikimedia.org/wiki/File:USS_AQUILA_(AK-47)_In_heavy_seas,_while_steaming_with_a_North_Atlantic_Convoy,_December_1941.jpeg)，已阅读文件说明 | 1941 年 12 月北大西洋护航照片、拍摄描述、档案编号及许可标签 | 仅支撑这张照片的元数据，不能据此证明整个大西洋战役的因果 |
-| S6 | 宏观战争背景的机构来源：**待补核** | 德国入侵波兰、英法宣战、英国海运依赖、潜艇战与其他海战因素 | [USHMM · Invasion of Poland](https://encyclopedia.ushmm.org/content/en/article/invasion-of-poland-fall-1939) 本次访问返回 504；IWM 前轮访问遇访问限制。未绕过，未将这些页面标成已阅读。主文相关背景为待核草稿，发布前补可靠来源 |
+| S6 | [Veterans Affairs Canada · Battle of the Atlantic](https://www.veterans.gc.ca/en/remembrance/military-history/second-world-war/battle-atlantic)、[Second World War](https://www.veterans.gc.ca/en/remembrance/military-history/second-world-war)、[Chronology](https://www.veterans.gc.ca/en/remembrance/military-history/second-world-war/chronology-second-world-war)，2026-10-17 已阅读 | 1939-09-01 德国入侵波兰；1939-09-03 英法宣战（Chronology 的1943周年条目交叉印证）；英国海运生命线、潜艇威胁；护航/航空/造船/雷达/破译协同 | 加拿大政府纪念史资料，有国家叙事视角；只转述核实的事实，不复制图片，不沿用伤亡或战争缩短数字作为口号。IWM仍遇安全验证、USHMM超时、Liverpool正文未载入，均不算已读依据 |
 
 本次未确认的页面：Bank of England 肖像相关路径 404；Manchester 人物路径 404；turingarchive.org 证书异常；turing.org.uk 某旧 biography 路径 404。不能用访问失败的页面作为已核证据。
 
@@ -28,7 +28,7 @@
 | 部分密钥未破，时效有局限 | S2 | 不写“彻底破解所有 Enigma” |
 | 1936 抽象机器模型与物理 Bombe 不同 | S3、S2 | 人物段显式区分 |
 | 1951 年照片是战后肖像 | A2 元数据 | 图注不能写“战时工作照” |
-| 破译不是战争胜利的唯一原因 | S1、S2 支撑工作链条；宏观因果仍待 S6 | 不刊登精确拯救人数或缩短战争年份 |
+| 破译不是战争胜利的唯一原因 | S1、S2 支撑工作链条；S6 支撑海战协同因素 | 不刊登精确拯救人数或缩短战争年份 |
 
 ## 3. 影像与图解清单
 
@@ -61,16 +61,9 @@
 - 状态：未选定文件、未获授权，不下载使用；应找明确 CC/PD 文件或申请许可。
 - 可替代为原创结构图，标注“原理示意”；既有项目 3D 若截图，也只能标注“本站教学模型”，不能假装馆藏影像。
 
-### A4–A7 · 原创 SVG 图解 / 后续制作
+### A4–A9 · 原创 SVG 图解
 
-| ID | 场景 | 必须标注的边界 |
-| --- | --- | --- |
-| A4 | 大西洋运输关系图 | 非实际航迹，非精确战场地图 |
-| A5 | 波兰—法国—英国知识接力 | 知识传递，不是旅行路径 |
-| A6 | crib—约束—候选检查 | 教学逻辑，非完整 Bombe 电路仿真 |
-| A7 | 情报工作链条 | 概括组织过程，不保证每个网络同序同速 |
-
-原创资产不临摹特定受版权保护的信息图；需要落实相应事实来源，不因“原创”免除史实核对。
+P0阶段的A4–A7为概念槽位，P2已经定稿并扩展为六幅图解。唯一有效编号与文件对应见下方「P2 · 原创图解资产登记」，不再沿用旧槽位编号。原创资产不免除史实核对。
 
 ## 4. 实施前素材闸门
 
@@ -78,9 +71,32 @@
 2. 本地保存许可依据；建立页面可见的影像来源区，不只藏在源码。
 3. 未决 A2/A3 不可通过删除“待核”字样变成已授权。
 4. 仅在本地资源、构建复制、图注与 alt 全部到位后，才验收图文版本。
-5. 发布前补 S6；本轮草稿允许审阅，不等于已完成史实终审。
+5. S6 已在 P2 补机构来源；发布前仍须核对最终正文与引用对应，不能由部分补核推论全部史实已经终审。
 
 ### P1 原创排版与 A4 资产
 
 - `assets/history/atlantic-schematic.svg`：2026-10-17 为本站原创，简化北美—英国运输关系，不临摹外部地图；非历史照片、非实际航迹、非精确地理坐标。
 - 图灵人物窗为姓名、年代、待定说明的原创编辑排版，不是肖像。A2 仍未解决。
+
+## P2 · S6 核对记录（2026-10-17）
+
+- VAC《Second World War》Order of events：1 September 1939 Germany invades Poland；3 September Britain enters war。
+- VAC《Chronology》1943-09-03条目明确是英法对德宣战四周年，交叉支持1939-09-03；不把该时间线误称直接列出法国1939条目。
+- VAC《Battle of the Atlantic》The first convoys、Canadian assistance：北美至英国的补给线受威胁，需组织舰船运送物资与人员。The tide turns、Growth of the navy：护航、远程飞机、武器、雷达、破译及造船共同影响战局。
+- 主文将未逐项核实的“食物、燃料和工业原料依赖海运”收敛为“英国需要通过海运接收物资与人员”，避免引用范围超过已读资料。
+- IWM访问安全验证，不处理或绕过；USHMM导航超时；Liverpool只读到导航壳而无正文。这些失败不影响采用实际已读的VAC来源，但不能当成三个额外独立证据。
+
+## P2 · 原创图解资产登记
+
+2026-10-17本地创作，无外部图像/字体依赖。SVG为教学关系图，页面内联同一图形便于描线；`data-diagram-source`关联原文件。
+
+| ID | 本地文件 | 内容与边界 |
+| --- | --- | --- |
+| A4 | `assets/history/atlantic-schematic.svg` | 沿用P1运输关系示意，非实际航迹 |
+| A5 | `assets/history/intercept-relay.svg` | 无线电发送/截收关系，非真实报文与字母运算 |
+| A6 | `assets/history/pioneers-relay.svg` | 波兰突破及跨国知识传递，非人物旅行路径 |
+| A7 | `assets/history/constraint-loop.svg` | 约束、排除、候选检查，非完整电路或真实搜索结果 |
+| A8 | `assets/history/intelligence-chain.svg` | 七环节工作链条，不保证同序同速或成功 |
+| A9 | `assets/history/bombe-outline.svg` | 抽象鼓轮与机柜轮廓，非战时实拍/完整结构图 |
+
+此表为最终P2资产编号，取代P0 A4–A7概念槽位（当时尚未定稿）。A2肖像、A3现代重建照片仍未采用，不因原创图解补齐而视为已获许可。
