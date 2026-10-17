@@ -1,0 +1,11 @@
+✔ mobile history index is a contained single-row scroller rather than a tall grid (0.6462ms)
+✔ editorial headings balance Chinese line endings and responsive header has explicit tracks (0.1856ms)
+✔ history stylesheet still compiles without warnings (52.8316ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 144.4269
