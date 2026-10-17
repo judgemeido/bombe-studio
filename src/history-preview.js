@@ -1,6 +1,7 @@
 import { createHistoryPreview } from './history-loader.js';
 export { createHistoryPreview } from './history-loader.js';
 import { createHistoryScenes } from './history-scenes.js';
+import { createHistoryGalleries } from './history-gallery.js';
 
 if (typeof document !== 'undefined') {
   const root = document.querySelector('[data-history-preview]');
@@ -16,10 +17,12 @@ if (typeof document !== 'undefined') {
         motion,
       });
       const scenes = createHistoryScenes(root, { motion });
+      const galleries = createHistoryGalleries(root, { motion });
       controller = {
         destroy() {
           preview.destroy();
           scenes.destroy();
+          galleries.destroy();
         },
       };
     }

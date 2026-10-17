@@ -957,3 +957,47 @@ body[data-page="history"], body[data-history-preview] { margin:0; background:#14
 }
 :where([data-history-preview]) .chapter-nav a { align-items: baseline; line-height: 1.7; }
 :where([data-history-preview]) .chapter-nav a span { line-height: inherit; font-variant-numeric: tabular-nums; }
+
+/* Photographic archive: original aspect preserved inside a stable stage. */
+:where([data-history-preview]) .history-gallery { min-width: 0; align-self: start; }
+:where([data-history-preview]) .archive-gallery { grid-column: 1 / -1; margin-top: 12px; }
+:where([data-history-preview]) .gallery-slides { min-width: 0; }
+:where([data-history-preview]) [data-gallery-slide] { margin: 0 0 24px; }
+:where([data-history-preview]) [data-gallery-slide] img {
+  width: 100%; height: auto; max-height: 560px; object-fit: contain;
+  background: #0b1921; display: block;
+}
+:where([data-history-preview]) [data-gallery-slide] figcaption,
+:where([data-history-preview]) .turing-portrait figcaption {
+  font-size: 13px; line-height: 1.85; padding-top: 14px; max-width: 70em;
+}
+:where([data-history-preview]) .gallery-enhanced .gallery-slides { aspect-ratio: 16 / 10; position: relative; margin-bottom: 90px; }
+:where([data-history-preview]) .gallery-enhanced [data-gallery-slide] { margin: 0; }
+:where([data-history-preview]) .gallery-enhanced [data-gallery-slide] img { aspect-ratio: 16 / 10; height: auto; max-height: none; }
+:where([data-history-preview]) .gallery-enhanced [data-gallery-slide][hidden] { display: none; }
+:where([data-history-preview]) .gallery-controls { display: flex; align-items: center; gap: 14px; border-top: 1px solid currentColor; padding-block: 12px; font-size: 12px; }
+:where([data-history-preview]) .gallery-controls[hidden] { display: none; }
+:where([data-history-preview]) .gallery-label { flex: 1; }
+:where([data-history-preview]) .gallery-controls button { background: transparent; color: inherit; border: 1px solid currentColor; font: inherit; min-height: 40px; min-width: 40px; padding: 8px 12px; cursor: pointer; }
+:where([data-history-preview]) .gallery-controls button:focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; }
+:where([data-history-preview]) .gallery-controls output { min-width: 5em; text-align: center; font-variant-numeric: tabular-nums; }
+:where([data-history-preview]) .turing-portrait { margin: 0; align-self: start; }
+:where([data-history-preview]) .turing-portrait img { display: block; width: 100%; max-height: 620px; object-fit: contain; background: #c8cec4; }
+:where([data-history-preview]) .ocean-note.history-gallery { grid-column: 2; margin-top: 20px; width: 100%; }
+:where([data-history-preview]) .pioneers .gallery-slides,
+:where([data-history-preview]) .pioneers [data-gallery-slide] img { aspect-ratio: 4 / 3; }
+:where([data-history-preview]) .constraints .archive-gallery,
+:where([data-history-preview]) .intelligence .archive-gallery,
+:where([data-history-preview]) .onward .archive-gallery { grid-column: auto; grid-row: auto; }
+@media(max-width:700px) {
+  :where([data-history-preview]) .history-gallery { margin-top: 28px; }
+  :where([data-history-preview]) .gallery-controls { gap: 8px; flex-wrap: wrap; }
+  :where([data-history-preview]) .gallery-label { flex-basis: 100%; }
+  :where([data-history-preview]) .gallery-enhanced .gallery-slides { margin-bottom: 125px; }
+  :where([data-history-preview]) .turing-portrait { margin-block: 28px; }
+}
+/* Reserve image and caption space before lazy image decode; avoid anchor drift. */
+:where([data-history-preview]) .gallery-enhanced .gallery-slides { aspect-ratio: auto; margin-bottom: 16px; }
+:where([data-history-preview]) .gallery-enhanced [data-gallery-slide] figcaption { min-height: 6em; }
+:where([data-history-preview]) .turing-portrait img { aspect-ratio: 675 / 919; height: auto; }
+:where([data-history-preview]) .gallery-slides { touch-action: pan-y pinch-zoom; }

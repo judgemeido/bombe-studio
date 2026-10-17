@@ -1,0 +1,28 @@
+✖ every historical drawing is replaced by sourced local photography and accessible galleries (23.592ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 437.9177
+
+✖ failing tests:
+
+test at tests\history-photos.test.mjs:5:1
+✖ every historical drawing is replaced by sourced local photography and accessible galleries (23.592ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  12 !== 0
+
+      at TestContext.<anonymous> (file:///C:/Codex/city/bombe-studio/tests/history-photos.test.mjs:7:9)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 12,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

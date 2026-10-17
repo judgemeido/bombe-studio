@@ -1,0 +1,9 @@
+# Photographic archive acceptance · 2026-10-17
+
+Approved scope: replace all six decorative line diagrams with real photographs and replace Turing placeholder. Six galleries (13 slides with some reuse), 11 newly adopted local photos plus retained Aquila photograph. Photo metadata fetched in one Wikipedia imageinfo batch after Commons rate limiting; erroneous partial retry metadata is not used, canonical record is assets/history/photos-manifest.json. Turing is adolescent passport portrait, not wartime. Arkley image title refers to1943;2013 is digital date. Mansion/Hut6/HRO/drums modern photos explicitly marked. No generative images.
+
+Independent gallery implementation plus unit tests. All images have local src, alt/caption/source links, raw source/licensing recorded in docs/HISTORY_00_PHOTOS.md and THIRD_PARTY_NOTICES.txt. No-JS figures readable; JS narrows to one and reveals controls.6s autoplay pauses offscreen, hidden tab, focus, hover, reduced motion, explicit user pause. Destroy restores static markup.
+
+Browser:6 enhanced galleries,0 inline SVG drawings,0 broken completed images. Actual constraints gallery next changed2/2→1/2; pause showed继续轮播. Desktop and mobile screenshots saved.390px document client375==scroll375. Source files/modern distinctions preserved. Existing prose, routes and models untouched except restoring the work-chain labels as prose when the old schematic label list was removed. Detailed auto timing/motion/focus/teardown verified by controlled unit clock, not falsely claimed as browser emulation.
+Independent review follow-up: stale P1/P2 portrait notice clarified as historical record; current A2 is the adopted adolescent passport image. Factory duplicate-owner guard added with regression coverage.
+Final verification:127/127 tests pass; build passes; initial static bundle graph now5 inputs including gallery, still excludes main/Three/model/scene. See initial-bundle-graph.json.

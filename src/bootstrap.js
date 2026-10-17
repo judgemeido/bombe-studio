@@ -1,6 +1,7 @@
 import { parseRoute, routeKey } from './routes.js';
 import { createHistoryPreview } from './history-loader.js';
 import { createHistoryScenes } from './history-scenes.js';
+import { createHistoryGalleries } from './history-gallery.js';
 
 // Keep this lightweight pre-import copy aligned with navigation's chapter labels.
 const loadingChapters = {
@@ -24,7 +25,8 @@ export function createBootstrap({ root, window: view = root?.defaultView || root
     else {
       const loader = createHistoryPreview(element, { image: element.querySelector('[data-history-image]'), motion });
       const scenes = createHistoryScenes(element, { motion });
-      enhancements = { destroy() { loader.destroy(); scenes.destroy(); } };
+      const galleries = createHistoryGalleries(element, { motion });
+      enhancements = { destroy() { loader.destroy(); scenes.destroy(); galleries.destroy(); } };
     }
   }
   const historyPage = { element, currentRoute: null, scrollY: 0, activate, deactivate };

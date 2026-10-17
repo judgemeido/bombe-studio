@@ -27,9 +27,9 @@ test('standalone preview ships approved hero and Turing copy in initial HTML', a
 
 test('asset boundaries, source notes, and native timeline remain explicit without JS', async () => {
   const doc = await page();
-  assert.match(doc.body.textContent, /肖像素材待定/);
-  assert.match(doc.body.textContent, /非历史照片/);
-  assert.match(doc.body.textContent, /非特定日期的真实航迹/);
+  assert.match(doc.body.textContent, /图灵真实肖像/);
+  assert.match(doc.body.textContent, /现代重建/);
+  assert.match(doc.body.textContent, /约1942年/);
   assert.match(doc.body.textContent, /A1.*美国/);
   assert.doesNotMatch(doc.body.textContent, /两幕|暂时省略|本次仅呈现/);
   assert.equal(doc.querySelectorAll('#turing details li').length, 7);
@@ -45,7 +45,8 @@ test('preview has isolated bundle and accessible responsive CSS', async () => {
   const doc = await page();
   assert.equal(doc.querySelector('script[type="module"]').getAttribute('src'), 'dist/historyPreview.js');
   assert.ok(doc.querySelector('link[href="history-preview.css"]'));
-  assert.doesNotMatch(await read('history-preview.html'), /dist\/app\.js|https?:\/\/[^"\s]+\.(?:jpg|png|webp)/);
+  assert.doesNotMatch(await read('history-preview.html'), /dist\/app\.js/);
+  for (const img of doc.querySelectorAll('img')) assert.ok(img.getAttribute('src').startsWith('assets/history/'));
   const css = await read('history-preview.css');
   for (const token of ['#142633', '#E4E7E2', '#52614D', '#B69A67']) assert.ok(css.includes(token));
   assert.match(css, /:focus-visible/);
@@ -110,15 +111,11 @@ test('complete approved narrative and expandable background ship without control
   for (const a of doc.querySelectorAll('a[href^="#"]:not([data-page])')) assert.ok(doc.getElementById(a.hash.slice(1)), a.hash);
 });
 
-test('five original local diagrams are labelled and trace hooks never gate text', async () => {
+test('photographic galleries replace the five original diagrams without gating text', async () => {
   const doc = await page();
-  for (const name of ['intercept-relay', 'pioneers-relay', 'constraint-loop', 'intelligence-chain', 'bombe-outline']) {
-    const asset = await read(`assets/history/${name}.svg`);
-    assert.match(asset, /<title/);
-    assert.match(asset, /<desc/);
-    assert.doesNotMatch(asset, /<script|<foreignObject|https?:\/\/(?!www.w3.org)/);
-    assert.ok(doc.querySelector(`[data-diagram-source="assets/history/${name}.svg"]`));
-  }
+  assert.equal(doc.querySelectorAll('[data-diagram-source],svg').length, 0);
+  assert.equal(doc.querySelectorAll('[data-history-gallery]').length, 6);
+  for (const gallery of doc.querySelectorAll('[data-history-gallery]')) assert.ok(gallery.querySelectorAll('img').length >= 2);
   const css = await read('history-preview.css');
   assert.match(css, /\.is-current/);
   assert.match(css, /\.history-enhanced[\s\S]*\.is-revealed/);
@@ -133,5 +130,5 @@ test('verified S6 uses approved narrower supply wording and linked VAC sources',
   const sources = doc.querySelector('#sources');
   assert.match(sources.textContent, /S6 已补核/);
   for (const path of ['battle-atlantic', 'chronology-second-world-war']) assert.ok(sources.querySelector(`a[href="https://www.veterans.gc.ca/en/remembrance/military-history/second-world-war/${path}"]`));
-  assert.match(sources.textContent, /A2 \/ 肖像素材待定/);
+  assert.match(sources.textContent, /A2 \/ 图灵真实肖像/);
 });
