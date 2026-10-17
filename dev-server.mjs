@@ -3,6 +3,7 @@ import { readFile, realpath, stat } from 'node:fs/promises';
 import { dirname, resolve, relative, isAbsolute, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { context } from 'esbuild';
+import { renderHome } from './page-shell.mjs';
 import { options } from './build.mjs';
 
 const root = await realpath(dirname(fileURLToPath(import.meta.url)));
@@ -51,7 +52,7 @@ const server = createServer(async (req, res) => {
       if (fromAssets.startsWith('..') || isAbsolute(fromAssets)) { res.writeHead(403).end('Forbidden'); return; }
     }
     res.writeHead(200, { 'Content-Type': mime[extension] || 'application/octet-stream', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
-    res.end(req.method === 'HEAD' ? undefined : await readFile(path));
+    res.end(req.method === 'HEAD' ? undefined : normalized === 'index.html' ? renderHome({ appHtml: await readFile(path, 'utf8'), historyHtml: await readFile(resolve(root, 'history-preview.html'), 'utf8') }) : await readFile(path));
   } catch { res.writeHead(404).end('Not found'); }
 });
 server.listen(port, '127.0.0.1', () => console.log(`Product preview: http://127.0.0.1:${port}`));

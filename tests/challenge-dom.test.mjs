@@ -26,7 +26,7 @@ test('challenge mounts, retries, traverses all six levels and decodes the messag
     assert.equal($('#quest-model-error').hidden, false);
     errors.mock.restore(); warnings.mock.restore();
     challenge.setActive(true);
-    assert.match($('#quest-question').textContent, /谁|哪里/);
+    assert.match($('#quest-question').textContent, /谁|哪里|哪一组/);
     assert.equal($('#quest-options').children.length, 3);
     for (let level = 0; level < 6; level++) {
       assert.equal(window.__BOMBE_QUEST__().level, level + 1);

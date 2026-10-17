@@ -14,7 +14,7 @@ test('standalone preview ships approved hero and Turing copy in initial HTML', a
   const doc = await page();
   assert.equal(doc.documentElement.lang, 'zh-CN');
   assert.equal(doc.querySelector('h1').textContent.replace(/\s/g, ''), '在读懂机器之前，先听见它所处的战争。');
-  assert.match(doc.body.textContent, /七幕预览/);
+  assert.match(doc.body.textContent, /七幕档案/);
   assert.match(doc.body.textContent, /艾伦·图灵/);
   assert.match(doc.body.textContent, /1936 年，他在关于可计算性的研究中提出抽象机器模型/);
   assert.match(doc.body.textContent, /但它们不是同一台“图灵机器”/);
@@ -57,7 +57,8 @@ test('preview has isolated bundle and accessible responsive CSS', async () => {
 test('build and dev server expose preview narrowly with local schematic and MIME support', async () => {
   const { options } = await import('../build.mjs');
   assert.equal(options.entryPoints.historyPreview, 'src/history-preview.js');
-  assert.equal(options.entryPoints.app, 'src/main.js');
+  assert.equal(options.entryPoints.bootstrap, 'src/bootstrap.js');
+  assert.equal(options.entryPoints.app, undefined);
   const build = await read('build.mjs');
   assert.match(build, /history-preview\.html/);
   assert.match(build, /history-preview\.css/);
@@ -106,7 +107,7 @@ test('complete approved narrative and expandable background ship without control
   for (const id of ['lifeline', 'intercept', 'pioneers', 'constraints', 'intelligence']) assert.ok(doc.querySelector(`#${id} details summary`));
   for (const href of ['/#/', '/#/lab/drums', '/#/challenge']) assert.ok(doc.querySelector(`#onward a[href="${href}"]`));
   assert.match(doc.querySelector('#sources').textContent, /S1/);
-  for (const a of doc.querySelectorAll('a[href^="#"]')) assert.ok(doc.getElementById(a.hash.slice(1)), a.hash);
+  for (const a of doc.querySelectorAll('a[href^="#"]:not([data-page])')) assert.ok(doc.getElementById(a.hash.slice(1)), a.hash);
 });
 
 test('five original local diagrams are labelled and trace hooks never gate text', async () => {

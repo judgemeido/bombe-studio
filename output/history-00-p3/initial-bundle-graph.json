@@ -1,0 +1,19 @@
+{
+  "outputs": [
+    "dist/bootstrap.js",
+    "dist/chunks/chunk-PSBY7LGZ.js",
+    "dist/chunks/chunk-XPUFKDNR.js"
+  ],
+  "inputs": [
+    "src/bootstrap.js",
+    "src/history-loader.js",
+    "src/history-scenes.js",
+    "src/routes.js"
+  ],
+  "dynamicImports": [
+    {
+      "path": "dist/chunks/main-JAZY5KZG.js",
+      "kind": "dynamic-import"
+    }
+  ]
+}

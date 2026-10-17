@@ -1,0 +1,32 @@
+[
+  {
+    "hash": "#/",
+    "page": "exhibit",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "hash": "#/lab/drums",
+    "page": "lab",
+    "scroll": 390,
+    "width": 390
+  },
+  {
+    "hash": "#/lab/wiring",
+    "page": "lab",
+    "scroll": 390,
+    "width": 390
+  },
+  {
+    "hash": "#/challenge",
+    "page": "challenge",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "hash": "#/history",
+    "page": "history",
+    "scroll": 375,
+    "width": 375
+  }
+]

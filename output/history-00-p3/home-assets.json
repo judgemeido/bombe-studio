@@ -1,0 +1,253 @@
+{
+  "assets": [
+    {
+      "id": "de8daf050cf8d595",
+      "kind": "stylesheet",
+      "name": "styles.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "link"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 30840,
+          "property": "href"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/styles.css"
+    },
+    {
+      "id": "fcce14e2fa9fbbc3",
+      "kind": "stylesheet",
+      "name": "history-preview.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "link"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 30841,
+          "property": "href"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/history-preview.css"
+    },
+    {
+      "id": "3523f5ca03277efc",
+      "kind": "stylesheet",
+      "name": "lab.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "link"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 30842,
+          "property": "href"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/lab.css"
+    },
+    {
+      "id": "0f8cd45638fd0f30",
+      "kind": "stylesheet",
+      "name": "challenge.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "link"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 30843,
+          "property": "href"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/challenge.css"
+    },
+    {
+      "id": "17fed0668c5d292f",
+      "kind": "script",
+      "name": "bootstrap.js",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "script"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 30844,
+          "property": "src"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/dist/bootstrap.js"
+    },
+    {
+      "id": "0aefe3b9d5cbd4a5",
+      "kind": "image",
+      "name": "atlantic-aquila-1941.jpg",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "img"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 30904,
+          "property": "src"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/assets/history/atlantic-aquila-1941.jpg"
+    },
+    {
+      "id": "b3f81796493ebc4a",
+      "kind": "image",
+      "name": "atlantic-schematic.svg",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "img"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 30911,
+          "property": "src"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/assets/history/atlantic-schematic.svg"
+    },
+    {
+      "id": "341cdec656ace0cf",
+      "kind": "script",
+      "name": "chunk-PSBY7LGZ.js",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "script"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/dist/chunks/chunk-PSBY7LGZ.js"
+    },
+    {
+      "id": "ec42c6902ca23378",
+      "kind": "script",
+      "name": "chunk-XPUFKDNR.js",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "script"
+        }
+      ],
+      "url": "http://127.0.0.1:4182/dist/chunks/chunk-XPUFKDNR.js"
+    }
+  ],
+  "id": "9cdf061f-fea9-48b2-a09c-2080cff6a609",
+  "inlineSvgs": [
+    {
+      "id": "cfb2d3e399ee6c92",
+      "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 600 300\" role=\"img\" aria-labelledby=\"intercept-relay-title intercept-relay-desc\"><title id=\"intercept-relay-title\">原创截获关系示意</title><desc id=\"intercept-relay-desc\">发送端经无线电传播，截收端收到尚不可读的内容；不复刻真实报文。</desc><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n      <path class=\"diagram-trace\" pathLength=\"1\" d=\"M65 240V90m-30 40 30-40 30 40M40 240h50M65 140h80m0 0q60-100 120 0t120 0 120 0M145 170q60-100 120 0t120 0 120 0M145 200q60-100 120 0t120 0 120 0M510 80h50v160h-50z\"></path><circle cx=\"535\" cy=\"110\" r=\"8\"></circle>\n      <path d=\"M523 147h24m-24 16h24m-24 16h24m-24 16h24\"></path></g></svg>",
+      "name": "原创截获关系示意"
+    },
+    {
+      "id": "32f244564056b413",
+      "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 600 300\" role=\"img\" aria-labelledby=\"pioneers-relay-title pioneers-relay-desc\"><title id=\"pioneers-relay-title\">原创知识接力示意</title><desc id=\"pioneers-relay-desc\">1932 年波兰突破，1939 年 7 月向英国和法国分享成果，随后进入英国战时研究。箭头是知识传递，不是旅行路径。</desc><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n      <path class=\"diagram-trace\" pathLength=\"1\" d=\"M65 90h80v120H65zm12 15h55m-55 20h55m-55 20h40M145 150h90m-12-12 12 12-12 12M235 65h125v170H235zm15 20h95m-95 25h95m-95 25h65M360 150h85m-12-12 12 12-12 12M445 95h90v110h-90zM460 115h60m-60 20h60m-60 20h40\"></path></g></svg>",
+      "name": "原创知识接力示意"
+    },
+    {
+      "id": "14be268551926a36",
+      "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 600 300\" role=\"img\" aria-labelledby=\"constraint-loop-title constraint-loop-desc\"><title id=\"constraint-loop-title\">原创逻辑环与候选检查示意</title><desc id=\"constraint-loop-desc\">猜测片段组织成约束，排除矛盾后检查候选。线条只表达逻辑关系，不是完整电路仿真。</desc><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n      <path class=\"diagram-trace\" pathLength=\"1\" d=\"M170 70h260v160H170zM170 150H70m360 0h100M300 70V35m0 195v35M205 105l190 90m0-90-190 90\"></path><circle cx=\"170\" cy=\"70\" r=\"16\"></circle><circle cx=\"430\" cy=\"70\" r=\"16\"></circle><circle cx=\"170\" cy=\"230\" r=\"16\"></circle><circle cx=\"430\" cy=\"230\" r=\"16\"></circle>\n      <path d=\"m495 132 14 14 25-30M58 138l24 24m0-24-24 24\"></path></g></svg>",
+      "name": "原创逻辑环与候选检查示意"
+    },
+    {
+      "id": "f0b9320091cf67a0",
+      "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 600 300\" role=\"img\" aria-labelledby=\"intelligence-chain-title intelligence-chain-desc\"><title id=\"intelligence-chain-title\">原创情报工作链条</title><desc id=\"intelligence-chain-desc\">截收、分析、搜索、检查、解读、传递、判断；各环节并不保证成功或及时完成。</desc><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n      <path class=\"diagram-trace\" pathLength=\"1\" d=\"M60 150h480m-15-12 15 12-15 12\"></path><circle cx=\"60\" cy=\"150\" r=\"14\"></circle>\n      <path d=\"M60 115V80m0 105v35\"></path><circle cx=\"140\" cy=\"150\" r=\"14\"></circle>\n      <path d=\"M140 115V80m0 105v35\"></path><circle cx=\"220\" cy=\"150\" r=\"14\"></circle>\n      <path d=\"M220 115V80m0 105v35\"></path><circle cx=\"300\" cy=\"150\" r=\"14\"></circle>\n      <path d=\"M300 115V80m0 105v35\"></path><circle cx=\"380\" cy=\"150\" r=\"14\"></circle>\n      <path d=\"M380 115V80m0 105v35\"></path><circle cx=\"460\" cy=\"150\" r=\"14\"></circle>\n      <path d=\"M460 115V80m0 105v35\"></path><circle cx=\"540\" cy=\"150\" r=\"14\"></circle>\n      <path d=\"M540 115V80m0 105v35\"></path></g></svg>",
+      "name": "原创情报工作链条"
+    },
+    {
+      "id": "bd968033b684601a",
+      "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 600 300\" role=\"img\" aria-labelledby=\"bombe-outline-title bombe-outline-desc\"><title id=\"bombe-outline-title\">原创 Bombe 轮廓</title><desc id=\"bombe-outline-desc\">以鼓轮阵列与机柜轮廓表达机器形态；非战时照片，也不是完整机械结构图。</desc><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n      <path class=\"diagram-trace\" pathLength=\"1\" d=\"M100 30h400v240H100zM120 250h360M140 270v15m320-15v15M120 50h360v180H120z\"></path><circle cx=\"160\" cy=\"85\" r=\"22\"></circle><circle cx=\"160\" cy=\"85\" r=\"8\"></circle>\n      <path d=\"M160 63v10\"></path><circle cx=\"230\" cy=\"85\" r=\"22\"></circle><circle cx=\"230\" cy=\"85\" r=\"8\"></circle>\n      <path d=\"M230 63v10\"></path><circle cx=\"300\" cy=\"85\" r=\"22\"></circle><circle cx=\"300\" cy=\"85\" r=\"8\"></circle>\n      <path d=\"M300 63v10\"></path><circle cx=\"370\" cy=\"85\" r=\"22\"></circle><circle cx=\"370\" cy=\"85\" r=\"8\"></circle>\n      <path d=\"M370 63v10\"></path><circle cx=\"440\" cy=\"85\" r=\"22\"></circle><circle cx=\"440\" cy=\"85\" r=\"8\"></circle>\n      <path d=\"M440 63v10\"></path><circle cx=\"160\" cy=\"140\" r=\"22\"></circle><circle cx=\"160\" cy=\"140\" r=\"8\"></circle>\n      <path d=\"M160 118v10\"></path><circle cx=\"230\" cy=\"140\" r=\"22\"></circle><circle cx=\"230\" cy=\"140\" r=\"8\"></circle>\n      <path d=\"M230 118v10\"></path><circle cx=\"300\" cy=\"140\" r=\"22\"></circle><circle cx=\"300\" cy=\"140\" r=\"8\"></circle>\n      <path d=\"M300 118v10\"></path><circle cx=\"370\" cy=\"140\" r=\"22\"></circle><circle cx=\"370\" cy=\"140\" r=\"8\"></circle>\n      <path d=\"M370 118v10\"></path><circle cx=\"440\" cy=\"140\" r=\"22\"></circle><circle cx=\"440\" cy=\"140\" r=\"8\"></circle>\n      <path d=\"M440 118v10\"></path><circle cx=\"160\" cy=\"195\" r=\"22\"></circle><circle cx=\"160\" cy=\"195\" r=\"8\"></circle>\n      <path d=\"M160 173v10\"></path><circle cx=\"230\" cy=\"195\" r=\"22\"></circle><circle cx=\"230\" cy=\"195\" r=\"8\"></circle>\n      <path d=\"M230 173v10\"></path><circle cx=\"300\" cy=\"195\" r=\"22\"></circle><circle cx=\"300\" cy=\"195\" r=\"8\"></circle>\n      <path d=\"M300 173v10\"></path><circle cx=\"370\" cy=\"195\" r=\"22\"></circle><circle cx=\"370\" cy=\"195\" r=\"8\"></circle>\n      <path d=\"M370 173v10\"></path><circle cx=\"440\" cy=\"195\" r=\"22\"></circle><circle cx=\"440\" cy=\"195\" r=\"8\"></circle>\n      <path d=\"M440 173v10\"></path></g></svg>",
+      "name": "原创 Bombe 轮廓"
+    },
+    {
+      "id": "f23a6bf38e662632",
+      "markup": "<svg class=\"icon-library\" aria-hidden=\"true\"><defs>\n    <symbol id=\"arrow\" viewBox=\"0 0 24 24\"><path d=\"M5 19 19 5M5 5h14v14\"></path></symbol>\n    <symbol id=\"reset-icon\" viewBox=\"0 0 24 24\"><path d=\"M4 10a8 8 0 1 1 1 7M4 4v6h6\"></path></symbol>\n    <symbol id=\"play-icon\" viewBox=\"0 0 24 24\"><path d=\"m8 5 11 7-11 7Z\"></path></symbol>\n    <symbol id=\"cube\" viewBox=\"0 0 24 24\"><path d=\"m12 3 9 5v8l-9 5-9-5V8Zm0 9v9M3 8l9 5 9-5M7 5.8l9 5.4\"></path></symbol>\n    <symbol id=\"expand-icon\" viewBox=\"0 0 24 24\"><path d=\"m3 8 9-5 9 5-9 5Zm0 5 9 5 9-5M3 18l9 5 9-5\"></path></symbol>\n    <symbol id=\"drag\" viewBox=\"0 0 24 24\"><path d=\"M8 11V5a2 2 0 0 1 4 0v6-7a2 2 0 0 1 4 0v8-4a2 2 0 0 1 4 0v7c0 4-2 6-6 6h-2c-2 0-3-1-4-2l-5-6a2 2 0 0 1 3-2l2 2\"></path></symbol>\n  </defs></svg>",
+      "name": "svg-6"
+    },
+    {
+      "id": "79f33aa9447fceae",
+      "markup": "<svg><use href=\"#arrow\"></use></svg>",
+      "name": "svg-7"
+    },
+    {
+      "id": "37f7c84ed3af6e78",
+      "markup": "<svg><use href=\"#arrow\"></use></svg>",
+      "name": "svg-8"
+    },
+    {
+      "id": "cfbb479e2d47efa0",
+      "markup": "<svg><use href=\"#arrow\"></use></svg>",
+      "name": "svg-9"
+    },
+    {
+      "id": "2db4bf5e53260f70",
+      "markup": "<svg><use href=\"#arrow\"></use></svg>",
+      "name": "svg-10"
+    },
+    {
+      "id": "4491512751ff32be",
+      "markup": "<svg><use href=\"#reset-icon\"></use></svg>",
+      "name": "svg-11"
+    },
+    {
+      "id": "8ed870af641550ad",
+      "markup": "<svg><use href=\"#drag\"></use></svg>",
+      "name": "svg-12"
+    },
+    {
+      "id": "20180fd565e07c55",
+      "markup": "<svg><use href=\"#cube\"></use></svg>",
+      "name": "svg-13"
+    },
+    {
+      "id": "a3462fd66182158b",
+      "markup": "<svg><use href=\"#expand-icon\"></use></svg>",
+      "name": "svg-14"
+    },
+    {
+      "id": "8c3a5a355085f4f1",
+      "markup": "<svg><use href=\"#expand-icon\"></use></svg>",
+      "name": "svg-15"
+    },
+    {
+      "id": "17769a2c93ddf638",
+      "markup": "<svg><use href=\"#play-icon\"></use></svg>",
+      "name": "svg-16"
+    },
+    {
+      "id": "c55c1cd911266e7a",
+      "markup": "<svg><use href=\"#arrow\"></use></svg>",
+      "name": "svg-17"
+    },
+    {
+      "id": "9aeae6d5129990d7",
+      "markup": "<svg><use href=\"#arrow\"></use></svg>",
+      "name": "svg-18"
+    }
+  ],
+  "pageUrl": "http://127.0.0.1:4182/",
+  "summary": {
+    "byKind": {
+      "font": 0,
+      "image": 2,
+      "other": 0,
+      "script": 3,
+      "stylesheet": 4,
+      "video": 0
+    },
+    "inlineSvgCount": 18,
+    "totalCount": 9
+  }
+}

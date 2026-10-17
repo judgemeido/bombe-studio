@@ -1,0 +1,20 @@
+✔ history and native anchors do not import application; history owns visibility (11.414ms)
+✔ pending import uses last desired route, does not steal history, creates one factory (3.1701ms)
+✔ direct #/lab/wiring hands initial route to factory (1.4391ms)
+✔ direct #/challenge hands initial route to factory (1.3056ms)
+✔ direct #/ hands initial route to factory (2.3984ms)
+✔ rejected import displays retry and clears failed attempt (4.7249ms)
+✔ modified click is native; disposed pending promise cannot mount (1.997ms)
+✔ bfcache destroys and remounts enhancements, nonpersisted pagehide disposes (1.3952ms)
+✔ initial current is accurate; history metadata/focus, shell inert, scroll restoration (12.9101ms)
+✔ old successful prepare cannot activate over newer route (4.0153ms)
+✔ queued navigation survives earlier prepare rejection and retry repeats failed route (4.5527ms)
+✔ native/modified links, same-history hashes, and disposed preparation remain inert (7.2015ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 447.4829

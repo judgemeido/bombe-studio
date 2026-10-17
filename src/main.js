@@ -4,7 +4,18 @@ import { createStage } from './scene.js';
 import { createTextures } from './textures.js';
 import { NOTES } from './notes.js';
 import { createNavigation } from './navigation.js';
+import { createExhibitRuntime } from './exhibit-runtime.js';
 
+/** Importing this module is inert; bootstrap owns when the application starts.
+ * runtime is an explicit dependency seam for DOM tests without WebGL.
+ */
+export function createApplication({ initialRoute, historyPage, runtime = {} } = {}) {
+const dependencies = {
+  createNavigation, createStage, createProduct, createTextures,
+  createRaycaster: () => new THREE.Raycaster(), createPointer: () => new THREE.Vector2(),
+  loadLab: () => import('./lab.js'), loadChallenge: () => import('./challenge.js'),
+  ...runtime,
+};
 const $ = selector => document.querySelector(selector);
 const canvas = $('#scene'), viewer = $('#viewer'), status = $('#status');
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -16,11 +27,12 @@ const mobileDetail = document.createElement('div'); mobileDetail.className = 'mo
 const mobileNote = document.createElement('button'); mobileNote.className = 'part-card note-trigger'; mobileNote.setAttribute('aria-haspopup', 'dialog'); mobileNote.setAttribute('aria-controls', 'note-dialog');
 mobileDetail.append(mobileNote); $('.parts-section').after(mobileDetail);
 let stage, product, stopped = false, raf = 0, previous = performance.now(), contextLost = false;
-let currentPage = 'exhibit', lab = null, labModule = null, challenge = null, challengeModule = null, navigation;
+let currentPage = historyPage?.currentRoute?.page ?? null, lab = null, challenge = null, navigation;
+let challengeVisited = false;
 on($('.skip-link'), 'click', event => {
   event.preventDefault();
-  const target = currentPage === 'challenge' ? $('#quest-question') : currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
-  target.focus({ preventScroll: true }); target.scrollIntoView({ block: 'nearest' });
+  const target = currentPage === 'history' ? historyPage?.element : currentPage === 'challenge' ? $('#quest-question') : currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
+  target?.focus({ preventScroll: true }); target?.scrollIntoView({ block: 'nearest' });
 });
 
 function recordFor(id) { return id ? { ...PARTS.find(p => p.id === id), ...NOTES[id] } : NOTES.overview; }
@@ -124,31 +136,63 @@ on(window, 'keydown', event => {
 });
 on(motion, 'change', () => { state.running = false; setExplode(state.target); sync(); announce('已应用系统动态效果偏好。'); });
 
-try {
-  stage = createStage(canvas, viewer); product = createProduct({ textures: createTextures() }); stage.scene.add(product.root);
-  on(stage.controls, 'start', () => { state.follow = false; });
-  $('#loading').hidden = true; frameCamera(true); sync();
+// All whole-machine allocations and listeners belong to this lazy transaction.
+const exhibitRuntime = createExhibitRuntime(({ own, check }) => {
+  const nextStage = own(dependencies.createStage(canvas, viewer));
+  const textures = dependencies.createTextures();
+  let nextProduct;
+  try { nextProduct = dependencies.createProduct({ textures }); }
+  catch (error) { new Set(Object.values(textures)).forEach(texture => texture?.dispose()); throw error; }
+  own(nextProduct); nextStage.scene.add(nextProduct.root);
+  const raycaster = dependencies.createRaycaster(), pointer = dependencies.createPointer();
+  check(); stage = nextStage; product = nextProduct;
+  own(() => { stage = product = null; });
+  function listen(element, type, handler) {
+    element.addEventListener(type, handler);
+    own(() => element.removeEventListener(type, handler));
+  }
+  listen(stage.controls, 'start', () => { state.follow = false; });
+  let down = null;
+  listen(canvas, 'pointerdown', event => { down = { x: event.clientX, y: event.clientY }; });
+  listen(canvas, 'pointercancel', () => { down = null; });
+  listen(canvas, 'pointerup', event => {
+    if (!down || !stage || !product || Math.hypot(event.clientX - down.x, event.clientY - down.y) > 5) { down = null; return; }
+    down = null; const r = canvas.getBoundingClientRect(); pointer.set((event.clientX - r.left) / r.width * 2 - 1, -(event.clientY - r.top) / r.height * 2 + 1);
+    raycaster.setFromCamera(pointer, stage.camera); const hit = raycaster.intersectObjects(product.parts.filter(part => part.visible), true)[0];
+    if (!hit) { selectPart(null, false); return; }
+    let parent = hit.object; while (parent && !parent.userData.partId) parent = parent.parent;
+    if (parent) selectPart(parent.userData.partId, false);
+  });
+  listen(canvas, 'webglcontextlost', event => { event.preventDefault(); contextLost = true; $('#error-state').hidden = false; $('#error-state h3').textContent = '三维画面已暂停'; $('#error-state p').textContent = '正在等待图形上下文恢复，你仍可阅读展品档案。'; announce('三维画面暂时中断。'); });
+  listen(canvas, 'webglcontextrestored', () => { contextLost = false; $('#error-state').hidden = true; announce('三维画面已恢复。'); });
+  $('#loading').hidden = true; $('#error-state').hidden = true; sync();
   announce('展品已就绪。点击目录或模型时，才会显示部件标记。');
-} catch (error) {
-  $('#loading').hidden = true; $('#error-state').hidden = false; $('#hotspot').hidden = true;
-  stage?.dispose(); stage = null; product?.dispose(); product = null;
-  ['#explode', '#explode-range', '#run', '#zoom-in', '#zoom-out', '#reset', '#overview'].forEach(s => $(s).disabled = true);
-  document.querySelectorAll('[data-view]').forEach(b => b.disabled = true);
-  announce('三维场景暂不可用，可继续阅读结构笔记与展品档案。'); console.error(error);
-}
-const raycaster = new THREE.Raycaster(), pointer = new THREE.Vector2(); let down = null;
-on(canvas, 'pointerdown', event => { down = { x: event.clientX, y: event.clientY }; });
-on(canvas, 'pointercancel', () => { down = null; });
-on(canvas, 'pointerup', event => {
-  if (!down || !stage || !product || Math.hypot(event.clientX - down.x, event.clientY - down.y) > 5) { down = null; return; }
-  down = null; const r = canvas.getBoundingClientRect(); pointer.set((event.clientX - r.left) / r.width * 2 - 1, -(event.clientY - r.top) / r.height * 2 + 1);
-  raycaster.setFromCamera(pointer, stage.camera); const hit = raycaster.intersectObjects(product.parts.filter(part => part.visible), true)[0];
-  if (!hit) { selectPart(null, false); return; }
-  let parent = hit.object; while (parent && !parent.userData.partId) parent = parent.parent;
-  if (parent) selectPart(parent.userData.partId, false);
 });
-on(canvas, 'webglcontextlost', event => { event.preventDefault(); contextLost = true; $('#error-state').hidden = false; $('#error-state h3').textContent = '三维画面已暂停'; $('#error-state p').textContent = '正在等待图形上下文恢复，你仍可阅读展品档案。'; announce('三维画面暂时中断。'); });
-on(canvas, 'webglcontextrestored', () => { contextLost = false; $('#error-state').hidden = true; announce('三维画面已恢复。'); });
+let exhibitRequest = null;
+function ensureExhibit() {
+  if (!exhibitRequest) exhibitRequest = exhibitRuntime.ensure().catch(error => {
+    exhibitRequest = null;
+    if (!stopped) {
+      $('#loading').hidden = true; $('#error-state').hidden = false; $('#hotspot').hidden = true;
+      announce('三维场景暂不可用，可继续阅读结构笔记与展品档案；请重试载入。');
+    }
+    throw error;
+  });
+  return exhibitRequest;
+}
+// check after module loading prevents constructors running after application disposal;
+// own also releases controllers that finish an in-flight constructor after disposal.
+const labRuntime = createExhibitRuntime(async ({ own, check }) => {
+  const module = await dependencies.loadLab(); check();
+  const instance = own(await module.createLab($('#lab-page'), { motion, progress: (...args) => { if (!stopped) labReport(...args); } }));
+  check(); lab = instance; return instance;
+});
+const challengeRuntime = createExhibitRuntime(async ({ own, check }) => {
+  const module = await dependencies.loadChallenge(); check();
+  const instance = own(await module.createChallenge($('#challenge-page'), { motion, progress: (...args) => { if (!stopped) challengeReport(...args); } }));
+  check(); challenge = instance; return instance;
+});
+let labReport = () => {}, challengeReport = () => {};
 
 function frame(now) {
   if (stopped) return;
@@ -173,39 +217,54 @@ function frame(now) {
   }
   raf = requestAnimationFrame(frame);
 }
-function dispose() { if (stopped) return; stopped = true; cancelAnimationFrame(raf); navigation?.dispose(); lab?.dispose(); challenge?.dispose(); cleanups.forEach(fn => fn()); product?.dispose(); stage?.dispose(); delete window.__BOMBE_INSPECT__; }
+function dispose() {
+  if (stopped) return; stopped = true; cancelAnimationFrame(raf); navigation?.dispose();
+  labRuntime.dispose(); challengeRuntime.dispose(); exhibitRuntime.dispose();
+  cleanups.forEach(fn => fn()); mobileDetail.remove(); delete window.__BOMBE_INSPECT__;
+}
 on(window, 'pagehide', event => { if (!event.persisted) dispose(); });
-window.__BOMBE_INSPECT__ = () => ({ ...state, page: currentPage, navigating: navigation?.busy || false, phase: product?.phase, drums: product?.drumCount, reducedMotion: motion.matches, calls: stage?.renderer.info.render.calls, triangles: stage?.renderer.info.render.triangles, geometries: stage?.renderer.info.memory.geometries, textures: stage?.renderer.info.memory.textures, camera: stage?.camera.position.toArray(), cameraTarget: stage?.controls.target.toArray(), ready: Boolean(stage && product), contextLost });
+window.__BOMBE_INSPECT__ = () => ({ ...state, page: currentPage, navigating: navigation?.busy || false, phase: product?.phase, drums: product?.drumCount, reducedMotion: motion.matches, calls: stage?.renderer?.info.render.calls, triangles: stage?.renderer?.info.render.triangles, geometries: stage?.renderer?.info.memory.geometries, textures: stage?.renderer?.info.memory.textures, camera: stage?.camera?.position.toArray(), cameraTarget: stage?.controls.target?.toArray(), ready: Boolean(stage && product), contextLost });
 updateNotes(); sync(); raf = requestAnimationFrame(frame);
-navigation = createNavigation({
+navigation = dependencies.createNavigation({
+  initialRoute,
+  currentRoute: historyPage?.currentRoute ?? null,
+  initialScrolls: { history: historyPage?.scrollY ?? 0 },
   motion,
-  pause() { lab?.setActive(false); challenge?.setActive(false); for (const page of ['exhibit', 'lab', 'challenge']) $(`#${page}-page`).inert = true; },
-  async prepare(route, report) {
+  pause() { lab?.setActive(false); challenge?.setActive(false); },
+  async prepare(route, report = () => {}) {
+    if (stopped) return;
+    if (route.page === 'history') return;
     if (route.page === 'lab') {
-      report(26, '载入可运行的信号回路'); labModule ||= import('./lab.js');
-      let module; try { module = await labModule; } catch (error) { labModule = null; throw error; }
-      for (const page of ['exhibit', 'lab', 'challenge']) $(`#${page}-page`).hidden = page !== 'lab';
-      if (!lab) lab = await module.createLab($('#lab-page'), { motion, progress: report });
-      else report(78, '恢复教学模型与实验记录');
-      lab.setTopic(route.topic); lab.setActive(true);
+      report(26, '载入可运行的信号回路'); labReport = report;
+      await labRuntime.ensure();
+      if (!stopped) report(78, '教学模型与实验记录已准备');
     } else if (route.page === 'challenge') {
-      report(26, '载入小小解密员的六关任务'); challengeModule ||= import('./challenge.js');
-      let module; try { module = await challengeModule; } catch (error) { challengeModule = null; throw error; }
-      for (const page of ['exhibit', 'lab', 'challenge']) $(`#${page}-page`).hidden = page !== 'challenge';
-      if (!challenge) challenge = await module.createChallenge($('#challenge-page'), { motion, progress: report });
-      else { challenge.startNewRound(); report(78, '新题与教学模型已准备'); }
-      challenge.setActive(true);
+      report(26, '载入小小解密员的六关任务'); challengeReport = report;
+      await challengeRuntime.ensure();
+      if (!stopped) report(78, '任务与教学模型已准备');
     } else {
-      report(52, '恢复展品与拆解状态'); for (const page of ['exhibit', 'lab', 'challenge']) $(`#${page}-page`).hidden = page !== 'exhibit';
-      stage?.resize(); frameCamera(true); report(78, '准备整机视角');
+      report(52, '准备展品与拆解状态'); await ensureExhibit();
+      if (!stopped) report(78, '准备整机视角');
     }
   },
   activate(route) {
+    if (stopped) return;
+    const previousPage = currentPage;
     currentPage = route.page;
-    for (const page of ['exhibit', 'lab', 'challenge']) { $(`#${page}-page`).hidden = route.page !== page; $(`#${page}-page`).inert = route.page !== page; }
-    $('#archive-open').hidden = route.page !== 'exhibit'; document.body.dataset.page = route.page;
-    $('.skip-link').href = route.page === 'challenge' ? '#quest-question' : route.page === 'lab' ? '#lab-keyboard' : '#controls';
-    $('.skip-link').textContent = route.page === 'challenge' ? '跳至本关任务' : route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';
+    if (route.page === 'history') historyPage?.activate(); else historyPage?.deactivate();
+    // Root visibility/inert belongs exclusively to navigation, never preparation.
+    $('#archive-open').hidden = route.page !== 'exhibit';
+    const skip = $('.skip-link');
+    skip.href = route.page === 'history' ? '#hero-title' : route.page === 'challenge' ? '#quest-question' : route.page === 'lab' ? '#lab-keyboard' : '#controls';
+    skip.textContent = route.page === 'history' ? '跳至战时序章' : route.page === 'challenge' ? '跳至本关任务' : route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';
+    if (route.page === 'lab') lab?.setTopic(route.topic);
+    if (route.page === 'challenge') {
+      if (challengeVisited && previousPage !== 'challenge') challenge?.startNewRound();
+      challengeVisited = true;
+    }
     lab?.setActive(route.page === 'lab'); challenge?.setActive(route.page === 'challenge');
+    if (route.page === 'exhibit') { stage?.resize(); frameCamera(true); sync(); }
   },
 });
+return { go(route) { if (!stopped) return navigation.go(route); }, dispose };
+}
