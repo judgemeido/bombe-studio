@@ -1,0 +1,18 @@
+{
+  "name": "bombe-mission-film",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "remotion render src/index.jsx Arrival ../../assets/mission/arrival.mp4 --codec=h264 --crf=22 --concurrency=2 --gl=angle --log=error",
+    "still": "remotion still src/index.jsx Arrival ../../output/mission/film-still.png --frame=180 --gl=angle"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.536",
+    "@remotion/three": "4.0.536",
+    "@react-three/fiber": "9.4.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.536",
+    "three": "0.180.0"
+  }
+}

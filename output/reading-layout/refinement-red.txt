@@ -1,0 +1,865 @@
+✔ mobile history index is a contained single-row scroller rather than a tall grid (0.8481ms)
+✔ editorial headings balance Chinese line endings and responsive header has explicit tracks (0.1554ms)
+✔ history stylesheet still compiles without warnings (50.1294ms)
+✔ all seven rooms share one editorial left rail including nested first room and Turing (0.2505ms)
+✖ archive photos preserve natural proportions within a height ceiling (0.9322ms)
+✔ side galleries occupy the second editorial column and portrait has its own width cap (0.1979ms)
+✖ editorial groups avoid stretched title rows and oversized caption reserves (0.5581ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 5
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 138.2259
+
+✖ failing tests:
+
+test at tests\history-layout.test.mjs:23:1
+✖ archive photos preserve natural proportions within a height ceiling (0.9322ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /\[data-gallery-slide\] img\s*\{[^}]*height:\s*auto[^}]*max-height:\s*var\(--archive-image-height\)[^}]*object-fit:\s*contain/s. Input:
+
+  ':where([data-history-preview]) {\r\n' +
+    '  color-scheme: dark;\r\n' +
+    '  --sea:#142633;\r\n' +
+    '  --paper:#E4E7E2;\r\n' +
+    '  --green:#52614D;\r\n' +
+    '  --brass:#B69A67;\r\n' +
+    '  --muted:#b8c4ca;\r\n' +
+    '  --ink:#20313a;\r\n' +
+    '  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC","STSong","SimSun",Georgia,serif;\r\n' +
+    '  --sans:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) * {\r\n' +
+    '  box-sizing: border-box;\r\n' +
+    '}\r\n' +
+    'body[data-page="history"], body[data-history-preview] {\r\n' +
+    '  scroll-behavior: smooth;\r\n' +
+    '  scroll-padding-top: 2rem;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) {\r\n' +
+    '  margin: 0;\r\n' +
+    '  background: var(--sea);\r\n' +
+    '  color: var(--paper);\r\n' +
+    '  font-family: var(--sans);\r\n' +
+    '  -webkit-font-smoothing: antialiased;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) a {\r\n' +
+    '  color: inherit;\r\n' +
+    '  text-underline-offset: .25em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) a:hover {\r\n' +
+    '  text-decoration-thickness: 2px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) a:focus-visible,\r\n' +
+    ':where([data-history-preview]) summary:focus-visible {\r\n' +
+    '  outline: 3px solid currentColor;\r\n' +
+    '  outline-offset: 6px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) img {\r\n' +
+    '  display: block;\r\n' +
+    '  max-width: 100%;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) figure,\r\n' +
+    ':where([data-history-preview]) h1,\r\n' +
+    ':where([data-history-preview]) h2,\r\n' +
+    ':where([data-history-preview]) h3,\r\n' +
+    ':where([data-history-preview]) p {\r\n' +
+    '  margin: 0;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .skip-content {\r\n' +
+    '  position: absolute;\r\n' +
+    '  top: -6rem;\r\n' +
+    '  left: 1rem;\r\n' +
+    '  z-index: 10;\r\n' +
+    '  padding: 1rem;\r\n' +
+    '  color: var(--sea);\r\n' +
+    '  background: var(--paper);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .skip-content:focus {\r\n' +
+    '  top: 1rem;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .masthead {\r\n' +
+    '  padding: 25px 4.5%;\r\n' +
+    '  display: flex;\r\n' +
+    '  align-items: center;\r\n' +
+    '  justify-content: space-between;\r\n' +
+    '  gap: 20px;\r\n' +
+    '  border-bottom: 1px solid #e4e7e22b;\r\n' +
+    '  font-size: 14px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .brand {\r\n' +
+    '  display: flex;\r\n' +
+    '  align-items: center;\r\n' +
+    '  gap: 12px;\r\n' +
+    '  text-decoration: none;\r\n' +
+    '  font-family: var(--serif);\r\n' +
+    '  font-size: 21px;\r\n' +
+    '  letter-spacing: .13em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .brand-mark {\r\n' +
+    '  border: 1px solid var(--brass);\r\n' +
+    '  padding: 3px 7px 5px;\r\n' +
+    '  color: var(--brass);\r\n' +
+    '  font-size: 23px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .edition {\r\n' +
+    '  display: flex;\r\n' +
+    '  align-items: center;\r\n' +
+    '  gap: 18px;\r\n' +
+    '  color: var(--muted);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .sample-label {\r\n' +
+    '  padding: 5px 9px;\r\n' +
+    '  border: 1px solid #e4e7e244;\r\n' +
+    '  font-size: 12px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .header-skip {\r\n' +
+    '  text-decoration: none;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .header-skip span {\r\n' +
+    '  margin-left: 15px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero {\r\n' +
+    '  position: relative;\r\n' +
+    '  display: grid;\r\n' +
+    '  grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);\r\n' +
+    '  column-gap: 4%;\r\n' +
+    '  padding: 70px 4.5% 0;\r\n' +
+    '  isolation: isolate;\r\n' +
+    '  overflow: hidden;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-index {\r\n' +
+    '  position: absolute;\r\n' +
+    '  top: 48px;\r\n' +
+    '  left: 2%;\r\n' +
+    '  z-index: -1;\r\n' +
+    '  color: #e4e7e20c;\r\n' +
+    '  font: 260px/1 Georgia, serif;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-index span {\r\n' +
+    '  display: none;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-copy {\r\n' +
+    '  padding: 20px 0 45px 4%;\r\n' +
+    '  position: relative;\r\n' +
+    '  z-index: 2;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .chapter-kicker {\r\n' +
+    '  font-size: 13px;\r\n' +
+    '  letter-spacing: .13em;\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero .chapter-kicker {\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  margin-bottom: 28px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) h1 {\r\n' +
+    '  font: 500 clamp(42px, 4.5vw, 76px)/1.28 var(--serif);\r\n' +
+    '  letter-spacing: -.045em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-intro {\r\n' +
+    '  margin-top: 34px;\r\n' +
+    '  font-size: 17px;\r\n' +
+    '  line-height: 1.95;\r\n' +
+    '  color: #ced6d8;\r\n' +
+    '  max-width: 32em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-actions {\r\n' +
+    '  display: flex;\r\n' +
+    '  flex-wrap: wrap;\r\n' +
+    '  align-items: center;\r\n' +
+    '  gap: 25px;\r\n' +
+    '  margin-top: 34px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .primary-link {\r\n' +
+    '  display: inline-flex;\r\n' +
+    '  justify-content: space-between;\r\n' +
+    '  gap: 30px;\r\n' +
+    '  padding: 16px 22px;\r\n' +
+    '  background: var(--paper);\r\n' +
+    '  color: var(--sea);\r\n' +
+    '  text-decoration: none;\r\n' +
+    '  font-size: 15px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .primary-link:hover {\r\n' +
+    '  background: #fff;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .reading-link {\r\n' +
+    '  font-size: 15px;\r\n' +
+    '  text-decoration: none;\r\n' +
+    '  border-bottom: 1px solid #b69a6777;\r\n' +
+    '  padding: 10px 0;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .reading-link span {\r\n' +
+    '  margin-left: 15px;\r\n' +
+    '  color: var(--brass);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .reading-note {\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  margin-top: 24px;\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-window {\r\n' +
+    '  margin-top: 56px;\r\n' +
+    '  position: relative;\r\n' +
+    '  align-self: start;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-photo {\r\n' +
+    '  position: relative;\r\n' +
+    '  background: #233b4a;\r\n' +
+    '  aspect-ratio: 1.2;\r\n' +
+    '  overflow: hidden;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-photo::after {\r\n' +
+    '  content: "";\r\n' +
+    '  position: absolute;\r\n' +
+    '  inset: 0;\r\n' +
+    '  pointer-events: none;\r\n' +
+    '  background:\r\n' +
+    '    linear-gradient(\r\n' +
+    '      180deg,\r\n' +
+    '      #14263305 55%,\r\n' +
+    '      #142633c9);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-photo img {\r\n' +
+    '  width: 100%;\r\n' +
+    '  height: 100%;\r\n' +
+    '  object-fit: cover;\r\n' +
+    '  object-position: 50% 52%;\r\n' +
+    '  filter: grayscale(1) contrast(1.06);\r\n' +
+    '  animation: ocean-reveal 1.1s ease-out both;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .photo-date {\r\n' +
+    '  position: absolute;\r\n' +
+    '  top: 22px;\r\n' +
+    '  left: 22px;\r\n' +
+    '  padding: 9px 12px;\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  line-height: 1.7;\r\n' +
+    '  background: #142633e8;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .photo-date b {\r\n' +
+    '  font-family: Georgia, serif;\r\n' +
+    '  font-size: 22px;\r\n' +
+    '  font-weight: normal;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .photo-id {\r\n' +
+    '  position: absolute;\r\n' +
+    '  z-index: 1;\r\n' +
+    '  bottom: 22px;\r\n' +
+    '  right: 22px;\r\n' +
+    '  font-size: 11px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-window figcaption {\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  line-height: 1.85;\r\n' +
+    '  padding: 12px 0;\r\n' +
+    '  max-width: 42em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-window figcaption a {\r\n' +
+    '  white-space: nowrap;\r\n' +
+    '  margin-left: 8px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-note {\r\n' +
+    '  grid-column: 2;\r\n' +
+    '  width: 80%;\r\n' +
+    '  margin: -10px 0 0 auto;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-note img {\r\n' +
+    '  width: 100%;\r\n' +
+    '  height: auto;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-note p {\r\n' +
+    '  font-size: 11px;\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '  margin: 8px 0 24px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .archive-status {\r\n' +
+    '  grid-column: 1/-1;\r\n' +
+    '  display: flex;\r\n' +
+    '  align-items: center;\r\n' +
+    '  gap: 10px;\r\n' +
+    '  padding: 18px 0;\r\n' +
+    '  border-top: 1px solid #e4e7e22b;\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  position: relative;\r\n' +
+    '  overflow: hidden;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .status-dot {\r\n' +
+    '  width: 6px;\r\n' +
+    '  height: 6px;\r\n' +
+    '  border: 1px solid var(--brass);\r\n' +
+    '  transform: rotate(45deg);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .status-index {\r\n' +
+    '  margin-left: auto;\r\n' +
+    '  letter-spacing: .16em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) [data-load-state=loading] .archive-status::after {\r\n' +
+    '  content: "";\r\n' +
+    '  position: absolute;\r\n' +
+    '  top: 0;\r\n' +
+    '  left: 0;\r\n' +
+    '  width: 24%;\r\n' +
+    '  height: 1px;\r\n' +
+    '  background: var(--brass);\r\n' +
+    '  animation: archive-scan 1.8s linear infinite;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .no-script {\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  padding: 10px 0;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .turing {\r\n' +
+    '  background: var(--paper);\r\n' +
+    '  color: var(--ink);\r\n' +
+    '  padding: 76px 8% 36px;\r\n' +
+    '  display: grid;\r\n' +
+    '  grid-template-columns: minmax(0, .95fr) minmax(0, 1fr);\r\n' +
+    '  gap: 40px 9%;\r\n' +
+    '  color-scheme: light;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-heading {\r\n' +
+    '  grid-column: 1/-1;\r\n' +
+    '  display: flex;\r\n' +
+    '  gap: 35px;\r\n' +
+    '  align-items: center;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-index {\r\n' +
+    '  color: var(--green);\r\n' +
+    '  font: 100px/.85 Georgia, serif;\r\n' +
+    '  letter-spacing: -.08em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-heading h2 {\r\n' +
+    '  font: 500 clamp(34px, 3.4vw, 54px)/1.5 var(--serif);\r\n' +
+    '  letter-spacing: .12em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-heading .chapter-kicker {\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  color: #52614D;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .english-name {\r\n' +
+    '  font: 20px/1.5 Georgia, serif;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-placeholder {\r\n' +
+    '  background: #d3d8cf;\r\n' +
+    '  padding: 25px 30px 18px;\r\n' +
+    '  margin-top: 20px;\r\n' +
+    '  align-self: start;\r\n' +
+    '  border-top: 3px solid var(--green);\r\n' +
+    '  position: relative;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .paper-registration {\r\n' +
+    '  display: flex;\r\n' +
+    '  justify-content: space-between;\r\n' +
+    '  gap: 10px;\r\n' +
+    '  color: #4c5c53;\r\n' +
+    '  font-size: 11px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .name-study {\r\n' +
+    '  padding: 50px 0 35px;\r\n' +
+    '  font-family:\r\n' +
+    '    Georgia,\r\n' +
+    '    "Times New Roman",\r\n' +
+    '    serif;\r\n' +
+    '  line-height: 1.04;\r\n' +
+    '  letter-spacing: -.06em;\r\n' +
+    '  color: #52614D;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .name-study span {\r\n' +
+    '  display: block;\r\n' +
+    '  font-size: clamp(38px, 5.5vw, 87px);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .name-study span:nth-child(2) {\r\n' +
+    '  font-size: clamp(28px, 3.3vw, 52px);\r\n' +
+    '  font-style: italic;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .name-study strong {\r\n' +
+    '  display: block;\r\n' +
+    '  font-size: clamp(56px, 7.5vw, 118px);\r\n' +
+    '  font-weight: normal;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-reservation {\r\n' +
+    '  border-top: 1px solid #52614D66;\r\n' +
+    '  padding: 22px 0 30px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .reservation-mark {\r\n' +
+    '  float: right;\r\n' +
+    '  font-size: 26px;\r\n' +
+    '  font-weight: 300;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-reservation strong {\r\n' +
+    '  font-weight: 500;\r\n' +
+    '  font-size: 16px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-reservation p {\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  line-height: 1.9;\r\n' +
+    '  margin-top: 10px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-placeholder figcaption {\r\n' +
+    '  border-top: 1px solid #52614D44;\r\n' +
+    '  padding-top: 12px;\r\n' +
+    '  font-size: 10px;\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '  color: #4c5c53;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-copy {\r\n' +
+    '  padding-top: 20px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-role {\r\n' +
+    '  color: #52614D;\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-copy h3 {\r\n' +
+    '  font: 500 clamp(30px, 2.9vw, 44px)/1.5 var(--serif);\r\n' +
+    '  margin: 22px 0 24px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-copy > p:not(.person-role) {\r\n' +
+    '  font-size'... 30964 more characters
+
+      at TestContext.<anonymous> (file:///C:/Codex/city/bombe-studio/tests/history-layout.test.mjs:25:9)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: ':where([data-history-preview]) {\r\n  color-scheme: dark;\r\n  --sea:#142633;\r\n  --paper:#E4E7E2;\r\n  --green:#52614D;\r\n  --brass:#B69A67;\r\n  --muted:#b8c4ca;\r\n  --ink:#20313a;\r\n  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC","STSong","SimSun",Georgia,serif;\r\n  --sans:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;\r\n}\r\n:where([data-history-preview]) * {\r\n  box-sizing: border-box;\r\n}\r\nbody[data-page="history"], body[data-history-preview] {\r\n  scroll-behavior: smooth;\r\n  scroll-padding-top: 2rem;\r\n}\r\n:where([data-history-preview]) {\r\n  margin: 0;\r\n  background: var(--sea);\r\n  color: var(--paper);\r\n  font-family: var(--sans);\r\n  -webkit-font-smoothing: antialiased;\r\n}\r\n:where([data-history-preview]) a {\r\n  color: inherit;\r\n  text-underline-offset: .25em;\r\n}\r\n:where([data-history-preview]) a:hover {\r\n  text-decoration-thickness: 2px;\r\n}\r\n:where([data-history-preview]) a:focus-visible,\r\n:where([data-history-preview]) summary:focus-visible {\r\n  outline: 3px solid currentColor;\r\n  outline-offset: 6px;\r\n}\r\n:where([data-history-preview]) img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n:where([data-history-preview]) figure,\r\n:where([data-history-preview]) h1,\r\n:where([data-history-preview]) h2,\r\n:where([data-history-preview]) h3,\r\n:where([data-history-preview]) p {\r\n  margin: 0;\r\n}\r\n:where([data-history-preview]) .skip-content {\r\n  position: absolute;\r\n  top: -6rem;\r\n  left: 1rem;\r\n  z-index: 10;\r\n  padding: 1rem;\r\n  color: var(--sea);\r\n  background: var(--paper);\r\n}\r\n:where([data-history-preview]) .skip-content:focus {\r\n  top: 1rem;\r\n}\r\n:where([data-history-preview]) .masthead {\r\n  padding: 25px 4.5%;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  gap: 20px;\r\n  border-bottom: 1px solid #e4e7e22b;\r\n  font-size: 14px;\r\n}\r\n:where([data-history-preview]) .brand {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 12px;\r\n  text-decoration: none;\r\n  font-family: var(--serif);\r\n  font-size: 21px;\r\n  letter-spacing: .13em;\r\n}\r\n:where([data-history-preview]) .brand-mark {\r\n  border: 1px solid var(--brass);\r\n  padding: 3px 7px 5px;\r\n  color: var(--brass);\r\n  font-size: 23px;\r\n}\r\n:where([data-history-preview]) .edition {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 18px;\r\n  color: var(--muted);\r\n}\r\n:where([data-history-preview]) .sample-label {\r\n  padding: 5px 9px;\r\n  border: 1px solid #e4e7e244;\r\n  font-size: 12px;\r\n}\r\n:where([data-history-preview]) .header-skip {\r\n  text-decoration: none;\r\n}\r\n:where([data-history-preview]) .header-skip span {\r\n  margin-left: 15px;\r\n}\r\n:where([data-history-preview]) .hero {\r\n  position: relative;\r\n  display: grid;\r\n  grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);\r\n  column-gap: 4%;\r\n  padding: 70px 4.5% 0;\r\n  isolation: isolate;\r\n  overflow: hidden;\r\n}\r\n:where([data-history-preview]) .hero-index {\r\n  position: absolute;\r\n  top: 48px;\r\n  left: 2%;\r\n  z-index: -1;\r\n  color: #e4e7e20c;\r\n  font: 260px/1 Georgia, serif;\r\n}\r\n:where([data-history-preview]) .hero-index span {\r\n  display: none;\r\n}\r\n:where([data-history-preview]) .hero-copy {\r\n  padding: 20px 0 45px 4%;\r\n  position: relative;\r\n  z-index: 2;\r\n}\r\n:where([data-history-preview]) .chapter-kicker {\r\n  font-size: 13px;\r\n  letter-spacing: .13em;\r\n  line-height: 1.8;\r\n}\r\n:where([data-history-preview]) .hero .chapter-kicker {\r\n  color: var(--muted);\r\n  margin-bottom: 28px;\r\n}\r\n:where([data-history-preview]) h1 {\r\n  font: 500 clamp(42px, 4.5vw, 76px)/1.28 var(--serif);\r\n  letter-spacing: -.045em;\r\n}\r\n:where([data-history-preview]) .hero-intro {\r\n  margin-top: 34px;\r\n  font-size: 17px;\r\n  line-height: 1.95;\r\n  color: #ced6d8;\r\n  max-width: 32em;\r\n}\r\n:where([data-history-preview]) .hero-actions {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  align-items: center;\r\n  gap: 25px;\r\n  margin-top: 34px;\r\n}\r\n:where([data-history-preview]) .primary-link {\r\n  display: inline-flex;\r\n  justify-content: space-between;\r\n  gap: 30px;\r\n  padding: 16px 22px;\r\n  background: var(--paper);\r\n  color: var(--sea);\r\n  text-decoration: none;\r\n  font-size: 15px;\r\n}\r\n:where([data-history-preview]) .primary-link:hover {\r\n  background: #fff;\r\n}\r\n:where([data-history-preview]) .reading-link {\r\n  font-size: 15px;\r\n  text-decoration: none;\r\n  border-bottom: 1px solid #b69a6777;\r\n  padding: 10px 0;\r\n}\r\n:where([data-history-preview]) .reading-link span {\r\n  margin-left: 15px;\r\n  color: var(--brass);\r\n}\r\n:where([data-history-preview]) .reading-note {\r\n  color: var(--muted);\r\n  font-size: 12px;\r\n  margin-top: 24px;\r\n  line-height: 1.8;\r\n}\r\n:where([data-history-preview]) .ocean-window {\r\n  margin-top: 56px;\r\n  position: relative;\r\n  align-self: start;\r\n}\r\n:where([data-history-preview]) .ocean-photo {\r\n  position: relative;\r\n  background: #233b4a;\r\n  aspect-ratio: 1.2;\r\n  overflow: hidden;\r\n}\r\n:where([data-history-preview]) .ocean-photo::after {\r\n  content: "";\r\n  position: absolute;\r\n  inset: 0;\r\n  pointer-events: none;\r\n  background:\r\n    linear-gradient(\r\n      180deg,\r\n      #14263305 55%,\r\n      #142633c9);\r\n}\r\n:where([data-history-preview]) .ocean-photo img {\r\n  width: 100%;\r\n  height: 100%;\r\n  object-fit: cover;\r\n  object-position: 50% 52%;\r\n  filter: grayscale(1) contrast(1.06);\r\n  animation: ocean-reveal 1.1s ease-out both;\r\n}\r\n:where([data-history-preview]) .photo-date {\r\n  position: absolute;\r\n  top: 22px;\r\n  left: 22px;\r\n  padding: 9px 12px;\r\n  font-size: 12px;\r\n  line-height: 1.7;\r\n  background: #142633e8;\r\n}\r\n:where([data-history-preview]) .photo-date b {\r\n  font-family: Georgia, serif;\r\n  font-size: 22px;\r\n  font-weight: normal;\r\n}\r\n:where([data-history-preview]) .photo-id {\r\n  position: absolute;\r\n  z-index: 1;\r\n  bottom: 22px;\r\n  right: 22px;\r\n  font-size: 11px;\r\n}\r\n:where([data-history-preview]) .ocean-window figcaption {\r\n  color: var(--muted);\r\n  font-size: 12px;\r\n  line-height: 1.85;\r\n  padding: 12px 0;\r\n  max-width: 42em;\r\n}\r\n:where([data-history-preview]) .ocean-window figcaption a {\r\n  white-space: nowrap;\r\n  margin-left: 8px;\r\n}\r\n:where([data-history-preview]) .ocean-note {\r\n  grid-column: 2;\r\n  width: 80%;\r\n  margin: -10px 0 0 auto;\r\n}\r\n:where([data-history-preview]) .ocean-note img {\r\n  width: 100%;\r\n  height: auto;\r\n}\r\n:where([data-history-preview]) .ocean-note p {\r\n  font-size: 11px;\r\n  color: var(--muted);\r\n  line-height: 1.8;\r\n  margin: 8px 0 24px;\r\n}\r\n:where([data-history-preview]) .archive-status {\r\n  grid-column: 1/-1;\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n  padding: 18px 0;\r\n  border-top: 1px solid #e4e7e22b;\r\n  color: var(--muted);\r\n  font-size: 12px;\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n:where([data-history-preview]) .status-dot {\r\n  width: 6px;\r\n  height: 6px;\r\n  border: 1px solid var(--brass);\r\n  transform: rotate(45deg);\r\n}\r\n:where([data-history-preview]) .status-index {\r\n  margin-left: auto;\r\n  letter-spacing: .16em;\r\n}\r\n:where([data-history-preview]) [data-load-state=loading] .archive-status::after {\r\n  content: "";\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 24%;\r\n  height: 1px;\r\n  background: var(--brass);\r\n  animation: archive-scan 1.8s linear infinite;\r\n}\r\n:where([data-history-preview]) .no-script {\r\n  font-size: 12px;\r\n  padding: 10px 0;\r\n}\r\n:where([data-history-preview]) .turing {\r\n  background: var(--paper);\r\n  color: var(--ink);\r\n  padding: 76px 8% 36px;\r\n  display: grid;\r\n  grid-template-columns: minmax(0, .95fr) minmax(0, 1fr);\r\n  gap: 40px 9%;\r\n  color-scheme: light;\r\n}\r\n:where([data-history-preview]) .person-heading {\r\n  grid-column: 1/-1;\r\n  display: flex;\r\n  gap: 35px;\r\n  align-items: center;\r\n}\r\n:where([data-history-preview]) .person-index {\r\n  color: var(--green);\r\n  font: 100px/.85 Georgia, serif;\r\n  letter-spacing: -.08em;\r\n}\r\n:where([data-history-preview]) .person-heading h2 {\r\n  font: 500 clamp(34px, 3.4vw, 54px)/1.5 var(--serif);\r\n  letter-spacing: .12em;\r\n}\r\n:where([data-history-preview]) .person-heading .chapter-kicker {\r\n  font-size: 12px;\r\n  color: #52614D;\r\n}\r\n:where([data-history-preview]) .english-name {\r\n  font: 20px/1.5 Georgia, serif;\r\n}\r\n:where([data-history-preview]) .portrait-placeholder {\r\n  background: #d3d8cf;\r\n  padding: 25px 30px 18px;\r\n  margin-top: 20px;\r\n  align-self: start;\r\n  border-top: 3px solid var(--green);\r\n  position: relative;\r\n}\r\n:where([data-history-preview]) .paper-registration {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  gap: 10px;\r\n  color: #4c5c53;\r\n  font-size: 11px;\r\n}\r\n:where([data-history-preview]) .name-study {\r\n  padding: 50px 0 35px;\r\n  font-family:\r\n    Georgia,\r\n    "Times New Roman",\r\n    serif;\r\n  line-height: 1.04;\r\n  letter-spacing: -.06em;\r\n  color: #52614D;\r\n}\r\n:where([data-history-preview]) .name-study span {\r\n  display: block;\r\n  font-size: clamp(38px, 5.5vw, 87px);\r\n}\r\n:where([data-history-preview]) .name-study span:nth-child(2) {\r\n  font-size: clamp(28px, 3.3vw, 52px);\r\n  font-style: italic;\r\n}\r\n:where([data-history-preview]) .name-study strong {\r\n  display: block;\r\n  font-size: clamp(56px, 7.5vw, 118px);\r\n  font-weight: normal;\r\n}\r\n:where([data-history-preview]) .portrait-reservation {\r\n  border-top: 1px solid #52614D66;\r\n  padding: 22px 0 30px;\r\n}\r\n:where([data-history-preview]) .reservation-mark {\r\n  float: right;\r\n  font-size: 26px;\r\n  font-weight: 300;\r\n}\r\n:where([data-history-preview]) .portrait-reservation strong {\r\n  font-weight: 500;\r\n  font-size: 16px;\r\n}\r\n:where([data-history-preview]) .portrait-reservation p {\r\n  font-size: 12px;\r\n  line-height: 1.9;\r\n  margin-top: 10px;\r\n}\r\n:where([data-history-preview]) .portrait-placeholder figcaption {\r\n  border-top: 1px solid #52614D44;\r\n  padding-top: 12px;\r\n  font-size: 10px;\r\n  line-height: 1.8;\r\n  color: #4c5c53;\r\n}\r\n:where([data-history-preview]) .person-copy {\r\n  padding-top: 20px;\r\n}\r\n:where([data-history-preview]) .person-role {\r\n  color: #52614D;\r\n  font-size: 12px;\r\n  line-height: 1.8;\r\n}\r\n:where([data-history-preview]) .person-copy h3 {\r\n  font: 500 clamp(30px, 2.9vw, 44px)/1.5 var(--serif);\r\n  margin: 22px 0 24px;\r\n}\r\n:where([data-history-preview]) .person-copy > p:not(.person-role) {\r\n  font-size'... 30964 more characters,
+    expected: /\[data-gallery-slide\] img\s*\{[^}]*height:\s*auto[^}]*max-height:\s*var\(--archive-image-height\)[^}]*object-fit:\s*contain/s,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\history-layout.test.mjs:35:1
+✖ editorial groups avoid stretched title rows and oversized caption reserves (0.5581ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /\.constraints,\s*:where\(\[data-history-preview\]\) \.intelligence\s*\{[^}]*grid-template-rows:\s*min-content 1fr/s. Input:
+
+  ':where([data-history-preview]) {\r\n' +
+    '  color-scheme: dark;\r\n' +
+    '  --sea:#142633;\r\n' +
+    '  --paper:#E4E7E2;\r\n' +
+    '  --green:#52614D;\r\n' +
+    '  --brass:#B69A67;\r\n' +
+    '  --muted:#b8c4ca;\r\n' +
+    '  --ink:#20313a;\r\n' +
+    '  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC","STSong","SimSun",Georgia,serif;\r\n' +
+    '  --sans:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) * {\r\n' +
+    '  box-sizing: border-box;\r\n' +
+    '}\r\n' +
+    'body[data-page="history"], body[data-history-preview] {\r\n' +
+    '  scroll-behavior: smooth;\r\n' +
+    '  scroll-padding-top: 2rem;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) {\r\n' +
+    '  margin: 0;\r\n' +
+    '  background: var(--sea);\r\n' +
+    '  color: var(--paper);\r\n' +
+    '  font-family: var(--sans);\r\n' +
+    '  -webkit-font-smoothing: antialiased;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) a {\r\n' +
+    '  color: inherit;\r\n' +
+    '  text-underline-offset: .25em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) a:hover {\r\n' +
+    '  text-decoration-thickness: 2px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) a:focus-visible,\r\n' +
+    ':where([data-history-preview]) summary:focus-visible {\r\n' +
+    '  outline: 3px solid currentColor;\r\n' +
+    '  outline-offset: 6px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) img {\r\n' +
+    '  display: block;\r\n' +
+    '  max-width: 100%;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) figure,\r\n' +
+    ':where([data-history-preview]) h1,\r\n' +
+    ':where([data-history-preview]) h2,\r\n' +
+    ':where([data-history-preview]) h3,\r\n' +
+    ':where([data-history-preview]) p {\r\n' +
+    '  margin: 0;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .skip-content {\r\n' +
+    '  position: absolute;\r\n' +
+    '  top: -6rem;\r\n' +
+    '  left: 1rem;\r\n' +
+    '  z-index: 10;\r\n' +
+    '  padding: 1rem;\r\n' +
+    '  color: var(--sea);\r\n' +
+    '  background: var(--paper);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .skip-content:focus {\r\n' +
+    '  top: 1rem;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .masthead {\r\n' +
+    '  padding: 25px 4.5%;\r\n' +
+    '  display: flex;\r\n' +
+    '  align-items: center;\r\n' +
+    '  justify-content: space-between;\r\n' +
+    '  gap: 20px;\r\n' +
+    '  border-bottom: 1px solid #e4e7e22b;\r\n' +
+    '  font-size: 14px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .brand {\r\n' +
+    '  display: flex;\r\n' +
+    '  align-items: center;\r\n' +
+    '  gap: 12px;\r\n' +
+    '  text-decoration: none;\r\n' +
+    '  font-family: var(--serif);\r\n' +
+    '  font-size: 21px;\r\n' +
+    '  letter-spacing: .13em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .brand-mark {\r\n' +
+    '  border: 1px solid var(--brass);\r\n' +
+    '  padding: 3px 7px 5px;\r\n' +
+    '  color: var(--brass);\r\n' +
+    '  font-size: 23px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .edition {\r\n' +
+    '  display: flex;\r\n' +
+    '  align-items: center;\r\n' +
+    '  gap: 18px;\r\n' +
+    '  color: var(--muted);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .sample-label {\r\n' +
+    '  padding: 5px 9px;\r\n' +
+    '  border: 1px solid #e4e7e244;\r\n' +
+    '  font-size: 12px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .header-skip {\r\n' +
+    '  text-decoration: none;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .header-skip span {\r\n' +
+    '  margin-left: 15px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero {\r\n' +
+    '  position: relative;\r\n' +
+    '  display: grid;\r\n' +
+    '  grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);\r\n' +
+    '  column-gap: 4%;\r\n' +
+    '  padding: 70px 4.5% 0;\r\n' +
+    '  isolation: isolate;\r\n' +
+    '  overflow: hidden;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-index {\r\n' +
+    '  position: absolute;\r\n' +
+    '  top: 48px;\r\n' +
+    '  left: 2%;\r\n' +
+    '  z-index: -1;\r\n' +
+    '  color: #e4e7e20c;\r\n' +
+    '  font: 260px/1 Georgia, serif;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-index span {\r\n' +
+    '  display: none;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-copy {\r\n' +
+    '  padding: 20px 0 45px 4%;\r\n' +
+    '  position: relative;\r\n' +
+    '  z-index: 2;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .chapter-kicker {\r\n' +
+    '  font-size: 13px;\r\n' +
+    '  letter-spacing: .13em;\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero .chapter-kicker {\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  margin-bottom: 28px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) h1 {\r\n' +
+    '  font: 500 clamp(42px, 4.5vw, 76px)/1.28 var(--serif);\r\n' +
+    '  letter-spacing: -.045em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-intro {\r\n' +
+    '  margin-top: 34px;\r\n' +
+    '  font-size: 17px;\r\n' +
+    '  line-height: 1.95;\r\n' +
+    '  color: #ced6d8;\r\n' +
+    '  max-width: 32em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .hero-actions {\r\n' +
+    '  display: flex;\r\n' +
+    '  flex-wrap: wrap;\r\n' +
+    '  align-items: center;\r\n' +
+    '  gap: 25px;\r\n' +
+    '  margin-top: 34px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .primary-link {\r\n' +
+    '  display: inline-flex;\r\n' +
+    '  justify-content: space-between;\r\n' +
+    '  gap: 30px;\r\n' +
+    '  padding: 16px 22px;\r\n' +
+    '  background: var(--paper);\r\n' +
+    '  color: var(--sea);\r\n' +
+    '  text-decoration: none;\r\n' +
+    '  font-size: 15px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .primary-link:hover {\r\n' +
+    '  background: #fff;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .reading-link {\r\n' +
+    '  font-size: 15px;\r\n' +
+    '  text-decoration: none;\r\n' +
+    '  border-bottom: 1px solid #b69a6777;\r\n' +
+    '  padding: 10px 0;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .reading-link span {\r\n' +
+    '  margin-left: 15px;\r\n' +
+    '  color: var(--brass);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .reading-note {\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  margin-top: 24px;\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-window {\r\n' +
+    '  margin-top: 56px;\r\n' +
+    '  position: relative;\r\n' +
+    '  align-self: start;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-photo {\r\n' +
+    '  position: relative;\r\n' +
+    '  background: #233b4a;\r\n' +
+    '  aspect-ratio: 1.2;\r\n' +
+    '  overflow: hidden;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-photo::after {\r\n' +
+    '  content: "";\r\n' +
+    '  position: absolute;\r\n' +
+    '  inset: 0;\r\n' +
+    '  pointer-events: none;\r\n' +
+    '  background:\r\n' +
+    '    linear-gradient(\r\n' +
+    '      180deg,\r\n' +
+    '      #14263305 55%,\r\n' +
+    '      #142633c9);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-photo img {\r\n' +
+    '  width: 100%;\r\n' +
+    '  height: 100%;\r\n' +
+    '  object-fit: cover;\r\n' +
+    '  object-position: 50% 52%;\r\n' +
+    '  filter: grayscale(1) contrast(1.06);\r\n' +
+    '  animation: ocean-reveal 1.1s ease-out both;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .photo-date {\r\n' +
+    '  position: absolute;\r\n' +
+    '  top: 22px;\r\n' +
+    '  left: 22px;\r\n' +
+    '  padding: 9px 12px;\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  line-height: 1.7;\r\n' +
+    '  background: #142633e8;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .photo-date b {\r\n' +
+    '  font-family: Georgia, serif;\r\n' +
+    '  font-size: 22px;\r\n' +
+    '  font-weight: normal;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .photo-id {\r\n' +
+    '  position: absolute;\r\n' +
+    '  z-index: 1;\r\n' +
+    '  bottom: 22px;\r\n' +
+    '  right: 22px;\r\n' +
+    '  font-size: 11px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-window figcaption {\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  line-height: 1.85;\r\n' +
+    '  padding: 12px 0;\r\n' +
+    '  max-width: 42em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-window figcaption a {\r\n' +
+    '  white-space: nowrap;\r\n' +
+    '  margin-left: 8px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-note {\r\n' +
+    '  grid-column: 2;\r\n' +
+    '  width: 80%;\r\n' +
+    '  margin: -10px 0 0 auto;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-note img {\r\n' +
+    '  width: 100%;\r\n' +
+    '  height: auto;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .ocean-note p {\r\n' +
+    '  font-size: 11px;\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '  margin: 8px 0 24px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .archive-status {\r\n' +
+    '  grid-column: 1/-1;\r\n' +
+    '  display: flex;\r\n' +
+    '  align-items: center;\r\n' +
+    '  gap: 10px;\r\n' +
+    '  padding: 18px 0;\r\n' +
+    '  border-top: 1px solid #e4e7e22b;\r\n' +
+    '  color: var(--muted);\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  position: relative;\r\n' +
+    '  overflow: hidden;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .status-dot {\r\n' +
+    '  width: 6px;\r\n' +
+    '  height: 6px;\r\n' +
+    '  border: 1px solid var(--brass);\r\n' +
+    '  transform: rotate(45deg);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .status-index {\r\n' +
+    '  margin-left: auto;\r\n' +
+    '  letter-spacing: .16em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) [data-load-state=loading] .archive-status::after {\r\n' +
+    '  content: "";\r\n' +
+    '  position: absolute;\r\n' +
+    '  top: 0;\r\n' +
+    '  left: 0;\r\n' +
+    '  width: 24%;\r\n' +
+    '  height: 1px;\r\n' +
+    '  background: var(--brass);\r\n' +
+    '  animation: archive-scan 1.8s linear infinite;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .no-script {\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  padding: 10px 0;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .turing {\r\n' +
+    '  background: var(--paper);\r\n' +
+    '  color: var(--ink);\r\n' +
+    '  padding: 76px 8% 36px;\r\n' +
+    '  display: grid;\r\n' +
+    '  grid-template-columns: minmax(0, .95fr) minmax(0, 1fr);\r\n' +
+    '  gap: 40px 9%;\r\n' +
+    '  color-scheme: light;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-heading {\r\n' +
+    '  grid-column: 1/-1;\r\n' +
+    '  display: flex;\r\n' +
+    '  gap: 35px;\r\n' +
+    '  align-items: center;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-index {\r\n' +
+    '  color: var(--green);\r\n' +
+    '  font: 100px/.85 Georgia, serif;\r\n' +
+    '  letter-spacing: -.08em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-heading h2 {\r\n' +
+    '  font: 500 clamp(34px, 3.4vw, 54px)/1.5 var(--serif);\r\n' +
+    '  letter-spacing: .12em;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-heading .chapter-kicker {\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  color: #52614D;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .english-name {\r\n' +
+    '  font: 20px/1.5 Georgia, serif;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-placeholder {\r\n' +
+    '  background: #d3d8cf;\r\n' +
+    '  padding: 25px 30px 18px;\r\n' +
+    '  margin-top: 20px;\r\n' +
+    '  align-self: start;\r\n' +
+    '  border-top: 3px solid var(--green);\r\n' +
+    '  position: relative;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .paper-registration {\r\n' +
+    '  display: flex;\r\n' +
+    '  justify-content: space-between;\r\n' +
+    '  gap: 10px;\r\n' +
+    '  color: #4c5c53;\r\n' +
+    '  font-size: 11px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .name-study {\r\n' +
+    '  padding: 50px 0 35px;\r\n' +
+    '  font-family:\r\n' +
+    '    Georgia,\r\n' +
+    '    "Times New Roman",\r\n' +
+    '    serif;\r\n' +
+    '  line-height: 1.04;\r\n' +
+    '  letter-spacing: -.06em;\r\n' +
+    '  color: #52614D;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .name-study span {\r\n' +
+    '  display: block;\r\n' +
+    '  font-size: clamp(38px, 5.5vw, 87px);\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .name-study span:nth-child(2) {\r\n' +
+    '  font-size: clamp(28px, 3.3vw, 52px);\r\n' +
+    '  font-style: italic;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .name-study strong {\r\n' +
+    '  display: block;\r\n' +
+    '  font-size: clamp(56px, 7.5vw, 118px);\r\n' +
+    '  font-weight: normal;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-reservation {\r\n' +
+    '  border-top: 1px solid #52614D66;\r\n' +
+    '  padding: 22px 0 30px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .reservation-mark {\r\n' +
+    '  float: right;\r\n' +
+    '  font-size: 26px;\r\n' +
+    '  font-weight: 300;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-reservation strong {\r\n' +
+    '  font-weight: 500;\r\n' +
+    '  font-size: 16px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-reservation p {\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  line-height: 1.9;\r\n' +
+    '  margin-top: 10px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .portrait-placeholder figcaption {\r\n' +
+    '  border-top: 1px solid #52614D44;\r\n' +
+    '  padding-top: 12px;\r\n' +
+    '  font-size: 10px;\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '  color: #4c5c53;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-copy {\r\n' +
+    '  padding-top: 20px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-role {\r\n' +
+    '  color: #52614D;\r\n' +
+    '  font-size: 12px;\r\n' +
+    '  line-height: 1.8;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-copy h3 {\r\n' +
+    '  font: 500 clamp(30px, 2.9vw, 44px)/1.5 var(--serif);\r\n' +
+    '  margin: 22px 0 24px;\r\n' +
+    '}\r\n' +
+    ':where([data-history-preview]) .person-copy > p:not(.person-role) {\r\n' +
+    '  font-size'... 30964 more characters
+
+      at TestContext.<anonymous> (file:///C:/Codex/city/bombe-studio/tests/history-layout.test.mjs:36:9)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: ':where([data-history-preview]) {\r\n  color-scheme: dark;\r\n  --sea:#142633;\r\n  --paper:#E4E7E2;\r\n  --green:#52614D;\r\n  --brass:#B69A67;\r\n  --muted:#b8c4ca;\r\n  --ink:#20313a;\r\n  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC","STSong","SimSun",Georgia,serif;\r\n  --sans:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;\r\n}\r\n:where([data-history-preview]) * {\r\n  box-sizing: border-box;\r\n}\r\nbody[data-page="history"], body[data-history-preview] {\r\n  scroll-behavior: smooth;\r\n  scroll-padding-top: 2rem;\r\n}\r\n:where([data-history-preview]) {\r\n  margin: 0;\r\n  background: var(--sea);\r\n  color: var(--paper);\r\n  font-family: var(--sans);\r\n  -webkit-font-smoothing: antialiased;\r\n}\r\n:where([data-history-preview]) a {\r\n  color: inherit;\r\n  text-underline-offset: .25em;\r\n}\r\n:where([data-history-preview]) a:hover {\r\n  text-decoration-thickness: 2px;\r\n}\r\n:where([data-history-preview]) a:focus-visible,\r\n:where([data-history-preview]) summary:focus-visible {\r\n  outline: 3px solid currentColor;\r\n  outline-offset: 6px;\r\n}\r\n:where([data-history-preview]) img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n:where([data-history-preview]) figure,\r\n:where([data-history-preview]) h1,\r\n:where([data-history-preview]) h2,\r\n:where([data-history-preview]) h3,\r\n:where([data-history-preview]) p {\r\n  margin: 0;\r\n}\r\n:where([data-history-preview]) .skip-content {\r\n  position: absolute;\r\n  top: -6rem;\r\n  left: 1rem;\r\n  z-index: 10;\r\n  padding: 1rem;\r\n  color: var(--sea);\r\n  background: var(--paper);\r\n}\r\n:where([data-history-preview]) .skip-content:focus {\r\n  top: 1rem;\r\n}\r\n:where([data-history-preview]) .masthead {\r\n  padding: 25px 4.5%;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  gap: 20px;\r\n  border-bottom: 1px solid #e4e7e22b;\r\n  font-size: 14px;\r\n}\r\n:where([data-history-preview]) .brand {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 12px;\r\n  text-decoration: none;\r\n  font-family: var(--serif);\r\n  font-size: 21px;\r\n  letter-spacing: .13em;\r\n}\r\n:where([data-history-preview]) .brand-mark {\r\n  border: 1px solid var(--brass);\r\n  padding: 3px 7px 5px;\r\n  color: var(--brass);\r\n  font-size: 23px;\r\n}\r\n:where([data-history-preview]) .edition {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 18px;\r\n  color: var(--muted);\r\n}\r\n:where([data-history-preview]) .sample-label {\r\n  padding: 5px 9px;\r\n  border: 1px solid #e4e7e244;\r\n  font-size: 12px;\r\n}\r\n:where([data-history-preview]) .header-skip {\r\n  text-decoration: none;\r\n}\r\n:where([data-history-preview]) .header-skip span {\r\n  margin-left: 15px;\r\n}\r\n:where([data-history-preview]) .hero {\r\n  position: relative;\r\n  display: grid;\r\n  grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);\r\n  column-gap: 4%;\r\n  padding: 70px 4.5% 0;\r\n  isolation: isolate;\r\n  overflow: hidden;\r\n}\r\n:where([data-history-preview]) .hero-index {\r\n  position: absolute;\r\n  top: 48px;\r\n  left: 2%;\r\n  z-index: -1;\r\n  color: #e4e7e20c;\r\n  font: 260px/1 Georgia, serif;\r\n}\r\n:where([data-history-preview]) .hero-index span {\r\n  display: none;\r\n}\r\n:where([data-history-preview]) .hero-copy {\r\n  padding: 20px 0 45px 4%;\r\n  position: relative;\r\n  z-index: 2;\r\n}\r\n:where([data-history-preview]) .chapter-kicker {\r\n  font-size: 13px;\r\n  letter-spacing: .13em;\r\n  line-height: 1.8;\r\n}\r\n:where([data-history-preview]) .hero .chapter-kicker {\r\n  color: var(--muted);\r\n  margin-bottom: 28px;\r\n}\r\n:where([data-history-preview]) h1 {\r\n  font: 500 clamp(42px, 4.5vw, 76px)/1.28 var(--serif);\r\n  letter-spacing: -.045em;\r\n}\r\n:where([data-history-preview]) .hero-intro {\r\n  margin-top: 34px;\r\n  font-size: 17px;\r\n  line-height: 1.95;\r\n  color: #ced6d8;\r\n  max-width: 32em;\r\n}\r\n:where([data-history-preview]) .hero-actions {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  align-items: center;\r\n  gap: 25px;\r\n  margin-top: 34px;\r\n}\r\n:where([data-history-preview]) .primary-link {\r\n  display: inline-flex;\r\n  justify-content: space-between;\r\n  gap: 30px;\r\n  padding: 16px 22px;\r\n  background: var(--paper);\r\n  color: var(--sea);\r\n  text-decoration: none;\r\n  font-size: 15px;\r\n}\r\n:where([data-history-preview]) .primary-link:hover {\r\n  background: #fff;\r\n}\r\n:where([data-history-preview]) .reading-link {\r\n  font-size: 15px;\r\n  text-decoration: none;\r\n  border-bottom: 1px solid #b69a6777;\r\n  padding: 10px 0;\r\n}\r\n:where([data-history-preview]) .reading-link span {\r\n  margin-left: 15px;\r\n  color: var(--brass);\r\n}\r\n:where([data-history-preview]) .reading-note {\r\n  color: var(--muted);\r\n  font-size: 12px;\r\n  margin-top: 24px;\r\n  line-height: 1.8;\r\n}\r\n:where([data-history-preview]) .ocean-window {\r\n  margin-top: 56px;\r\n  position: relative;\r\n  align-self: start;\r\n}\r\n:where([data-history-preview]) .ocean-photo {\r\n  position: relative;\r\n  background: #233b4a;\r\n  aspect-ratio: 1.2;\r\n  overflow: hidden;\r\n}\r\n:where([data-history-preview]) .ocean-photo::after {\r\n  content: "";\r\n  position: absolute;\r\n  inset: 0;\r\n  pointer-events: none;\r\n  background:\r\n    linear-gradient(\r\n      180deg,\r\n      #14263305 55%,\r\n      #142633c9);\r\n}\r\n:where([data-history-preview]) .ocean-photo img {\r\n  width: 100%;\r\n  height: 100%;\r\n  object-fit: cover;\r\n  object-position: 50% 52%;\r\n  filter: grayscale(1) contrast(1.06);\r\n  animation: ocean-reveal 1.1s ease-out both;\r\n}\r\n:where([data-history-preview]) .photo-date {\r\n  position: absolute;\r\n  top: 22px;\r\n  left: 22px;\r\n  padding: 9px 12px;\r\n  font-size: 12px;\r\n  line-height: 1.7;\r\n  background: #142633e8;\r\n}\r\n:where([data-history-preview]) .photo-date b {\r\n  font-family: Georgia, serif;\r\n  font-size: 22px;\r\n  font-weight: normal;\r\n}\r\n:where([data-history-preview]) .photo-id {\r\n  position: absolute;\r\n  z-index: 1;\r\n  bottom: 22px;\r\n  right: 22px;\r\n  font-size: 11px;\r\n}\r\n:where([data-history-preview]) .ocean-window figcaption {\r\n  color: var(--muted);\r\n  font-size: 12px;\r\n  line-height: 1.85;\r\n  padding: 12px 0;\r\n  max-width: 42em;\r\n}\r\n:where([data-history-preview]) .ocean-window figcaption a {\r\n  white-space: nowrap;\r\n  margin-left: 8px;\r\n}\r\n:where([data-history-preview]) .ocean-note {\r\n  grid-column: 2;\r\n  width: 80%;\r\n  margin: -10px 0 0 auto;\r\n}\r\n:where([data-history-preview]) .ocean-note img {\r\n  width: 100%;\r\n  height: auto;\r\n}\r\n:where([data-history-preview]) .ocean-note p {\r\n  font-size: 11px;\r\n  color: var(--muted);\r\n  line-height: 1.8;\r\n  margin: 8px 0 24px;\r\n}\r\n:where([data-history-preview]) .archive-status {\r\n  grid-column: 1/-1;\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n  padding: 18px 0;\r\n  border-top: 1px solid #e4e7e22b;\r\n  color: var(--muted);\r\n  font-size: 12px;\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n:where([data-history-preview]) .status-dot {\r\n  width: 6px;\r\n  height: 6px;\r\n  border: 1px solid var(--brass);\r\n  transform: rotate(45deg);\r\n}\r\n:where([data-history-preview]) .status-index {\r\n  margin-left: auto;\r\n  letter-spacing: .16em;\r\n}\r\n:where([data-history-preview]) [data-load-state=loading] .archive-status::after {\r\n  content: "";\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 24%;\r\n  height: 1px;\r\n  background: var(--brass);\r\n  animation: archive-scan 1.8s linear infinite;\r\n}\r\n:where([data-history-preview]) .no-script {\r\n  font-size: 12px;\r\n  padding: 10px 0;\r\n}\r\n:where([data-history-preview]) .turing {\r\n  background: var(--paper);\r\n  color: var(--ink);\r\n  padding: 76px 8% 36px;\r\n  display: grid;\r\n  grid-template-columns: minmax(0, .95fr) minmax(0, 1fr);\r\n  gap: 40px 9%;\r\n  color-scheme: light;\r\n}\r\n:where([data-history-preview]) .person-heading {\r\n  grid-column: 1/-1;\r\n  display: flex;\r\n  gap: 35px;\r\n  align-items: center;\r\n}\r\n:where([data-history-preview]) .person-index {\r\n  color: var(--green);\r\n  font: 100px/.85 Georgia, serif;\r\n  letter-spacing: -.08em;\r\n}\r\n:where([data-history-preview]) .person-heading h2 {\r\n  font: 500 clamp(34px, 3.4vw, 54px)/1.5 var(--serif);\r\n  letter-spacing: .12em;\r\n}\r\n:where([data-history-preview]) .person-heading .chapter-kicker {\r\n  font-size: 12px;\r\n  color: #52614D;\r\n}\r\n:where([data-history-preview]) .english-name {\r\n  font: 20px/1.5 Georgia, serif;\r\n}\r\n:where([data-history-preview]) .portrait-placeholder {\r\n  background: #d3d8cf;\r\n  padding: 25px 30px 18px;\r\n  margin-top: 20px;\r\n  align-self: start;\r\n  border-top: 3px solid var(--green);\r\n  position: relative;\r\n}\r\n:where([data-history-preview]) .paper-registration {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  gap: 10px;\r\n  color: #4c5c53;\r\n  font-size: 11px;\r\n}\r\n:where([data-history-preview]) .name-study {\r\n  padding: 50px 0 35px;\r\n  font-family:\r\n    Georgia,\r\n    "Times New Roman",\r\n    serif;\r\n  line-height: 1.04;\r\n  letter-spacing: -.06em;\r\n  color: #52614D;\r\n}\r\n:where([data-history-preview]) .name-study span {\r\n  display: block;\r\n  font-size: clamp(38px, 5.5vw, 87px);\r\n}\r\n:where([data-history-preview]) .name-study span:nth-child(2) {\r\n  font-size: clamp(28px, 3.3vw, 52px);\r\n  font-style: italic;\r\n}\r\n:where([data-history-preview]) .name-study strong {\r\n  display: block;\r\n  font-size: clamp(56px, 7.5vw, 118px);\r\n  font-weight: normal;\r\n}\r\n:where([data-history-preview]) .portrait-reservation {\r\n  border-top: 1px solid #52614D66;\r\n  padding: 22px 0 30px;\r\n}\r\n:where([data-history-preview]) .reservation-mark {\r\n  float: right;\r\n  font-size: 26px;\r\n  font-weight: 300;\r\n}\r\n:where([data-history-preview]) .portrait-reservation strong {\r\n  font-weight: 500;\r\n  font-size: 16px;\r\n}\r\n:where([data-history-preview]) .portrait-reservation p {\r\n  font-size: 12px;\r\n  line-height: 1.9;\r\n  margin-top: 10px;\r\n}\r\n:where([data-history-preview]) .portrait-placeholder figcaption {\r\n  border-top: 1px solid #52614D44;\r\n  padding-top: 12px;\r\n  font-size: 10px;\r\n  line-height: 1.8;\r\n  color: #4c5c53;\r\n}\r\n:where([data-history-preview]) .person-copy {\r\n  padding-top: 20px;\r\n}\r\n:where([data-history-preview]) .person-role {\r\n  color: #52614D;\r\n  font-size: 12px;\r\n  line-height: 1.8;\r\n}\r\n:where([data-history-preview]) .person-copy h3 {\r\n  font: 500 clamp(30px, 2.9vw, 44px)/1.5 var(--serif);\r\n  margin: 22px 0 24px;\r\n}\r\n:where([data-history-preview]) .person-copy > p:not(.person-role) {\r\n  font-size'... 30964 more characters,
+    expected: /\.constraints,\s*:where\(\[data-history-preview\]\) \.intelligence\s*\{[^}]*grid-template-rows:\s*min-content 1fr/s,
+    operator: 'match',
+    diff: 'simple'
+  }

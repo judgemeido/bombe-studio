@@ -14,6 +14,7 @@ const dependencies = {
   createNavigation, createStage, createProduct, createTextures,
   createRaycaster: () => new THREE.Raycaster(), createPointer: () => new THREE.Vector2(),
   loadLab: () => import('./lab.js'), loadChallenge: () => import('./challenge.js'),
+  loadMission: () => import('./mission.js'),
   ...runtime,
 };
 const $ = selector => document.querySelector(selector);
@@ -27,11 +28,11 @@ const mobileDetail = document.createElement('div'); mobileDetail.className = 'mo
 const mobileNote = document.createElement('button'); mobileNote.className = 'part-card note-trigger'; mobileNote.setAttribute('aria-haspopup', 'dialog'); mobileNote.setAttribute('aria-controls', 'note-dialog');
 mobileDetail.append(mobileNote); $('.parts-section').after(mobileDetail);
 let stage, product, stopped = false, raf = 0, previous = performance.now(), contextLost = false;
-let currentPage = historyPage?.currentRoute?.page ?? null, lab = null, challenge = null, navigation;
+let currentPage = historyPage?.currentRoute?.page ?? null, lab = null, challenge = null, mission = null, navigation;
 let challengeVisited = false;
 on($('.skip-link'), 'click', event => {
   event.preventDefault();
-  const target = currentPage === 'history' ? historyPage?.element : currentPage === 'challenge' ? $('#quest-question') : currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
+  const target = currentPage === 'mission' ? $('#mission-task-title') : currentPage === 'history' ? historyPage?.element : currentPage === 'challenge' ? $('#quest-question') : currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
   target?.focus({ preventScroll: true }); target?.scrollIntoView({ block: 'nearest' });
 });
 
@@ -192,7 +193,12 @@ const challengeRuntime = createExhibitRuntime(async ({ own, check }) => {
   const instance = own(await module.createChallenge($('#challenge-page'), { motion, progress: (...args) => { if (!stopped) challengeReport(...args); } }));
   check(); challenge = instance; return instance;
 });
-let labReport = () => {}, challengeReport = () => {};
+const missionRuntime = createExhibitRuntime(async ({ own, check }) => {
+  const module = await dependencies.loadMission(); check();
+  const instance = own(await module.createMission($('#mission-page'), { motion, progress: (...args) => { if (!stopped) missionReport(...args); } }));
+  check(); mission = instance; return instance;
+});
+let labReport = () => {}, challengeReport = () => {}, missionReport = () => {};
 
 function frame(now) {
   if (stopped) return;
@@ -219,7 +225,7 @@ function frame(now) {
 }
 function dispose() {
   if (stopped) return; stopped = true; cancelAnimationFrame(raf); navigation?.dispose();
-  labRuntime.dispose(); challengeRuntime.dispose(); exhibitRuntime.dispose();
+  labRuntime.dispose(); challengeRuntime.dispose(); missionRuntime.dispose(); exhibitRuntime.dispose();
   cleanups.forEach(fn => fn()); mobileDetail.remove(); delete window.__BOMBE_INSPECT__;
 }
 on(window, 'pagehide', event => { if (!event.persisted) dispose(); });
@@ -230,7 +236,7 @@ navigation = dependencies.createNavigation({
   currentRoute: historyPage?.currentRoute ?? null,
   initialScrolls: { history: historyPage?.scrollY ?? 0 },
   motion,
-  pause() { lab?.setActive(false); challenge?.setActive(false); },
+  pause() { lab?.setActive(false); challenge?.setActive(false); mission?.setActive(false); },
   async prepare(route, report = () => {}) {
     if (stopped) return;
     if (route.page === 'history') return;
@@ -242,6 +248,10 @@ navigation = dependencies.createNavigation({
       report(26, '载入小小解密员的六关任务'); challengeReport = report;
       await challengeRuntime.ensure();
       if (!stopped) report(78, '任务与教学模型已准备');
+    } else if (route.page === 'mission') {
+      report(26, '载入黎明之前的七关任务'); missionReport = report;
+      await missionRuntime.ensure();
+      if (!stopped) report(78, '工作室与任务已准备');
     } else {
       report(52, '准备展品与拆解状态'); await ensureExhibit();
       if (!stopped) report(78, '准备整机视角');
@@ -257,12 +267,13 @@ navigation = dependencies.createNavigation({
     const skip = $('.skip-link');
     skip.href = route.page === 'history' ? '#hero-title' : route.page === 'challenge' ? '#quest-question' : route.page === 'lab' ? '#lab-keyboard' : '#controls';
     skip.textContent = route.page === 'history' ? '跳至战时序章' : route.page === 'challenge' ? '跳至本关任务' : route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';
+    if (route.page === 'mission') { skip.href = '#mission-task-title'; skip.textContent = '跳至穿越任务'; }
     if (route.page === 'lab') lab?.setTopic(route.topic);
     if (route.page === 'challenge') {
       if (challengeVisited && previousPage !== 'challenge') challenge?.startNewRound();
       challengeVisited = true;
     }
-    lab?.setActive(route.page === 'lab'); challenge?.setActive(route.page === 'challenge');
+    lab?.setActive(route.page === 'lab'); challenge?.setActive(route.page === 'challenge'); mission?.setActive(route.page === 'mission');
     if (route.page === 'exhibit') { stage?.resize(); frameCamera(true); sync(); }
   },
 });

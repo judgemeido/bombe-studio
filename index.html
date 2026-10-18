@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#eeede5"><meta name="description" content="从可拆解的 Bombe 三维展品到信号实验室，再到小学孩子也能完成的六关解密挑战，一步步看见密码里的逻辑。">
+  <meta name="theme-color" content="#142633"><meta name="description" content="18节历史档案，从海上通信、波兰先驱到Bombe的诞生；走进可拆解的三维展品、信号实验室与六关解密挑战。">
   <title>00 战时序章 · 译码档案</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232b4035'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23eee9d8' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23ba5e3e'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="history-preview.css"><link rel="stylesheet" href="lab.css"><link rel="stylesheet" href="challenge.css"><script type="module" src="dist/bootstrap.js"></script>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="history-preview.css"><link rel="stylesheet" href="lab.css"><link rel="stylesheet" href="challenge.css"><link rel="stylesheet" href="mission.css"><script type="module" src="dist/bootstrap.js"></script>
 </head>
 <body data-page="history">
 <!-- APP-SHELL:START -->
@@ -21,7 +21,7 @@
   <header class="site-header">
     <a class="brand" href="#/history" data-page="history" aria-label="译码档案首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>译码档案<small>DECODED ARCHIVE</small></span></a>
     <div class="header-center"><span class="live-dot"></span> 机械的记忆，逻辑的形状。</div>
-    <nav aria-label="展馆导航"><div class="chapter-nav"><a href="#/history" data-page="history" data-chapter="history" aria-current="page"><small>00</small>战时序章</a><a href="#/" data-page="exhibit" data-chapter="exhibit"><small>01</small>机械全貌</a><a href="#/lab/drums" data-page="lab" data-topic="drums" data-chapter="lab"><small>02</small>信号实验室</a><a href="#/challenge" data-page="challenge" data-chapter="challenge"><small>03</small>解密挑战 <svg><use href="#arrow"/></svg></a></div><button id="archive-open" class="text-button">展品档案 <svg><use href="#arrow"/></svg></button></nav>
+    <nav aria-label="展馆导航"><div class="chapter-nav"><a href="#/history" data-page="history" data-chapter="history" aria-current="page"><small>00</small>战时序章</a><a href="#/" data-page="exhibit" data-chapter="exhibit"><small>01</small>机械全貌</a><a href="#/lab/drums" data-page="lab" data-topic="drums" data-chapter="lab"><small>02</small>信号实验室</a><a href="#/challenge" data-page="challenge" data-chapter="challenge"><small>03</small>解密挑战 <svg><use href="#arrow"/></svg></a><a href="#/mission" data-page="mission" data-chapter="mission"><small>04</small>黎明之前</a></div><button id="archive-open" class="text-button">展品档案 <svg><use href="#arrow"/></svg></button></nav>
   </header>
 
   <main id="exhibit-page">
@@ -72,6 +72,7 @@
 
   <main id="lab-page" hidden></main>
   <main id="challenge-page" hidden></main>
+  <main id="mission-page" hidden></main>
   <dialog id="note-dialog" class="note-dialog" aria-labelledby="note-title">
     <div class="dialog-top"><span class="eyebrow">STRUCTURE NOTES <span id="note-index">00 / 05</span></span><button class="dialog-close" data-close aria-label="关闭结构笔记">×</button></div>
     <div class="note-dialog-heading"><span id="note-english">A GUIDE TO THE ASSEMBLY</span><h2 id="note-title">从整机，读到每个系统</h2><p id="note-subtitle"></p></div>

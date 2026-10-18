@@ -1,5 +1,25 @@
 # BOMBE · 译码档案
 
+GitHub 私有仓库：[judgemeido/bombe-studio](https://github.com/judgemeido/bombe-studio)。这是源代码仓库；网页仍按下方命令在本地运行。
+
+![04「黎明之前」三维工作室](output/mission/desktop-cover.jpg)
+
+## 新增 04：黎明之前（2026-10-18）
+
+打开 `http://127.0.0.1:4173/#/mission`，以图灵的视角进入七关教学故事：截收、对齐、接线、设轮、搜索、解密、决策。程序化三维工作室包含无线电、Enigma、27 鼓轮 Bombe 示意机和工作桌，支持三个观察视角、实际转子步进与输入/输出灯号动画。包含独立 Remotion 制作的 12 秒可跳过片头。
+
+同一条故事适用于三至九年级及成人；每关提供两级提示、深入讨论和证据记录。建议课堂节奏共 600 秒，含片头、讲解和讨论，不强制拖延操作。暂停、隐藏页面及章节切换会停止活动；本次页面内进度保留，刷新会重开。
+
+模型、对白、DX 编号与气象报文均为教学重建。密码计算使用真实 Enigma I 置换、按键前步进和中轮双步进。第 5 关是缩小到 26 个起点的枚举实验，不是完整历史 Bombe 搜索复原。全部密文字母参与连续运算，不丢弃猜测起点之前的两格。
+
+实现位于 `src/mission*.js` 与 `mission.css`；影片源码、锁定依赖及重渲染命令位于 `tools/mission-film/`。主应用保持原生 JavaScript / Three.js / esbuild，运行时无需 React、在线 API 或外部媒体。验证详情见 [04 验收记录](docs/MISSION_04_ACCEPTANCE.md)。
+
+## 当前首页：18节历史档案（2026-10-18）
+
+默认首页已重做为四段叙事、18个板块的历史长篇：海上通信、波兰突破、Bombe诞生、操作员与情报工作。提供桌面侧边目录、手机可展开目录、人物肖像、教学示意和逐节来源。保留整机、信号实验室及六关挑战。当前工作目录为 `D:\Codex\city\bombe-studio`，运行 `npm.cmd run dev`，访问 `http://127.0.0.1:4173/`。
+
+正文和样式源分别为 `history-preview.html` 与 `history-preview.css`；新章节锚点在 `src/routes.js`。本轮129项测试及构建通过；完整内容、来源差异和浏览器验证范围见 [十八节首页验收记录](docs/HISTORY_18_ACCEPTANCE.md)。下文保留三维产品原有说明。
+
 使用 `three-product-studio` 开发的三章节 3D 展示页。第一章展示二战时期的 **Turing–Welchman Bombe** 机电破译机，第二章用一个可计算的 Enigma 三转子回路解释鼓轮和接线，第三章让小学孩子通过六关解密任务整合知识。Bombe、Enigma 与理论计算模型“图灵机”分别说明。
 
 ## 运行
@@ -7,14 +27,14 @@
 需要 Node.js 22 或更新版本，使用 PowerShell：
 
 ```powershell
-cd C:\Codex\city\bombe-studio
+cd D:\Codex\city\bombe-studio
 npm.cmd ci
 npm.cmd run dev
 ```
 
 打开 `http://127.0.0.1:4173`。默认只监听本机。可设置 `$env:PORT = 4174` 更换端口。
 
-章节地址：`#/` 为整机，`#/lab/drums` 为鼓轮与完整回路，`#/lab/wiring` 为放大的接线板，`#/challenge` 为六关解密挑战。支持直接刷新、浏览器前进后退。顶部三章入口、鼓轮/接线结构笔记和实验室的挑战按钮都可以跳转。
+章节地址：`#/history` 为历史首页，`#/` 为整机，`#/lab/drums` 为鼓轮与完整回路，`#/lab/wiring` 为放大的接线板，`#/challenge` 为六关解密挑战，`#/mission` 为七关穿越任务。支持直接刷新、浏览器前进后退。顶部五个章节入口均可跳转。
 
 ```powershell
 npm.cmd test

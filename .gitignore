@@ -11,3 +11,9 @@ Thumbs.db
 
 # Draft captures; final acceptance evidence remains tracked
 output/playwright/*-first.png
+
+# One-off authoring scripts and pre-redesign local backups
+output/home-redesign/before/
+output/home-redesign/render.mjs
+output/home-redesign/style.mjs
+output/home-redesign/update-tests.mjs

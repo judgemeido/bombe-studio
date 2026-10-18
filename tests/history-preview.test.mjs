@@ -13,15 +13,15 @@ async function page() {
 test('standalone preview ships approved hero and Turing copy in initial HTML', async () => {
   const doc = await page();
   assert.equal(doc.documentElement.lang, 'zh-CN');
-  assert.equal(doc.querySelector('h1').textContent.replace(/\s/g, ''), '在读懂机器之前，先听见它所处的战争。');
-  assert.match(doc.body.textContent, /七幕档案/);
+  assert.equal(doc.querySelector('h1').textContent.replace(/\s/g, ''), '在机器之前，先读懂那场无声的较量。');
+  assert.match(doc.body.textContent, /18节档案/);
   assert.match(doc.body.textContent, /艾伦·图灵/);
   assert.match(doc.body.textContent, /1936 年，他在关于可计算性的研究中提出抽象机器模型/);
   assert.match(doc.body.textContent, /但它们不是同一台“图灵机器”/);
   assert.ok(doc.querySelector('#turing'));
   assert.ok(doc.querySelector('a[href="#turing"]'));
   assert.ok(doc.querySelector('a[href="/#/"]'));
-  assert.deepEqual([...doc.querySelectorAll('[data-history-scene]')].map(el => el.id), ['lifeline', 'intercept', 'pioneers', 'turing', 'constraints', 'intelligence', 'onward']);
+  assert.deepEqual([...doc.querySelectorAll('[data-history-scene]')].map(el => el.id), ['lifeline','intercept','enigma','daily-key','pioneers','polish-methods','handover','bletchley','turing','crib','constraints','diagonal','victory','operators','intelligence','naval','legacy','onward']);
   assert.equal(doc.querySelectorAll('script:not([src])').length, 0);
 });
 
@@ -29,10 +29,10 @@ test('asset boundaries, source notes, and native timeline remain explicit withou
   const doc = await page();
   assert.match(doc.body.textContent, /图灵真实肖像/);
   assert.match(doc.body.textContent, /现代重建/);
-  assert.match(doc.body.textContent, /约1942年/);
+  assert.match(doc.body.textContent, /1941年12月/);
   assert.match(doc.body.textContent, /A1.*美国/);
   assert.doesNotMatch(doc.body.textContent, /两幕|暂时省略|本次仅呈现/);
-  assert.equal(doc.querySelectorAll('#turing details li').length, 7);
+  assert.match(doc.querySelector('#turing details').textContent, /1936[\s\S]*1954/);
   assert.match(doc.querySelector('#turing details').textContent, /1952/);
   assert.ok(doc.querySelector('a[href="#sources"]'));
   assert.equal(doc.querySelector('[data-history-image]').getAttribute('src'), 'assets/history/atlantic-aquila-1941.jpg');
@@ -88,14 +88,14 @@ test('adopted A1 is a real local JPEG with registered provenance and unresolved 
 });
 
 // Production regressions: a missing chapter, index target, contributor or diagram must fail.
-test('seven chapter index links resolve and hero belongs to lifeline', async () => {
+test('eighteen chapter index links resolve and hero belongs to lifeline', async () => {
   const doc = await page();
   const scenes = [...doc.querySelectorAll('[data-history-scene]')];
   const links = [...doc.querySelectorAll('nav[aria-label="历史章节"] [data-scene-link]')];
-  assert.equal(links.length, 7);
+  assert.equal(links.length, 18);
   assert.deepEqual(links.map(a => a.getAttribute('href')), scenes.map(s => `#${s.id}`));
   assert.ok(doc.querySelector('#lifeline h1'));
-  assert.equal(new Set(scenes.map(s => s.id)).size, 7);
+  assert.equal(new Set(scenes.map(s => s.id)).size, 18);
   for (const scene of scenes) assert.ok(scene.querySelector('h2'));
 });
 
@@ -105,7 +105,7 @@ test('complete approved narrative and expandable background ship without control
   assert.match(doc.querySelector('#pioneers').textContent, /1932[\s\S]*1939 年 7 月/);
   assert.match(doc.querySelector('#constraints').textContent, /韦尔奇曼[\s\S]*BTM[\s\S]*候选仍需检查/);
   for (const step of ['截收', '分析', '搜索', '检查', '解读', '传递', '判断']) assert.ok(doc.querySelector('#intelligence').textContent.includes(step));
-  for (const id of ['lifeline', 'intercept', 'pioneers', 'constraints', 'intelligence']) assert.ok(doc.querySelector(`#${id} details summary`));
+  for (const id of ['lifeline', 'polish-methods', 'turing', 'constraints', 'intelligence']) assert.ok(doc.querySelector(`#${id} details summary`));
   for (const href of ['/#/', '/#/lab/drums', '/#/challenge']) assert.ok(doc.querySelector(`#onward a[href="${href}"]`));
   assert.match(doc.querySelector('#sources').textContent, /S1/);
   for (const a of doc.querySelectorAll('a[href^="#"]:not([data-page])')) assert.ok(doc.getElementById(a.hash.slice(1)), a.hash);
@@ -114,13 +114,13 @@ test('complete approved narrative and expandable background ship without control
 test('photographic galleries replace the five original diagrams without gating text', async () => {
   const doc = await page();
   assert.equal(doc.querySelectorAll('[data-diagram-source],svg').length, 0);
-  assert.equal(doc.querySelectorAll('[data-history-gallery]').length, 6);
+  assert.equal(doc.querySelectorAll('[data-history-gallery]').length, 2);
   for (const gallery of doc.querySelectorAll('[data-history-gallery]')) assert.ok(gallery.querySelectorAll('img').length >= 2);
   const css = await read('history-preview.css');
-  assert.match(css, /\.is-current/);
-  assert.match(css, /\.history-enhanced[\s\S]*\.is-revealed/);
-  assert.match(css, /stroke-dashoffset/);
-  assert.match(css, /\.photo-id\s*\{[^}]*background:\s*(?:var\(--sea\)|#142633)[;\s]/);
+  assert.match(css, /aria-current="location"/);
+  assert.doesNotMatch(css, /visibility:\s*hidden/, 'reading never waits for an animation');
+  assert.match(css, /\.reader-sidebar[\s\S]*position:\s*sticky/);
+  assert.match(css, /\.archive-cover\s*\{[^}]*background:\s*var\(--sea\)/);
 });
 
 test('verified S6 uses approved narrower supply wording and linked VAC sources', async () => {
@@ -128,7 +128,7 @@ test('verified S6 uses approved narrower supply wording and linked VAC sources',
   assert.match(doc.querySelector('#lifeline').textContent, /英国需要通过海运接收物资与人员/);
   assert.doesNotMatch(doc.body.textContent, /S6.{0,8}(?:待|仍待)|宏观背景待|食物、燃料和工业原料/);
   const sources = doc.querySelector('#sources');
-  assert.match(sources.textContent, /S6 已补核/);
+  assert.match(sources.textContent, /S6/);
   for (const path of ['battle-atlantic', 'chronology-second-world-war']) assert.ok(sources.querySelector(`a[href="https://www.veterans.gc.ca/en/remembrance/military-history/second-world-war/${path}"]`));
   assert.match(sources.textContent, /A2 \/ 图灵真实肖像/);
 });

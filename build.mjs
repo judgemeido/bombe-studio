@@ -18,5 +18,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   await copyFile('styles.css', 'dist/styles.css');
   await copyFile('lab.css', 'dist/lab.css');
   await copyFile('challenge.css', 'dist/challenge.css');
+  await copyFile('mission.css', 'dist/mission.css');
+  await cp('assets/mission', 'dist/assets/mission', { recursive: true });
   await copyFile('THIRD_PARTY_NOTICES.txt', 'dist/THIRD_PARTY_NOTICES.txt');
 }

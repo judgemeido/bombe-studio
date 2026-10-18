@@ -1,0 +1,138 @@
+[
+  {
+    "active": "#intercept",
+    "hash": "#intercept",
+    "heading": "听见一封电报，\n还不等于读懂它。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#enigma",
+    "hash": "#enigma",
+    "heading": "同一个字母，\n下一次就会改变。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#daily-key",
+    "hash": "#daily-key",
+    "heading": "机器可以相同，\n锁却每天换一把。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#pioneers",
+    "hash": "#pioneers",
+    "heading": "在布莱切利园之前，\n先有波兰的三个人。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#polish-methods",
+    "hash": "#polish-methods",
+    "heading": "把重复的线索，\n交给纸张与齿轮。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#handover",
+    "hash": "#handover",
+    "heading": "战争来临前，\n知识越过了国界。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#bletchley",
+    "hash": "#bletchley",
+    "heading": "一座庄园，\n装不下全部故事。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#turing",
+    "hash": "#turing",
+    "heading": "把抽象的问题，\n带进真实世界。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#crib",
+    "hash": "#crib",
+    "heading": "从密文里，\n寻找一句可能出现的话。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#constraints",
+    "hash": "#constraints",
+    "heading": "机器寻找的，\n是关系能否同时成立。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#diagonal",
+    "hash": "#diagonal",
+    "heading": "一条互易关系，\n让更多矛盾显现。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#victory",
+    "hash": "#victory",
+    "heading": "想法要起作用，\n先得成为一台可靠的机器。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#operators",
+    "hash": "#operators",
+    "heading": "让机器日夜工作，\n也是一门专长。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#intelligence",
+    "hash": "#intelligence",
+    "heading": "Bombe 停下了。\n工作还没有结束。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#naval",
+    "hash": "#naval",
+    "heading": "密码会改变，\n破译也必须继续改变。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#legacy",
+    "hash": "#legacy",
+    "heading": "当秘密慢慢公开，\n历史才重新获得轮廓。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "active": "#onward",
+    "hash": "#onward",
+    "heading": "从一份档案，\n走近一台机器。",
+    "route": "history",
+    "scrollWidth": 375,
+    "width": 390
+  }
+]

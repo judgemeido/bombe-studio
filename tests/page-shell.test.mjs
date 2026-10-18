@@ -13,7 +13,7 @@ test('home composes exactly one readable history with an inert app and shared ov
   assert.ok(history && !history.hidden && !history.hasAttribute('inert'));
   assert.ok(app.hidden && app.hasAttribute('inert'));
   assert.equal(doc.body.dataset.page, 'history');
-  assert.equal(history.querySelectorAll('[data-history-scene]').length, 7);
+  assert.equal(history.querySelectorAll('[data-history-scene]').length, 18);
   assert.ok(history.querySelector('header') && history.querySelector('footer'));
   assert.equal(history.querySelector('#hero-title').getAttribute('tabindex'), '-1');
   const ids = [...doc.querySelectorAll('[id]')].map(el => el.id);
@@ -25,11 +25,11 @@ test('home composes exactly one readable history with an inert app and shared ov
   assert.deepEqual([...doc.querySelectorAll('script[src]')].map(s => s.getAttribute('src')), ['dist/bootstrap.js']);
   for (const name of ['styles.css', 'history-preview.css']) assert.ok(doc.querySelector(`link[href="${name}"]`));
 });
-test('both page headers expose four chapters and brand returns to 00', async () => {
+test('both page headers expose five chapters and brand returns to 00', async () => {
   const doc = document(await home());
   for (const root of ['#application-shell', '#history-page']) {
     assert.equal(doc.querySelector(`${root} .brand`).getAttribute('href'), '#/history');
-    assert.deepEqual([...doc.querySelectorAll(`${root} header [data-chapter]`)].map(el => el.dataset.page), ['history', 'exhibit', 'lab', 'challenge']);
+    assert.deepEqual([...doc.querySelectorAll(`${root} header [data-chapter]`)].map(el => el.dataset.page), ['history', 'exhibit', 'lab', 'challenge', 'mission']);
   }
   for (const link of doc.querySelectorAll('[data-scene-link]')) assert.equal(link.hasAttribute('data-page'), false);
 });
@@ -77,7 +77,7 @@ test('both contained stylesheets parse without CSS warnings', async () => {
 test('home and preview use publication-neutral archive copy and history return label', async () => {
   for (const html of [await home(), await read('history-preview.html')]) {
     const doc = document(html);
-    assert.match(doc.body.textContent, /七幕档案/);
+    assert.match(doc.body.textContent, /18节档案/);
     assert.doesNotMatch(doc.body.textContent, /七幕预览|尚未替换主应用首页|这是七幕独立预览/);
     assert.equal(doc.querySelector('#lifeline').getAttribute('aria-labelledby'), 'hero-title');
     assert.equal(doc.querySelector('#hero-title').getAttribute('tabindex'), '-1');

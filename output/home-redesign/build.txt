@@ -1,0 +1,13 @@
+
+> bombe-studio@0.1.0 build
+> node build.mjs
+
+
+  dist\chunks\chunk-HQDCPN34.js       1.2mb
+  dist\chunks\main-II53H7XL.js       54.9kb
+  dist\chunks\challenge-YWDO7AJD.js  53.0kb
+  dist\chunks\lab-LJ7V45LO.js        50.7kb
+  dist\chunks\chunk-YDDZ5HEX.js      17.0kb
+  ...and 13 more output files...
+
+Done in 82ms
