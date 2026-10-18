@@ -2,17 +2,19 @@
 
 GitHub 私有仓库：[judgemeido/bombe-studio](https://github.com/judgemeido/bombe-studio)。这是源代码仓库；网页仍按下方命令在本地运行。
 
-![04「黎明之前」三维工作室](output/mission/desktop-cover.jpg)
+![04「黎明之前」三维工作室](output/mission-refinement/desktop-cover.jpg)
 
 ## 新增 04：黎明之前（2026-10-18）
 
-打开 `http://127.0.0.1:4173/#/mission`，以图灵的视角进入七关教学故事：截收、对齐、接线、设轮、搜索、解密、决策。程序化三维工作室包含无线电、Enigma、27 鼓轮 Bombe 示意机和工作桌，支持三个观察视角、实际转子步进与输入/输出灯号动画。包含独立 Remotion 制作的 12 秒可跳过片头。
+打开 `http://127.0.0.1:4173/#/mission`，以图灵的视角进入七关教学故事：截收、对齐、接线、设轮、搜索、解密、决策。2026-10-19 细化了木盒合页与卡扣、转子齿圈/刻度/触点、圆形按键与灯板、26 组双插孔、机柜面板与鼓轮紧固件、无线电和桌面材质。五个视角可观察工作室、密码机、接线板、无线电和机房。
+
+入场为约 10 秒的 Three.js 实时镜头与盖板动作，关间为约 2.4 秒过渡；均在同一三维场景内完成，可跳过、暂停或按 Esc 跳过。页面不含视频播放器，也不请求 MP4。减少动态效果模式直接进入任务。
 
 同一条故事适用于三至九年级及成人；每关提供两级提示、深入讨论和证据记录。建议课堂节奏共 600 秒，含片头、讲解和讨论，不强制拖延操作。暂停、隐藏页面及章节切换会停止活动；本次页面内进度保留，刷新会重开。
 
 模型、对白、DX 编号与气象报文均为教学重建。密码计算使用真实 Enigma I 置换、按键前步进和中轮双步进。第 5 关是缩小到 26 个起点的枚举实验，不是完整历史 Bombe 搜索复原。全部密文字母参与连续运算，不丢弃猜测起点之前的两格。
 
-实现位于 `src/mission*.js` 与 `mission.css`；影片源码、锁定依赖及重渲染命令位于 `tools/mission-film/`。主应用保持原生 JavaScript / Three.js / esbuild，运行时无需 React、在线 API 或外部媒体。验证详情见 [04 验收记录](docs/MISSION_04_ACCEPTANCE.md)。
+实现位于 `src/mission*.js` 与 `mission.css`；旧 Remotion 工程及影片保留为历史创作资料，当前网站不再引用或复制它。主应用保持原生 JavaScript / Three.js / esbuild，运行时无需 React、在线 API 或外部媒体。验证详情见 [04 验收记录](docs/MISSION_04_ACCEPTANCE.md) 和 [模型与实时过渡验收](docs/MISSION_REFINEMENT_ACCEPTANCE.md)。
 
 ## 当前首页：18节历史档案（2026-10-18）
 

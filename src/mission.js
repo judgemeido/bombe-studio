@@ -2,15 +2,23 @@ import { initialMission, reduceMission, MISSION } from './mission-engine.js';
 import { missionShell, renderTask } from './mission-template.js';
 import { createMissionScene } from './mission-scene.js';
 import { ALPHABET } from './cipher.js';
+import { STAGE_VIEWS } from './mission-transition.js';
 
 export function createMission(root, { motion, progress = () => {}, sceneFactory = createMissionScene } = {}) {
   const view = root.ownerDocument.defaultView, doc = root.ownerDocument;
   motion ||= view.matchMedia('(prefers-reduced-motion: reduce)');
   root.innerHTML = missionShell;
-  const $ = s => root.querySelector(s), task = $('#mission-task'), video = $('video');
+  const $ = s => root.querySelector(s), task = $('#mission-task');
   let state = initialMission(), active = false, disposed = false, scene, cinematic = false, selectedView = 'desk';
+  let transitionId = 0, transitionPaused = false, pendingAction = null, unavailable = false;
   const cleanups = [], on = (el, name, fn) => { el.addEventListener(name, fn); cleanups.push(() => el.removeEventListener(name, fn)); };
-  function fallback(show) { $('.mission-fallback').hidden = !show; }
+  function fallback(show) {
+    unavailable = show; $('.mission-fallback').hidden = !show;
+    if (show && cinematic) {
+      pauseTransition(true);
+      $('.mission-cinema-caption').textContent = '三维画面暂不可用。你的证据仍在，点击“跳过过渡”即可继续任务。';
+    }
+  }
   progress(45, '搭建 1941 年工作室');
   try { scene = sceneFactory($('#mission-canvas'), { motion, onUnavailable: fallback, onSignal({ positions, inputLetter, outputLetter }) {
     const text = outputLetter ? `按键 ${inputLetter} → 灯板 ${outputLetter}   /   轮位 ${positions.map(n => ALPHABET[n]).join(' · ')}` : `Enigma / 轮位 ${positions.map((n, i) => state.stage === 3 && i === 2 ? '?' : ALPHABET[n]).join(' · ')}`;
@@ -49,49 +57,83 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     const before = state; state = reduceMission(state, action);
     if (state === before) return;
     const changed = state.stage !== before.stage || state.phase !== before.phase || state.paused !== before.paused || state.cleared !== before.cleared;
-    if (state.stage !== before.stage) chooseView(state.stage === 4 ? 'bombe' : [2, 3, 5].includes(state.stage) ? 'rotors' : 'desk');
+    if (state.stage !== before.stage || action.type === 'start') chooseView(STAGE_VIEWS[state.stage]);
     if (action.type === 'restart') chooseView('desk');
     if (action.type !== 'tick') render(changed);
   }
-  function finishIntro() {
-    cinematic = false; video.pause(); $('.mission-cinema').hidden = true;
-    if (active) dispatch({ type: 'start' });
+  function clearTransition() {
+    transitionId++; cinematic = false; transitionPaused = false;
+    $('.mission-cinema').hidden = true; $('.mission-world').classList.remove('is-transitioning');
+    $('.mission-dossier').inert = false; $('.mission-camera').inert = false;
   }
-  function begin() {
-    if (motion.matches) { dispatch({ type: 'start' }); return; }
-    cinematic = true; $('.mission-cinema').hidden = false;
-    video.src ||= 'assets/mission/arrival.mp4'; video.currentTime = 0;
-    video.play()?.catch(() => { $('.mission-cinema-caption').textContent = '片头暂未播放，可点击播放或直接进入任务。'; });
+  function finishTransition() {
+    if (!cinematic || disposed) return;
+    const action = pendingAction; pendingAction = null;
+    scene?.cancelTransition?.(); clearTransition();
+    if (active && action) dispatch(action);
+  }
+  function pauseTransition(value) {
+    if (!value && cinematic && (unavailable || motion.matches) && !doc.hidden) { finishTransition(); return; }
+    transitionPaused = value; scene?.pauseTransition?.(value);
+    $('[data-action="pause-intro"]').textContent = value ? '继续过渡' : '暂停';
+    $('[data-action="pause-intro"]').setAttribute('aria-pressed', String(value));
+  }
+  function beginTransition(action) {
+    if (cinematic) return;
+    if (motion.matches || !scene?.playTransition || unavailable) { dispatch(action); return; }
+    pendingAction = action; cinematic = true; const id = ++transitionId;
+    $('.mission-cinema').hidden = false; $('.mission-world').classList.add('is-transitioning');
+    $('.mission-dossier').inert = true; $('.mission-camera').inert = true;
+    $('.mission-cinema-caption').textContent = action.type === 'start' ? '1941 年，布莱切利园。' : '带上这条证据，前往下一张工作桌。';
+    $('.mission-cinema-progress').style.transform = 'scaleX(0)';
+    pauseTransition(false);
+    scene.playTransition({ kind: action.type === 'start' ? 'arrival' : 'stage', stage: action.type === 'start' ? 0 : state.stage + 1,
+      onFrame(frame) {
+        if (!cinematic || id !== transitionId || disposed) return;
+        $('.mission-cinema-caption').textContent = frame.caption;
+        $('.mission-cinema-progress').style.transform = `scaleX(${frame.progress})`;
+      },
+      onComplete() { if (id === transitionId && active && !disposed) finishTransition(); },
+    });
     $('[data-action="skip-intro"]').focus({ preventScroll: true });
-    if (view.innerWidth <= 760) $('.mission-cinema').scrollIntoView({ block: 'center', behavior: 'instant' });
+    if (view.innerWidth <= 760) $('.mission-world').scrollIntoView({ block: 'center', behavior: 'instant' });
   }
   on(root, 'click', event => {
     const button = event.target.closest('button[data-action]'); if (!button || !active || disposed) return;
     const { action, value, index, step } = button.dataset;
-    if (action === 'start') { begin(); return; }
-    if (action === 'skip-intro') { finishIntro(); return; }
+    if (action === 'skip-intro') { scene?.skipTransition?.(); finishTransition(); return; }
+    if (action === 'pause-intro') { pauseTransition(!transitionPaused); return; }
+    if (cinematic) return;
+    if (action === 'start') { beginTransition({ type: 'start' }); return; }
+    if (action === 'next' && state.cleared && !state.paused) { beginTransition({ type: 'next' }); return; }
     if (action === 'view') { chooseView(value); return; }
     if (action === 'rotor') dispatch({ type: action, index: Number(index), value: (state.positions[Number(index)] + Number(step) + 26) % 26 });
     else dispatch({ type: action, value: ['channel', 'align'].includes(action) ? Number(value) : value });
   });
-  on(video, 'ended', finishIntro);
-  on(video, 'error', () => { if (cinematic) { $('.mission-cinema-caption').textContent = '片头暂不可用；你可以直接进入任务。'; } });
   on(doc, 'visibilitychange', () => {
-    if (doc.hidden) { video.pause(); if (active) dispatch({ type: 'pause' }); }
+    if (doc.hidden && active) { if (cinematic) pauseTransition(true); else dispatch({ type: 'pause' }); }
   });
-  on(motion, 'change', () => { if (motion.matches && cinematic) finishIntro(); scene?.setState(state); });
+  on(motion, 'change', () => {
+    if (motion.matches && cinematic) {
+      if (doc.hidden || transitionPaused) pauseTransition(true);
+      else { scene?.skipTransition?.(); finishTransition(); }
+    }
+    scene?.setState(state);
+  });
   on(root, 'keydown', event => {
-    if (event.key === 'Escape' && active) { if (cinematic) finishIntro(); else dispatch({ type: state.paused ? 'resume' : 'pause' }); }
+    if (event.key === 'Escape' && active) { if (cinematic) { scene?.skipTransition?.(); finishTransition(); } else dispatch({ type: state.paused ? 'resume' : 'pause' }); }
   });
   const timer = view.setInterval(() => { if (active && !doc.hidden && !cinematic) dispatch({ type: 'tick', seconds: 1 }); }, 1000);
   render(); progress(82, '七关任务与证据手册已准备');
+  const inspect = () => ({ state: structuredClone(state), active, cinematic, transitionPaused, view: selectedView, scene: scene?.inspect() || { ready: false } });
+  view.__BOMBE_MISSION__ = inspect;
   return {
     setActive(value) {
       if (disposed) return; active = value;
-      if (!value) { video.pause(); if (cinematic) { cinematic = false; $('.mission-cinema').hidden = true; } dispatch({ type: 'pause' }); }
+      if (!value) { scene?.cancelTransition?.(); clearTransition(); pendingAction = null; dispatch({ type: 'pause' }); }
       scene?.setActive(value); if (value) render();
     },
-    inspect() { return { state: structuredClone(state), active, cinematic, view: selectedView, scene: scene?.inspect() || { ready: false } }; },
-    dispose() { if (disposed) return; disposed = true; active = false; view.clearInterval(timer); video.pause(); video.removeAttribute('src'); video.load(); cleanups.forEach(fn => fn()); scene?.dispose(); root.replaceChildren(); },
+    inspect,
+    dispose() { if (disposed) return; disposed = true; active = false; transitionId++; view.clearInterval(timer); cleanups.forEach(fn => fn()); scene?.dispose(); if (view.__BOMBE_MISSION__ === inspect) delete view.__BOMBE_MISSION__; root.replaceChildren(); },
   };
 }

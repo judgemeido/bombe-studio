@@ -4,15 +4,17 @@ import { Window } from 'happy-dom';
 import { createMission } from '../src/mission.js';
 import { MISSION } from '../src/mission-engine.js';
 
-function fixture(fail = false) {
+function fixture(fail = false, reduced = true) {
   const w = new Window(); w.document.body.innerHTML = '<main id="mission-page"></main>';
-  const root = w.document.querySelector('main'); let disposed = 0;
-  const game = createMission(root, { motion: Object.assign(new w.EventTarget(), { matches: true }), sceneFactory() {
+  const root = w.document.querySelector('main'); let disposed = 0, transition, sceneOptions;
+  const motion = Object.assign(new w.EventTarget(), { matches: reduced });
+  const game = createMission(root, { motion, sceneFactory(canvas, options) {
+    sceneOptions = options;
     if (fail) throw new Error('WebGL unavailable');
-    return { setState() {}, setView() {}, setActive() {}, dispose() { disposed++; }, inspect() { return { ready: true }; } };
+    return { setState() {}, setView() {}, setActive() {}, playTransition(options) { transition = options; }, pauseTransition() {}, cancelTransition() {}, skipTransition() { transition.onComplete(); }, dispose() { disposed++; }, inspect() { return { ready: true }; } };
   } });
   const click = selector => { const el = root.querySelector(selector); assert.ok(el, selector); el.focus(); el.click(); };
-  return { w, root, game, click, released: () => disposed };
+  return { w, root, game, click, motion, unavailable: value => sceneOptions.onUnavailable(value), transition: () => transition, released: () => disposed };
 }
 test('DOM controls play all seven levels, preserve route progress, and restart', async () => {
   const f = fixture(); const { root, game, click } = f;
@@ -41,6 +43,68 @@ test('DOM controls play all seven levels, preserve route progress, and restart',
     click('[data-action="restart"]'); assert.equal(game.inspect().state.phase, 'briefing');
     game.dispose(); game.dispose(); assert.equal(f.released(), 1);
   } finally { game.dispose(); await f.w.happyDOM.close(); }
+});
+
+test('real-time intro has no video, skipping starts only once and focuses the task', async () => {
+  const f = fixture(false, false);
+  try {
+    f.game.setActive(true); f.click('[data-action="start"]');
+    assert.equal(f.root.querySelector('video'), null);
+    assert.equal(f.game.inspect().cinematic, true);
+    const late = f.transition().onComplete;
+    f.click('[data-action="skip-intro"]'); late();
+    assert.equal(f.game.inspect().state.phase, 'playing'); assert.equal(f.game.inspect().state.stage, 0);
+    assert.equal(f.w.document.activeElement.id, 'mission-task-title');
+    assert.equal(f.root.querySelector('.mission-dossier').inert, false);
+  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
+});
+
+test('leaving an intro cancels stale callbacks and allows restarting on return', async () => {
+  const f = fixture(false, false);
+  try {
+    f.game.setActive(true); f.click('[data-action="start"]');
+    const late = f.transition().onComplete;
+    f.game.setActive(false); late(); f.game.setActive(true);
+    assert.equal(f.game.inspect().state.phase, 'briefing');
+    f.click('[data-action="start"]'); f.transition().onComplete();
+    assert.equal(f.game.inspect().state.phase, 'playing');
+  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
+});
+
+test('without WebGL a motion-enabled visitor enters tasks directly', async () => {
+  const f = fixture(true, false);
+  try {
+    f.game.setActive(true); f.click('[data-action="start"]');
+    assert.equal(f.game.inspect().state.phase, 'playing');
+    assert.equal(f.game.inspect().cinematic, false);
+  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
+});
+
+test('stage transitions defer progression and reduced-motion change finishes safely', async () => {
+  const f = fixture(false, false);
+  try {
+    f.game.setActive(true); f.click('[data-action="start"]'); f.transition().onComplete();
+    f.click('[data-action="channel"][data-value="1"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
+    assert.equal(f.game.inspect().state.stage, 0); assert.equal(f.game.inspect().cinematic, true);
+    f.motion.matches = true; f.motion.dispatchEvent(new f.w.Event('change'));
+    assert.equal(f.game.inspect().state.stage, 1); assert.equal(f.game.inspect().cinematic, false);
+  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
+});
+
+for (const trigger of ['context loss', 'reduced motion']) test(`a paused transition is not advanced by ${trigger}`, async () => {
+  const f = fixture(false, false);
+  try {
+    f.game.setActive(true); f.click('[data-action="start"]'); f.transition().onComplete();
+    f.click('[data-action="channel"][data-value="1"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
+    f.click('[data-action="pause-intro"]');
+    if (trigger === 'context loss') f.unavailable(true);
+    else { f.motion.matches = true; f.motion.dispatchEvent(new f.w.Event('change')); }
+    assert.equal(f.game.inspect().state.stage, 0);
+    assert.equal(f.game.inspect().cinematic, true);
+    assert.equal(f.game.inspect().transitionPaused, true);
+    f.click('[data-action="skip-intro"]');
+    assert.equal(f.game.inspect().state.stage, 1);
+  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
 });
 test('no WebGL still exposes all task controls with clear fallback; pause blocks inputs', async () => {
   const f = fixture(true);

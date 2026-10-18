@@ -2,32 +2,48 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createMissionModel } from './mission-model.js';
 import { missionFrame } from './mission-animation.js';
+import { MISSION_VIEWS, transitionFrame, advanceTransitionTime } from './mission-transition.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { replaceMissionEnvironment } from './mission-environment.js';
 
 export function createMissionScene(canvas, { motion, onUnavailable = () => {}, onSignal = () => {} } = {}) {
   const view = canvas.ownerDocument.defaultView;
   let renderer, model, controls, observer, raf = 0, active = false, disposed = false, lost = false, state;
-  let clock = 0, last = 0, searchStart = null, decodeStart = null;
+  let clock = 0, last = 0, searchStart = null, decodeStart = null, transition = null, environment;
   const scene = new THREE.Scene(); scene.background = new THREE.Color('#142832');
   const camera = new THREE.PerspectiveCamera(40, 1, .1, 60);
-  const frames = { desk: [[5.7, 4.5, 7.6], [0, 1.45, -.3]], rotors: [[2.15, 3.55, 3.95], [-.22, 1.43, .08]], bombe: [[4.4, 3.1, 3.6], [1.6, 1.9, -.9]] };
   const targetPosition = new THREE.Vector3(), targetLook = new THREE.Vector3(); let following = false;
-  function labelTexture(content, color, background) {
-    const c = canvas.ownerDocument.createElement('canvas'); c.width = 512; c.height = 256;
-    const ctx = c.getContext('2d'); ctx.fillStyle = background; ctx.fillRect(0, 0, 512, 256);
+  let selectedView = 'desk';
+  function labelTexture(content, color, background, glyphs = null) {
+    if (glyphs) {
+      const c = canvas.ownerDocument.createElement('canvas'); c.width = c.height = 512;
+      const ctx = c.getContext('2d'); ctx.fillStyle = background; ctx.fillRect(0, 0, 512, 512);
+      ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '40px Georgia, serif';
+      glyphs.forEach((g, i) => ctx.fillText(g, i % 8 * 64 + 32, Math.floor(i / 8) * 64 + 33, 56));
+      const texture = new THREE.CanvasTexture(c); texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = 4; return texture;
+    }
+    const c = canvas.ownerDocument.createElement('canvas'); c.width = content.length <= 2 ? 128 : 512; c.height = content.length <= 2 ? 128 : 256;
+    const ctx = c.getContext('2d'); ctx.fillStyle = background; ctx.fillRect(0, 0, c.width, c.height);
     ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const lines = content.split('\n'); ctx.font = `${content.length === 1 ? 170 : 35}px Georgia, serif`;
-    lines.forEach((line, i) => ctx.fillText(line, 256, 128 + (i - (lines.length - 1) / 2) * 59));
-    const texture = new THREE.CanvasTexture(c); texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = 2; return texture;
+    const lines = content.split('\n'); ctx.font = `${content.length <= 2 ? 75 : 31}px Georgia, serif`;
+    lines.forEach((line, i) => ctx.fillText(line, c.width / 2, c.height / 2 + (i - (lines.length - 1) / 2) * 59, c.width * .92));
+    const texture = new THREE.CanvasTexture(c); texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = 4; return texture;
   }
   function resize() {
     if (disposed || !renderer) return;
     const { width, height } = canvas.getBoundingClientRect();
     if (!width || !height) return;
     camera.aspect = width / height; camera.updateProjectionMatrix(); renderer.setSize(width, height, false);
+    if (!transition) setView(selectedView, true);
     draw();
   }
+  function fitPosition(p, t) {
+    const target = new THREE.Vector3(...t);
+    return new THREE.Vector3(...p).sub(target).multiplyScalar(Math.max(1, .95 / camera.aspect)).add(target);
+  }
   function setView(name, immediate = motion?.matches) {
-    const [p, t] = frames[name] || frames.desk; targetPosition.set(...p); targetLook.set(...t);
+    selectedView = name;
+    const { camera: p, target: t } = MISSION_VIEWS[name] || MISSION_VIEWS.desk; targetPosition.copy(fitPosition(p, t)); targetLook.set(...t);
     following = !immediate;
     if (immediate) { camera.position.copy(targetPosition); controls.target.copy(targetLook); controls.update(); }
     draw();
@@ -36,36 +52,70 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
     if (!active || disposed || lost || !state) return;
     const reduced = Boolean(motion?.matches);
     const projection = missionFrame(state, clock, { searchStart, decodeStart, reduced });
-    if (!state.paused) model.update(state, clock, { reduced, ...projection });
+    if (!state.paused) model.update(state, clock, { reduced, ...projection, lidOpen: transition?.projection?.lidOpen ?? 1 });
     onSignal(projection);
     renderer.render(scene, camera);
+    const stats = `${renderer.info.render.calls} calls / ${renderer.info.render.triangles} triangles`;
+    if (canvas.dataset.renderStats !== stats) canvas.dataset.renderStats = stats;
   }
   function frame(now) {
     raf = 0;
-    if (!active || disposed || lost || motion?.matches || state?.paused || canvas.ownerDocument.hidden) return;
-    clock += Math.min((now - (last || now)) / 1000, .05); last = now;
-    if (following) {
+    if (!active || disposed || lost || motion?.matches || state?.paused || transition?.paused || canvas.ownerDocument.hidden) return;
+    const dt = Math.min((now - (last || now)) / 1000, .05);
+    if (transition) {
+      transition.elapsed = advanceTransitionTime(transition.elapsed, now, last); applyTransition();
+    } else clock += dt;
+    last = now;
+    if (following && !transition) {
       camera.position.lerp(targetPosition, .055); controls.target.lerp(targetLook, .055);
       if (camera.position.distanceTo(targetPosition) < .015) following = false;
     }
-    controls.update(); draw(); raf = view.requestAnimationFrame(frame);
+    if (!transition) controls.update(); draw();
+    if (transition?.projection.done) {
+      const done = transition.onComplete; transition = null; controls.enabled = active && !state?.paused;
+      done?.();
+    }
+    if (!raf) raf = view.requestAnimationFrame(frame);
   }
-  function schedule() { if (!raf && active && !lost && !disposed && !motion?.matches && !state?.paused && !canvas.ownerDocument.hidden) { last = 0; raf = view.requestAnimationFrame(frame); } }
+  function schedule() { if (!raf && active && !lost && !disposed && !motion?.matches && !state?.paused && !transition?.paused && !canvas.ownerDocument.hidden) { last = 0; raf = view.requestAnimationFrame(frame); } }
+  function applyTransition() {
+    const p = transitionFrame(transition, transition.elapsed); transition.projection = p;
+    const position = fitPosition(p.camera, p.target), target = new THREE.Vector3(...p.target);
+    if (transition.kind === 'stage') { position.lerpVectors(transition.fromCamera, position, p.blend); target.lerpVectors(transition.fromTarget, target, p.blend); }
+    camera.position.copy(position); controls.target.copy(target); camera.lookAt(target);
+    transition.onFrame?.(p);
+  }
+  function cancelTransition() {
+    transition = null; controls.enabled = active && !state?.paused;
+    // Restore the inspection pose even when the intro was interrupted mid-lid motion.
+    if (state) model.update(state, clock, { ...missionFrame(state, clock, { searchStart, decodeStart, reduced: Boolean(motion?.matches) }), lidOpen: 1 });
+  }
   function contextLost(event) { event.preventDefault(); lost = true; view.cancelAnimationFrame(raf); raf = 0; onUnavailable(true); }
-  function restored() { lost = false; onUnavailable(false); resize(); schedule(); }
+  function rebuildEnvironment() {
+    environment = replaceMissionEnvironment(scene, () => {
+      const pmrem = new THREE.PMREMGenerator(renderer), room = new RoomEnvironment();
+      try { return pmrem.fromScene(room, .04); }
+      finally { room.dispose(); pmrem.dispose(); }
+    }, environment);
+  }
+  function restored() {
+    try { rebuildEnvironment(); lost = false; onUnavailable(false); resize(); schedule(); }
+    catch { lost = true; onUnavailable(true); }
+  }
   function visibility() { if (canvas.ownerDocument.hidden) { view.cancelAnimationFrame(raf); raf = 0; } else { schedule(); draw(); } }
   const stopFollowing = () => { following = false; };
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'low-power' });
     renderer.setPixelRatio(Math.min(view.devicePixelRatio || 1, 1.6));
-    renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.35;
+    renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    scene.add(new THREE.HemisphereLight('#d0e4e7', '#544333', 2.5));
-    const key = new THREE.DirectionalLight('#fff2d3', 3.1); key.position.set(-3, 7, 5); key.castShadow = true;
-    key.shadow.mapSize.set(1024, 1024); Object.assign(key.shadow.camera, { left: -5, right: 5, top: 5, bottom: -4, far: 20 }); key.shadow.bias = -.001; scene.add(key);
-    const fill = new THREE.DirectionalLight('#a7c9e0', 1.8); fill.position.set(3, 4, -2); scene.add(fill);
-    const lamp = new THREE.PointLight('#ffd091', 4, 4, 2); lamp.position.set(1.25, 1.78, .7); scene.add(lamp);
+    rebuildEnvironment(); scene.environmentIntensity = .3;
+    scene.add(new THREE.HemisphereLight('#bdcfda', '#49392b', 1.25));
+    const key = new THREE.DirectionalLight('#d9e7ec', 2.5); key.position.set(-3, 6, 1); key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 4.5, bottom: -3.5, far: 18 }); key.shadow.bias = -.00015; key.shadow.normalBias = .018; scene.add(key);
+    const fill = new THREE.DirectionalLight('#e8ceab', 1.2); fill.position.set(3, 3, 5); scene.add(fill);
     model = createMissionModel({ labelTexture }); scene.add(model.root);
+    const lamp = new THREE.PointLight('#ffd091', 3.4, 3.5, 2); model.lampAnchor.add(lamp);
     controls = new OrbitControls(camera, canvas); controls.enableDamping = !motion?.matches; controls.enablePan = false;
     controls.minDistance = 2; controls.maxDistance = 13; controls.minPolarAngle = .25; controls.maxPolarAngle = Math.PI / 2.04;
     controls.minAzimuthAngle = -Math.PI / 2.1; controls.maxAzimuthAngle = Math.PI / 2.1;
@@ -74,23 +124,36 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
     observer = new view.ResizeObserver(resize); observer.observe(canvas);
     canvas.addEventListener('webglcontextlost', contextLost); canvas.addEventListener('webglcontextrestored', restored);
     canvas.ownerDocument.addEventListener('visibilitychange', visibility);
-  } catch (error) { observer?.disconnect(); controls?.dispose(); model?.dispose(); renderer?.dispose(); throw error; }
+  } catch (error) { observer?.disconnect(); controls?.dispose(); model?.dispose(); environment?.dispose(); renderer?.dispose(); throw error; }
   return {
     setState(next) {
       if (!state?.results.length && next.results.length) searchStart = clock;
       if (!state?.decoded && next.decoded) decodeStart = clock;
       if (!next.results.length) searchStart = null;
       if (!next.decoded) decodeStart = null;
-      state = next; controls.enabled = !next.paused; controls.enableDamping = !motion?.matches;
+      state = next; controls.enabled = active && !next.paused && !transition; controls.enableDamping = !motion?.matches;
       draw(); schedule();
     },
     setView,
-    setActive(value) { active = value; controls.enabled = value && !state?.paused; if (!value) { view.cancelAnimationFrame(raf); raf = 0; } else { resize(); schedule(); } },
-    inspect() { return { ready: !lost, calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures, clock }; },
+    playTransition(options) {
+      if (disposed || lost || !active) { options.onComplete?.(); return; }
+      following = false; controls.enabled = false;
+      transition = { ...options, elapsed: 0, paused: false, fromCamera: camera.position.clone(), fromTarget: controls.target.clone() };
+      applyTransition(); draw(); schedule();
+    },
+    skipTransition() {
+      if (!transition) return;
+      transition.elapsed = 100; applyTransition(); draw();
+      const done = transition.onComplete; cancelTransition(); done?.();
+    },
+    cancelTransition,
+    pauseTransition(value) { if (!transition) return; transition.paused = value; if (value) { view.cancelAnimationFrame(raf); raf = 0; } else schedule(); },
+    setActive(value) { active = value; controls.enabled = value && !state?.paused && !transition; if (!value) { view.cancelAnimationFrame(raf); raf = 0; } else { resize(); schedule(); } },
+    inspect() { return { ready: !lost, calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures, clock, transition: transition ? { kind: transition.kind, elapsed: transition.elapsed, paused: transition.paused } : null, camera: camera.position.toArray() }; },
     dispose() {
-      if (disposed) return; disposed = true; view.cancelAnimationFrame(raf); observer.disconnect();
+      if (disposed) return; disposed = true; transition = null; view.cancelAnimationFrame(raf); observer.disconnect();
       canvas.removeEventListener('webglcontextlost', contextLost); canvas.removeEventListener('webglcontextrestored', restored); canvas.ownerDocument.removeEventListener('visibilitychange', visibility);
-      controls.removeEventListener('start', stopFollowing); controls.removeEventListener('change', draw); controls.dispose(); model.dispose(); renderer.dispose(); scene.clear();
+      controls.removeEventListener('start', stopFollowing); controls.removeEventListener('change', draw); controls.dispose(); model.dispose(); environment.dispose(); renderer.dispose(); scene.clear();
     },
   };
 }

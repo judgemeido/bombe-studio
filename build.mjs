@@ -2,7 +2,7 @@ import { renderHome } from './page-shell.mjs';
 import { build } from 'esbuild';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { copyFile, readFile, writeFile, cp } from 'node:fs/promises';
+import { copyFile, readFile, writeFile, cp, rm } from 'node:fs/promises';
 export const options = {
   entryPoints: { bootstrap: 'src/bootstrap.js', historyPreview: 'src/history-preview.js' }, bundle: true, outdir: 'dist', format: 'esm', splitting: true,
   chunkNames: 'chunks/[name]-[hash]',
@@ -19,6 +19,8 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   await copyFile('lab.css', 'dist/lab.css');
   await copyFile('challenge.css', 'dist/challenge.css');
   await copyFile('mission.css', 'dist/mission.css');
-  await cp('assets/mission', 'dist/assets/mission', { recursive: true });
+  // Retire only the former generated film copies; authoring originals stay in assets/mission.
+  await rm('dist/assets/mission/arrival.mp4', { force: true });
+  await rm('dist/assets/mission/README.md', { force: true });
   await copyFile('THIRD_PARTY_NOTICES.txt', 'dist/THIRD_PARTY_NOTICES.txt');
 }
