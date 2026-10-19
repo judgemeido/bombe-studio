@@ -17,8 +17,13 @@ body[data-page="mission"] #application-shell>.site-header .chapter-nav a[aria-cu
 #mission-page .mission-kicker { color:var(--archive-brass); letter-spacing:2.3px; font:11px/1.5 Consolas,monospace; margin-bottom:13px; }
 #mission-page #mission-heading { color:var(--archive-paper); font-family:Georgia,"Songti SC","SimSun",serif; font-size:clamp(32px,3.6vw,54px); line-height:1.1; font-weight:400; letter-spacing:2px; margin:0; }
 #mission-page #mission-heading span { display:inline-block; margin-left:22px; font:italic 23px/1.4 Georgia,serif; letter-spacing:0; color:var(--archive-on-sea); }
-#mission-page .mission-header-note { font-size:13px; line-height:1.8; text-align:right; color:var(--archive-paper); }
-#mission-page .mission-header-note span { color:var(--archive-on-sea); font-size:12px; }
+#mission-page .mission-header-note { display:flex; flex-direction:column; align-items:flex-end; gap:12px; font-size:13px; line-height:1.8; text-align:right; color:var(--archive-paper); }
+#mission-page .mission-header-copy { color:var(--archive-paper); font-size:13px; }
+#mission-page .mission-header-copy b { color:var(--archive-on-sea); font-size:12px; font-weight:400; }
+#mission-page .mission-status { display:flex; gap:18px; border-top:1px solid var(--archive-slate); padding-top:8px; }
+#mission-page .mission-status span { display:flex; flex-direction:column; align-items:flex-end; min-width:68px; }
+#mission-page .mission-status small { color:var(--archive-on-sea); font:10px/1.4 Consolas,monospace; letter-spacing:.8px; }
+#mission-page .mission-status output { color:var(--archive-brass); font:17px/1.2 Consolas,monospace; }
 #mission-page .mission-progress { list-style:none; margin:0 0 22px; padding:0; display:grid; grid-template-columns:repeat(7,1fr); border-top:1px solid var(--archive-slate); border-bottom:1px solid var(--archive-slate); }
 #mission-page .mission-progress li { display:flex; align-items:center; gap:13px; padding:15px 12px; color:var(--archive-on-sea); font-size:12px; position:relative; }
 #mission-page .mission-progress li+li { border-left:1px solid var(--archive-slate); }
@@ -45,7 +50,7 @@ body[data-page="mission"] #application-shell>.site-header .chapter-nav a[aria-cu
 #mission-page h2.mission-brief-title { font-size:clamp(29px,3vw,43px); line-height:1.55; margin-bottom:18px; font-weight:400; }
 #mission-page .mission-lead { color:var(--archive-ink); font-size:17px; line-height:1.9; margin-bottom:17px; }
 #mission-page .mission-dossier p { line-height:1.85; }
-#mission-page .mission-brief-facts { display:flex; gap:32px; margin:28px 0; border-block:1px solid var(--archive-rule); padding:17px 0; }
+#mission-page .mission-brief-facts { display:flex; gap:26px; margin:28px 0; border-block:1px solid var(--archive-rule); padding:17px 0; }
 #mission-page .mission-brief-facts span { display:flex; flex-direction:column; color:var(--archive-muted); font-size:12px; }
 #mission-page .mission-brief-facts b { font:36px/1.2 Georgia,serif; color:var(--archive-ink); margin-bottom:6px; }
 #mission-page .mission-primary { width:100%; padding:13px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px; background:var(--archive-sea); color:var(--archive-paper); font-size:14px; margin-top:20px; text-align:left; }
@@ -193,8 +198,12 @@ body[data-page="mission"] #application-shell>.site-header .chapter-nav a[aria-cu
   #mission-page #mission-heading { font-size:35px; }
   #mission-page #mission-heading span { font-size:18px; margin:8px 0 0; }
   #mission-page .mission-kicker { font-size:9px; letter-spacing:1px; }
-  #mission-page .mission-header-note { font-size:11px; width:130px; padding-top:20px; }
-  #mission-page .mission-header-note span { display:block; font-size:10px; margin-top:5px; }
+  #mission-page .mission-header-note { font-size:11px; width:155px; padding-top:0; gap:9px; }
+  #mission-page .mission-header-copy { font-size:11px; }
+  #mission-page .mission-header-copy b { display:block; font-size:10px; margin-top:5px; }
+  #mission-page .mission-status { gap:10px; width:100%; justify-content:flex-end; }
+  #mission-page .mission-status span { min-width:58px; }
+  #mission-page .mission-status output { font-size:14px; }
   #mission-page .mission-progress { margin-bottom:17px; }
   #mission-page .mission-progress li { flex-direction:column; gap:5px; padding:10px 1px; font-size:10px; }
   #mission-page .mission-progress li>span { font-size:13px; }
@@ -207,7 +216,8 @@ body[data-page="mission"] #application-shell>.site-header .chapter-nav a[aria-cu
   #mission-page .mission-scene-caption small { font-size:9px; }
   #mission-page .mission-dossier { min-height:0; border:0; border-top:1px solid var(--archive-muted); padding:25px 22px; }
   #mission-page .mission-file-label { margin-bottom:23px; padding-bottom:16px; }
-  #mission-page .mission-brief-facts { margin:24px 0; }
+  #mission-page .mission-brief-facts { margin:24px 0; gap:16px; }
+  #mission-page .mission-brief-facts b { font-size:29px; }
   #mission-page h2 { font-size:26px; }
   #mission-page .mission-afterword { grid-template-columns:minmax(0,1fr); gap:16px; }
   #mission-page .mission-footer { flex-direction:column; gap:12px; padding:24px 0; }

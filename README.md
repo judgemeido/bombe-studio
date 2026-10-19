@@ -42,7 +42,7 @@ npm.cmd run dev
 
 打开 `http://127.0.0.1:4173`。默认只监听本机。可设置 `$env:PORT = 4174` 更换端口。
 
-章节地址：`#/history` 为历史首页，`#/` 为整机，`#/lab/drums` 为鼓轮与完整回路，`#/lab/wiring` 为放大的接线板，`#/challenge` 为六关解密挑战，`#/mission` 为七关穿越任务。支持直接刷新、浏览器前进后退。顶部五个章节入口均可跳转。
+章节地址：`#/history` 为历史首页，`#/` 为整机，`#/lab/drums` 为鼓轮与完整回路，`#/lab/wiring` 为放大的接线板，`#/challenge` 为六关解密挑战，`#/mission` 为七关、约 15 分钟的解密游戏。支持直接刷新、浏览器前进后退。顶部五个章节入口均可跳转。
 
 ```powershell
 npm.cmd test

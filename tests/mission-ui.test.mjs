@@ -45,6 +45,20 @@ test('DOM controls play all seven levels, preserve route progress, and restart',
   } finally { game.dispose(); await f.w.happyDOM.close(); }
 });
 
+test('briefing exposes a fifteen-minute decrypt game and live evidence clock', async () => {
+  const f = fixture();
+  try {
+    f.game.setActive(true);
+    assert.match(f.root.querySelector('.mission-header-note').textContent, /15 分钟解密游戏/);
+    assert.match(f.root.querySelector('.mission-brief-facts').textContent, /15/);
+    assert.equal(f.root.querySelector('#mission-elapsed').textContent, '00:00');
+    assert.equal(f.root.querySelector('#mission-evidence-count').textContent, '0 / 7');
+    f.click('[data-action="start"]');
+    await new Promise(resolve => setTimeout(resolve, 1100));
+    assert.notEqual(f.root.querySelector('#mission-elapsed').textContent, '00:00');
+  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
+});
+
 test('real-time intro has no video, skipping starts only once and focuses the task', async () => {
   const f = fixture(false, false);
   try {

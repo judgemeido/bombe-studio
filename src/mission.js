@@ -12,6 +12,13 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
   let state = initialMission(), active = false, disposed = false, scene, cinematic = false, selectedView = 'desk';
   let transitionId = 0, transitionPaused = false, pendingAction = null, unavailable = false;
   const cleanups = [], on = (el, name, fn) => { el.addEventListener(name, fn); cleanups.push(() => el.removeEventListener(name, fn)); };
+  const formatElapsed = seconds => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+  function updateStatus() {
+    const elapsed = $('#mission-elapsed');
+    const evidence = $('#mission-evidence-count');
+    if (elapsed) elapsed.textContent = formatElapsed(state.elapsed);
+    if (evidence) evidence.textContent = `${state.clues.length} / 7`;
+  }
   function fallback(show) {
     unavailable = show; $('.mission-fallback').hidden = !show;
     if (show && cinematic) {
@@ -38,6 +45,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     if (depthOpen && !focus && $('.mission-depth')) $('.mission-depth').open = true;
     $('.mission-progress').innerHTML = MISSION.stages.map((s, i) => `<li class="${i < state.clues.length ? 'is-done' : ''} ${state.phase === 'playing' && i === state.stage ? 'is-current' : ''}"${state.phase === 'playing' && i === state.stage ? ' aria-current="step"' : ''}><span>${i < state.clues.length ? '✓' : String(i + 1).padStart(2, '0')}</span>${s.short}</li>`).join('');
     $('#mission-clue-count').textContent = `${state.clues.length} / 7`;
+    updateStatus();
     $('#mission-clues').innerHTML = state.clues.length ? state.clues.map(c => `<li>${c}</li>`).join('') : '<li>完成任务后，你收集的证据会留在这里。</li>';
     $('#mission-location').textContent = state.phase === 'playing' ? MISSION.stages[state.stage].place : '英国 · 布莱切利园 · 1941';
     $('#mission-scene-caption').textContent = state.phase === 'playing' ? ['从规律出发，找到一个可以检验的猜测。', '字母不变成自身：先排除不可能。', '一根接线，两个方向。', '固定已知条件，再搜索未知。', '机房帮助排除，停机结果仍需核验。', '每个按键先步进，再让信号通过回路。', '把已知与未知，一起交给团队。'][state.stage] : '一张工作桌，连接起截收、推理与核验。';
@@ -59,7 +67,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     const changed = state.stage !== before.stage || state.phase !== before.phase || state.paused !== before.paused || state.cleared !== before.cleared;
     if (state.stage !== before.stage || action.type === 'start') chooseView(STAGE_VIEWS[state.stage]);
     if (action.type === 'restart') chooseView('desk');
-    if (action.type !== 'tick') render(changed);
+    if (action.type !== 'tick') render(changed); else if (state !== before) updateStatus();
   }
   function clearTransition() {
     transitionId++; cinematic = false; transitionPaused = false;
@@ -124,7 +132,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     if (event.key === 'Escape' && active) { if (cinematic) { scene?.skipTransition?.(); finishTransition(); } else dispatch({ type: state.paused ? 'resume' : 'pause' }); }
   });
   const timer = view.setInterval(() => { if (active && !doc.hidden && !cinematic) dispatch({ type: 'tick', seconds: 1 }); }, 1000);
-  render(); progress(82, '七关任务与证据手册已准备');
+  render(); progress(82, '七关解密游戏与证据手册已准备');
   const inspect = () => ({ state: structuredClone(state), active, cinematic, transitionPaused, view: selectedView, scene: scene?.inspect() || { ready: false } });
   view.__BOMBE_MISSION__ = inspect;
   return {

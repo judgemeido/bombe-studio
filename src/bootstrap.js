@@ -5,7 +5,7 @@ import { createHistoryGalleries } from './history-gallery.js';
 
 // Keep this lightweight pre-import copy aligned with navigation's chapter labels.
 const loadingChapters = {
-  mission: { title: '黎明之前，轮到你来推理。', chapter: '04 / BEFORE DAYBREAK' },
+  mission: { title: '黎明之前，轮到你来解密。', chapter: '04 / DECRYPTION MISSION' },
   exhibit: { title: '回到机器的全貌。', chapter: '01 / THE BOMBE' },
   lab: { title: '让信号，穿过逻辑。', chapter: '02 / THE SIGNAL LAB' },
   challenge: { title: '小小解密员，轮到你了。', chapter: '03 / CODE QUEST' },

@@ -19,12 +19,13 @@ function through(stage) {
   for (let i = 0; i < stage; i++) s = apply(s, ...answers[i], { type: 'next' });
   return { s, answers };
 }
-test('seven stages budget ten classroom minutes and ciphertext comes from the real cipher', () => {
+test('seven stages budget fifteen focused minutes and ciphertext comes from the real cipher', () => {
   assert.equal(MISSION.stages.length, 7);
-  assert.equal(MISSION.stages.reduce((n, s) => n + s.seconds, 0), 600);
+  assert.equal(MISSION.stages.reduce((n, s) => n + s.seconds, 0), 900);
   assert.equal(encipher(MISSION.ciphertext, [1, 3, 5], [['A', 'G']]).output, MISSION.plaintext);
   assert.notEqual(encipher(MISSION.ciphertext, [1, 3, 4], [['A', 'G']]).output, MISSION.plaintext);
 });
+
 test('alignment actually checks every position, rejecting two false offsets', () => {
   assert.ok(alignmentConflicts(0).length);
   assert.ok(alignmentConflicts(1).length);

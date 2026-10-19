@@ -249,7 +249,7 @@ navigation = dependencies.createNavigation({
       await challengeRuntime.ensure();
       if (!stopped) report(78, '任务与教学模型已准备');
     } else if (route.page === 'mission') {
-      report(26, '载入黎明之前的七关任务'); missionReport = report;
+      report(26, '载入黎明之前的七关解密游戏'); missionReport = report;
       await missionRuntime.ensure();
       if (!stopped) report(78, '工作室与任务已准备');
     } else {
