@@ -10,7 +10,7 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
   const view = canvas.ownerDocument.defaultView;
   let renderer, model, controls, observer, raf = 0, active = false, disposed = false, lost = false, state;
   let clock = 0, last = 0, searchStart = null, decodeStart = null, transition = null, environment;
-  const scene = new THREE.Scene(); scene.background = new THREE.Color('#142832');
+  const scene = new THREE.Scene(); scene.background = new THREE.Color('#142633');
   const camera = new THREE.PerspectiveCamera(40, 1, .1, 60);
   const targetPosition = new THREE.Vector3(), targetLook = new THREE.Vector3(); let following = false;
   let selectedView = 'desk';

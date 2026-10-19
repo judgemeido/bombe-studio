@@ -1,15 +1,16 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { EXHIBIT_PALETTE as P } from './exhibit-palette.js';
 
 // Display units, not surveyed CAD dimensions. Y is up; +Z faces the drums.
 export const DIM = Object.freeze({ width: 7.6, height: 6.6, depth: 2.05, columns: 12, banks: 3, rows: 3, drumRadius: .218, columnPitch: .545 });
 export const PARTS = Object.freeze([
-  { id: 'frame', index: '01', name: '钢制机架', english: 'THE FRAME', short: '机架', color: '#506052', subtitle: '给精密逻辑，一个坚实的骨架。', description: '钢制框架承载鼓轮、传动机构与后部接线。打开结构，可以看到各系统如何围绕同一副骨架协同工作。', note: '外壳、尺寸与拆分路径均为展示性重建。', anchor: [-3.75, 5.7, .8] },
-  { id: 'drums', index: '02', name: '鼓轮阵列', english: 'THE DRUMS', short: '鼓轮', color: '#a65c43', subtitle: '108 个鼓轮，铺开可能性。', description: '三组阵列，每组三行、每行十二个鼓轮。每一竖列的三个鼓轮对应一台 Enigma 的转子组，整机共对应 36 组。', note: '颜色与细部经过艺术化整理；转速仅作教学演示。', anchor: [2.8, 5.5, 1.2] },
-  { id: 'drive', index: '03', name: '机械传动', english: 'THE DRIVE', short: '传动', color: '#93825f', subtitle: '把一次旋转，传给整面阵列。', description: '主轴、横轴与齿轮把电机的运动传给鼓轮。真实机器以机械联动改变鼓轮位置，在各个位置检验电路条件。', note: '传动几何与步进已简化，不表示真实齿比。', anchor: [3.15, 4, -.1] },
-  { id: 'board', index: '04', name: '接线与对角板', english: 'THE CONNECTIONS', short: '接线', color: '#ad7c44', subtitle: '把线索，连接成电路。', description: '操作员依据推测明文形成的“菜单”连接后部插线。Welchman 的对角板利用插线关系的互易性，帮助排除更多错误设置。', note: '接线板在拆解时翻转，便于观察；不执行密码分析。', anchor: [2.7, 5.4, -1.1] },
-  { id: 'motor', index: '05', name: '电机与底座', english: 'THE MOTOR', short: '电机', color: '#526c64', subtitle: '让抽象的推理，开始运动。', description: '底部电机提供机械动力，驱动机构进行连续搜索。停机提示的是值得进一步检查的候选设置，仍需要后续人工与机器验证。', note: '电机与底座为示意造型，未复刻原机电路。', anchor: [1.9, .85, .4] },
+  { id: 'frame', index: '01', name: '钢制机架', english: 'THE FRAME', short: '机架', color: P.paint, subtitle: '给精密逻辑，一个坚实的骨架。', description: '钢制框架承载鼓轮、传动机构与后部接线。打开结构，可以看到各系统如何围绕同一副骨架协同工作。', note: '外壳、尺寸与拆分路径均为展示性重建。', anchor: [-3.75, 5.7, .8] },
+  { id: 'drums', index: '02', name: '鼓轮阵列', english: 'THE DRUMS', short: '鼓轮', color: P.bronze, subtitle: '108 个鼓轮，铺开可能性。', description: '三组阵列，每组三行、每行十二个鼓轮。每一竖列的三个鼓轮对应一台 Enigma 的转子组，整机共对应 36 组。', note: '颜色与细部经过艺术化整理；转速仅作教学演示。', anchor: [2.8, 5.5, 1.2] },
+  { id: 'drive', index: '03', name: '机械传动', english: 'THE DRIVE', short: '传动', color: P.brass, subtitle: '把一次旋转，传给整面阵列。', description: '主轴、横轴与齿轮把电机的运动传给鼓轮。真实机器以机械联动改变鼓轮位置，在各个位置检验电路条件。', note: '传动几何与步进已简化，不表示真实齿比。', anchor: [3.15, 4, -.1] },
+  { id: 'board', index: '04', name: '接线与对角板', english: 'THE CONNECTIONS', short: '接线', color: P.brass, subtitle: '把线索，连接成电路。', description: '操作员依据推测明文形成的“菜单”连接后部插线。Welchman 的对角板利用插线关系的互易性，帮助排除更多错误设置。', note: '接线板在拆解时翻转，便于观察；不执行密码分析。', anchor: [2.7, 5.4, -1.1] },
+  { id: 'motor', index: '05', name: '电机与底座', english: 'THE MOTOR', short: '电机', color: P.blue, subtitle: '让抽象的推理，开始运动。', description: '底部电机提供机械动力，驱动机构进行连续搜索。停机提示的是值得进一步检查的候选设置，仍需要后续人工与机器验证。', note: '电机与底座为示意造型，未复刻原机电路。', anchor: [1.9, .85, .4] },
 ]);
 
 export function createProduct({ textures = {} } = {}) {
@@ -17,18 +18,18 @@ export function createProduct({ textures = {} } = {}) {
   const geometries = new Set(), materials = new Set();
   const material = (o) => { const m = new THREE.MeshStandardMaterial(o); materials.add(m); return m; };
   const mats = {
-    paint: material({ color: '#33463c', metalness: .65, roughness: .39, map: textures.paint || null }),
-    edge: material({ color: '#27392f', metalness: .72, roughness: .34 }),
-    bronze: material({ color: '#9b8051', metalness: .8, roughness: .4 }),
-    metal: material({ color: '#bcbcb0', metalness: .9, roughness: .33 }),
-    dark: material({ color: '#1d2722', metalness: .55, roughness: .5 }),
-    bakelite: material({ color: '#4c3429', metalness: .12, roughness: .55 }),
-    red: material({ color: '#a24e39', metalness: .42, roughness: .37 }),
-    green: material({ color: '#70806a', metalness: .4, roughness: .39 }),
-    gold: material({ color: '#b49752', metalness: .5, roughness: .36 }),
-    face: material({ color: '#d4d0bd', metalness: .72, roughness: .4, map: textures.drum || null }),
-    wire: material({ color: '#b47740', metalness: .15, roughness: .65 }),
-    wireDark: material({ color: '#3b463a', roughness: .75 }),
+    paint: material({ color: P.paint, metalness: .55, roughness: .4, map: textures.paint || null }),
+    edge: material({ color: P.edge, metalness: .72, roughness: .34 }),
+    bronze: material({ color: P.brass, metalness: .8, roughness: .4 }),
+    metal: material({ color: P.steel, metalness: .9, roughness: .33 }),
+    dark: material({ color: P.sea, metalness: .55, roughness: .5 }),
+    bakelite: material({ color: P.ink, metalness: .12, roughness: .55 }),
+    red: material({ color: P.bronze, metalness: .42, roughness: .37 }),
+    green: material({ color: P.blue, metalness: .4, roughness: .39 }),
+    gold: material({ color: P.brass, metalness: .5, roughness: .36 }),
+    face: material({ color: P.paper, metalness: .45, roughness: .4, map: textures.drum || null }),
+    wire: material({ color: P.brass, metalness: .15, roughness: .65 }),
+    wireDark: material({ color: P.edge, roughness: .75 }),
   };
   const parts = PARTS.map(record => {
     const group = new THREE.Group(); group.name = record.id; group.userData.partId = record.id;

@@ -23,7 +23,7 @@ const ctx = await context({
 await ctx.rebuild();
 await ctx.watch();
 const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.map': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' };
-const publicFiles = new Set(['index.html', 'styles.css', 'lab.css', 'challenge.css', 'mission.css', 'history-preview.html', 'history-preview.css']);
+const publicFiles = new Set(['index.html', 'palette.css', 'exhibition-ui.css', 'styles.css', 'lab.css', 'challenge.css', 'mission.css', 'history-preview.html', 'history-preview.css']);
 const imageExtensions = new Set(['.svg', '.png', '.jpg', '.jpeg', '.webp']);
 const server = createServer(async (req, res) => {
   if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405).end(); return; }

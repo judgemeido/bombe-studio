@@ -1,0 +1,28 @@
+/* Chapter 00 supplies the shared palette for the entire archive. */
+:root {
+  --archive-sea-rgb: 20, 38, 51;
+  --archive-paper-rgb: 240, 239, 232;
+  --archive-mist-rgb: 228, 231, 226;
+  --archive-brass-rgb: 182, 154, 103;
+  --archive-ink-rgb: 35, 54, 65;
+  --archive-muted-rgb: 86, 97, 106;
+  --archive-rule-rgb: 203, 208, 201;
+  --archive-copper-ink-rgb: 120, 96, 58;
+  --archive-raised-rgb: 248, 247, 241;
+  --archive-border-rgb: 148, 161, 165;
+  --archive-sea: #142633;
+  --archive-paper: #F0EFE8;
+  --archive-mist: #E4E7E2;
+  --archive-olive: #52614D;
+  --archive-brass: #B69A67;
+  --archive-ink: #233641;
+  --archive-muted: #56616A;
+  --archive-rule: #CBD0C9;
+  --archive-copper-ink: #78603A;
+  --archive-raised: #F8F7F1;
+  --archive-slate: #253A46;
+  --archive-border: #94A1A5;
+  --archive-dark-rule: #435059;
+  --archive-on-sea: #C2CBCB;
+  --archive-brass-wash: #E9DFC8;
+}

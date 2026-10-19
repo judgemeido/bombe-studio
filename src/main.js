@@ -41,9 +41,9 @@ function updateNotes() {
   const record = recordFor(state.selected);
   $('#part-name').textContent = record.name; $('#part-english').textContent = state.selected ? record.english : 'START EXPLORING';
   $('#part-number').textContent = record.index; $('#part-description').textContent = record.subtitle;
-  $('#part-swatch').style.background = record.color || '#9aab91';
+  $('#part-swatch').style.background = record.color || '#B69A67';
   mobileNote.innerHTML = $('#note-open').innerHTML.replace(/ id="[^"]+"/g, '');
-  const dialog = $('#note-dialog'); dialog.style.setProperty('--part-color', record.color || '#506052');
+  const dialog = $('#note-dialog'); dialog.style.setProperty('--part-color', record.color || '#233641');
   $('#note-index').textContent = record.index + ' / 05'; $('#note-title').textContent = record.name;
   $('#note-english').textContent = record.english; $('#note-subtitle').textContent = record.subtitle;
   $('#note-description').textContent = record.description;

@@ -1,6 +1,12 @@
 # BOMBE · 译码档案
 
-GitHub 私有仓库：[judgemeido/bombe-studio](https://github.com/judgemeido/bombe-studio)。这是源代码仓库；网页仍按下方命令在本地运行。
+GitHub 仓库：[judgemeido/bombe-studio](https://github.com/judgemeido/bombe-studio)。这是源代码仓库；网页仍按下方命令在本地运行。
+
+## 01–03 统一视觉与一屏布局（2026-10-19）
+
+整机、信号实验室和六关挑战沿用 00 的深蓝、暖白与黄铜金色系，统一三维材质、卡片和操作控件。正文保持 16px，桌面布局按窗口高度分配模型与控制区；较长的说明在卡片内滚动。实验室采用步骤、模型、键盘三栏，挑战的操作步骤可按需展开，手机保持纵向阅读。
+
+已检查 1024×768、1280×720、1366×768、1440×900 的桌面一屏布局及 390px 手机布局，并复查拆解、实验输入输出与六关通关。159 项测试及构建通过，截图见 `output/playwright/viewport-*.png`。
 
 ![04「黎明之前」三维工作室](output/mission-refinement/desktop-cover.jpg)
 

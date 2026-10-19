@@ -1,0 +1,552 @@
+/* Chapters 01–03: one exhibition system, with readable type and room to operate. */
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) {
+  height: auto;
+  overflow-y: auto;
+  background: var(--archive-paper);
+}
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell {
+  --ink: var(--archive-ink);
+  --muted: var(--archive-muted);
+  --line: var(--archive-rule);
+  --accent: var(--archive-copper-ink);
+  --white: var(--archive-raised);
+  --ui-radius: 14px;
+  --ui-shadow: 0 8px 28px rgba(20, 38, 51, .045);
+  font: 16px/1.65 "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell :focus-visible {
+  outline: 3px solid var(--archive-brass);
+  outline-offset: 4px;
+}
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .site-header {
+  height: 88px;
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(24px, 4vw, 72px);
+  gap: 24px;
+  border-bottom: 1px solid var(--archive-dark-rule);
+}
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .brand {
+  font-size: 22px;
+  letter-spacing: 2px;
+  gap: 14px;
+}
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .brand small { font-size: 10px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .header-center { display: none; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .site-header nav { gap: 28px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav { gap: 24px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav a {
+  font-size: 14px;
+  min-height: 50px;
+  gap: 8px;
+  color: var(--archive-on-sea);
+  white-space: nowrap;
+}
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav small { font-size: 12px; color: var(--archive-brass); }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav a[aria-current="page"] {
+  color: var(--archive-paper);
+  border-bottom-color: var(--archive-brass);
+}
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell #archive-open { font-size: 14px; color: var(--archive-paper); }
+
+/* An identical navy stage frames the machine in all three chapters. */
+#exhibit-page .viewer, #lab-page .lab-model-panel, #challenge-page .quest-model-panel {
+  background: radial-gradient(ellipse at 50% 38%, #314B5A 0%, #1D3442 48%, var(--archive-sea) 100%);
+  border: 1px solid var(--archive-dark-rule);
+  border-radius: var(--ui-radius);
+  color: var(--archive-paper);
+  box-shadow: var(--ui-shadow);
+  overflow: hidden;
+}
+#exhibit-page, #lab-page, #challenge-page {
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
+  padding: 32px clamp(24px, 4vw, 72px) 24px;
+}
+#exhibit-page .exhibit {
+  grid-template-columns: minmax(300px, 340px) minmax(0, 1fr);
+  gap: 36px;
+  height: auto;
+  min-height: 680px;
+  max-height: none;
+}
+#exhibit-page .intro { padding: 6px 0 0; }
+#exhibit-page .eyebrow, #exhibit-page .date { font-size: 12px; letter-spacing: .8px; }
+#exhibit-page h1 { font-size: clamp(82px, 7vw, 100px); margin: 26px 0 16px; letter-spacing: -6px; }
+#exhibit-page h1 em { letter-spacing: -5px; }
+#exhibit-page .title-dot { top: 90px; right: -22px; }
+#exhibit-page .byline { font-size: 12px; letter-spacing: 2.3px; margin-bottom: 22px; }
+#exhibit-page .intro h2 { font-size: 24px; letter-spacing: .5px; margin-bottom: 16px; line-height: 1.5; }
+#exhibit-page .intro-copy { font-size: 16px; line-height: 1.85; color: var(--archive-muted); }
+#exhibit-page .archive-link { font-size: 15px; min-height: 44px; margin: 14px 0 20px; gap: 24px; border-color: var(--archive-brass); }
+#exhibit-page .part-card {
+  padding: 20px;
+  margin: auto 0 0;
+  border: 1px solid var(--archive-rule);
+  border-radius: var(--ui-radius);
+  background: var(--archive-raised);
+  box-shadow: var(--ui-shadow);
+}
+#exhibit-page .part-card:hover { border-color: var(--archive-brass); }
+#exhibit-page .part-kicker { font-size: 12px; letter-spacing: .4px; }
+#exhibit-page .note-heading { margin: 14px 0 10px; }
+#exhibit-page .note-heading strong { font-size: 21px; letter-spacing: .3px; line-height: 1.5; }
+#exhibit-page .note-heading .part-english { font-size: 12px; line-height: 1.5; letter-spacing: 1px; margin-top: 8px; }
+#exhibit-page .intro .note-heading .part-english { display: none; }
+#exhibit-page .note-summary { font-size: 15px; line-height: 1.85; }
+#exhibit-page .note-cta { font-size: 14px; padding-top: 12px; margin-top: 14px; }
+#exhibit-page .viewer { height: auto; min-height: 680px; margin: 0; }
+#exhibit-page .viewer::before { inset: 12%; background: radial-gradient(ellipse, rgba(182,154,103,.08), transparent 70%); }
+#exhibit-page .viewer-grid { background-image: linear-gradient(#b69a670a 1px, transparent 1px), linear-gradient(90deg, #b69a670a 1px, transparent 1px); }
+#exhibit-page .background-type { color: var(--archive-paper); opacity: .035; }
+#exhibit-page .viewer-top { top: 24px; left: 24px; right: 24px; gap: 16px; }
+#exhibit-page .view-label { color: var(--archive-on-sea); font-size: 13px; }
+#exhibit-page .view-no { font-size: 12px; }
+#exhibit-page .view-options { padding: 4px; background: rgba(20,38,51,.72); border-color: var(--archive-dark-rule); border-radius: 8px; }
+#exhibit-page .view-options button { font-size: 14px; min-height: 40px; padding: 7px 13px; color: var(--archive-on-sea); border-radius: 5px; }
+#exhibit-page .view-options button[aria-pressed="true"] { background: var(--archive-brass); color: var(--archive-sea); }
+#exhibit-page .view-options #overview { border-right-color: var(--archive-dark-rule); }
+#exhibit-page .viewer-tools { right: 20px; background: rgba(20,38,51,.84); border-color: var(--archive-dark-rule); border-radius: 10px; color: var(--archive-paper); }
+#exhibit-page .viewer-tools button { width: 42px; height: 44px; font-size: 26px; }
+#exhibit-page .viewer-tools button:hover { background: var(--archive-slate); }
+#exhibit-page .viewer-tools > span { border-color: var(--archive-dark-rule); }
+#exhibit-page .viewer-bottom { left: 24px; right: 24px; bottom: 22px; }
+#exhibit-page .gesture, #exhibit-page .render-badge { color: var(--archive-on-sea); font-size: 12px; }
+#exhibit-page .render-badge > span { background: var(--archive-brass); }
+#exhibit-page .loading, #exhibit-page .assembly-progress { font-size: 13px; color: var(--archive-on-sea); }
+#exhibit-page .assembly-progress { top: 86px; left: 24px; }
+#exhibit-page .assembly-progress > span:first-child { font-size: 11px; background: var(--archive-sea); border-color: var(--archive-dark-rule); }
+#exhibit-page .simulation { background: rgba(20,38,51,.88); border-color: var(--archive-dark-rule); color: var(--archive-paper); font-size: 13px; }
+#exhibit-page .simulation small { color: var(--archive-on-sea); font-size: 11px; }
+#exhibit-page .clear-selection { left: 24px; padding: 9px 14px; font-size: 13px; color: var(--archive-paper); background: var(--archive-slate); border-color: var(--archive-dark-rule); }
+#exhibit-page .hotspot { background: var(--archive-raised); border-color: var(--archive-brass); box-shadow: 0 8px 20px #08151f33; }
+#exhibit-page .hotspot > span:first-child { background: var(--archive-sea); color: var(--archive-paper); font-size: 11px; width: 30px; height: 30px; }
+#exhibit-page .hotspot > span:nth-child(2) { color: var(--archive-ink); font-size: 14px; }
+#exhibit-page .hotspot > svg { color: var(--archive-ink); }
+#exhibit-page .console {
+  margin-top: 24px;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: minmax(340px, 1.1fr) minmax(180px, .75fr) auto;
+  gap: 28px;
+  align-items: center;
+  background: var(--archive-raised);
+  border: 1px solid var(--archive-rule);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-shadow);
+}
+#exhibit-page .control-caption { font-size: 13px; margin-bottom: 10px; }
+#exhibit-page .control-caption > span:last-child { font-size: 12px; }
+#exhibit-page .parts-list { gap: 6px; justify-content: space-between; }
+#exhibit-page .parts-list button { min-height: 44px; padding: 8px 11px; gap: 7px; font-size: 14px; border-radius: 6px; border-color: transparent; background: transparent; }
+#exhibit-page .parts-list button span { font-size: 12px; }
+#exhibit-page .parts-list button:hover { background: var(--archive-mist); }
+#exhibit-page .parts-list button[aria-pressed="true"] { background: var(--archive-sea); color: var(--archive-paper); border-color: var(--archive-sea); box-shadow: none; }
+#exhibit-page .parts-list button[aria-pressed="true"] span { color: var(--archive-brass); }
+#exhibit-page .explode-section { padding-left: 24px; }
+#exhibit-page .range-row { height: 44px; }
+#exhibit-page #explode-output { font: 13px/1.5 Consolas, monospace; }
+#exhibit-page .action-section { gap: 12px; }
+#exhibit-page .primary-button, #exhibit-page .run-button { height: 52px; border-radius: 7px; font-size: 15px; padding: 0 18px; }
+#exhibit-page .primary-button { min-width: 160px; background: var(--archive-sea); color: var(--archive-paper); }
+#exhibit-page .primary-button:hover { background: var(--archive-slate); }
+#exhibit-page .run-button { border: 1px solid var(--archive-rule); color: var(--archive-ink); }
+#exhibit-page .key { font-size: 11px; opacity: .7; }
+#exhibit-page .site-footer { font-size: 12px; min-height: 76px; }
+#exhibit-page .site-footer > div { font-size: 12px; letter-spacing: 1px; }
+#exhibit-page .site-footer button { font-size: 14px; }
+
+/* The lab trades tiny, fixed-height controls for a spacious, scrollable workbench. */
+#lab-page { height: auto; display: block; padding-top: 0; }
+#lab-page .lab-heading-row { min-height: 112px; gap: 24px; }
+#lab-page .lab-title { align-items: baseline; gap: 20px; }
+#lab-page .lab-title > span, #challenge-page .quest-eyebrow { font: 12px/1.5 Consolas, monospace; letter-spacing: 1.5px; color: var(--archive-copper-ink); }
+#lab-page .lab-title h1, #challenge-page .quest-heading-row h1 { font: 500 36px/1.4 Georgia, "Songti SC", "SimSun", serif; letter-spacing: 1px; }
+#lab-page .lab-heading-actions { gap: 20px; }
+#lab-page .lab-heading-actions button, #lab-page .lab-quest-link { min-height: 44px; font-size: 14px; }
+#lab-page .lab-quest-link { padding: 9px 15px; background: var(--archive-raised); border: 1px solid var(--archive-rule); border-radius: 7px; }
+#lab-page .lab-workspace { grid-template-columns: minmax(0, 1fr) 376px; gap: 24px; min-height: 690px; }
+#lab-page .lab-model-panel { min-height: 690px; }
+#lab-page .lab-walkthrough { padding: 20px 24px; background: var(--archive-raised); border-bottom: 1px solid var(--archive-rule); border-radius: 0; color: var(--archive-ink); }
+#lab-page .lab-walkthrough-top { font-size: 13px; }
+#lab-page .lab-walkthrough-top button { min-height: 32px; font-size: 14px; }
+#lab-page .lab-walkthrough-steps { margin: 14px 0; gap: 24px; }
+#lab-page .lab-walkthrough-steps li { font-size: 13px; gap: 7px; }
+#lab-page .lab-walkthrough-steps li > span { width: 24px; height: 24px; font-size: 12px; }
+#lab-page .lab-walkthrough-steps li[aria-current] > span { background: var(--archive-brass-wash); border-color: var(--archive-brass); }
+#lab-page .lab-walkthrough-steps li.is-done { color: var(--archive-slate); }
+#lab-page .lab-walkthrough-steps li.is-done > span { background: var(--archive-mist); border-color: var(--archive-border); }
+#lab-page .lab-walkthrough-body { gap: 20px; }
+#lab-page .lab-walkthrough h2 { font-size: 20px; margin-bottom: 8px; }
+#lab-page .lab-walkthrough p { font-size: 15px; line-height: 1.8; }
+#lab-page #lab-walkthrough-observe { font-size: 13px; margin-top: 5px; }
+#lab-page .lab-walkthrough-action { min-height: 48px; padding: 12px 18px; background: var(--archive-sea); color: var(--archive-paper); border: 1px solid var(--archive-sea); border-radius: 7px; font-size: 14px; }
+#lab-page .lab-walkthrough-action:hover { background: var(--archive-slate); }
+#lab-page .lab-walkthrough.is-free .lab-walkthrough-action { font-size: 14px; padding: 10px 16px; }
+#lab-page .lab-model-top { min-height: 60px; flex-basis: 60px; padding: 0 24px; }
+#lab-page .lab-topic-tabs a { font-size: 14px; min-height: 44px; padding: 10px 0; color: var(--archive-on-sea); }
+#lab-page .lab-topic-tabs a[aria-current="true"] { color: var(--archive-paper); border-color: var(--archive-brass); }
+#lab-page .signal-legend { font-size: 12px; color: var(--archive-on-sea); }
+#lab-page .signal-legend i { background: #D3AA66; width: 16px; }
+#lab-page .signal-legend i:nth-of-type(2) { background: #9DBECF; }
+#lab-page .lab-viewer { min-height: 360px; }
+#lab-page #lab-canvas, #challenge-page #quest-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+#lab-page .lab-annotations > span { color: var(--archive-paper); background: rgba(20,38,51,.84); border: 1px solid var(--archive-dark-rule); opacity: 1; font-size: 16px; padding: 5px 9px; border-radius: 5px; }
+#lab-page .lab-annotations small { font-size: 12px; margin-left: 6px; }
+#lab-page .lab-annotations > span.is-signal-focus { color: var(--archive-sea); background: var(--archive-brass); border-color: var(--archive-brass); }
+#lab-page .lab-view-tools { right: 18px; bottom: 44px; background: rgba(20,38,51,.88); border-color: var(--archive-dark-rule); border-radius: 9px; padding: 3px; }
+#lab-page .lab-view-tools button { width: 40px; height: 42px; font-size: 24px; color: var(--archive-paper); }
+#lab-page .lab-view-tools button:last-child { font-size: 22px; border-color: var(--archive-dark-rule); }
+#lab-page .lab-view-hint { color: var(--archive-on-sea); font-size: 12px; left: 24px; bottom: 16px; }
+#lab-page .lab-model-footer { min-height: 58px; flex-basis: 58px; font-size: 13px; color: var(--archive-on-sea); gap: 16px; border-top: 1px solid var(--archive-dark-rule); }
+#lab-page .lab-model-footer output { font-size: 12px; width: 38px; }
+#lab-page .lab-desk { justify-content: flex-start; gap: 20px; padding: 24px; border: 1px solid var(--archive-rule); border-radius: var(--ui-radius); background: var(--archive-raised); box-shadow: var(--ui-shadow); }
+#lab-page .lab-result { min-height: 146px; padding: 24px 20px 18px; border: 1px solid var(--archive-dark-rule); border-radius: 10px; }
+#lab-page .lab-result > div > span { font-size: 13px; }
+#lab-page .lab-result output { font-size: 60px; }
+#lab-page .lab-result > i { font-size: 12px; line-height: 1.6; margin-top: 12px; letter-spacing: .2px; }
+#lab-page .lab-keyboard-field { padding: 12px; border: 1px solid var(--archive-rule); border-radius: 9px; }
+#lab-page .lab-keyboard-field legend { font-size: 14px; }
+#lab-page .lab-keyboard { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+#lab-page .lab-keyboard button { height: 42px; font-size: 19px; background: var(--archive-paper); border-color: var(--archive-rule); border-radius: 5px; }
+#lab-page .lab-keyboard button:hover { background: var(--archive-brass-wash); border-color: var(--archive-brass); }
+#lab-page .lab-keyboard button.is-suggested { background: var(--archive-brass-wash); color: var(--archive-copper-ink); border-color: var(--archive-brass); }
+#lab-page .lab-keyboard button.is-key-active { background: var(--archive-brass); color: var(--archive-sea); }
+#lab-page .lab-play-controls { gap: 10px; }
+#lab-page .lab-play-controls button { height: 48px; font-size: 14px; border-radius: 7px; border: 1px solid var(--archive-sea); background: var(--archive-sea); color: var(--archive-paper); }
+#lab-page .lab-play-controls button:last-child { border-color: var(--archive-rule); color: var(--archive-ink); background: transparent; }
+#lab-page .lab-play-controls button:hover:enabled { background: var(--archive-slate); color: var(--archive-paper); }
+#lab-page .lab-settings-open { font-size: 14px; padding: 15px 12px; min-height: 54px; border: 1px solid var(--archive-rule); border-radius: 7px; }
+#lab-page .lab-settings-open strong { font-size: 13px; letter-spacing: .2px; }
+#lab-page .lab-quick-note { font-size: 13px; line-height: 1.8; margin: 0; }
+#lab-page[data-lab-guidance] .lab-keyboard-field, #lab-page[data-lab-guidance] .lab-model-panel, #lab-page[data-lab-guidance] .lab-trace, #lab-page[data-lab-guidance] .lab-result, #lab-page[data-lab-guidance] #lab-settings-open { box-shadow: none; }
+#lab-page[data-lab-guidance="input"] .lab-keyboard-field, #lab-page[data-lab-guidance="trace"] .lab-trace, #lab-page[data-lab-guidance="settings"] #lab-settings-open { border-color: var(--archive-brass); box-shadow: 0 0 0 2px #b69a6726; }
+#lab-page[data-lab-guidance="input"] [data-letter="A"] { background: var(--archive-brass); color: var(--archive-sea); border-color: var(--archive-brass); }
+#lab-page .lab-trace { margin-top: 24px; padding: 22px 24px 18px; border: 1px solid var(--archive-rule); border-radius: var(--ui-radius); background: var(--archive-raised); }
+#lab-page .lab-trace-heading { margin-bottom: 16px; gap: 18px; }
+#lab-page .lab-trace-heading h2 { font-size: 17px; font-weight: 600; }
+#lab-page .lab-trace-heading h2 span { font-size: 12px; }
+#lab-page .lab-current-position { font-size: 12px; }
+#lab-page .lab-trace-heading button { font-size: 14px; min-height: 32px; }
+#lab-page .lab-trace-stages { grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 8px; }
+#lab-page .lab-trace-stages button { height: 54px; padding: 8px 10px; flex-wrap: wrap; justify-content: flex-start; gap: 2px 7px; border: 1px solid var(--archive-rule); border-radius: 6px; }
+#lab-page .lab-trace-stages button > span { font-size: 12px; }
+#lab-page .lab-trace-stages b { display: block; font-size: 13px; }
+#lab-page .lab-trace-stages strong { display: none; }
+#lab-page .lab-trace-stages button.is-current { background: var(--archive-brass-wash); border: 1px solid var(--archive-brass); }
+#lab-page .lab-trace-narration { gap: 14px; padding-top: 14px; min-height: 42px; }
+#lab-page .lab-trace-narration > span { font-size: 12px; }
+#lab-page .lab-trace-narration p { font-size: 15px; line-height: 1.8; }
+
+/* The challenge shares the same stage, paper task card and control language. */
+#challenge-page { padding-top: 0; }
+#challenge-page .quest-heading-row { min-height: 112px; }
+#challenge-page .quest-heading-row > div { gap: 22px; }
+#challenge-page .quest-heading-row h1 { margin: 0; }
+#challenge-page .quest-heading-row p { display: block; font-size: 15px; }
+#challenge-page .quest-text-button { min-height: 44px; font-size: 14px; gap: 10px; }
+#challenge-page .quest-journey { gap: 24px; margin-bottom: 26px; }
+#challenge-page .quest-journey ol { gap: 14px; }
+#challenge-page .quest-journey li { font-size: 14px; padding-top: 14px; gap: 10px; font-weight: 400; }
+#challenge-page .quest-journey li > span { width: 30px; height: 30px; font-size: 12px; border-color: var(--archive-rule); }
+#challenge-page .quest-journey li[aria-current="step"] { border-color: var(--archive-brass); color: var(--archive-copper-ink); }
+#challenge-page .quest-journey li[aria-current="step"] > span { background: var(--archive-sea); color: var(--archive-brass); border-color: var(--archive-sea); }
+#challenge-page .quest-journey li.is-done { border-color: var(--archive-slate); color: var(--archive-slate); }
+#challenge-page .quest-journey li.is-done > span { background: var(--archive-mist); color: var(--archive-ink); border-color: var(--archive-rule); }
+#challenge-page #quest-completed { font-size: 13px; }
+#challenge-page .quest-workspace { grid-template-columns: minmax(0, 1fr) minmax(370px, 430px); gap: 24px; height: auto; min-height: 660px; max-height: none; align-items: stretch; }
+#challenge-page .quest-model-panel { min-height: 660px; }
+#challenge-page .quest-model-top { padding: 20px 24px 0; font-size: 14px; gap: 16px; }
+#challenge-page .quest-model-top i { background: var(--archive-brass); }
+#challenge-page .quest-model-top { align-items: flex-start; }
+#challenge-page .quest-model-meta > span { display: flex; align-items: center; gap: 7px; }
+#challenge-page .quest-model-meta .quest-wheel-readout { position: static; margin-top: 12px; }
+#challenge-page .quest-model-top button { font-size: 14px; min-height: 40px; color: var(--archive-paper); border-color: var(--archive-dark-rule); }
+#challenge-page .quest-model-top button[aria-pressed="true"] { color: var(--archive-brass); border-color: var(--archive-brass); }
+#challenge-page .quest-viewer { min-height: 430px; }
+#challenge-page .quest-wheel-readout { left: 24px; top: 20px; gap: 14px; }
+#challenge-page .quest-wheel-readout > span { font-size: 12px; color: var(--archive-on-sea); }
+#challenge-page .quest-wheel-readout b { font-size: 18px; font-weight: 500; color: var(--archive-brass); }
+#challenge-page .quest-model-labels button { font-size: 13px; padding: 7px 12px; min-height: 36px; color: var(--archive-paper); background: rgba(20,38,51,.9); border-color: var(--archive-dark-rule); border-radius: 6px; box-shadow: 0 3px 12px #08151f22; }
+#challenge-page .quest-model-labels button:hover, #challenge-page .quest-model-labels button.is-focus { color: var(--archive-sea); background: var(--archive-brass); border-color: var(--archive-brass); }
+#challenge-page .quest-camera-tools { right: 20px; bottom: 16px; padding: 3px; border-color: var(--archive-dark-rule); background: rgba(20,38,51,.9); border-radius: 8px; }
+#challenge-page .quest-camera-tools button { min-width: 42px; height: 40px; font-size: 23px; color: var(--archive-paper); }
+#challenge-page .quest-camera-tools button + button { border-color: var(--archive-dark-rule); }
+#challenge-page .quest-drag-note { left: 24px; bottom: 25px; font-size: 12px; color: var(--archive-on-sea); }
+#challenge-page .quest-observation { padding: 20px 24px; background: rgba(20,38,51,.76); border-top: 1px solid var(--archive-dark-rule); }
+#challenge-page .quest-signal-readout { gap: 24px; }
+#challenge-page .quest-signal-readout span { font-size: 12px; color: var(--archive-on-sea); }
+#challenge-page .quest-signal-readout b { font-size: 36px; color: var(--archive-paper); }
+#challenge-page .quest-signal-readout .quest-output-cell b { color: var(--archive-brass); }
+#challenge-page .quest-signal-readout > i { color: var(--archive-on-sea); }
+#challenge-page #quest-observation-badge { font-size: 12px; color: var(--archive-on-sea); border-color: var(--archive-dark-rule); }
+#challenge-page .quest-narration { gap: 12px; align-items: baseline; margin-top: 16px; }
+#challenge-page .quest-narration > span { font-size: 12px; color: var(--archive-brass); }
+#challenge-page .quest-narration p { font-size: 15px; line-height: 1.8; color: var(--archive-on-sea); }
+#challenge-page .quest-observe-actions .quest-primary { background: var(--archive-brass); color: var(--archive-sea); border-color: var(--archive-brass); }
+#challenge-page .quest-step { font-size: 14px; min-width: 110px; border-color: var(--archive-dark-rule); color: var(--archive-paper); }
+#challenge-page .quest-task-panel { border: 1px solid var(--archive-rule); border-radius: var(--ui-radius); padding: 28px; background: var(--archive-raised); overflow: visible; box-shadow: var(--ui-shadow); }
+#challenge-page .quest-task-meta { font-size: 13px; }
+#challenge-page #quest-level-number { font-size: 12px; background: var(--archive-brass-wash); color: var(--archive-copper-ink); padding: 6px 10px; border-radius: 4px; }
+#challenge-page .quest-task-panel h2 { font: 500 28px/1.55 Georgia, "Songti SC", "SimSun", serif; margin: 22px 0 14px; letter-spacing: .2px; }
+#challenge-page .quest-instruction { font-size: 16px; line-height: 1.9; margin-bottom: 22px; }
+#challenge-page .quest-how summary, #challenge-page .quest-hint summary, #challenge-page .quest-answers legend { font-size: 14px; }
+#challenge-page .quest-how li { font-size: 15px; line-height: 1.85; margin: 12px 0; gap: 12px; }
+#challenge-page .quest-how li::before { font-size: 12px; }
+#challenge-page .quest-how { margin-bottom: 24px; }
+#challenge-page .quest-answers legend { margin-bottom: 12px; }
+#challenge-page #quest-options { gap: 10px; }
+#challenge-page .quest-option { min-height: 88px; padding: 14px 8px; border: 1px solid var(--archive-rule); border-radius: 8px; background: var(--archive-paper); }
+#challenge-page .quest-option strong { font-size: 20px; line-height: 1.5; }
+#challenge-page .quest-option small { font-size: 12px; margin-top: 6px; line-height: 1.6; }
+#challenge-page .quest-option:hover, #challenge-page .quest-option[aria-pressed="true"] { border-color: var(--archive-brass); background: var(--archive-brass-wash); }
+#challenge-page .quest-option.is-correct { background: var(--archive-mist); border-color: var(--archive-olive); }
+#challenge-page .quest-option.is-wrong { border-color: #A05A45; border-style: dashed; }
+#challenge-page .quest-hint { margin-top: 24px; padding-top: 16px; }
+#challenge-page .quest-hint summary { min-height: 36px; align-items: center; }
+#challenge-page .quest-hint p, #challenge-page .quest-feedback p { font-size: 15px; line-height: 1.85; }
+#challenge-page .quest-feedback { border-left: 3px solid var(--archive-brass); background: var(--archive-brass-wash); padding: 16px; margin-top: 20px; border-radius: 0 6px 6px 0; }
+#challenge-page .quest-feedback[data-correct="true"] { border-color: var(--archive-olive); background: var(--archive-mist); }
+#challenge-page .quest-feedback strong { font-size: 15px; }
+#challenge-page .quest-primary, #challenge-page .quest-check { min-height: 50px; font-size: 15px; border-radius: 7px; padding: 12px 18px; }
+#challenge-page .quest-next { margin-top: 22px; }
+#challenge-page .quest-clue { padding: 16px; background: var(--archive-paper); border: 1px solid var(--archive-rule); border-radius: 8px; margin-bottom: 22px; }
+#challenge-page .quest-clue span { font-size: 12px; }
+#challenge-page .quest-clue strong { font-size: 20px; }
+#challenge-page .quest-mission-form legend, #challenge-page .quest-mission-wheels label, #challenge-page .quest-mission-plugs, #challenge-page .quest-mission-status { font-size: 14px; }
+#challenge-page .quest-mission-form select { font-size: 18px; min-height: 44px; }
+#challenge-page .quest-mission-status button { font-size: 13px; min-height: 40px; }
+#challenge-page .quest-setup-feedback { font-size: 15px; }
+#challenge-page .quest-footnote { font-size: 12px; line-height: 1.85; padding: 12px 0 0; margin: 12px 0 0; }
+#challenge-page .quest-finish p { font-size: 16px; }
+#challenge-page .quest-finish li, #challenge-page .quest-finish > a { font-size: 14px; line-height: 1.8; }
+
+/* Reading panels use the same comfortable scale as the main tasks. */
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog {
+  width: min(720px, calc(100vw - 40px));
+  max-width: 720px;
+  max-height: calc(100dvh - 64px);
+  padding: 36px 40px;
+  border: 1px solid var(--archive-rule);
+  border-radius: var(--ui-radius);
+  background: var(--archive-raised);
+  color: var(--archive-ink);
+  box-shadow: 0 24px 90px #08151f44;
+}
+#application-shell :is(#exhibit-heading, #lab-heading, #challenge-heading, #quest-question, #quest-finish-heading):focus { outline: none; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog::backdrop { background: #0c1c27b3; backdrop-filter: blur(7px); }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog .eyebrow,
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .lab-dialog-kicker { font-size: 12px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .dialog-close { width: 44px; height: 44px; font-size: 28px; border-radius: 50%; background: var(--archive-paper); }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog h2 { font-size: 32px; line-height: 1.5; margin-bottom: 24px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog h3 { font-size: 19px; line-height: 1.6; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog :is(p, li, dd) { font-size: 16px; line-height: 1.9; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog :is(.guide-note, .source-links, .source-links > span, .source-links a, .lab-record-note, .lab-source-link) { font-size: 13px; line-height: 1.85; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog :is(.note-dialog-heading > span, .note-section-heading > span) { font-size: 12px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog :is(.note-focus-button, .lab-dialog-done, .lab-guide-tabs button, .lab-fieldset legend, .lab-plugs > button) { font-size: 15px; min-height: 44px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .lab-glossary > div { grid-template-columns: 88px 1fr; font-size: 15px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .lab-glossary dt { font-size: 15px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .lab-position-controls label > span { font-size: 16px; }
+body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell :is(.lab-position-controls label small, .lab-fieldset legend small, .lab-plugs label > span, .lab-wire-meta, .lab-wire-meta button) { font-size: 13px; }
+
+@media (max-width: 1280px) {
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell #archive-open { display: none; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav { gap: 20px; }
+  #exhibit-page .exhibit { grid-template-columns: 300px minmax(0, 1fr); gap: 24px; }
+  #exhibit-page h1 { font-size: 90px; }
+  #exhibit-page .console { grid-template-columns: 1.1fr 1fr; gap: 24px; }
+  #exhibit-page .action-section { grid-column: 1 / -1; justify-content: flex-end; padding-top: 18px; border-top: 1px solid var(--archive-rule); }
+  #lab-page .lab-workspace { grid-template-columns: minmax(0, 1fr) 340px; }
+  #lab-page .lab-desk { padding: 20px; gap: 16px; }
+  #lab-page .lab-walkthrough { padding: 18px 20px; }
+  #lab-page .lab-walkthrough-body { align-items: flex-start; flex-direction: column; gap: 14px; }
+  #lab-page .lab-walkthrough-action { align-self: stretch; text-align: center; }
+  #lab-page .lab-trace-stages { overflow-x: auto; grid-template-columns: repeat(9, minmax(104px, 1fr)); padding-bottom: 8px; }
+  #challenge-page .quest-workspace { grid-template-columns: minmax(0, 1fr) 390px; }
+  #challenge-page .quest-task-panel { padding: 24px; }
+  #challenge-page .quest-journey li { font-size: 13px; gap: 7px; }
+  #challenge-page .quest-heading-row p { display: none; }
+}
+@media (max-width: 1024px) {
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .site-header { height: auto; min-height: 132px; flex-wrap: wrap; gap: 8px; padding-block: 16px 8px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .site-header > nav { width: 100%; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav { width: 100%; justify-content: space-between; gap: 14px; }
+  #exhibit-page .exhibit { grid-template-columns: 280px minmax(0, 1fr); min-height: 740px; }
+  #exhibit-page h1 { font-size: 84px; }
+  #exhibit-page .viewer-top { flex-direction: column; align-items: flex-start; gap: 12px; }
+  #exhibit-page .viewer-bottom .render-badge { display: none; }
+  #exhibit-page .viewer-tools { right: 12px; }
+  #exhibit-page .intro h2 { font-size: 23px; }
+  #lab-page .lab-workspace { grid-template-columns: minmax(0, 1fr); }
+  #lab-page .lab-model-panel { min-height: 700px; }
+  #lab-page .lab-walkthrough-body { flex-direction: row; align-items: center; }
+  #lab-page .lab-desk { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; gap: 20px; padding: 24px; }
+  #lab-page .lab-result { grid-column: 1; grid-row: 1; }
+  #lab-page .lab-keyboard-field { grid-column: 2; grid-row: 1; }
+  #lab-page .lab-play-controls { grid-column: 1; grid-row: 2; }
+  #lab-page .lab-settings-open { grid-column: 2; grid-row: 2; }
+  #lab-page .lab-quick-note { grid-column: 1 / -1; }
+  #challenge-page .quest-workspace { grid-template-columns: minmax(0, 1fr); }
+  #challenge-page .quest-model-panel { min-height: 650px; }
+  #challenge-page .quest-model-panel[data-level="0"] { min-height: 580px; }
+  #challenge-page .quest-task-panel { padding: 28px; }
+  #challenge-page .quest-journey li > b { display: none; }
+}
+@media (max-width: 760px) {
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .site-header { min-height: 136px; padding: 18px 20px 8px; gap: 8px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .brand { font-size: 21px; gap: 12px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .brand small { display: none; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .brand-mark { display: grid; transform: none; margin-right: 0; width: 32px; height: 32px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav a { display: flex; flex-direction: column; justify-content: center; gap: 4px; min-height: 56px; padding: 6px 0; font-size: 13px; letter-spacing: -.25px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav small { font-size: 12px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav svg { display: none; }
+  #exhibit-page, #lab-page, #challenge-page { padding: 24px 20px; }
+  #exhibit-page .exhibit { display: flex; flex-direction: column; height: auto; min-height: 0; max-height: none; gap: 26px; }
+  #exhibit-page .intro { display: flex; flex-direction: column; align-items: flex-start; padding: 0; }
+  #exhibit-page .intro > .eyebrow { font-size: 12px; width: 100%; }
+  #exhibit-page h1 { font-size: clamp(62px, 16vw, 94px); margin: 24px 0 14px; line-height: .95; white-space: nowrap; letter-spacing: -4px; }
+  #exhibit-page h1 br { display: none; }
+  #exhibit-page h1 em { letter-spacing: -3px; margin-left: .07em; }
+  #exhibit-page .title-dot { top: 0; right: -18px; font-size: 12px; }
+  #exhibit-page .byline { font-size: 12px; margin-bottom: 24px; }
+  #exhibit-page .intro h2 { font-size: 25px; margin-bottom: 14px; }
+  #exhibit-page .intro-copy { font-size: 16px; line-height: 1.9; }
+  #exhibit-page .intro-copy br { display: none; }
+  #exhibit-page .archive-link { margin: 16px 0 0; font-size: 15px; align-self: flex-start; }
+  #exhibit-page .intro .part-card { display: none; }
+  #exhibit-page .viewer { width: 100%; height: 490px; min-height: 490px; margin: 0; }
+  #exhibit-page .viewer-top { top: 18px; left: 16px; right: 16px; gap: 12px; flex-direction: column; align-items: flex-start; }
+  #exhibit-page .view-options { width: 100%; justify-content: space-between; }
+  #exhibit-page .view-options button { font-size: 14px; min-height: 42px; padding: 7px 12px; }
+  #exhibit-page .viewer-tools { right: 12px; top: 45%; }
+  #exhibit-page .viewer-tools button { width: 38px; height: 42px; }
+  #exhibit-page .viewer-bottom { left: 16px; right: 16px; bottom: 18px; }
+  #exhibit-page .gesture { font-size: 12px; gap: 8px; }
+  #exhibit-page .assembly-progress { top: 124px; left: 16px; }
+  #exhibit-page .console { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 22px; padding: 22px 16px; }
+  #exhibit-page .parts-section { grid-column: 1; grid-row: 1; }
+  #exhibit-page .parts-list { gap: 4px; }
+  #exhibit-page .parts-list button { flex: 1; display: flex; flex-direction: column; min-height: 62px; padding: 7px 4px; gap: 4px; font-size: 14px; }
+  #exhibit-page .parts-list button span { font-size: 12px; }
+  #exhibit-page .control-caption { font-size: 14px; }
+  #exhibit-page .control-caption > span:last-child { font-size: 12px; }
+  #exhibit-page .explode-section { grid-column: 1; grid-row: 2; border: 0; padding: 0; }
+  #exhibit-page .action-section { grid-column: 1; grid-row: 3; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 20px; }
+  #exhibit-page .primary-button, #exhibit-page .run-button { min-width: 0; height: 52px; font-size: 14px; padding: 0 10px; }
+  #exhibit-page .key { display: none; }
+  #exhibit-page .mobile-detail { grid-column: 1; grid-row: 4; border: 0; border-top: 1px solid var(--archive-rule); padding: 22px 0 0; }
+  #exhibit-page .mobile-detail .part-card { padding: 0; border: 0; box-shadow: none; background: transparent; }
+  #exhibit-page .site-footer { font-size: 12px; align-items: center; padding-top: 16px; gap: 12px; }
+  #exhibit-page .site-footer > span { max-width: 220px; line-height: 1.9; }
+  #exhibit-page .site-footer > div { display: none; }
+  #exhibit-page .site-footer button { font-size: 13px; white-space: nowrap; }
+  #lab-page .lab-heading-row, #challenge-page .quest-heading-row { min-height: 0; margin-bottom: 24px; align-items: flex-start; gap: 18px; flex-wrap: wrap; }
+  #lab-page .lab-title { display: block; }
+  #lab-page .lab-title > span { display: block; font-size: 12px; margin-bottom: 8px; }
+  #lab-page .lab-title h1, #challenge-page .quest-heading-row h1 { font-size: 32px; line-height: 1.4; }
+  #lab-page .lab-heading-actions { gap: 20px; width: 100%; }
+  #lab-page .lab-heading-actions button { font-size: 14px; }
+  #lab-page #lab-reset { width: auto; margin-left: auto; }
+  #lab-page #lab-reset > span { display: inline; }
+  #lab-page .lab-quest-link { display: none; }
+  #lab-page .lab-workspace { gap: 22px; grid-template-rows: auto auto; }
+  #lab-page .lab-model-panel { min-height: 0; }
+  #lab-page .lab-walkthrough { padding: 20px 18px; }
+  #lab-page .lab-walkthrough-top { font-size: 12px; gap: 12px; align-items: flex-start; }
+  #lab-page .lab-walkthrough-top > span { max-width: 190px; line-height: 1.7; }
+  #lab-page .lab-walkthrough-top button { font-size: 13px; }
+  #lab-page .lab-walkthrough-steps { justify-content: space-between; gap: 6px; margin: 16px 0; }
+  #lab-page .lab-walkthrough-steps li { flex-direction: column; font-size: 13px; gap: 6px; }
+  #lab-page .lab-walkthrough-steps li > span { width: 26px; height: 26px; font-size: 12px; }
+  #lab-page .lab-walkthrough-body { display: flex; flex-direction: column; align-items: stretch; }
+  #lab-page .lab-walkthrough h2 { font-size: 20px; line-height: 1.6; }
+  #lab-page .lab-walkthrough p { font-size: 15px; line-height: 1.85; }
+  #lab-page #lab-walkthrough-observe { font-size: 13px; }
+  #lab-page .lab-walkthrough-action { margin-top: 6px; min-height: 48px; font-size: 15px; }
+  #lab-page .lab-model-top { min-height: 90px; flex-basis: auto; flex-wrap: wrap; padding: 12px 18px; gap: 4px 16px; }
+  #lab-page .lab-topic-tabs { gap: 24px; }
+  #lab-page .lab-topic-tabs a { font-size: 14px; }
+  #lab-page .signal-legend { font-size: 12px; gap: 8px; }
+  #lab-page .lab-viewer { min-height: 340px; height: 340px; flex: 0 0 340px; }
+  #lab-page .lab-annotations > span { font-size: 14px; padding: 4px 6px; }
+  #lab-page .lab-annotations small { font-size: 11px; margin-left: 4px; }
+  #lab-page .lab-view-tools { right: 10px; bottom: 42px; }
+  #lab-page .lab-view-tools button { width: 36px; height: 40px; }
+  #lab-page .lab-view-hint { left: 18px; bottom: 14px; font-size: 12px; }
+  #lab-page .lab-model-footer { flex-basis: 60px; min-height: 60px; font-size: 14px; gap: 12px; }
+  #lab-page .lab-model-footer input { width: 30%; }
+  #lab-page .lab-desk { display: flex; flex-direction: column; padding: 20px; gap: 20px; }
+  #lab-page .lab-result { grid-template-columns: 1fr 32px 1fr; min-height: 156px; padding: 22px 16px 16px; }
+  #lab-page .lab-result > div { gap: 10px; }
+  #lab-page .lab-result > div > span { font-size: 13px; }
+  #lab-page .lab-result output { font-size: 58px; }
+  #lab-page .lab-result-arrow { font-size: 26px; }
+  #lab-page .lab-result > i { font-size: 12px; }
+  #lab-page .lab-keyboard-field { padding: 12px 10px; }
+  #lab-page .lab-keyboard-field legend { font-size: 14px; }
+  #lab-page .lab-keyboard button { height: 44px; font-size: 19px; }
+  #lab-page .lab-play-controls { width: 100%; }
+  #lab-page .lab-play-controls button { font-size: 14px; height: 50px; }
+  #lab-page .lab-settings-open { font-size: 14px; padding: 15px 10px; }
+  #lab-page .lab-settings-open strong { font-size: 13px; }
+  #lab-page .lab-quick-note.is-task-active { font-size: 13px; display: block; }
+  #lab-page .lab-trace { padding: 20px 18px; margin-top: 22px; }
+  #lab-page .lab-trace-heading { flex-wrap: wrap; gap: 12px; }
+  #lab-page .lab-trace-heading h2 { font-size: 18px; }
+  #lab-page .lab-current-position { font-size: 12px; margin-left: auto; }
+  #lab-page .lab-trace-heading button { font-size: 14px; }
+  #lab-page .lab-trace-stages { gap: 8px; }
+  #lab-page .lab-trace-stages button { min-height: 58px; height: 58px; padding: 10px; }
+  #lab-page .lab-trace-stages button > span { font-size: 12px; }
+  #lab-page .lab-trace-stages b { display: block; font-size: 14px; }
+  #lab-page .lab-trace-narration { align-items: baseline; gap: 12px; padding-top: 16px; }
+  #lab-page .lab-trace-narration p { font-size: 15px; }
+  #lab-page #lab-signal-progress { display: none; }
+  #challenge-page .quest-heading-row > div { display: block; }
+  #challenge-page .quest-heading-row h1 { margin-top: 8px; }
+  #challenge-page .quest-text-button { font-size: 14px; align-self: flex-end; }
+  #challenge-page .quest-journey { margin-bottom: 22px; padding-bottom: 28px; }
+  #challenge-page .quest-journey ol { gap: 10px; }
+  #challenge-page .quest-journey li { padding-top: 12px; justify-content: center; }
+  #challenge-page .quest-journey li > span { width: 30px; height: 30px; font-size: 13px; }
+  #challenge-page #quest-completed { font-size: 13px; bottom: 0; }
+  #challenge-page .quest-workspace { display: flex; flex-direction: column; gap: 22px; min-height: 0; }
+  #challenge-page .quest-model-panel, #challenge-page .quest-model-panel[data-level="0"] { min-height: 0; }
+  #challenge-page .quest-model-top { padding: 18px 18px 0; font-size: 13px; }
+  #challenge-page .quest-model-top button { font-size: 13px; }
+  #challenge-page .quest-viewer { min-height: 380px; height: 380px; flex: 0 0 380px; }
+  #challenge-page .quest-wheel-readout { top: 18px; left: 18px; gap: 10px; }
+  #challenge-page .quest-wheel-readout > span { font-size: 12px; }
+  #challenge-page .quest-wheel-readout b { font-size: 17px; }
+  #challenge-page .quest-model-labels button { font-size: 12px; padding: 6px 8px; min-height: 34px; }
+  #challenge-page .quest-camera-tools { bottom: 50px; right: 12px; }
+  #challenge-page .quest-camera-tools button { min-width: 38px; height: 40px; }
+  #challenge-page .quest-drag-note { font-size: 12px; left: 18px; bottom: 18px; }
+  #challenge-page .quest-observation { padding: 20px 18px; }
+  #challenge-page .quest-signal-readout { flex-wrap: wrap; gap: 14px; }
+  #challenge-page .quest-signal-readout span { font-size: 12px; }
+  #challenge-page #quest-observation-badge { font-size: 12px; max-width: none; margin: 4px 0 0; padding: 8px 10px; }
+  #challenge-page .quest-narration p { font-size: 15px; }
+  #challenge-page .quest-mobile-return { color: var(--archive-on-sea); font-size: 14px; min-height: 44px; }
+  #challenge-page .quest-task-panel { padding: 24px 20px; }
+  #challenge-page .quest-task-panel h2 { font-size: 27px; }
+  #challenge-page .quest-option { min-height: 90px; padding: 12px 6px; }
+  #challenge-page .quest-option strong { font-size: 19px; }
+  #challenge-page .quest-option small { font-size: 12px; }
+  #challenge-page .quest-mobile-observe { font-size: 14px; min-height: 44px; line-height: 1.7; margin-bottom: 20px; }
+  #challenge-page .quest-footnote { font-size: 12px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog { padding: 26px 24px; max-height: calc(100dvh - 32px); width: calc(100vw - 28px); }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog h2 { font-size: 28px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell dialog :is(p, li, dd) { font-size: 16px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .lab-glossary > div { grid-template-columns: 1fr; gap: 6px; }
+}
+@media (max-width: 360px) {
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .site-header { padding-inline: 14px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav { gap: 4px; }
+  #exhibit-page, #lab-page, #challenge-page { padding-inline: 14px; }
+  #exhibit-page h1 { font-size: 56px; }
+  #challenge-page .quest-option strong { font-size: 17px; }
+}

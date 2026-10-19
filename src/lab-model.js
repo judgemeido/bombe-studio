@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ALPHABET, ROTORS } from './cipher.js';
+import { EXHIBIT_PALETTE as P } from './exhibit-palette.js';
 
 export const LAB_DIM = Object.freeze({ radius: 1.25, pitch: 3.05, drumY: 3.65, contacts: 26, portPitch: .58 });
 export function createLabModel() {
@@ -10,16 +11,16 @@ export function createLabModel() {
   board.userData.kind = 'wiring';
   const geometries = new Set(), materials = new Set(), textures = new Set(), batches = new Map();
   const mat = options => { const m = new THREE.MeshStandardMaterial(options); materials.add(m); return m; };
-  const paint = mat({ color: '#344c3f', roughness: .34, metalness: .63 });
-  const dark = mat({ color: '#29362f', roughness: .52, metalness: .4 });
-  const bronze = mat({ color: '#b79a60', roughness: .32, metalness: .82 });
-  const metal = mat({ color: '#c2c6ba', roughness: .28, metalness: .88 });
-  const wire = mat({ color: '#9f8152', roughness: .52, metalness: .6 });
-  const socket = mat({ color: '#17261e', roughness: .7, metalness: .1 });
-  const outbound = mat({ color: '#da8745', emissive: '#d98032', emissiveIntensity: .8, roughness: .4 });
-  const returning = mat({ color: '#719584', emissive: '#578772', emissiveIntensity: .7, roughness: .4 });
-  const outboundTrail = mat({ color: '#c18b4b', transparent: true, opacity: .22, depthWrite: false, roughness: .5 });
-  const returningTrail = mat({ color: '#719584', transparent: true, opacity: .22, depthWrite: false, roughness: .5 });
+  const paint = mat({ color: P.paint, roughness: .4, metalness: .55 });
+  const dark = mat({ color: P.edge, roughness: .52, metalness: .4 });
+  const bronze = mat({ color: P.brass, roughness: .32, metalness: .82 });
+  const metal = mat({ color: P.steel, roughness: .28, metalness: .88 });
+  const wire = mat({ color: P.bronze, roughness: .52, metalness: .6 });
+  const socket = mat({ color: P.sea, roughness: .7, metalness: .1 });
+  const outbound = mat({ color: P.outbound, emissive: P.outbound, emissiveIntensity: .8, roughness: .4 });
+  const returning = mat({ color: P.returning, emissive: P.returning, emissiveIntensity: .7, roughness: .4 });
+  const outboundTrail = mat({ color: P.outbound, transparent: true, opacity: .22, depthWrite: false, roughness: .5 });
+  const returningTrail = mat({ color: P.returning, transparent: true, opacity: .22, depthWrite: false, roughness: .5 });
   function batch(parent, geometry, material, position = [0, 0, 0], rotation = [0, 0, 0]) {
     if (geometry.index) { const old = geometry; geometry = old.toNonIndexed(); old.dispose(); }
     geometry.applyMatrix4(new THREE.Matrix4().compose(new THREE.Vector3(...position), new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation)), new THREE.Vector3(1, 1, 1)));
@@ -29,23 +30,23 @@ export function createLabModel() {
   const box = (p, size, m, at, radius = .035, rot) => batch(p, new RoundedBoxGeometry(...size, 2, radius), m, at, rot);
   const cylinder = (p, radius, depth, m, at, rot = [Math.PI / 2, 0, 0], segments = 32) => batch(p, new THREE.CylinderGeometry(radius, radius, depth, segments), m, at, rot);
   const ring = (p, radius, thickness, m, at) => batch(p, new THREE.TorusGeometry(radius, thickness, 8, 80), m, at);
-  function canvasMaterial(width, height, draw, color = '#d5cfb8') {
+  function canvasMaterial(width, height, draw, color = '#ffffff') {
     const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height; draw(canvas.getContext('2d'));
     const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = 4; textures.add(texture);
     return mat({ map: texture, color, metalness: .5, roughness: .43 });
   }
   const face = canvasMaterial(1024, 1024, c => {
-    c.fillStyle = '#a6a68d'; c.fillRect(0, 0, 1024, 1024);
+    c.fillStyle = P.paper; c.fillRect(0, 0, 1024, 1024);
     for (let i = 0; i < 26; i++) {
       const a = i * Math.PI * 2 / 26; c.save(); c.translate(512, 512); c.rotate(a);
-      c.font = '500 48px Georgia'; c.textAlign = 'center'; c.fillStyle = '#1a3024'; c.fillText(ALPHABET[i], 0, -422);
-      c.strokeStyle = '#59634b'; c.lineWidth = 2; c.beginPath(); c.moveTo(0, -468); c.lineTo(0, -486); c.stroke(); c.restore();
+      c.font = '500 48px Georgia'; c.textAlign = 'center'; c.fillStyle = P.ink; c.fillText(ALPHABET[i], 0, -422);
+      c.strokeStyle = P.bronze; c.lineWidth = 2; c.beginPath(); c.moveTo(0, -468); c.lineTo(0, -486); c.stroke(); c.restore();
     }
-    for (const r of [380, 478, 493]) { c.beginPath(); c.strokeStyle = '#e2ddc6'; c.lineWidth = 3; c.arc(512, 512, r, 0, Math.PI * 2); c.stroke(); }
+    for (const r of [380, 478, 493]) { c.beginPath(); c.strokeStyle = P.brass; c.lineWidth = 3; c.arc(512, 512, r, 0, Math.PI * 2); c.stroke(); }
   });
   face.metalness = .2; face.roughness = .64;
   const rotors = [], rotators = [], xPositions = [-LAB_DIM.pitch, 0, LAB_DIM.pitch];
-  const colors = ['#a8664e', '#748775', '#b39b59'];
+  const colors = [P.bronze, P.blue, P.brass];
   for (let i = 0; i < 3; i++) {
     const drum = new THREE.Group(), spin = new THREE.Group(); drum.position.set(xPositions[i], LAB_DIM.drumY, 0); drum.userData = { kind: 'rotor', index: i }; drum.add(spin); assembly.add(drum); rotors.push(drum); rotators.push(spin);
     const coating = mat({ color: colors[i], metalness: .5, roughness: .36 });
@@ -78,9 +79,9 @@ export function createLabModel() {
   for (let n = 0; n < 26; n++) cylinder(reflector, .036, .055, bronze, [n % 2 ? .14 : -.14, 1 - Math.floor(n / 2) / 6, .33], undefined, 10);
   box(reflector, [.84, .13, 1.05], paint, [0, -1.6, -.1]);
   const boardFace = canvasMaterial(1536, 280, c => {
-    c.fillStyle = '#405547'; c.fillRect(0, 0, 1536, 280); c.fillStyle = '#e4dfc7'; c.textAlign = 'center'; c.font = '23px Georgia';
+    c.fillStyle = P.paint; c.fillRect(0, 0, 1536, 280); c.fillStyle = P.paper; c.textAlign = 'center'; c.font = '23px Georgia';
     for (let n = 0; n < 26; n++) c.fillText(ALPHABET[n], 768 + (n % 13 - 6) * LAB_DIM.portPitch / 8.5 * 1536, 140 - ((1.1 - Math.floor(n / 13) * .6 + .22) - .9) / 1.55 * 280 + 7);
-  }, '#e0e4cf');
+  });
   box(board, [8.5, 1.55, .22], paint, [0, .9, 0], .065);
   batch(board, new THREE.PlaneGeometry(8.5, 1.55), boardFace, [0, .9, .117]);
   const portPoint = index => new THREE.Vector3((index % 13 - 6) * LAB_DIM.portPitch, 1.1 - Math.floor(index / 13) * .6, .25);

@@ -22,16 +22,16 @@ export function createStage(canvas, container) {
   // Render-target contents are lost with the context; regenerate the reflection
   // environment after Three.js restores its renderer, before the next frame.
   canvas.addEventListener('webglcontextrestored', restoreEnvironment);
-  scene.add(new THREE.HemisphereLight(0xfaf3dd, 0x666958, 2));
+  scene.add(new THREE.HemisphereLight(0xf0efe8, 0x56616a, 2));
   const key = new THREE.DirectionalLight(0xfff4de, 3.5); key.position.set(-6, 12, 10); key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
   Object.assign(key.shadow.camera, { left: -22, right: 22, top: 22, bottom: -22, near: .1, far: 70 }); key.shadow.normalBias = .025; key.shadow.bias = -.0002; key.shadow.radius = 4; scene.add(key);
-  const fill = new THREE.DirectionalLight(0xd4e1da, 2.2); fill.position.set(8, 6, -4); scene.add(fill);
+  const fill = new THREE.DirectionalLight(0xe4e7e2, 2.2); fill.position.set(8, 6, -4); scene.add(fill);
   const rim = new THREE.DirectionalLight(0xffefd2, 1.6); rim.position.set(-4, 7, -6); scene.add(rim);
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.ShadowMaterial({ color: 0x47523c, opacity: .13 }));
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.ShadowMaterial({ color: 0x233641, opacity: .13 }));
   floor.rotation.x = -Math.PI / 2; floor.position.y = -.07; floor.receiveShadow = true; scene.add(floor);
   const shadowCanvas = document.createElement('canvas'); shadowCanvas.width = shadowCanvas.height = 128;
   const c = shadowCanvas.getContext('2d'), gradient = c.createRadialGradient(64, 64, 3, 64, 64, 64);
-  gradient.addColorStop(0, 'rgba(42,51,36,.22)'); gradient.addColorStop(.5, 'rgba(42,51,36,.11)'); gradient.addColorStop(1, 'rgba(42,51,36,0)'); c.fillStyle = gradient; c.fillRect(0, 0, 128, 128);
+  gradient.addColorStop(0, 'rgba(35,54,65,.22)'); gradient.addColorStop(.5, 'rgba(35,54,65,.11)'); gradient.addColorStop(1, 'rgba(35,54,65,0)'); c.fillStyle = gradient; c.fillRect(0, 0, 128, 128);
   const contactTexture = new THREE.CanvasTexture(shadowCanvas), contact = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), new THREE.MeshBasicMaterial({ map: contactTexture, transparent: true, depthWrite: false }));
   contact.rotation.x = -Math.PI / 2; contact.position.y = -.055; scene.add(contact);
   let pose = null; const orbit = new THREE.Spherical(), nextOrbit = new THREE.Spherical(), offset = new THREE.Vector3();

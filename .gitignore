@@ -8,6 +8,7 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
+.playwright-cli/
 
 # Draft captures; final acceptance evidence remains tracked
 output/playwright/*-first.png

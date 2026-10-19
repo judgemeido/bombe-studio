@@ -6,13 +6,12 @@ export default `
   <div class="quest-journey"><ol id="quest-levels" aria-label="六关学习路线"></ol><span id="quest-completed">已完成 0 / 6</span></div>
   <div class="quest-workspace">
     <section class="quest-model-panel" aria-label="可操作的三维教学模型">
-      <div class="quest-model-top"><span><i></i>你的 3D 观察台</span><button id="quest-spread" aria-pressed="false">展开看内部 <span aria-hidden="true">↗</span></button></div>
+      <div class="quest-model-top"><div class="quest-model-meta"><span><i></i>你的 3D 观察台</span><div class="quest-wheel-readout" id="quest-wheel-readout"><span id="quest-position-label">当前轮位</span><b id="quest-position">A · A · A</b></div></div><button id="quest-spread" aria-pressed="false">展开看内部 <span aria-hidden="true">↗</span></button></div>
       <div class="quest-viewer" id="quest-viewer">
         <canvas id="quest-canvas" tabindex="0" aria-label="鼓轮、反射器与接线板的三维模型。拖动旋转，也可使用旁边的视角按钮。空格操作实验，右方向键推进一段。"></canvas>
         <div id="quest-labels" class="quest-model-labels" aria-label="模型部件">
           <button data-quest-part="reflector">反射器</button><button data-quest-part="rotor-0">I 慢轮</button><button data-quest-part="rotor-1">II 中轮</button><button data-quest-part="rotor-2">III 快轮</button><button data-quest-part="wiring">接线板</button>
         </div>
-        <div class="quest-wheel-readout" id="quest-wheel-readout"><span id="quest-position-label">当前轮位</span><b id="quest-position">A · A · A</b></div>
         <div class="quest-camera-tools"><button id="quest-zoom-in" aria-label="放大模型">+</button><button id="quest-zoom-out" aria-label="缩小模型">−</button><button id="quest-camera-home" aria-label="恢复模型正面视角">↺</button></div>
         <span class="quest-drag-note">拖动旋转 · 滚轮缩放</span>
         <p id="quest-model-error" class="quest-model-error" role="status" hidden>三维画面暂不可用。下方观察台会显示相同的字母路线，仍可完成六关。</p>

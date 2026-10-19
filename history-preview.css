@@ -1,8 +1,8 @@
 /* Isolated 18-chapter archival reading design. */
 body[data-page="history"], body[data-history-preview] { margin: 0; background: #F0EFE8; }
 :where([data-history-preview]) {
-  --sea: #142633; --paper: #F0EFE8; --mist: #E4E7E2; --olive: #52614D; --brass: #B69A67;
-  --ink: #233641; --muted: #56616A; --rule: #CBD0C9; --copper-ink: #78603A;
+  --sea: var(--archive-sea, #142633); --paper: var(--archive-paper, #F0EFE8); --mist: var(--archive-mist, #E4E7E2); --olive: var(--archive-olive, #52614D); --brass: var(--archive-brass, #B69A67);
+  --ink: var(--archive-ink, #233641); --muted: var(--archive-muted, #56616A); --rule: var(--archive-rule, #CBD0C9); --copper-ink: var(--archive-copper-ink, #78603A);
   --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
   --sans: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
   --archive-image-height: min(42vh, 380px);
