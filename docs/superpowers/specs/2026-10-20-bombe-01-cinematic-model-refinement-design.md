@@ -52,4 +52,3 @@ The sequence is a command, not an autonomous page intro. The normal “运转演
 - Camera tests prove cue interpolation, shortest-angle travel, manual interruption, reduced-motion snapping, and no camera clipping at wide and mobile aspects.
 - Browser evidence at 1440×900, 1024×768, 390×844, and a reduced-motion run shows the full model, rotor close-up, running state, and manual recovery.
 - A runtime inspection report records draw calls, triangles, geometries, textures, and whether the post stack is active; no quality claim is made without those measurements.
-

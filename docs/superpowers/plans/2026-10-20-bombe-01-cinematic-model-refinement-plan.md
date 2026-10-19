@@ -254,4 +254,3 @@
   Run: `git status --short` and `git diff --stat`.
 
   Expected: only the 01 model/camera/render/UI/tests/docs changes intended by this plan are present; unrelated mission/history work remains untouched.
-

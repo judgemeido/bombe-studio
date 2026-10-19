@@ -15,4 +15,3 @@
 - Task 4: complete — `node --test tests/scene-render.test.mjs tests/cinematic-camera.test.mjs tests/application.test.mjs tests/model.test.mjs` → 16/16 pass; `npm.cmd run build` → success; added optional EffectComposer bloom with renderer fallback, running intensity, and lifecycle inspection.
 - Task 5: complete — `node --test tests/application.test.mjs` → 4/4 pass; added accessible `#cinematic` control, `C` shortcut, pressed-state/status updates, mobile three-column action layout, and reduced-motion/manual interruption handling.
 - Task 6: complete with documented verification limits — focused Bombe 01 checks pass, production build succeeds, `git diff --check` has no whitespace errors, and acceptance/QA docs are written. The repository-wide suite remains 183/184 because of the pre-existing mission furniture instancing assertion; no new PNG screenshots were saved because the current browser automation session did not expose a stable capture call.
-
