@@ -15,7 +15,7 @@
 
 ## 已验证
 
-- `npm.cmd test`：159/159，通过日志 `output/mission-detail-tests.log`（本地忽略）。
+- `npm.cmd test`：161/161，通过。
 - `npm.cmd run build` 成功；`git diff --check` 通过；`dist/assets/mission/arrival.mp4` 不存在。
 - 新增测试覆盖：过渡轨道连续性/终点、低帧率与暂停时间、重复回调、退出后迟到回调、无 WebGL、减少动态效果、键帽字标整体运动、盖板避让、环境资源重建及失败时所有权。
 - 独立只读审阅发现两项 P2 并完成修复：暂停过渡时降级回调会推进关卡；WebGL 恢复未重新生成 PMREM。已增加对应生命周期测试，完整测试集通过。
