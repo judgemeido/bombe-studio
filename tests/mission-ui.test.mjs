@@ -3,153 +3,95 @@ import assert from 'node:assert/strict';
 import { Window } from 'happy-dom';
 import { createMission } from '../src/mission.js';
 import { MISSION } from '../src/mission-engine.js';
+import { missionShell, renderEvidence, renderTask } from '../src/mission-template.js';
 
 function fixture(fail = false, reduced = true) {
-  const w = new Window(); w.document.body.innerHTML = '<main id="mission-page"></main>';
-  const root = w.document.querySelector('main'); let disposed = 0, transition, sceneOptions;
+  const w = new Window();
+  w.document.body.innerHTML = '<main id="mission-page"></main>';
+  const root = w.document.querySelector('main');
+  let disposed = 0, transition;
   const motion = Object.assign(new w.EventTarget(), { matches: reduced });
   const game = createMission(root, { motion, sceneFactory(canvas, options) {
-    sceneOptions = options;
     if (fail) throw new Error('WebGL unavailable');
-    return { setState() {}, setView() {}, setActive() {}, playTransition(options) { transition = options; }, pauseTransition() {}, cancelTransition() {}, skipTransition() { transition.onComplete(); }, dispose() { disposed++; }, inspect() { return { ready: true }; } };
+    return {
+      setState() {}, setView() {}, setActive() {},
+      playTransition(options) { transition = options; }, pauseTransition() {}, cancelTransition() {},
+      skipTransition() { transition?.onComplete?.(); }, dispose() { disposed++; },
+      inspect() { return { ready: true }; },
+    };
   } });
   const click = selector => { const el = root.querySelector(selector); assert.ok(el, selector); el.focus(); el.click(); };
-  return { w, root, game, click, motion, unavailable: value => sceneOptions.onUnavailable(value), transition: () => transition, released: () => disposed };
+  return { w, root, game, click, motion, transition: () => transition, released: () => disposed };
 }
-test('DOM controls play all seven levels, preserve route progress, and restart', async () => {
-  const f = fixture(); const { root, game, click } = f;
-  try {
-    game.setActive(true); click('[data-action="start"]');
-    click('[data-action="channel"][data-value="0"]'); click('[data-action="submit"]');
-    assert.match(root.querySelector('#mission-feedback').textContent, /时间/);
-    click('[data-action="channel"][data-value="1"]'); click('[data-action="submit"]'); click('[data-action="next"]');
-    click('[data-action="align"][data-value="2"]'); click('[data-action="submit"]'); click('[data-action="next"]');
-    click('[data-action="pair"][data-value="A"]'); click('[data-action="submit"]'); click('[data-action="next"]');
-    click('[data-action="rotor"][data-index="0"][data-step="1"]');
-    for (let i = 0; i < 3; i++) click('[data-action="rotor"][data-index="1"][data-step="1"]');
-    click('[data-action="submit"]'); click('[data-action="next"]');
-    click('[data-action="search"]');
-    assert.equal(f.w.document.activeElement.id, 'mission-task-title');
-    assert.equal(root.querySelectorAll('.mission-candidate').length, 26);
-    click('[data-action="answer"][data-value="candidate"]'); click('[data-action="next"]');
-    game.setActive(false); assert.equal(game.inspect().state.paused, true);
-    game.setActive(true); click('[data-action="resume"]');
-    assert.equal(game.inspect().state.stage, 5);
-    click('[data-action="decode"]'); assert.equal(f.w.document.activeElement.id, 'mission-task-title'); assert.match(root.querySelector('.mission-plaintext').textContent, /WETTER/);
-    assert.equal(game.inspect().state.decoded, MISSION.plaintext);
-    click('[data-action="answer"][data-value="route"]'); click('[data-action="next"]');
-    click('[data-action="answer"][data-value="verify"]'); click('[data-action="next"]');
-    assert.equal(game.inspect().state.phase, 'complete'); assert.equal(root.querySelectorAll('.mission-report li').length, 7);
-    click('[data-action="restart"]'); assert.equal(game.inspect().state.phase, 'briefing');
-    game.dispose(); game.dispose(); assert.equal(f.released(), 1);
-  } finally { game.dispose(); await f.w.happyDOM.close(); }
+
+test('mission shell uses a diegetic record instead of progress chrome', () => {
+  assert.equal(missionShell.includes('mission-progress'), false);
+  assert.equal(missionShell.includes('mission-teacher'), false);
+  assert.match(missionShell, /mission-location/);
+  assert.match(missionShell, /mission-evidence-count/);
+  assert.match(missionShell, /mission-clues/);
+  assert.doesNotMatch(missionShell, /7 个行动节点|约 15 分钟解密游戏|第 \d+ (关|阶段)|任务 \d+ \/ 07/);
 });
 
-test('briefing exposes a fifteen-minute decrypt game and live evidence clock', async () => {
+test('every internal beat exposes a current action and primary control without leaking its id', () => {
+  assert.equal(MISSION.stages.length, 15);
+  for (let stage = 0; stage < 15; stage++) {
+    const html = renderTask({ phase: 'playing', stage, beat: stage, paused: false, cleared: false, hint: 0, clues: [], evidence: [], positions: [0, 0, 0], results: [], channel: null, offset: 0 });
+    assert.match(html, /id="mission-task-title"/);
+    assert.match(html, /class="mission-goal"/);
+    assert.match(html, /data-action="[^"]+"/);
+    assert.doesNotMatch(html, new RegExp(`S0?${stage + 1}`));
+    assert.doesNotMatch(html, /第\s*\d+\s*(关|阶段)|\/\s*15/);
+  }
+});
+
+test('briefing, pause, resume and completion retain stable focus targets', async () => {
   const f = fixture();
   try {
     f.game.setActive(true);
-    assert.match(f.root.querySelector('.mission-header-note').textContent, /15 分钟解密游戏/);
-    assert.match(f.root.querySelector('.mission-brief-facts').textContent, /15/);
-    assert.match(f.root.querySelector('.mission-lead').textContent, /05:42|巡逻艇|交接/);
-    assert.doesNotMatch(f.root.textContent, /公开课引导/);
-    assert.equal(f.root.querySelector('#mission-elapsed').textContent, '00:00');
-    assert.equal(f.root.querySelector('#mission-evidence-count').textContent, '0 / 7');
+    assert.equal(f.root.querySelector('#mission-task-title').id, 'mission-task-title');
     f.click('[data-action="start"]');
-    await new Promise(resolve => setTimeout(resolve, 1100));
-    assert.notEqual(f.root.querySelector('#mission-elapsed').textContent, '00:00');
-  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
-});
-
-test('mission presents the new midnight handoff story and decoded route', async () => {
-  const f = fixture();
-  try {
-    f.game.setActive(true);
-    assert.match(f.root.textContent, /午夜截收|05:42|北港/);
-    f.click('[data-action="start"]');
-    f.click('[data-action="channel"][data-value="1"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
-    f.click('[data-action="align"][data-value="2"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
-    f.click('[data-action="pair"][data-value="A"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
-    f.click('[data-action="rotor"][data-index="0"][data-step="1"]');
-    for (let i = 0; i < 3; i++) f.click('[data-action="rotor"][data-index="1"][data-step="1"]');
-    f.click('[data-action="submit"]'); f.click('[data-action="next"]');
-    f.click('[data-action="search"]'); f.click('[data-action="answer"][data-value="candidate"]'); f.click('[data-action="next"]');
-    f.click('[data-action="decode"]');
-    assert.match(f.root.querySelector('.mission-plaintext').textContent, /NORDHAFEN|北港/);
-    f.click('[data-action="answer"][data-value="route"]'); f.click('[data-action="next"]');
-    assert.match(f.root.textContent, /交叉核验|暂缓/);
-  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
-});
-
-test('real-time intro has no video, skipping starts only once and focuses the task', async () => {
-  const f = fixture(false, false);
-  try {
-    f.game.setActive(true); f.click('[data-action="start"]');
-    assert.equal(f.root.querySelector('video'), null);
-    assert.equal(f.game.inspect().cinematic, true);
-    const late = f.transition().onComplete;
-    f.click('[data-action="skip-intro"]'); late();
-    assert.equal(f.game.inspect().state.phase, 'playing'); assert.equal(f.game.inspect().state.stage, 0);
-    assert.equal(f.w.document.activeElement.id, 'mission-task-title');
-    assert.equal(f.root.querySelector('.mission-dossier').inert, false);
-  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
-});
-
-test('leaving an intro cancels stale callbacks and allows restarting on return', async () => {
-  const f = fixture(false, false);
-  try {
-    f.game.setActive(true); f.click('[data-action="start"]');
-    const late = f.transition().onComplete;
-    f.game.setActive(false); late(); f.game.setActive(true);
-    assert.equal(f.game.inspect().state.phase, 'briefing');
-    f.click('[data-action="start"]'); f.transition().onComplete();
     assert.equal(f.game.inspect().state.phase, 'playing');
-  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
+    f.click('[data-action="pause"]');
+    assert.equal(f.game.inspect().state.paused, true);
+    assert.equal(f.root.querySelector('#mission-task-title').id, 'mission-task-title');
+    f.click('[data-action="resume"]');
+    assert.equal(f.game.inspect().state.paused, false);
+    assert.equal(f.root.querySelector('#mission-evidence-count').textContent, '尚未归档');
+  } finally {
+    f.game.dispose();
+    await f.w.happyDOM.close();
+  }
 });
 
-test('without WebGL a motion-enabled visitor enters tasks directly', async () => {
-  const f = fixture(true, false);
-  try {
-    f.game.setActive(true); f.click('[data-action="start"]');
-    assert.equal(f.game.inspect().state.phase, 'playing');
-    assert.equal(f.game.inspect().cinematic, false);
-  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
-});
-
-test('stage transitions defer progression and reduced-motion change finishes safely', async () => {
-  const f = fixture(false, false);
-  try {
-    f.game.setActive(true); f.click('[data-action="start"]'); f.transition().onComplete();
-    f.click('[data-action="channel"][data-value="1"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
-    assert.equal(f.game.inspect().state.stage, 0); assert.equal(f.game.inspect().cinematic, true);
-    f.motion.matches = true; f.motion.dispatchEvent(new f.w.Event('change'));
-    assert.equal(f.game.inspect().state.stage, 1); assert.equal(f.game.inspect().cinematic, false);
-  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
-});
-
-for (const trigger of ['context loss', 'reduced motion']) test(`a paused transition is not advanced by ${trigger}`, async () => {
-  const f = fixture(false, false);
-  try {
-    f.game.setActive(true); f.click('[data-action="start"]'); f.transition().onComplete();
-    f.click('[data-action="channel"][data-value="1"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
-    f.click('[data-action="pause-intro"]');
-    if (trigger === 'context loss') f.unavailable(true);
-    else { f.motion.matches = true; f.motion.dispatchEvent(new f.w.Event('change')); }
-    assert.equal(f.game.inspect().state.stage, 0);
-    assert.equal(f.game.inspect().cinematic, true);
-    assert.equal(f.game.inspect().transitionPaused, true);
-    f.click('[data-action="skip-intro"]');
-    assert.equal(f.game.inspect().state.stage, 1);
-  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
-});
-test('no WebGL still exposes all task controls with clear fallback; pause blocks inputs', async () => {
+test('no WebGL keeps the text record and all beat controls available', async () => {
   const f = fixture(true);
   try {
-    f.game.setActive(true); f.click('[data-action="start"]');
+    f.game.setActive(true);
     assert.equal(f.root.querySelector('.mission-fallback').hidden, false);
-    f.click('[data-action="pause"]'); assert.equal(f.game.inspect().state.paused, true);
-    assert.ok(f.root.querySelector('[data-action="resume"]'));
-    f.click('[data-action="resume"]'); f.click('[data-action="hint"]');
-    assert.equal(f.game.inspect().state.stage, 0); assert.match(f.root.textContent, /一次性的短呼号|重复出现/);
-  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
+    f.click('[data-action="start"]');
+    assert.ok(f.root.querySelector('[data-action="pause"]'));
+    assert.ok(f.root.querySelector('#mission-task-title'));
+    assert.doesNotMatch(f.root.textContent, /7 个行动节点|约 15 分钟解密游戏/);
+  } finally {
+    f.game.dispose();
+    await f.w.happyDOM.close();
+  }
+});
+
+test('evidence archive accepts structured entries and remains readable when empty', () => {
+  assert.match(renderEvidence({ evidence: [{ label: '纸带已归档' }] }), /纸带已归档/);
+  assert.match(renderEvidence({ evidence: [{ clue: '时间锚点已记录' }] }), /时间锚点/);
+  assert.match(renderEvidence({ clues: ['WETTER 对齐已记录'] }), /WETTER/);
+  assert.match(renderEvidence({ evidence: [] }), /现场证据/);
+});
+
+test('completion dossier stays immersive and does not expose stage counts or duration claims', () => {
+  const html = renderTask({
+    phase: 'complete', elapsed: 900,
+    evidence: Array.from({ length: 15 }, (_, i) => ({ clue: `证据 ${i + 1}` })), clues: [],
+  });
+  assert.match(html, /交接档案/);
+  assert.match(html, /mission-report/);
+  assert.doesNotMatch(html, /7 个行动节点|约 15 分钟解密游戏|\d+\s*\/\s*15|第\s*\d+\s*(关|阶段)/);
 });

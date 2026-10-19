@@ -33,3 +33,22 @@ test('slow frames preserve the authored duration and a resumed clock ignores pau
   assert.equal(advanceTransitionTime(2.6, 9000, 0), 2.6);
   assert.equal(advanceTransitionTime(2.6, 8800, 9000), 2.6);
 });
+
+test('world rails cover the seven spaces and the fifteen internal beats', async () => {
+  const { MISSION_VIEWS, STAGE_VIEWS } = await import('../src/mission-transition.js');
+  assert.ok(['entry', 'radio', 'archive', 'analysis', 'machine', 'map', 'handoff'].every(id => MISSION_VIEWS[id]));
+  assert.equal(STAGE_VIEWS.length, 15);
+  for (let stage = 0; stage < STAGE_VIEWS.length; stage++) {
+    const frame = transitionFrame({ kind: 'stage', stage }, 3);
+    assert.equal(frame.done, true);
+    assert.ok(frame.camera.every(Number.isFinite));
+    assert.ok(frame.target.every(Number.isFinite));
+    assert.ok(frame.zone, `transition zone ${stage}`);
+  }
+  for (const zone of ['entry', 'radio', 'archive', 'analysis', 'machine', 'map', 'handoff']) {
+    const frame = transitionFrame({ kind: 'zone', zone }, 3);
+    assert.equal(frame.zone, zone);
+    assert.equal(frame.done, true);
+  }
+  assert.equal(transitionFrame({ kind: 'handoff' }, 4).zone, 'handoff');
+});

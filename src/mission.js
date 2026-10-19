@@ -1,5 +1,5 @@
 import { initialMission, reduceMission, MISSION } from './mission-engine.js';
-import { missionShell, renderTask } from './mission-template.js';
+import { missionShell, renderTask, renderEvidence } from './mission-template.js';
 import { createMissionScene } from './mission-scene.js';
 import { ALPHABET } from './cipher.js';
 import { STAGE_VIEWS } from './mission-transition.js';
@@ -13,11 +13,26 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
   let transitionId = 0, transitionPaused = false, pendingAction = null, unavailable = false;
   const cleanups = [], on = (el, name, fn) => { el.addEventListener(name, fn); cleanups.push(() => el.removeEventListener(name, fn)); };
   const formatElapsed = seconds => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+  const beatIndex = value => Number.isInteger(value?.beat) ? value.beat : Number.isInteger(value?.stage) ? value.stage : 0;
+  const currentBeat = value => MISSION.stages?.[beatIndex(value)] || {};
+  const sceneView = value => {
+    const index = beatIndex(value), zone = value?.currentZone || currentBeat(value).zone;
+    if (Array.isArray(STAGE_VIEWS)) return STAGE_VIEWS[index] || STAGE_VIEWS[Math.min(index, STAGE_VIEWS.length - 1)] || 'desk';
+    if (STAGE_VIEWS && typeof STAGE_VIEWS === 'object') return STAGE_VIEWS[zone] || STAGE_VIEWS[index] || 'desk';
+    return zone || 'desk';
+  };
+  const wallClock = seconds => {
+    const minute = 42 + Math.floor((seconds || 0) / 60), hour = 5 + Math.floor(minute / 60);
+    return `${String(hour).padStart(2, '0')}:${String(minute % 60).padStart(2, '0')}`;
+  };
   function updateStatus() {
     const elapsed = $('#mission-elapsed');
     const evidence = $('#mission-evidence-count');
     if (elapsed) elapsed.textContent = formatElapsed(state.elapsed);
-    if (evidence) evidence.textContent = `${state.clues.length} / 7`;
+    if ($('#mission-clock')) $('#mission-clock').textContent = wallClock(state.elapsed);
+    if ($('#mission-timestamp')) $('#mission-timestamp').textContent = wallClock(state.elapsed);
+    const entries = Array.isArray(state.evidence) && state.evidence.length ? state.evidence : (state.clues || []);
+    if (evidence) evidence.textContent = entries.length ? `${entries.at(-1)?.label || entries.at(-1)?.text || entries.at(-1)?.clue || entries.at(-1)?.detail || '最新证据'}已归档` : '尚未归档';
   }
   function fallback(show) {
     unavailable = show; $('.mission-fallback').hidden = !show;
@@ -28,7 +43,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
   }
   progress(45, '搭建 1941 年夜班行动空间');
   try { scene = sceneFactory($('#mission-canvas'), { motion, onUnavailable: fallback, onSignal({ positions, inputLetter, outputLetter }) {
-    const text = outputLetter ? `按键 ${inputLetter} → 灯板 ${outputLetter}   /   轮位 ${positions.map(n => ALPHABET[n]).join(' · ')}` : `Enigma / 轮位 ${positions.map((n, i) => state.stage === 3 && i === 2 ? '?' : ALPHABET[n]).join(' · ')}`;
+    const text = outputLetter ? `按键 ${inputLetter} → 灯板 ${outputLetter}   /   轮位 ${positions.map(n => ALPHABET[n]).join(' · ')}` : `Enigma / 轮位 ${positions.map((n, i) => beatIndex(state) === 8 && i === 2 ? '?' : ALPHABET[n]).join(' · ')}`;
     const readout = $('#mission-machine-readout'); if (readout && readout.textContent !== text) readout.textContent = text;
   } }); }
   catch { fallback(true); $('.mission-camera').hidden = true; }
@@ -43,12 +58,16 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     task.innerHTML = renderTask(state);
     $('#mission-announcement').textContent = state.feedback || '';
     if (depthOpen && !focus && $('.mission-depth')) $('.mission-depth').open = true;
-    $('.mission-progress').innerHTML = MISSION.stages.map((s, i) => `<li class="${i < state.clues.length ? 'is-done' : ''} ${state.phase === 'playing' && i === state.stage ? 'is-current' : ''}"${state.phase === 'playing' && i === state.stage ? ' aria-current="step"' : ''}><span>${i < state.clues.length ? '✓' : String(i + 1).padStart(2, '0')}</span>${s.short}</li>`).join('');
-    $('#mission-clue-count').textContent = `${state.clues.length} / 7`;
+    const evidence = Array.isArray(state.evidence) && state.evidence.length ? state.evidence : (state.clues || []);
+    $('#mission-clue-count').textContent = evidence.length ? `${evidence.length} 条记录` : '尚未归档';
     updateStatus();
-    $('#mission-clues').innerHTML = state.clues.length ? state.clues.map(c => `<li>${c}</li>`).join('') : '<li>完成任务后，你收集的证据会留在这里。</li>';
-    $('#mission-location').textContent = state.phase === 'playing' ? MISSION.stages[state.stage].place : '英国 · 布莱切利园 · 1941';
-    $('#mission-scene-caption').textContent = state.phase === 'playing' ? ['先从时间和格式锁定频道。', '字母不变成自身：排除错误对齐。', '一根接线，两个方向。', '固定已知条件，再搜索未知。', '机器负责排除，停机结果仍需核验。', '每个按键先步进，再读出整段消息。', '把明文、时间和未知一起交接。'][state.stage] : '一张工作桌，连接起截收、搜索与交接。';
+    $('#mission-clues').innerHTML = renderEvidence(state);
+    const beat = currentBeat(state), location = state.phase === 'briefing'
+      ? '英国 · 布莱切利园'
+      : (beat.place || state.currentZone || beat.zone || '夜班行动空间');
+    $('#mission-location').textContent = location;
+    $('#mission-location-world').textContent = location;
+    $('#mission-scene-caption').textContent = state.phase === 'playing' ? (beat.goal || beat.action || '现场记录等待你的判断。') : '夜班记录从一束稳定信号开始。';
     scene?.setState(state);
     if (focus) focusTask();
     else if (oldData) {
@@ -57,15 +76,17 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     }
   }
   function chooseView(name) {
-    selectedView = name; scene?.setView(name);
+    selectedView = name;
+    const zones = ['entry', 'entrance', 'radio', 'archive', 'analysis', 'machine', 'map', 'handoff'];
+    if (zones.includes(name) && scene?.setZone) scene.setZone(name); else scene?.setView(name);
     root.querySelectorAll('[data-action="view"]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.value === name)));
   }
   function dispatch(action) {
     if (disposed) return;
     const before = state; state = reduceMission(state, action);
     if (state === before) return;
-    const changed = state.stage !== before.stage || state.phase !== before.phase || state.paused !== before.paused || state.cleared !== before.cleared;
-    if (state.stage !== before.stage || action.type === 'start') chooseView(STAGE_VIEWS[state.stage]);
+    const changed = state.stage !== before.stage || state.beat !== before.beat || state.phase !== before.phase || state.paused !== before.paused || state.cleared !== before.cleared;
+    if (state.stage !== before.stage || state.beat !== before.beat || state.currentZone !== before.currentZone || state.phase !== before.phase || action.type === 'start') chooseView(sceneView(state));
     if (action.type === 'restart') chooseView('desk');
     if (action.type !== 'tick') render(changed); else if (state !== before) updateStatus();
   }
@@ -95,7 +116,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     $('.mission-cinema-caption').textContent = action.type === 'start' ? '05:42，布莱切利园夜班。' : '带上这条证据，前往下一张工作桌。';
     $('.mission-cinema-progress').style.transform = 'scaleX(0)';
     pauseTransition(false);
-    scene.playTransition({ kind: action.type === 'start' ? 'arrival' : 'stage', stage: action.type === 'start' ? 0 : state.stage + 1,
+    scene.playTransition({ kind: action.type === 'start' ? 'arrival' : 'stage', stage: action.type === 'start' ? 0 : beatIndex(state) + 1,
       onFrame(frame) {
         if (!cinematic || id !== transitionId || disposed) return;
         $('.mission-cinema-caption').textContent = frame.caption;
@@ -115,7 +136,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     if (action === 'start') { beginTransition({ type: 'start' }); return; }
     if (action === 'next' && state.cleared && !state.paused) { beginTransition({ type: 'next' }); return; }
     if (action === 'view') { chooseView(value); return; }
-    if (action === 'rotor') dispatch({ type: action, index: Number(index), value: (state.positions[Number(index)] + Number(step) + 26) % 26 });
+    if (action === 'rotor') dispatch({ type: action, index: Number(index), value: (((state.positions || [0, 0, 0])[Number(index)] || 0) + Number(step) + 26) % 26 });
     else dispatch({ type: action, value: ['channel', 'align'].includes(action) ? Number(value) : value });
   });
   on(doc, 'visibilitychange', () => {
@@ -132,7 +153,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     if (event.key === 'Escape' && active) { if (cinematic) { scene?.skipTransition?.(); finishTransition(); } else dispatch({ type: state.paused ? 'resume' : 'pause' }); }
   });
   const timer = view.setInterval(() => { if (active && !doc.hidden && !cinematic) dispatch({ type: 'tick', seconds: 1 }); }, 1000);
-  render(); progress(82, '七个行动节点与证据手册已准备');
+  render(); progress(82, '现场记录已准备');
   const inspect = () => ({ state: structuredClone(state), active, cinematic, transitionPaused, view: selectedView, scene: scene?.inspect() || { ready: false } });
   view.__BOMBE_MISSION__ = inspect;
   return {

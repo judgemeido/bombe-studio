@@ -11,7 +11,8 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
   let renderer, model, controls, observer, raf = 0, active = false, disposed = false, lost = false, state;
   let clock = 0, last = 0, searchStart = null, decodeStart = null, transition = null, environment;
   const scene = new THREE.Scene(); scene.background = new THREE.Color('#142633');
-  const camera = new THREE.PerspectiveCamera(40, 1, .1, 60);
+  // The seven-room layout reaches well beyond the original desk vignette.
+  const camera = new THREE.PerspectiveCamera(40, 1, .1, 160);
   const targetPosition = new THREE.Vector3(), targetLook = new THREE.Vector3(); let following = false;
   let selectedView = 'desk';
   function labelTexture(content, color, background, glyphs = null) {
@@ -47,6 +48,11 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
     following = !immediate;
     if (immediate) { camera.position.copy(targetPosition); controls.target.copy(targetLook); controls.update(); }
     draw();
+  }
+  function setZone(name, immediate = motion?.matches) {
+    model?.setZone(name);
+    setView(name, immediate);
+    return model?.zones?.find(zone => zone.id === name) || null;
   }
   function draw() {
     if (!active || disposed || lost || !state) return;
@@ -112,13 +118,13 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
     rebuildEnvironment(); scene.environmentIntensity = .3;
     scene.add(new THREE.HemisphereLight('#bdcfda', '#49392b', 1.25));
     const key = new THREE.DirectionalLight('#d9e7ec', 2.5); key.position.set(-3, 6, 1); key.castShadow = true;
-    key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 4.5, bottom: -3.5, far: 18 }); key.shadow.bias = -.00015; key.shadow.normalBias = .018; scene.add(key);
+    key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -22, right: 22, top: 14, bottom: -12, far: 80 }); key.shadow.bias = -.00015; key.shadow.normalBias = .018; scene.add(key);
     const fill = new THREE.DirectionalLight('#e8ceab', 1.2); fill.position.set(3, 3, 5); scene.add(fill);
     model = createMissionModel({ labelTexture }); scene.add(model.root);
     const lamp = new THREE.PointLight('#ffd091', 3.4, 3.5, 2); model.lampAnchor.add(lamp);
     controls = new OrbitControls(camera, canvas); controls.enableDamping = !motion?.matches; controls.enablePan = false;
-    controls.minDistance = 2; controls.maxDistance = 13; controls.minPolarAngle = .25; controls.maxPolarAngle = Math.PI / 2.04;
-    controls.minAzimuthAngle = -Math.PI / 2.1; controls.maxAzimuthAngle = Math.PI / 2.1;
+    controls.minDistance = 2; controls.maxDistance = 40; controls.minPolarAngle = .2; controls.maxPolarAngle = Math.PI / 2.04;
+    controls.minAzimuthAngle = -Math.PI * .92; controls.maxAzimuthAngle = Math.PI * .92;
     controls.addEventListener('start', stopFollowing); controls.addEventListener('change', draw);
     setView('desk', true);
     observer = new view.ResizeObserver(resize); observer.observe(canvas);
@@ -135,6 +141,7 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
       draw(); schedule();
     },
     setView,
+    setZone,
     playTransition(options) {
       if (disposed || lost || !active) { options.onComplete?.(); return; }
       following = false; controls.enabled = false;

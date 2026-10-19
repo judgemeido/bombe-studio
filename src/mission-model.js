@@ -178,10 +178,107 @@ export function createMissionModel({ labelTexture } = {}) {
   cylinder(.084, .005, [0, .096, 0], walnut, cup); ring(.092, .009, [0, .102, 0], dark, cup).rotation.x = Math.PI / 2;
   const handle = ring(.072, .013, [.13, .01, 0], ivory, cup); handle.scale.x = .7;
   text('BLETCHLEY PARK\nHUT 8 · 1941', 1.29, .45, [1.61, 3.5, -2.89], root, { background: '#bbae8b', color: '#293c3b' });
+
+  // The original desk remains the playable archive table, while the world now
+  // reads as a connected night shift.  Each shell is intentionally low-detail:
+  // shared craft geometry keeps the larger footprint inexpensive to render.
+  const zoneMaterial = material('#243d43', .91, 0, 'paint');
+  const trimMaterial = material('#4b3a2b', .68, .04, 'wood');
+  const floorMaterial = material('#342f2a', .95, 0, 'wood');
+  const zones = [], anchors = {}, interactives = [radio, enigma, bombe, papers, lamp, plugboard, phones];
+  const zoneSpecs = [
+    { id: 'entry', pos: [-13, 0, 0], size: [6, 7], tone: '#30484b' },
+    { id: 'radio', pos: [-8, 0, 0], size: [5, 7], tone: '#2c4645' },
+    { id: 'archive', pos: [0, 0, 0], size: [8, 7], tone: '#21383d' },
+    { id: 'analysis', pos: [7, 0, 0], size: [6, 7], tone: '#263f42' },
+    { id: 'machine', pos: [14, 0, 0], size: [7, 8], tone: '#30433d' },
+    { id: 'map', pos: [8, 0, -7], size: [8, 6], tone: '#34444b' },
+    { id: 'handoff', pos: [-1, 0, -7], size: [7, 6], tone: '#3c4241' },
+  ];
+  function addZone(spec, index) {
+    const zoneGroup = group(`zone-${spec.id}`, spec.pos);
+    const [width, depth] = spec.size;
+    const shell = material(spec.tone, .9, 0, 'paint');
+    box([width, .12, depth], [0, -.35, 0], floorMaterial, zoneGroup, .025);
+    box([width, 3.9, .14], [0, 1.65, -depth / 2], shell, zoneGroup, .018);
+    box([.14, 3.9, depth], [-width / 2, 1.65, 0], shell, zoneGroup, .018);
+    box([.14, 3.9, depth], [width / 2, 1.65, 0], shell, zoneGroup, .018);
+    // High clerestory trim gives each room a shared architectural rhythm.
+    box([width - .3, .12, .18], [0, 3.53, -depth / 2 + .12], trimMaterial, zoneGroup, .012);
+    for (const x of [-width / 2 + .35, width / 2 - .35]) box([.16, 3.65, .16], [x, 1.55, -depth / 2 + .12], trimMaterial, zoneGroup, .012);
+    const anchor = group(`anchor-${spec.id}`, [0, 1.15, 0], zoneGroup);
+    anchor.userData.zoneId = spec.id; anchor.userData.zoneIndex = index;
+    anchors[spec.id] = anchor;
+    const descriptor = { id: spec.id, name: spec.id, label: spec.id, index, group: zoneGroup, anchor, position: spec.pos.slice(), size: spec.size.slice() };
+    zones.push(descriptor);
+    // A small central ceiling fixture makes the room legible from a distance.
+    const fixture = group(`fixture-${spec.id}`, [0, 3.18, 0], zoneGroup);
+    cylinder(.16, .045, [0, 0, 0], trimMaterial, fixture, 20);
+    const glow = material('#e2c88f', .42, .08); glow.emissive.set('#a4773e'); glow.emissiveIntensity = .22;
+    cylinder(.1, .035, [0, -.04, 0], glow, fixture, 20);
+    return descriptor;
+  }
+  zoneSpecs.forEach(addZone);
+  zones.forEach(zone => {
+    // Do not shadow Array.prototype.map/filter/etc.; expose colliding names via
+    // a suffixed alias while keeping the array ergonomics of the public API.
+    const key = zone.id in zones ? `${zone.id}Zone` : zone.id;
+    Object.defineProperty(zones, key, { value: zone, enumerable: false });
+  });
+
+  // Zone-specific props mark the evidence chain in physical space.  They are
+  // deliberately simple silhouettes so the active Enigma and Bombe stay sharp.
+  function prop(name, pos, size, mat, zoneId, radius = .02) {
+    const z = anchors[zoneId]?.parent || root;
+    const object = group(name, pos, z);
+    box(size, [0, 0, 0], mat, object, radius);
+    interactives.push(object); anchors[name] = object;
+    return object;
+  }
+  const entryDesk = prop('entry-register', [0, .42, .4], [2.8, .78, 1.2], walnut, 'entry', .035);
+  prop('entry-lantern', [-1.5, 1.5, .2], [.34, .8, .34], brass, 'entry', .05);
+  const radioDesk = prop('radio-console', [0, .52, .5], [3.2, .9, 1.45], walnut, 'radio', .035);
+  prop('radio-antenna', [1.55, 1.9, -.3], [.12, 2.6, .12], steel, 'radio', .03);
+  const archiveCabinet = prop('archive-cabinet', [-2.9, 1.4, -.3], [.75, 2.65, 2.1], walnut, 'archive', .04);
+  prop('archive-tray', [2.8, .48, -.5], [1.6, .12, .8], paperMat, 'archive', .012);
+  const analysisBoard = prop('analysis-board', [0, 1.8, -2.95], [4.1, 2.2, .12], leather, 'analysis', .018);
+  prop('analysis-lamp', [-2.1, 1.1, .3], [.34, 1.8, .34], brass, 'analysis', .04);
+  const machinePanel = prop('machine-panel', [0, 1.35, .3], [3.5, 2.65, .42], green, 'machine', .05);
+  prop('machine-switch', [-2.15, .72, 1.2], [.25, .65, .25], brass, 'machine', .04);
+  const mapWall = prop('map-wall', [0, 1.65, -2.75], [5.5, 2.9, .12], paperMat, 'map', .018);
+  prop('map-table', [0, .52, .3], [4.2, .9, 2.1], walnut, 'map', .035);
+  const handoffBox = prop('handoff-box', [0, .54, .15], [2.2, .8, 1.5], leather, 'handoff', .04);
+  prop('handoff-phone', [2.15, .75, .2], [.8, .55, .65], dark, 'handoff', .04);
+  anchors.enigma = enigma; anchors.radioMachine = radio; anchors.bombe = bombe; anchors.papers = papers;
+  anchors.desk = desk; anchors.lamp = lamp; anchors.entryDesk = entryDesk; anchors.radioDesk = radioDesk;
+  anchors.analysisBoard = analysisBoard; anchors.machinePanel = machinePanel; anchors.mapWall = mapWall; anchors.handoffBox = handoffBox;
+  // The engine calls the first room "entrance"; retain the shorter internal
+  // id used by the scene rails as an alias so either vocabulary is accepted.
+  anchors.entrance = anchors.entry;
+  Object.defineProperty(anchors, 'length', { value: Object.keys(anchors).length, enumerable: false });
+  let activeZone = 'archive';
+  const bounds = new THREE.Box3();
+  root.updateMatrixWorld(true); bounds.setFromObject(root);
   craft.batch(root);
   let disposed = false;
+  function getBounds(zoneId = null) {
+    root.updateMatrixWorld(true);
+    const normalized = zoneId === 'entrance' ? 'entry' : zoneId;
+    const target = normalized ? zones.find(zone => zone.id === normalized)?.group : root;
+    return new THREE.Box3().setFromObject(target || root);
+  }
+  function setZone(zoneId) {
+    const normalized = zoneId === 'entrance' ? 'entry' : zoneId;
+    const descriptor = zones.find(zone => zone.id === normalized);
+    if (!descriptor) return zones.find(zone => zone.id === activeZone) || zones[0];
+    activeZone = descriptor.id; root.userData.activeZone = activeZone;
+    zones.forEach(zone => { zone.active = zone.id === activeZone; zone.group.userData.active = zone.active; });
+    return descriptor;
+  }
   return {
-    root, rotors, drums, keys, lamps, lid, lampAnchor,
+    root, rotors, drums, keys, lamps, lid, lampAnchor, zones, anchors, interactives, bounds,
+    get activeZone() { return activeZone; },
+    getBounds, setZone,
     update(s, time, { reduced = false, searchProgress = null, positions = s.positions, inputLetter = null, outputLetter = null, lidOpen = 1 } = {}) {
       // The teaching cutaway exposes raised rotors, so begin with the lid already ajar.
       lid.rotation.x = THREE.MathUtils.lerp(.45, -.2, lidOpen);
@@ -194,6 +291,7 @@ export function createMissionModel({ labelTexture } = {}) {
       drums.forEach((drum, i) => { if (searchProgress !== null && !reduced) drum.rotation.z = -time * (2 + i % 3 * 2); });
       lamps.forEach(lamp => { lamp.material.emissiveIntensity = lamp.userData.letter === outputLetter ? 2.1 : .025; });
       keys.forEach(key => { key.position.y = .328 - (key.userData.letter === inputLetter ? .026 : 0); });
+      if (s.zone || s.currentZone) setZone(s.zone || s.currentZone);
     },
     dispose() {
       if (disposed) return; disposed = true;

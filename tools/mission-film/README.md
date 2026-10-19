@@ -1,6 +1,6 @@
-# Remotion opening
+# Remotion cinematics
 
-Historical authoring project. Since 2026-10-19 the website uses the live Three.js camera transitions in `src/mission-transition.js`; it no longer loads or ships this video. The commands below are retained as the earlier production record; this refinement did not re-render the archived film.
+Optional authored layers for the Before Daybreak mission. The website can skip these layers and uses live Three.js camera rails when reduced motion is enabled, decoding fails, or WebGL is unavailable.
 
 Independent authoring project; React is not part of the museum runtime.
 
@@ -10,6 +10,6 @@ npm run render
 npm run still
 ```
 
-Render produces `assets/mission/arrival.mp4`, 1280 × 720, 24 fps, 12 seconds, silent with visible Chinese titles. The ThreeCanvas reuses the original procedural model. All motion is derived from `useCurrentFrame`; no realtime render loop is used here.
+The entry contains three deterministic compositions: `Prologue` (10 seconds), `ZoneTransit` (7 seconds), and `Handoff` (7.5 seconds). All motion is derived from `useCurrentFrame`; no realtime render loop or network asset is required. The compositions reuse the same static world layout as the runtime and remain presentation-only.
 
-If automatic Chrome download is unavailable, pass `--browser-executable` with a local Chromium-compatible browser. Package versions are pinned together. The former website presentation used a skip-enabled video and bypassed it for reduced motion.
+If automatic Chrome download is unavailable, pass `--browser-executable` with a local Chromium-compatible browser. Package versions are pinned together. Rendered files are local build artifacts only and are never required to advance the mission state.

@@ -8,7 +8,7 @@ test('room has inspectable machines and bounded geometry; state changes animate 
   for (const name of ['enigma', 'radio', 'bombe', 'desk', 'window']) assert.ok(model.root.getObjectByName(name), name);
   assert.equal(model.rotors.length, 3); assert.equal(model.drums.length, 27);
   const box = new Box3().setFromObject(model.root);
-  assert.ok(box.max.x - box.min.x < 12); assert.ok(Number.isFinite(box.max.y));
+  assert.ok(box.max.x - box.min.x > 18); assert.ok(Number.isFinite(box.max.y));
   const before = model.rotors.map(r => r.rotation.x);
   model.update({ stage: 3, positions: [1, 3, 0], channel: 1, pair: 'A' }, 1, { reduced: true });
   assert.notDeepEqual(model.rotors.map(r => r.rotation.x), before);
@@ -45,5 +45,26 @@ test('the arrival lid is articulated at its hinge and returns to the open inspec
     // At the rear rotor centre, even the lowest animated lid edge clears the rotor top.
     const lidHeightAtRotor = .18 + .4 / Math.tan(closed);
     assert.ok(lidHeightAtRotor > .49 + .237);
+  } finally { model.dispose(); }
+});
+
+test('the mission world exposes seven connected zones, anchors, interactives, and safe bounds', () => {
+  const model = createMissionModel();
+  try {
+    assert.equal(model.zones.length, 7);
+    assert.deepEqual(model.zones.map(zone => zone.id), ['entry', 'radio', 'archive', 'analysis', 'machine', 'map', 'handoff']);
+    for (const id of model.zones.map(zone => zone.id)) {
+      assert.ok(model.anchors[id], `anchor ${id}`);
+      assert.ok(model.zones.find(zone => zone.id === id).group.isObject3D, `group ${id}`);
+      const bounds = model.getBounds(id);
+      assert.ok(bounds && !bounds.isEmpty(), `bounds ${id}`);
+      assert.equal(model.setZone(id).id, id);
+    }
+    assert.equal(model.setZone('entrance').id, 'entry');
+    assert.ok(model.interactives.length >= 10);
+    const world = model.getBounds();
+    assert.ok(world.max.x - world.min.x > 18, 'world should read as a larger multi-room space');
+    assert.ok(world.max.z - world.min.z > 12, 'world depth should include connected rooms');
+    assert.ok(model.bounds && !model.bounds.isEmpty());
   } finally { model.dispose(); }
 });

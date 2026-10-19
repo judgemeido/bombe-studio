@@ -12,6 +12,9 @@ Thumbs.db
 
 # Draft captures; final acceptance evidence remains tracked
 output/playwright/*-first.png
+output/mission/prologue-still.png
+output/mission/zone-transit-still.png
+output/mission/handoff-still.png
 
 # One-off authoring scripts and pre-redesign local backups
 output/home-redesign/before/

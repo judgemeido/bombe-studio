@@ -1,113 +1,299 @@
 import { encipher, ALPHABET } from './cipher.js';
 
 const pairs = [['A', 'G']];
-// The dispatch prefix is part of the transmission. Keeping it in the stream
-// makes the crib alignment and the final decode use the same rotor stepping.
+// Keep the dispatch prefix in the stream. The crib alignment and final decode
+// must use the same continuously stepped Enigma path.
 const plaintext = 'DXWETTERNORDHAFENFREI';
 const ciphertext = encipher(plaintext, [1, 3, 5], pairs).output;
+const beatId = index => `S${String(index + 1).padStart(2, '0')}`;
 
-export const MISSION = {
-  plaintext, ciphertext, strip: ciphertext, crib: 'WETTER', pairs,
+const action = (type, label, values = []) => ({ type, label, values });
+const transition = (from, to, cue) => ({ from, to, cue });
+
+const beats = [
+  {
+    id: 'S01', zone: 'entrance', place: '夜班入口 · 外廊', speaker: '交班耳机里的值守员', seconds: 60,
+    story: '05:42，雾贴着窗缝。耳机里只剩一声短促的载波，交班记录还没有落下时间。先把这一刻固定下来。',
+    goal: '接起耳机，确认时间锚点和当前雾况。',
+    actions: [action('checkin', '接起耳机并确认值守', ['ready'])], control: 'checkin',
+    success: '耳机接通。05:42 被写入交班纸，雾况成为之后每条判断的时间背景。',
+    clue: '时间锚点：05:42，雾况记录为待核验。', hints: ['先确认记录时间，再判断信号内容。', '值守员只需要确认接班，不要替后面的报文作结论。'],
+    discussion: '一条没有时间的截收记录，之后还能证明它属于哪一次交接吗？',
+    transition: transition('entrance', 'radio', '耳机里的载波把你引向无线电室。'),
+  },
+  {
+    id: 'S02', zone: 'radio', place: '无线电室 · 接收台', speaker: '夜班截收员的抄录', seconds: 60,
+    story: '三段频率同时亮起：一段只来过一次，一段在 05:42 重复，还有一段是机房自检。稳定重复的格式才值得继续追。',
+    goal: '调谐三段频率，锁定重复出现的交接信号。',
+    actions: [action('channel', '选择重复出现的交接频道', [0, 1, 2]), action('submit', '锁定频段')], control: 'channel',
+    success: '频道 B 的时间和报头重复出现。它留下了一个可检验的天气词。',
+    clue: '频道 B / 05:42：重复报头成为主线。', hints: ['一次性的短呼号不能建立规律。', '机房自检会重复，但不会带来海上交接格式。'],
+    discussion: '稳定出现的格式能说明信号用途，却还不能证明内容真实。',
+    transition: transition('radio', 'radio', '抄报灯把你带到排纸台。'),
+  },
+  {
+    id: 'S03', zone: 'radio', place: '无线电室 · 排纸台', speaker: '截收纸边缘的铅笔记号', seconds: 60,
+    story: '纸带被雾气打湿，三张截收纸的顺序散了。时间、长度和报头必须重新排成一条能复核的记录。',
+    goal: '按时间和报文长度恢复截收纸的先后。',
+    actions: [action('order', '按时间和长度排序截收纸', ['chronological']), action('submit', '封存排序')], control: 'order',
+    success: '三张纸重新排好，重复报头与 05:42 的时间锚点对齐。',
+    clue: '截收纸已按时间排序，报头顺序恢复。', hints: ['先看时间戳，再用报文长度处理并列项。', '排序不是解密，它只让后续线索拥有可追溯的来源。'],
+    discussion: '如果纸张顺序错一格，后面的 crib 还能指向同一条报文吗？',
+    transition: transition('radio', 'archive', '装订夹上的旧班号指向档案走廊。'),
+  },
+  {
+    id: 'S04', zone: 'archive', place: '档案走廊 · 班次记录墙', speaker: '旧班记录的折角', seconds: 60,
+    story: '旧班记录挂满走廊。只有一种报头格式曾在换班时留下六字天气词，其他纸条属于设备自检或无关短呼。',
+    goal: '从旧班记录中找出与当前报头相同的通信格式。',
+    actions: [action('archive', '选择同格式的旧班记录', ['weather']), action('submit', '比对档案')], control: 'archive',
+    success: '旧班记录确认了天气词形。它可以作为 crib 假设，但还没有通过机器核验。',
+    clue: '历史格式匹配：六字天气词，候选为 WETTER。', hints: ['找重复格式，不要被单个熟悉字母说服。', '档案只能生成假设，Enigma 自映射约束仍要检查。'],
+    discussion: '档案里的相似格式如何成为线索，又如何避免变成先入为主？',
+    transition: transition('archive', 'analysis', '一张标着 WETTER 的纸被送到分析室。'),
+  },
+  {
+    id: 'S05', zone: 'analysis', place: '分析室 · 放大灯下', speaker: '分析员的圈注', seconds: 60,
+    story: '短报的前八格被放大。把可能的六字 crib 圈出来，并把它和密文保持在同一条连续纸带上。',
+    goal: '从短报中提取可检验的 WETTER 假设。',
+    actions: [action('crib', '圈出天气词 WETTER', ['WETTER']), action('submit', '提交 crib')], control: 'crib',
+    success: 'WETTER 被圈入分析记录。接下来要移动它，排除 Enigma 不允许的自映射。',
+    clue: '候选 crib：WETTER，来源和时间已登记。', hints: ['保留 DX 前缀，连续步进不能从 W 开始计算。', '一个词语熟悉，不代表它落在正确位置。'],
+    discussion: '为什么把来源、时间和词形放在同一张记录上很重要？',
+    transition: transition('analysis', 'analysis', '放大灯下的纸带滑入对齐框。'),
+  },
+  {
+    id: 'S06', zone: 'analysis', place: '分析室 · 对齐框', speaker: '关系图旁的红色铅笔', seconds: 60,
+    story: '把 WETTER 沿着密文移动。Enigma 不会把一个字母加密成自己；任何撞车位置都应立刻标红。',
+    goal: '找到没有自映射冲突的 crib 对齐位置。',
+    actions: [action('align', '移动 WETTER 对齐位置', [0, 1, 2]), action('submit', '检查对齐')], control: 'align',
+    success: '第 3 格对齐没有自映射冲突。它仍是约束，不是最终明文。',
+    clue: 'WETTER 对齐第 3 格；两个错误起点已排除。', hints: ['铜红色格子是直接矛盾。', '暂时没撞上矛盾只意味着可以继续。'],
+    discussion: '排除错误比证明正确更快，但为什么仍然不能停在这里？',
+    transition: transition('analysis', 'analysis', '无冲突的字母关系被抄进约束图。'),
+  },
+  {
+    id: 'S07', zone: 'analysis', place: '分析室 · 关系图', speaker: '关系链上的别针', seconds: 60,
+    story: '把 crib 里彼此关联的字母关系连起来。关系链越完整，Bombe 的重复筛选就越有边界。',
+    goal: '把 A 与 G 的关系连成可搜索的约束链。',
+    actions: [action('relation', '连接 A ↔ G 关系', ['A-G', 'A↔G']), action('submit', '封存关系图')], control: 'relation',
+    success: 'A ↔ G 关系链闭合。现在可以把约束带到接线工作台。',
+    clue: '关系图闭合：A ↔ G 作为搜索约束。', hints: ['一条关系需要两个端点。', '图上的箭头是回路，不是单向猜测。'],
+    discussion: '关系链怎样让机器少做无意义的尝试？',
+    transition: transition('analysis', 'machine', '关系图上的 A 和 G 被标到接线台。'),
+  },
+  {
+    id: 'S08', zone: 'machine', place: '机房 · 接线工作台', speaker: '韦尔奇曼留下的接线卡', seconds: 60,
+    story: '接线板把字母成对交换。让 A 与 G 互易相连，任何一端进入都必须从另一端返回。',
+    goal: '完成 A ↔ G 的双向接线。',
+    actions: [action('pair', '接入 A 与 G', ['A']), action('submit', '核对互易接线')], control: 'pair',
+    success: 'A ↔ G 接线闭合，两个端点各只占一根线。',
+    clue: '接线板已固定 A ↔ G，互易约束成立。', hints: ['进入 A 就必须从 G 离开。', '不要把同一端点接到两条线上。'],
+    discussion: '互易接线如何帮助另一端的约束继续传播？',
+    transition: transition('machine', 'machine', '接线卡被夹到 Enigma 操作台。'),
+  },
+  {
+    id: 'S09', zone: 'machine', place: '机房 · Enigma 操作台', speaker: '操作员的红边设置单', seconds: 60,
+    story: '设置单固定 I–II–III 与 AAA 环位。左轮 B、中轮 D 已知，右轮保留给候选搜索。',
+    goal: '设定左 B、中 D，把右轮留作未知量。',
+    actions: [action('rotor', '调整左中轮位', ['left', 'middle']), action('submit', '封存设置单')], control: 'rotor',
+    success: '设置单锁定 B · D · ?。每个候选都会从同一个初始条件重新开始。',
+    clue: 'Enigma I–II–III / 环位 AAA / 初始轮位 B · D · ?。', hints: ['左轮调到 B，中轮调到 D。', '右轮不要手动猜，交给 26 次真实运算。'],
+    discussion: '固定已知条件怎样让不同候选结果可以公平比较？',
+    transition: transition('machine', 'machine', '设置单亮起，机房的两组鼓轮开始预热。'),
+  },
+  {
+    id: 'S10', zone: 'machine', place: '机房 · 候选搜索台', speaker: '机房值班记录', seconds: 60,
+    story: '两组鼓轮按相同设置依次运行。26 个右轮起点会被逐一检查，停机只代表值得比较。',
+    goal: '启动完整的 26 个右轮候选搜索。',
+    actions: [action('search', '启动 26 个候选搜索')], control: 'search',
+    success: '搜索完成，机器留下 26 条结果，其中一条通过 WETTER 约束。',
+    clue: '候选批次完成：BDF 进入比较清单。', hints: ['每次候选都从 B · D · A 到 Z 开始。', '停机是候选，不是放行命令。'],
+    discussion: '机器把重复工作做完后，人还要解释哪一种语义风险？',
+    transition: transition('machine', 'machine', '两条停机纸带被送到比较灯箱。'),
+  },
+  {
+    id: 'S11', zone: 'machine', place: '机房 · 比较灯箱', speaker: '比较员的红蓝铅笔', seconds: 60,
+    story: '灯箱上有两条停机结果。对照开头约束和整段语义，剔除只在局部匹配的噪声，保留可复核的 BDF。',
+    goal: '比较停机结果，选择需要送入整段核验的候选。',
+    actions: [action('compare', '保留 BDF 作为候选', ['candidate', 'BDF']), action('answer', '确认候选仍需核验', ['candidate'])], control: 'compare',
+    success: 'BDF 被保留为唯一候选。整段密文还没有读通，核验室正在等它。',
+    clue: '候选设置：BDF；局部匹配尚未升级为行动结论。', hints: ['不要把“机器留下”写成“已经证实”。', '下一步必须输入完整密文并保留连续步进。'],
+    discussion: '为什么一个漂亮的局部匹配仍然需要完整解密？',
+    transition: transition('machine', 'analysis', 'BDF 设置单和完整纸带一起送往核验室。'),
+  },
+  {
+    id: 'S12', zone: 'analysis', place: '核验室 · 连续解密台', speaker: '你的交接核验单', seconds: 60,
+    story: '从 BDF 复位，把完整截报送入同一条 Enigma 回路。DX 前缀也必须经过步进，后面的航线词才不会错位。',
+    goal: '用 BDF 连续解密完整截报，读出可复核的明文。',
+    actions: [action('decode', '复位 BDF 并解密整段报文'), action('answer', '确认北港窗口含义', ['route'])], control: 'decode',
+    success: '明文读通：“DX / WETTER NORDHAFEN FREI”。这是一次北港窗口，不是永久保证。',
+    clue: '完整明文：DX / WETTER NORDHAFEN FREI。', hints: ['不要跳过 DX 的两次步进。', 'NORDHAFEN 是北港，FREI 表示当前窗口可通行。'],
+    discussion: '读通一条消息与证明它仍然适用，中间还缺哪一步？',
+    transition: transition('analysis', 'map', '明文中的北港被投到地图室的墙图上。'),
+  },
+  {
+    id: 'S13', zone: 'map', place: '地图室 · 北港墙图', speaker: '地图值守员的图钉', seconds: 60,
+    story: '把 NORDHAFEN 标到北港墙图，再把 05:42 的报文窗口贴到潮汐纸边。文字第一次落到了真实行动空间。',
+    goal: '在地图上标出北港和报文有效窗口。',
+    actions: [action('map', '标记北港交接窗口', ['north-harbor', 'north-harbor-window'])], control: 'map',
+    success: '北港位置和 05:42 窗口已落图，地图把明文与行动位置连接起来。',
+    clue: '地图标记：NORDHAFEN / 05:42 窗口。', hints: ['位置和时间要一起标记。', '地图上的点不是实时船位。'],
+    discussion: '把文字放上地图后，哪些未知仍然没有被解密解决？',
+    transition: transition('map', 'map', '窗边的瞭望记录刚刚送到地图室。'),
+  },
+  {
+    id: 'S14', zone: 'map', place: '地图室 · 窗边瞭望台', speaker: '瞭望员的新到记录', seconds: 60,
+    story: '新记录显示雾仍在，船位没有被报文覆盖。把 05:42 的来源、当前能见度和待确认船位并列交叉核验。',
+    goal: '对照新到的瞭望记录，标出仍未确认的变量。',
+    actions: [action('verify', '完成无线电与瞭望交叉核验', ['cross-check', 'verify'])], control: 'verify',
+    success: '交叉核验完成：报文有价值，但时效和船位仍需交班确认。',
+    clue: '待确认事项：当前能见度与接头船位置。', hints: ['报文时间必须和新记录并列。', '未知事项应该写入交接，而不是用猜测填空。'],
+    discussion: '情报有效但不完整时，报告应该如何表达不确定性？',
+    transition: transition('map', 'handoff', '电话铃响起，下一班正在交接室等候。'),
+  },
+  {
+    id: 'S15', zone: 'handoff', place: '交接室 · 封存桌', speaker: '交接班主管的电话', seconds: 60,
+    story: '05:50，雾还没有散。把 BDF、明文、时间戳与未确认事项写进交接表，再决定是否暂缓放行。',
+    goal: '提交一份保留证据、标注时效并暂缓放行的交接结论。',
+    actions: [action('handoff', '提交交接结论并暂缓放行', ['hold', 'verify'])], control: 'handoff',
+    success: '交接表已封存：保留 BDF 与明文，标注 05:42，确认前暂缓放行。',
+    clue: '最终交接：保留证据，标注时效，确认前暂缓放行。', hints: ['写出消息说了什么，也写出现在还不知道什么。', '有价值的线索不应因为尚未确认就被丢弃。'],
+    discussion: '面对即将离港的船，你会把哪一个未知放在报告第一句？',
+    transition: transition('handoff', 'handoff', '封存盒合上，窗外天色开始变亮。'),
+  },
+].map(beat => Object.freeze(beat));
+
+export const MISSION = Object.freeze({
+  plaintext,
+  ciphertext,
+  strip: ciphertext,
+  crib: 'WETTER',
+  pairs,
   channels: [
-    { title: '频道 A', label: '北线短呼号', text: '只出现过一次的短促呼号。没有固定时间，也没有足够长度，无法确认它属于今晚的交接。' },
-    { title: '频道 B', label: '午夜交接报', text: '05:42，格式再次出现。报文总是带着同一段六字天气词；截收员标记：可能是 WETTER（天气）。' },
-    { title: '频道 C', label: '机房自检', text: '每次换班都会播出。节拍和长度与密码机测试一致，属于本地设备，不是海面上的目标。' },
+    { title: '频道 A', label: '一次性短呼号', text: '只出现过一次，缺少时间和长度规律。' },
+    { title: '频道 B', label: '重复交接报', text: '05:42 重复出现，带着六字天气词。' },
+    { title: '频道 C', label: '机房自检', text: '每次换班都会播出，属于本地设备。' },
   ],
-  stages: [
-    { title: '雾里的幽灵频段', short: '截收', seconds: 90, place: '无线电桌 · 05:42 截收', speaker: '夜班截收员的耳机记录',
-      story: '05:42，天还没有亮。北港外的巡逻艇等着一艘接头船，雾把海面压成一片黑。三份记录同时送来，先找出真正的交接频道。',
-      goal: '从三个频道里锁定能给出稳定猜测的那一条。',
-      hints: ['一次性的短呼号不能建立规律；先看时间、长度和重复格式。', '频道 B 在 05:42 重复出现，并留下 WETTER 这个待检验的词。'],
-      depth: '截收阶段不负责读懂密文，只负责判断哪段信号值得投入人手。重复的业务格式会泄露用途，却不等于内容已经可信。',
-      discussion: '如果交接船只有一次机会靠岸，你会先记录哪一种模式，为什么？',
-      success: '你把今晚的任务锁在频道 B：05:42 的交接报。它给出一个线索，也把时间压力带进了机房。', clue: '频道 B / 05:42 / WETTER：可检验的起始线索。' },
-    { title: '把天气词放回原位', short: '对齐', seconds: 120, place: '分析桌 · 对齐截报', speaker: '分析员的铅笔标记',
-      story: 'WETTER 可能是德语“天气”，但它必须落在密文的正确位置。把这六个字母沿截报移动，任何自映射都会让摆法立即失效。',
-      goal: '找到没有字母撞车的对齐位置，留下可继续检验的约束。',
-      hints: ['Enigma 不会把一个字母加密成自己；铜红色格子就是矛盾。', '从第 3 格开始时没有自映射，但这只代表“尚未排除”。'],
-      depth: '对齐是最便宜的筛选：它能快速排除错误，却不能单独证明词语正确。真正的菜单会把多组关系串起来，再交给机器检查。',
-      discussion: '为什么在雾里行动时，“暂时没撞上矛盾”仍然不够？',
-      success: 'WETTER 从第 3 格开始通过了不自映射检查。你得到的是一条更窄的路，不是最后答案。', clue: 'WETTER 对齐第 3 格：两处错误起点被排除。' },
-    { title: '回声必须返回原点', short: '接线', seconds: 105, place: '接线板 · 回声约束', speaker: '韦尔奇曼留下的接线卡',
-      story: '一条已知关系写在卡片上：A 接到 G。交接报如果从另一端回声，电流必须沿同一根线返回。补上反向端点，别让机器得到两种说法。',
-      goal: '完成 A ↔ G 的双向接线，并确认两个端点只占一根线。',
-      hints: ['接线是互易的关系，不是两个独立按钮。', '从 G 出发仍然会回到 A；T 和 G 都会制造冲突。'],
-      depth: '接线板把字母成对交换。互易性让一个方向的证据能在回路另一端继续传播，也是后续排除候选的重要依据。',
-      discussion: '如果 G 同时接到 A 和 T，哪一条记录会先暴露矛盾？',
-      success: '回声沿 A ↔ G 返回原点。现在机器拥有一条可以重复检查的约束。', clue: '接线板确认 A ↔ G；端点没有重复占用。' },
-    { title: '给搜索设一道窄门', short: '设轮', seconds: 135, place: 'Enigma · 交接设置单', speaker: '机房操作员的红边设置单',
-      story: '不要让机器在黑暗里乱跑。设置单固定 I–II–III、环位 AAA，左轮起点 B，中轮起点 D，只有右轮留给搜索。',
-      goal: '把左轮调到 B、中轮调到 D，把未知量交给后续候选搜索。',
-      hints: ['按字母旁的 − / + 调整两个已知轮位；右轮保持未知。', '操作单写的是 B · D · ?，轮序 I–II–III 不需要改动。'],
-      depth: '把已知条件固定下来，机器才是在回答一个问题，而不是制造一堆无法比较的结果。每次候选检查前都要从同一初始轮位开始。',
-      discussion: '为什么“少给机器一个自由度”会让交接更快，而不是更慢？',
-      success: '设置单已锁定 B · D · ?。机器只需回答一个清楚的问题：右轮哪一格能让 WETTER 回来？', clue: 'Enigma I–II–III / 环位 AAA / 初始轮位 B · D · ?。' },
-    { title: '让机器筛掉错误名字', short: '搜索', seconds: 165, place: 'Bombe 机房 · 候选搜索', speaker: '机房值班记录',
-      story: '启动 26 次候选搜索。每次都用真实 Enigma 运算，从右轮 A 到 Z 检查第 3 至 8 个字母；机器停下时，你只拿到一个名字，还没有拿到一条安全航线。',
-      goal: '运行全部候选，并把停机结果当作候选，而不是结论。',
-      hints: ['先让机器跑完 26 个右轮起点，观察哪一个还原完整 WETTER。', 'BDF 只说明开头匹配；要知道船能否通行，还要解密整条报文。'],
-      depth: '这里是缩小后的枚举实验，不是完整战时 Bombe 的菜单搜索。机器擅长重复排除，人必须负责说明筛选条件和剩余未知。',
-      discussion: '如果机器只留下一个名字，你还需要向交接班解释什么？',
-      success: 'BDF 通过了 WETTER 检查。候选已留下，整条消息还在密文里等待核验。', clue: '26 个右轮起点中，BDF 是唯一通过 WETTER 的候选。' },
-    { title: '让整段噪声开口', short: '解密', seconds: 165, place: '核验桌 · 连续解密', speaker: '你的交接核验单',
-      story: '把机器复位到 BDF，再把完整截报送入回路。前两格 DX 也必须经过步进；跳过它们，后面的航线词就会错位。',
-      goal: '解出完整报文，并读出它对北港交接的实际含义。',
-      hints: ['点击“复位 BDF 并解密”，应用会保留整段连续步进。', 'NORDHAFEN 是“北港”，FREI 是“畅通 / 放行”；报文没有承诺雾会一直不散。'],
-      depth: '同一套 Enigma 电路既能加密也能解密，但起点必须一致。真实核验要看整条消息的语法和上下文，不只看一个熟悉的词。',
-      discussion: '如果只看到 FREI 就立刻放船，你遗漏了报文里的哪一种限制？',
-      success: '报文读通了：“WETTER NORDHAFEN FREI”——北港天气允许通行。它是一次交接窗口，不是永远有效的保证。', clue: '完整明文：DX / WETTER NORDHAFEN FREI。' },
-    { title: '黎明前的最后决定', short: '交接', seconds: 120, place: '情报桌 · 05:50 交接', speaker: '交接班主管的电话',
-      story: '现在是 05:50，雾还没有散。报文说北港可通行，但它在 05:42 截收，潮汐、能见度和接头船位置都可能已经变化。你要把决定交给下一班。',
-      goal: '选择一个既保留情报价值、又不把旧消息冒充实时保证的交接方案。',
-      hints: ['把“报文说了什么”和“现在还不知道什么”分开写。', '标注 05:42，要求无线电和瞭望员交叉核验，再决定是否放行。'],
-      depth: '破译完成只解决可读性；交接还要处理时效、来源和后果。一个负责任的情报结论会同时交出证据、时间戳与待确认事项。',
-      discussion: '面对即将离港的船，你会把哪一个未知放在报告第一句？',
-      success: '你提交了交接方案：保留 BDF 和明文，标注 05:42，并暂缓放行，直到无线电与瞭望员确认北港仍然畅通。', clue: '交接决定：标注时间，交叉核验，确认前暂缓放行。' },
-  ],
-};
+  stages: beats,
+  searchCandidates,
+  alignmentConflicts,
+});
 
 export function alignmentConflicts(offset) {
   if (![0, 1, 2].includes(offset)) throw new RangeError('无效的对齐位置');
-  return [...MISSION.crib].flatMap((c, i) => c === MISSION.strip[offset + i] ? [i] : []);
+  return [...MISSION.crib].flatMap((char, index) => char === MISSION.strip[offset + index] ? [index] : []);
 }
+
 export function searchCandidates(positions) {
-  return [...ALPHABET].map((_, n) => {
-    const candidate = [positions[0], positions[1], n];
-    const output = encipher(ciphertext.slice(0, 8), candidate, pairs).output.slice(2);
-    return { positions: candidate, key: candidate.map(i => ALPHABET[i]).join(''), output, matches: output === MISSION.crib };
+  return [...ALPHABET].map((_, index) => {
+    const candidate = [positions[0], positions[1], index];
+    const output = encipher(MISSION.ciphertext.slice(0, 8), candidate, pairs).output.slice(2);
+    return { positions: candidate, key: candidate.map(value => ALPHABET[value]).join(''), output, matches: output === MISSION.crib };
   });
 }
+
 export function initialMission() {
-  return { phase: 'briefing', stage: 0, paused: false, cleared: false, hint: 0, clues: [], feedback: '', attempts: 0, elapsed: 0, channel: null, offset: 0, pair: null, positions: [0, 0, 0], results: [], decoded: '' };
+  return {
+    phase: 'briefing', stage: 0, beat: 0, beatId: 'S01', currentZone: 'entrance', paused: false,
+    cleared: false, hint: 0, clues: [], evidence: [], feedback: '', attempts: 0, elapsed: 0,
+    channel: null, order: null, archive: null, cribSelection: null, offset: 0, relation: null,
+    pair: null, positions: [0, 0, 0], results: [], selectedCandidate: null, candidate: null,
+    decoded: '', mapMarker: null, crossCheck: null, handoff: null, checkin: false,
+  };
 }
-export function reduceMission(s, a) {
+
+const same = (s, patch) => ({ ...s, feedback: '', ...patch });
+const alias = type => ({
+  'check-in': 'checkin', 'sort-papers': 'order', 'archive-match': 'archive', 'extract-crib': 'crib',
+  link: 'relation', 'compare-candidates': 'compare', marker: 'map', 'cross-check': 'verify',
+  'handoff-submit': 'handoff',
+}[type] || type);
+
+function success(s, detail = MISSION.stages[s.stage].success, patch = {}) {
+  const beat = MISSION.stages[s.stage];
+  const evidence = { beatId: beat.id, zone: beat.zone, clue: beat.clue, detail };
+  return { ...s, ...patch, cleared: true, feedback: detail, clues: [...s.clues, beat.clue], evidence: [...s.evidence, evidence] };
+}
+
+function failure(s, message) {
+  return { ...s, attempts: s.attempts + 1, feedback: message };
+}
+
+function submit(s) {
+  const checks = [
+    s.checkin,
+    s.channel === 1,
+    s.order === 'chronological',
+    s.archive === 'weather',
+    s.cribSelection === 'WETTER',
+    alignmentConflicts(s.offset).length === 0,
+    ['A-G', 'A↔G'].includes(s.relation),
+    s.pair === 'A',
+    s.positions[0] === 1 && s.positions[1] === 3,
+  ];
+  const messages = [
+    '先确认耳机和时间锚点。', '重复报头才是当前主线。', '先恢复纸带顺序，再比较内容。',
+    '档案只能提供格式线索。', '把 WETTER 圈进连续纸带。', '当前对齐仍有同字母冲突。',
+    '关系链需要两个互相返回的端点。', '接线必须沿同一根线返回。', '设置单要求左 B、中 D。',
+  ];
+  return checks[s.stage] ? success(s) : failure(s, messages[s.stage]);
+}
+
+export function reduceMission(s, rawAction) {
+  const a = rawAction || {};
   if (a.type === 'restart') return initialMission();
   if (a.type === 'start' && s.phase === 'briefing') return { ...s, phase: 'playing' };
   if (s.phase !== 'playing') return s;
-  if (a.type === 'pause') return { ...s, paused: true };
-  if (a.type === 'resume') return { ...s, paused: false };
+  if (a.type === 'pause') return s.paused ? s : { ...s, paused: true };
+  if (a.type === 'resume') return s.paused ? { ...s, paused: false } : s;
   if (s.paused) return s;
   if (a.type === 'tick') return Number.isFinite(a.seconds) && a.seconds > 0 && a.seconds <= 5 ? { ...s, elapsed: s.elapsed + a.seconds } : s;
-  if (a.type === 'next') return s.cleared ? { ...s, stage: Math.min(6, s.stage + 1), phase: s.stage === 6 ? 'complete' : 'playing', cleared: false, hint: 0, feedback: '' } : s;
-  if (s.cleared) return s;
-  if (a.type === 'hint') return { ...s, hint: Math.min(s.hint + 1, 2) };
-  const change = patch => ({ ...s, feedback: '', ...patch });
-  if (a.type === 'channel' && s.stage === 0 && [0, 1, 2].includes(a.value)) return change({ channel: a.value });
-  if (a.type === 'align' && s.stage === 1 && [0, 1, 2].includes(a.value)) return change({ offset: a.value });
-  if (a.type === 'pair' && s.stage === 2 && ['A', 'T', 'G'].includes(a.value)) return change({ pair: a.value });
-  if (a.type === 'rotor' && s.stage === 3 && [0, 1].includes(a.index) && Number.isInteger(a.value) && a.value >= 0 && a.value < 26) return change({ positions: s.positions.map((n, i) => i === a.index ? a.value : n) });
-  if (a.type === 'search' && s.stage === 4) return change({ results: searchCandidates(s.positions) });
-  if (a.type === 'decode' && s.stage === 5) {
-    const candidate = s.results.find(r => r.matches);
-    return candidate ? change({ decoded: encipher(ciphertext, candidate.positions, pairs).output }) : s;
+  if (a.type === 'next') {
+    if (!s.cleared) return s;
+    if (s.stage === MISSION.stages.length - 1) return { ...s, phase: 'complete' };
+    const stage = s.stage + 1;
+    return { ...s, stage, beat: stage, beatId: beatId(stage), currentZone: MISSION.stages[stage].zone, cleared: false, hint: 0, feedback: '' };
   }
-  let ok, feedback;
-  if (a.type === 'submit' && s.stage < 4) {
-    ok = [s.channel === 1, alignmentConflicts(s.offset).length === 0, s.pair === 'A', s.positions[0] === 1 && s.positions[1] === 3][s.stage];
-    feedback = ['看时间和重复格式，不要被一次性呼号带走。', '当前对齐仍有同字母碰撞；从第 3 格重新检查。', '沿同一根线回到 A。A ↔ G 只能有一个互易答案。', '设置单要求左 B、中 D；右轮才是待搜索变量。'][s.stage];
-  } else if (a.type === 'answer' && s.stage >= 4) {
-    ok = s.stage === 4 ? s.results.length === 26 && a.value === 'candidate' : s.stage === 5 ? s.decoded === plaintext && a.value === 'route' : a.value === 'verify';
-    feedback = s.stage === 4 ? s.results.length ? '机器只筛出了候选 BDF。把完整密文送入回路，确认它是否能读成一条交接消息。' : '先运行 26 个候选搜索，再判断停机结果。' : s.stage === 5 ? s.decoded ? '报文给出北港与时间窗口，不等于永远安全。请选择与明文一致的解释。' : '先复位 BDF，用整条密文完成连续解密。' : '05:42 的报文有价值，但必须标出时间并交叉核验，确认前暂缓放行。';
-  } else return s;
-  return ok ? { ...s, cleared: true, feedback: MISSION.stages[s.stage].success, clues: [...s.clues, MISSION.stages[s.stage].clue] } : { ...s, attempts: s.attempts + 1, feedback };
+  if (s.cleared) return s;
+  if (a.type === 'hint') return { ...s, hint: Math.min(s.hint + 1, MISSION.stages[s.stage].hints.length), feedback: '' };
+  const type = alias(a.type);
+  const patch = value => same(s, value);
+  if (s.stage === 0 && type === 'checkin') {
+    return ['ready', 'confirm', 'confirmed'].includes(a.value) ? success(s, undefined, { checkin: true }) : failure(s, '先确认耳机已经接通，再把 05:42 写入交班纸。');
+  }
+  if (s.stage === 1 && type === 'channel' && [0, 1, 2].includes(a.value)) return patch({ channel: a.value });
+  if (s.stage === 2 && type === 'order' && ['chronological', 'time'].includes(a.value)) return patch({ order: 'chronological' });
+  if (s.stage === 3 && type === 'archive' && ['weather', 'format'].includes(a.value)) return patch({ archive: 'weather' });
+  if (s.stage === 4 && type === 'crib' && String(a.value).toUpperCase() === 'WETTER') return patch({ cribSelection: 'WETTER' });
+  if (s.stage === 5 && type === 'align' && [0, 1, 2].includes(a.value)) return patch({ offset: a.value });
+  if (s.stage === 6 && type === 'relation' && ['A-G', 'A↔G'].includes(a.value)) return patch({ relation: a.value });
+  if (s.stage === 7 && type === 'pair' && ['A', 'G'].includes(a.value)) return patch({ pair: a.value });
+  if (s.stage === 8 && type === 'rotor' && [0, 1].includes(a.index)) {
+    const value = Number.isInteger(a.value) ? a.value : Number.isInteger(a.step) ? s.positions[a.index] + a.step : NaN;
+    if (!Number.isInteger(value) || value < 0 || value > 25) return s;
+    return patch({ positions: s.positions.map((current, index) => index === a.index ? value : current) });
+  }
+  if (s.stage === 9 && type === 'search') {
+    if (s.positions[0] !== 1 || s.positions[1] !== 3) return failure(s, '先把设置单固定为左 B、中 D，再启动鼓轮搜索。');
+    return success(s, '26 个右轮起点已完成真实 Enigma 筛选。', { results: searchCandidates(s.positions), selectedCandidate: null });
+  }
+  if (s.stage === 10 && ['answer', 'compare'].includes(type)) {
+    if (s.results.length !== 26) return failure(s, '先运行完整的 26 个右轮候选搜索。');
+    const candidate = s.results.find(result => result.matches);
+    if (candidate && ['candidate', 'BDF', candidate.key].includes(a.value)) return success(s, undefined, { selectedCandidate: candidate.key, candidate });
+    return failure(s, '停机结果只是候选；选择通过 WETTER 约束、需要整段核验的 BDF。');
+  }
+  if (s.stage === 11 && (type === 'decode' || (type === 'answer' && a.value === 'route'))) {
+    if (type === 'answer' && !s.decoded) return s;
+    const candidate = s.candidate || s.results.find(result => result.matches);
+    if (!candidate) return failure(s, '先保留 BDF 候选，再把完整密文送入回路。');
+    const decoded = encipher(MISSION.ciphertext, candidate.positions, pairs).output;
+    if (decoded !== MISSION.plaintext) return failure({ ...s, decoded }, '这组设置没有读出完整交接报，回到候选比较。');
+    return success(s, undefined, { decoded, candidate, selectedCandidate: candidate.key });
+  }
+  if (s.stage === 12 && type === 'map' && ['north-harbor', 'north-harbor-window', 'NORDHAFEN'].includes(a.value)) return success(s, undefined, { mapMarker: 'north-harbor-window' });
+  if (s.stage === 13 && type === 'verify' && ['cross-check', 'verify'].includes(a.value)) return success(s, undefined, { crossCheck: true });
+  if (s.stage === 14 && type === 'handoff' && ['hold', 'verify'].includes(a.value)) return success(s, undefined, { handoff: 'hold' });
+  if (type === 'submit' && s.stage >= 0 && s.stage <= 8) return submit(s);
+  return s;
 }

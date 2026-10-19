@@ -1,7 +1,7 @@
 import { parseRoute, routeKey } from './routes.js';
 export { parseRoute, routeKey } from './routes.js';
 const chapters = {
-  mission: { title: '黎明之前，轮到你来解密。', chapter: '04 / DECRYPTION MISSION', document: '黎明之前 · 15 分钟解密游戏 | 译码档案', heading: '#mission-heading' },
+  mission: { title: '黎明之前，轮到你来解密。', chapter: '04 / DECRYPTION MISSION', document: '黎明之前 · 夜班交接 | 译码档案', heading: '#mission-heading' },
   history: { title: '在机器之前，读懂时代。', chapter: '00 / THE HISTORY', document: '战时序章 · 译码档案', heading: '#hero-title' },
   exhibit: { title: '回到机器的全貌。', chapter: '01 / THE BOMBE', document: 'BOMBE · 译码档案 | 交互机械展', heading: '#exhibit-heading' },
   lab: { title: '让信号，穿过逻辑。', chapter: '02 / THE SIGNAL LAB', document: '信号实验室 · 译码档案', heading: '#lab-heading' },
