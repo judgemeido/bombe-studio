@@ -172,7 +172,7 @@ export function createMissionModel({ labelTexture } = {}) {
   cable([[0, .015, .13], [.23, -.02, .29], [.63, -.02, .15], [.76, -.3, -.15]], .011, rubber, lamp);
   const papers = group('intercept-papers', [2.02, .987, .73]); papers.rotation.y = -.13;
   for (let n = 0; n < 4; n++) { const p = box([.8, .003, .97], [n * .009, n * .004, n * .008], paperMat, papers); p.rotation.y = n * .014; }
-  text('INTERCEPT  /  06:00\nWW · ... · WETTER ?\nB · D · ?\nCHECK BEFORE REPORTING', .74, .9, [0, .02, 0], papers, { flat: true, background: '#d7c9a5', color: '#34453c' });
+  text('INTERCEPT  /  05:42\nDX · ... · WETTER ?\nB · D · ?\nHOLD UNTIL VERIFIED', .74, .9, [0, .02, 0], papers, { flat: true, background: '#d7c9a5', color: '#34453c' });
   const pencil = cylinder(.014, .64, [2.52, 1.015, .68], copper, root, 6); pencil.rotation.z = Math.PI / 2; pencil.rotation.y = -.95;
   const cup = group('enamel-mug', [-1.4, 1.07, -.94]); cylinder(.1, .19, [0, 0, 0], ivory, cup);
   cylinder(.084, .005, [0, .096, 0], walnut, cup); ring(.092, .009, [0, .102, 0], dark, cup).rotation.x = Math.PI / 2;

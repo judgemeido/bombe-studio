@@ -26,7 +26,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
       $('.mission-cinema-caption').textContent = '三维画面暂不可用。你的证据仍在，点击“跳过过渡”即可继续任务。';
     }
   }
-  progress(45, '搭建 1941 年工作室');
+  progress(45, '搭建 1941 年夜班行动空间');
   try { scene = sceneFactory($('#mission-canvas'), { motion, onUnavailable: fallback, onSignal({ positions, inputLetter, outputLetter }) {
     const text = outputLetter ? `按键 ${inputLetter} → 灯板 ${outputLetter}   /   轮位 ${positions.map(n => ALPHABET[n]).join(' · ')}` : `Enigma / 轮位 ${positions.map((n, i) => state.stage === 3 && i === 2 ? '?' : ALPHABET[n]).join(' · ')}`;
     const readout = $('#mission-machine-readout'); if (readout && readout.textContent !== text) readout.textContent = text;
@@ -48,7 +48,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     updateStatus();
     $('#mission-clues').innerHTML = state.clues.length ? state.clues.map(c => `<li>${c}</li>`).join('') : '<li>完成任务后，你收集的证据会留在这里。</li>';
     $('#mission-location').textContent = state.phase === 'playing' ? MISSION.stages[state.stage].place : '英国 · 布莱切利园 · 1941';
-    $('#mission-scene-caption').textContent = state.phase === 'playing' ? ['从规律出发，找到一个可以检验的猜测。', '字母不变成自身：先排除不可能。', '一根接线，两个方向。', '固定已知条件，再搜索未知。', '机房帮助排除，停机结果仍需核验。', '每个按键先步进，再让信号通过回路。', '把已知与未知，一起交给团队。'][state.stage] : '一张工作桌，连接起截收、推理与核验。';
+    $('#mission-scene-caption').textContent = state.phase === 'playing' ? ['先从时间和格式锁定频道。', '字母不变成自身：排除错误对齐。', '一根接线，两个方向。', '固定已知条件，再搜索未知。', '机器负责排除，停机结果仍需核验。', '每个按键先步进，再读出整段消息。', '把明文、时间和未知一起交接。'][state.stage] : '一张工作桌，连接起截收、搜索与交接。';
     scene?.setState(state);
     if (focus) focusTask();
     else if (oldData) {
@@ -92,7 +92,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     pendingAction = action; cinematic = true; const id = ++transitionId;
     $('.mission-cinema').hidden = false; $('.mission-world').classList.add('is-transitioning');
     $('.mission-dossier').inert = true; $('.mission-camera').inert = true;
-    $('.mission-cinema-caption').textContent = action.type === 'start' ? '1941 年，布莱切利园。' : '带上这条证据，前往下一张工作桌。';
+    $('.mission-cinema-caption').textContent = action.type === 'start' ? '05:42，布莱切利园夜班。' : '带上这条证据，前往下一张工作桌。';
     $('.mission-cinema-progress').style.transform = 'scaleX(0)';
     pauseTransition(false);
     scene.playTransition({ kind: action.type === 'start' ? 'arrival' : 'stage', stage: action.type === 'start' ? 0 : state.stage + 1,
@@ -132,7 +132,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     if (event.key === 'Escape' && active) { if (cinematic) { scene?.skipTransition?.(); finishTransition(); } else dispatch({ type: state.paused ? 'resume' : 'pause' }); }
   });
   const timer = view.setInterval(() => { if (active && !doc.hidden && !cinematic) dispatch({ type: 'tick', seconds: 1 }); }, 1000);
-  render(); progress(82, '七关解密游戏与证据手册已准备');
+  render(); progress(82, '七个行动节点与证据手册已准备');
   const inspect = () => ({ state: structuredClone(state), active, cinematic, transitionPaused, view: selectedView, scene: scene?.inspect() || { ready: false } });
   view.__BOMBE_MISSION__ = inspect;
   return {

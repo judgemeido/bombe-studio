@@ -37,7 +37,7 @@ test('DOM controls play all seven levels, preserve route progress, and restart',
     assert.equal(game.inspect().state.stage, 5);
     click('[data-action="decode"]'); assert.equal(f.w.document.activeElement.id, 'mission-task-title'); assert.match(root.querySelector('.mission-plaintext').textContent, /WETTER/);
     assert.equal(game.inspect().state.decoded, MISSION.plaintext);
-    click('[data-action="answer"][data-value="weather"]'); click('[data-action="next"]');
+    click('[data-action="answer"][data-value="route"]'); click('[data-action="next"]');
     click('[data-action="answer"][data-value="verify"]'); click('[data-action="next"]');
     assert.equal(game.inspect().state.phase, 'complete'); assert.equal(root.querySelectorAll('.mission-report li').length, 7);
     click('[data-action="restart"]'); assert.equal(game.inspect().state.phase, 'briefing');
@@ -51,11 +51,33 @@ test('briefing exposes a fifteen-minute decrypt game and live evidence clock', a
     f.game.setActive(true);
     assert.match(f.root.querySelector('.mission-header-note').textContent, /15 分钟解密游戏/);
     assert.match(f.root.querySelector('.mission-brief-facts').textContent, /15/);
+    assert.match(f.root.querySelector('.mission-lead').textContent, /05:42|巡逻艇|交接/);
+    assert.doesNotMatch(f.root.textContent, /公开课引导/);
     assert.equal(f.root.querySelector('#mission-elapsed').textContent, '00:00');
     assert.equal(f.root.querySelector('#mission-evidence-count').textContent, '0 / 7');
     f.click('[data-action="start"]');
     await new Promise(resolve => setTimeout(resolve, 1100));
     assert.notEqual(f.root.querySelector('#mission-elapsed').textContent, '00:00');
+  } finally { f.game.dispose(); await f.w.happyDOM.close(); }
+});
+
+test('mission presents the new midnight handoff story and decoded route', async () => {
+  const f = fixture();
+  try {
+    f.game.setActive(true);
+    assert.match(f.root.textContent, /午夜截收|05:42|北港/);
+    f.click('[data-action="start"]');
+    f.click('[data-action="channel"][data-value="1"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
+    f.click('[data-action="align"][data-value="2"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
+    f.click('[data-action="pair"][data-value="A"]'); f.click('[data-action="submit"]'); f.click('[data-action="next"]');
+    f.click('[data-action="rotor"][data-index="0"][data-step="1"]');
+    for (let i = 0; i < 3; i++) f.click('[data-action="rotor"][data-index="1"][data-step="1"]');
+    f.click('[data-action="submit"]'); f.click('[data-action="next"]');
+    f.click('[data-action="search"]'); f.click('[data-action="answer"][data-value="candidate"]'); f.click('[data-action="next"]');
+    f.click('[data-action="decode"]');
+    assert.match(f.root.querySelector('.mission-plaintext').textContent, /NORDHAFEN|北港/);
+    f.click('[data-action="answer"][data-value="route"]'); f.click('[data-action="next"]');
+    assert.match(f.root.textContent, /交叉核验|暂缓/);
   } finally { f.game.dispose(); await f.w.happyDOM.close(); }
 });
 
@@ -128,6 +150,6 @@ test('no WebGL still exposes all task controls with clear fallback; pause blocks
     f.click('[data-action="pause"]'); assert.equal(f.game.inspect().state.paused, true);
     assert.ok(f.root.querySelector('[data-action="resume"]'));
     f.click('[data-action="resume"]'); f.click('[data-action="hint"]');
-    assert.equal(f.game.inspect().state.stage, 0); assert.match(f.root.textContent, /重复的时间/);
+    assert.equal(f.game.inspect().state.stage, 0); assert.match(f.root.textContent, /一次性的短呼号|重复出现/);
   } finally { f.game.dispose(); await f.w.happyDOM.close(); }
 });

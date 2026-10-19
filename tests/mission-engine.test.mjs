@@ -13,7 +13,7 @@ function through(stage) {
     [{ type: 'pair', value: 'A' }, { type: 'submit' }],
     [{ type: 'rotor', index: 0, value: 1 }, { type: 'rotor', index: 1, value: 3 }, { type: 'submit' }],
     [{ type: 'search' }, { type: 'answer', value: 'candidate' }],
-    [{ type: 'decode' }, { type: 'answer', value: 'weather' }],
+    [{ type: 'decode' }, { type: 'answer', value: 'route' }],
     [{ type: 'answer', value: 'verify' }],
   ];
   for (let i = 0; i < stage; i++) s = apply(s, ...answers[i], { type: 'next' });
@@ -22,6 +22,9 @@ function through(stage) {
 test('seven stages budget fifteen focused minutes and ciphertext comes from the real cipher', () => {
   assert.equal(MISSION.stages.length, 7);
   assert.equal(MISSION.stages.reduce((n, s) => n + s.seconds, 0), 900);
+  assert.equal(MISSION.plaintext, 'DXWETTERNORDHAFENFREI');
+  assert.match(MISSION.stages[0].story, /黎明前|交接|巡逻/);
+  assert.match(MISSION.stages[6].success, /航线|交接|暂缓/);
   assert.equal(encipher(MISSION.ciphertext, [1, 3, 5], [['A', 'G']]).output, MISSION.plaintext);
   assert.notEqual(encipher(MISSION.ciphertext, [1, 3, 4], [['A', 'G']]).output, MISSION.plaintext);
 });
@@ -57,7 +60,7 @@ test('search and decode evidence are required before accepting conclusions', () 
   assert.equal(reduceMission(s, { type: 'answer', value: 'candidate' }).cleared, false);
   s = apply(s, { type: 'search' }, { type: 'answer', value: 'candidate' }, { type: 'next' });
   assert.equal(reduceMission(s, { type: 'answer', value: 'weather' }).cleared, false);
-  s = apply(s, { type: 'decode' }, { type: 'answer', value: 'weather' });
+  s = apply(s, { type: 'decode' }, { type: 'answer', value: 'route' });
   assert.equal(s.decoded, MISSION.plaintext); assert.equal(s.cleared, true);
 });
 test('complete playthrough retains seven clues; restart clears all progress', () => {
