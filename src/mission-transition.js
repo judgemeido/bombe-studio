@@ -1,25 +1,26 @@
-/** Authored camera rails, in scene metres. They illustrate arrival, not historical footage. */
+/** Authored camera rails in display units. They illustrate arrival, not historical footage. */
 export const MISSION_VIEWS = {
-  // The rails are authored in world metres.  The room is deliberately wider than
-  // the original teaching table so every beat has a recognisable place to land.
-  entry: { camera: [-18, 6.2, 12.5], target: [-12.8, 1.5, -1.6], zone: 'entry' },
-  entrance: { camera: [-18, 6.2, 12.5], target: [-12.8, 1.5, -1.6], zone: 'entry' },
-  radio: { camera: [-10.2, 3.8, 7.2], target: [-8.1, 1.25, -1.2], zone: 'radio' },
-  archive: { camera: [-1.8, 4.4, 7.2], target: [0, 1.35, -.15], zone: 'archive' },
-  analysis: { camera: [8.8, 4.5, 6.8], target: [7.3, 1.35, -.2], zone: 'analysis' },
-  machine: { camera: [16.5, 4.8, 6.6], target: [14.2, 1.65, -.8], zone: 'machine' },
-  map: { camera: [11.5, 5.3, -7.5], target: [8.9, 1.45, -6.2], zone: 'map' },
-  handoff: { camera: [-1.5, 4.6, -8.8], target: [-1.4, 1.45, -8.1], zone: 'handoff' },
+  floor: { camera: [20, 49, 48], target: [2, .3, -2.3], zone: 'floor' },
+  // The rails stay outside the enlarged rooms and point through the open
+  // doorways so the corridor and the working apparatus read in one frame.
+  entry: { camera: [-14.8, 5.25, 8.4], target: [-17, 1.15, -.3], zone: 'entry' },
+  entrance: { camera: [-14.8, 5.25, 8.4], target: [-17, 1.15, -.3], zone: 'entry' },
+  radio: { camera: [-7.2, 5.3, 8.4], target: [-9, 1.35, -.4], zone: 'radio' },
+  archive: { camera: [2.2, 5.4, 8.6], target: [0, 1.4, -.3], zone: 'archive' },
+  analysis: { camera: [10.8, 5.25, 8.1], target: [9, 1.35, -.5], zone: 'analysis' },
+  machine: { camera: [21.8, 5.7, 10.2], target: [19, 1.4, -.6], zone: 'machine' },
+  map: { camera: [11.2, 5.0, -2.2], target: [9, 1.35, -9.6], zone: 'map' },
+  handoff: { camera: [2.1, 4.9, -1.5], target: [0, 1.3, -9.6], zone: 'handoff' },
   // Compatibility aliases for existing callers and Remotion compositions.
-  desk: { camera: [-1.8, 4.4, 7.2], target: [0, 1.35, -.15], zone: 'archive' },
-  rotors: { camera: [1.65, 3.35, 2.9], target: [-.2, 1.48, .3], zone: 'archive' },
-  plugs: { camera: [.85, 1.72, 3.2], target: [-.2, 1.1, 1.15], zone: 'archive' },
-  bombe: { camera: [16.5, 4.8, 6.6], target: [14.2, 1.65, -.8], zone: 'machine' },
+  desk: { camera: [2.2, 5.4, 8.6], target: [0, 1.4, -.3], zone: 'archive' },
+  rotors: { camera: [1.65, 4.4, 5.1], target: [-.2, 1.85, .3], zone: 'archive' },
+  plugs: { camera: [.85, 2.25, 5.4], target: [-.2, 1.45, 1.15], zone: 'archive' },
+  bombe: { camera: [20.5, 4.1, 5.8], target: [19, 1.5, -1.0], zone: 'machine' },
 };
 export const STAGE_VIEWS = [
-  'entry', 'radio', 'radio', 'archive', 'archive',
+  'entry', 'radio', 'radio', 'archive', 'analysis',
   'analysis', 'analysis', 'machine', 'machine', 'machine',
-  'map', 'map', 'map', 'handoff', 'handoff',
+  'machine', 'analysis', 'map', 'map', 'handoff',
 ];
 const captions = [
   '接班记录已经摊开。先找到值得检验的信号。',
@@ -42,16 +43,19 @@ const ease = t => t * t * (3 - 2 * t);
 const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
 const clamp = t => Math.max(0, Math.min(1, t));
 
+/** Inspection buttons settle in 650ms regardless of the rendering frame rate. */
+export function inspectionBlend(now, started) { return ease(clamp((now - started) / 650)); }
+
 /** Camera rails have no physics integration: never stretch their duration at a low frame rate. */
 export function advanceTransitionTime(elapsed, now, previous) {
   return elapsed + (previous ? Math.max(0, now - previous) / 1000 : 0);
 }
 const arrival = [
-  { at: 0, camera: [-18, 6.2, 12.5], target: [-12.8, 1.5, -1.6], caption: '1941 年，布莱切利园。天亮之前，一份截报送到了夜班入口。' },
-  { at: 3.2, ...MISSION_VIEWS.radio, caption: '你是艾伦·图灵。推开夜班的门，先听清一条信号。' },
-  { at: 6.5, ...MISSION_VIEWS.desk, caption: '把无线电纸带带到工作桌，一场由许多人接力的破译开始了。' },
-  { at: 8.2, ...MISSION_VIEWS.rotors, caption: '字母、转子、一根接线。每一件工具，都在等待一个清楚的问题。' },
-  { at: 10, ...MISSION_VIEWS.radio, caption: captions[0] },
+  { at: 0, camera: [-17, 6.2, 11.5], target: [-17, 1.25, -.3], zone: 'entry', caption: '1941 年，布莱切利园。天亮之前，一份截报送到了夜班入口。' },
+  { at: 3.2, ...MISSION_VIEWS.radio, caption: '推开夜班的门，从无线电室接过一条信号。' },
+  { at: 6.5, ...MISSION_VIEWS.desk, caption: '无线电纸带、密码机和旧班档案，由同一条走廊连接。' },
+  { at: 8.2, ...MISSION_VIEWS.radio, caption: '机器可以重复计算，每一份证据仍需要有人核验。' },
+  { at: 10, ...MISSION_VIEWS.entry, caption: captions[0] },
 ];
 
 export function transitionFrame({ kind = 'arrival', stage = 0, beat = stage, zone = null } = {}, seconds) {

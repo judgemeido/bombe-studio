@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 import { createMissionCraft } from './mission-craft.js';
+import { MISSION_WORLD_LAYOUT } from './mission-world-layout.js';
+import { createMissionArchitecture } from './mission-architecture.js';
+import { createMissionRoomContents } from './mission-room-contents.js';
 
 /** Original teaching reconstruction. Exposed mechanisms are intentional cutaways. */
 export function createMissionModel({ labelTexture } = {}) {
@@ -14,11 +17,6 @@ export function createMissionModel({ labelTexture } = {}) {
   function group(name, pos, parent = root) { const g = new THREE.Group(); g.name = name; g.position.set(...pos); parent.add(g); return g; }
   function frontCylinder(r, depth, pos, mat, parent, segments = 32) { const c = cylinder(r, depth, pos, mat, parent, segments); c.rotation.x = Math.PI / 2; return c; }
 
-  const room = group('room', [0, 0, 0]);
-  for (let i = 0; i < 17; i++) box([.49, .11, 6.2], [-4 + i * .5, -.32, -.25], i % 3 ? walnut : wood, room, .01);
-  box([8.4, 4.75, .15], [0, 2, -3], wall, room);
-  for (let x = -4; x <= 4; x += .42) box([.015, 4.6, .025], [x, 2, -2.91], dark, room);
-  for (const y of [-.12, 4.12]) box([8.4, .16, .1], [0, y, -2.85], walnut, room, .012);
   const windowGroup = group('window', [-1.45, 2.5, -2.82]);
   box([2.8, 2.85, .16], [0, 0, 0], walnut, windowGroup, .035);
   const glass = material('#7896a0', .33, .18); glass.emissive.set('#647f8c'); glass.emissiveIntensity = .38;
@@ -135,29 +133,29 @@ export function createMissionModel({ labelTexture } = {}) {
   cable([[-.48, -.22, .44], [-.75, -.45, .8], [-.58, -.43, 1.03], [-.12, -.42, 1.0]], .012, rubber, radio);
 
   // 27-drum teaching rack; the full 108-drum exhibit remains in chapter 01.
-  const bombe = group('bombe', [2.06, 1.99, -1.2]); bombe.rotation.y = -.12;
-  box([1.48, 2.18, .54], [0, 0, 0], green, bombe, .04); box([1.34, 1.91, .028], [0, .03, .285], dark, bombe, .013);
-  for (const x of [-.7, .7]) { box([.08, 2.17, .09], [x, 0, .31], steel, bombe, .007); box([.15, .14, .68], [x, -1.1, 0], dark, bombe, .02); }
+  const checker = group('checker', [2.06, 1.99, -1.2]); checker.rotation.y = -.12;
+  box([1.48, 2.18, .54], [0, 0, 0], green, checker, .04); box([1.34, 1.91, .028], [0, .03, .285], dark, checker, .013);
+  for (const x of [-.7, .7]) { box([.08, 2.17, .09], [x, 0, .31], steel, checker, .007); box([.15, .14, .68], [x, -1.1, 0], dark, checker, .02); }
   const drums = [], colors = ['#9e5949', '#c3a273', '#577e74'].map(c => material(c, .4, .45, 'paint'));
   for (let block = 0; block < 3; block++) {
     const cy = .65 - block * .61;
-    box([1.24, .59, .042], [0, cy, .32], green, bombe, .008);
-    for (const x of [-.586, .586]) for (const y of [-.265, .265]) screw(x, cy + y, .35, steel, rubber, bombe, false, .013);
+    box([1.24, .59, .042], [0, cy, .32], green, checker, .008);
+    for (const x of [-.586, .586]) for (const y of [-.265, .265]) screw(x, cy + y, .35, steel, rubber, checker, false, .013);
     for (let row = 0; row < 3; row++) for (let col = 0; col < 3; col++) {
       const x = (col - 1) * .37, y = cy + .18 - row * .18;
-      frontCylinder(.088, .03, [x, y, .353], steel, bombe);
-      const drum = group(`drum-${drums.length}`, [x, y, .385], bombe); drums.push(drum);
+      frontCylinder(.088, .03, [x, y, .353], steel, checker);
+      const drum = group(`drum-${drums.length}`, [x, y, .385], checker); drums.push(drum);
       frontCylinder(.078, .105, [0, 0, 0], colors[block], drum, 32); ring(.072, .006, [0, 0, .055], brass, drum);
       frontCylinder(.039, .012, [0, 0, .063], dark, drum); frontCylinder(.016, .027, [0, 0, .076], steel, drum, 16);
       for (let n = 0; n < 12; n++) { const t = n * Math.PI / 6; const tick = box([.003, .011, .005], [Math.sin(t) * .059, Math.cos(t) * .059, .06], ivory, drum); tick.rotation.z = -t; }
       box([.014, .027, .005], [0, .028, .075], ivory, drum);
     }
   }
-  text('BOMBE  /  CHECKING', 1.08, .095, [0, 1.015, .29], bombe, { background: '#334536' });
-  for (let i = 0; i < 12; i++) box([.012, 1.55, .008], [.752, -.03, -.15 + i * .029], dark, bombe);
-  text('LOGIC  ·  SEARCH  ·  VERIFY', .94, .067, [0, -.985, .294], bombe);
-  for (const x of [-.35, 0, .35]) frontCylinder(.022, .014, [x, -.87, .348], x ? brass : ivory, bombe, 16);
-  for (let i = 0; i < 6; i++) cable([[.7, .75 - i * .19, -.27], [.85 + i * .014, .5 - i * .19, -.37], [.83, -.75, -.32]], .009, i % 2 ? copper : rubber, bombe);
+  text('BOMBE  /  CHECKING', 1.08, .095, [0, 1.015, .29], checker, { background: '#334536' });
+  for (let i = 0; i < 12; i++) box([.012, 1.55, .008], [.752, -.03, -.15 + i * .029], dark, checker);
+  text('LOGIC  ·  SEARCH  ·  VERIFY', .94, .067, [0, -.985, .294], checker);
+  for (const x of [-.35, 0, .35]) frontCylinder(.022, .014, [x, -.87, .348], x ? brass : ivory, checker, 16);
+  for (let i = 0; i < 6; i++) cable([[.7, .75 - i * .19, -.27], [.85 + i * .014, .5 - i * .19, -.37], [.83, -.75, -.32]], .009, i % 2 ? copper : rubber, checker);
 
   // The open shade owns its light anchor; no opaque disk blocks the bulb.
   const lamp = group('desk-lamp', [1.18, .98, .74]);
@@ -177,81 +175,13 @@ export function createMissionModel({ labelTexture } = {}) {
   const cup = group('enamel-mug', [-1.4, 1.07, -.94]); cylinder(.1, .19, [0, 0, 0], ivory, cup);
   cylinder(.084, .005, [0, .096, 0], walnut, cup); ring(.092, .009, [0, .102, 0], dark, cup).rotation.x = Math.PI / 2;
   const handle = ring(.072, .013, [.13, .01, 0], ivory, cup); handle.scale.x = .7;
-  text('BLETCHLEY PARK\nHUT 8 · 1941', 1.29, .45, [1.61, 3.5, -2.89], root, { background: '#bbae8b', color: '#293c3b' });
 
-  // The original desk remains the playable archive table, while the world now
-  // reads as a connected night shift.  Each shell is intentionally low-detail:
-  // shared craft geometry keeps the larger footprint inexpensive to render.
-  const zoneMaterial = material('#243d43', .91, 0, 'paint');
-  const trimMaterial = material('#4b3a2b', .68, .04, 'wood');
-  const floorMaterial = material('#342f2a', .95, 0, 'wood');
-  const zones = [], anchors = {}, interactives = [radio, enigma, bombe, papers, lamp, plugboard, phones];
-  const zoneSpecs = [
-    { id: 'entry', pos: [-13, 0, 0], size: [6, 7], tone: '#30484b' },
-    { id: 'radio', pos: [-8, 0, 0], size: [5, 7], tone: '#2c4645' },
-    { id: 'archive', pos: [0, 0, 0], size: [8, 7], tone: '#21383d' },
-    { id: 'analysis', pos: [7, 0, 0], size: [6, 7], tone: '#263f42' },
-    { id: 'machine', pos: [14, 0, 0], size: [7, 8], tone: '#30433d' },
-    { id: 'map', pos: [8, 0, -7], size: [8, 6], tone: '#34444b' },
-    { id: 'handoff', pos: [-1, 0, -7], size: [7, 6], tone: '#3c4241' },
-  ];
-  function addZone(spec, index) {
-    const zoneGroup = group(`zone-${spec.id}`, spec.pos);
-    const [width, depth] = spec.size;
-    const shell = material(spec.tone, .9, 0, 'paint');
-    box([width, .12, depth], [0, -.35, 0], floorMaterial, zoneGroup, .025);
-    box([width, 3.9, .14], [0, 1.65, -depth / 2], shell, zoneGroup, .018);
-    box([.14, 3.9, depth], [-width / 2, 1.65, 0], shell, zoneGroup, .018);
-    box([.14, 3.9, depth], [width / 2, 1.65, 0], shell, zoneGroup, .018);
-    // High clerestory trim gives each room a shared architectural rhythm.
-    box([width - .3, .12, .18], [0, 3.53, -depth / 2 + .12], trimMaterial, zoneGroup, .012);
-    for (const x of [-width / 2 + .35, width / 2 - .35]) box([.16, 3.65, .16], [x, 1.55, -depth / 2 + .12], trimMaterial, zoneGroup, .012);
-    const anchor = group(`anchor-${spec.id}`, [0, 1.15, 0], zoneGroup);
-    anchor.userData.zoneId = spec.id; anchor.userData.zoneIndex = index;
-    anchors[spec.id] = anchor;
-    const descriptor = { id: spec.id, name: spec.id, label: spec.id, index, group: zoneGroup, anchor, position: spec.pos.slice(), size: spec.size.slice() };
-    zones.push(descriptor);
-    // A small central ceiling fixture makes the room legible from a distance.
-    const fixture = group(`fixture-${spec.id}`, [0, 3.18, 0], zoneGroup);
-    cylinder(.16, .045, [0, 0, 0], trimMaterial, fixture, 20);
-    const glow = material('#e2c88f', .42, .08); glow.emissive.set('#a4773e'); glow.emissiveIntensity = .22;
-    cylinder(.1, .035, [0, -.04, 0], glow, fixture, 20);
-    return descriptor;
-  }
-  zoneSpecs.forEach(addZone);
-  zones.forEach(zone => {
-    // Do not shadow Array.prototype.map/filter/etc.; expose colliding names via
-    // a suffixed alias while keeping the array ergonomics of the public API.
-    const key = zone.id in zones ? `${zone.id}Zone` : zone.id;
-    Object.defineProperty(zones, key, { value: zone, enumerable: false });
-  });
-
-  // Zone-specific props mark the evidence chain in physical space.  They are
-  // deliberately simple silhouettes so the active Enigma and Bombe stay sharp.
-  function prop(name, pos, size, mat, zoneId, radius = .02) {
-    const z = anchors[zoneId]?.parent || root;
-    const object = group(name, pos, z);
-    box(size, [0, 0, 0], mat, object, radius);
-    interactives.push(object); anchors[name] = object;
-    return object;
-  }
-  const entryDesk = prop('entry-register', [0, .42, .4], [2.8, .78, 1.2], walnut, 'entry', .035);
-  prop('entry-lantern', [-1.5, 1.5, .2], [.34, .8, .34], brass, 'entry', .05);
-  const radioDesk = prop('radio-console', [0, .52, .5], [3.2, .9, 1.45], walnut, 'radio', .035);
-  prop('radio-antenna', [1.55, 1.9, -.3], [.12, 2.6, .12], steel, 'radio', .03);
-  const archiveCabinet = prop('archive-cabinet', [-2.9, 1.4, -.3], [.75, 2.65, 2.1], walnut, 'archive', .04);
-  prop('archive-tray', [2.8, .48, -.5], [1.6, .12, .8], paperMat, 'archive', .012);
-  const analysisBoard = prop('analysis-board', [0, 1.8, -2.95], [4.1, 2.2, .12], leather, 'analysis', .018);
-  prop('analysis-lamp', [-2.1, 1.1, .3], [.34, 1.8, .34], brass, 'analysis', .04);
-  const machinePanel = prop('machine-panel', [0, 1.35, .3], [3.5, 2.65, .42], green, 'machine', .05);
-  prop('machine-switch', [-2.15, .72, 1.2], [.25, .65, .25], brass, 'machine', .04);
-  const mapWall = prop('map-wall', [0, 1.65, -2.75], [5.5, 2.9, .12], paperMat, 'map', .018);
-  prop('map-table', [0, .52, .3], [4.2, .9, 2.1], walnut, 'map', .035);
-  const handoffBox = prop('handoff-box', [0, .54, .15], [2.2, .8, 1.5], leather, 'handoff', .04);
-  prop('handoff-phone', [2.15, .75, .2], [.8, .55, .65], dark, 'handoff', .04);
-  anchors.enigma = enigma; anchors.radioMachine = radio; anchors.bombe = bombe; anchors.papers = papers;
-  anchors.desk = desk; anchors.lamp = lamp; anchors.entryDesk = entryDesk; anchors.radioDesk = radioDesk;
-  anchors.analysisBoard = analysisBoard; anchors.machinePanel = machinePanel; anchors.mapWall = mapWall; anchors.handoffBox = handoffBox;
+  const mats = { wood, walnut, dark, steel, brass, ivory, green, wall, rubber, copper, paperMat, leather };
+  const architecture = createMissionArchitecture(craft, root, mats);
+  const { zones, anchors, portals, architectureWalls, practicals } = architecture;
+  const contents = createMissionRoomContents(craft, mats, zones, anchors,
+    { radio, enigma, checker, desk, phones, windowGroup, lamp, papers, cup, pencil });
+  const interactives = [radio, enigma, checker, papers, lamp, plugboard, phones, ...contents.interactives];
   // The engine calls the first room "entrance"; retain the shorter internal
   // id used by the scene rails as an alias so either vocabulary is accepted.
   anchors.entrance = anchors.entry;
@@ -260,7 +190,7 @@ export function createMissionModel({ labelTexture } = {}) {
   const bounds = new THREE.Box3();
   root.updateMatrixWorld(true); bounds.setFromObject(root);
   craft.batch(root);
-  let disposed = false;
+  let disposed = false, previousTime = 0;
   function getBounds(zoneId = null) {
     root.updateMatrixWorld(true);
     const normalized = zoneId === 'entrance' ? 'entry' : zoneId;
@@ -269,14 +199,16 @@ export function createMissionModel({ labelTexture } = {}) {
   }
   function setZone(zoneId) {
     const normalized = zoneId === 'entrance' ? 'entry' : zoneId;
+    if (normalized === 'floor') architecture.setCutaway('floor');
     const descriptor = zones.find(zone => zone.id === normalized);
     if (!descriptor) return zones.find(zone => zone.id === activeZone) || zones[0];
     activeZone = descriptor.id; root.userData.activeZone = activeZone;
+    architecture.setCutaway(activeZone);
     zones.forEach(zone => { zone.active = zone.id === activeZone; zone.group.userData.active = zone.active; });
     return descriptor;
   }
   return {
-    root, rotors, drums, keys, lamps, lid, lampAnchor, zones, anchors, interactives, bounds,
+    root, rotors, drums, keys, lamps, lid, lampAnchor, zones, anchors, interactives, bounds, layout: MISSION_WORLD_LAYOUT, portals, architectureWalls, practicals,
     get activeZone() { return activeZone; },
     getBounds, setZone,
     update(s, time, { reduced = false, searchProgress = null, positions = s.positions, inputLetter = null, outputLetter = null, lidOpen = 1 } = {}) {
@@ -289,13 +221,15 @@ export function createMissionModel({ labelTexture } = {}) {
       needle.position.x = .09 + (s.channel ?? 0) * .16;
       plugs.visible = s.stage > 2 || s.pair === 'A';
       drums.forEach((drum, i) => { if (searchProgress !== null && !reduced) drum.rotation.z = -time * (2 + i % 3 * 2); });
+      const dt = Math.max(0, time - previousTime); previousTime = time;
       lamps.forEach(lamp => { lamp.material.emissiveIntensity = lamp.userData.letter === outputLetter ? 2.1 : .025; });
       keys.forEach(key => { key.position.y = .328 - (key.userData.letter === inputLetter ? .026 : 0); });
+      contents.update(dt, searchProgress !== null && !reduced);
       if (s.zone || s.currentZone) setZone(s.zone || s.currentZone);
     },
     dispose() {
       if (disposed) return; disposed = true;
-      lamps.forEach(lamp => lamp.material.dispose()); craft.dispose(); root.clear();
+      lamps.forEach(lamp => lamp.material.dispose()); contents.dispose(); craft.dispose(); root.clear();
     },
   };
 }

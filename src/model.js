@@ -21,15 +21,18 @@ export function createProduct({ textures = {} } = {}) {
     paint: material({ color: P.paint, metalness: .55, roughness: .4, map: textures.paint || null }),
     edge: material({ color: P.edge, metalness: .72, roughness: .34 }),
     bronze: material({ color: P.brass, metalness: .8, roughness: .4 }),
-    metal: material({ color: P.steel, metalness: .9, roughness: .33 }),
+    metal: material({ color: P.steel, metalness: .9, roughness: .33, map: textures.metal || null }),
     dark: material({ color: P.sea, metalness: .55, roughness: .5 }),
     bakelite: material({ color: P.ink, metalness: .12, roughness: .55 }),
     red: material({ color: P.bronze, metalness: .42, roughness: .37 }),
     green: material({ color: P.blue, metalness: .4, roughness: .39 }),
     gold: material({ color: P.brass, metalness: .5, roughness: .36 }),
-    face: material({ color: P.paper, metalness: .45, roughness: .4, map: textures.drum || null }),
+    face: material({ color: P.paper, metalness: .45, roughness: .4, map: textures.rotorFace || textures.drum || null }),
     wire: material({ color: P.brass, metalness: .15, roughness: .65 }),
     wireDark: material({ color: P.edge, roughness: .75 }),
+    lamp: material({ color: '#d9b86f', emissive: '#7b3f18', emissiveIntensity: .9, metalness: .18, roughness: .3 }),
+    signalAmber: material({ color: P.signalAmber, emissive: P.signalAmber, emissiveIntensity: .9, metalness: .28, roughness: .28 }),
+    signalCyan: material({ color: P.signalCyan, emissive: P.signalCyan, emissiveIntensity: .55, metalness: .22, roughness: .3 }),
   };
   const parts = PARTS.map(record => {
     const group = new THREE.Group(); group.name = record.id; group.userData.partId = record.id;
@@ -37,6 +40,28 @@ export function createProduct({ textures = {} } = {}) {
     root.add(group); return group;
   });
   const [frame, drums, drive, board, motor] = parts;
+  const detailGroups = {
+    frontControlDeck: new THREE.Group(),
+    indicatorBank: new THREE.Group(),
+    serviceHatches: new THREE.Group(),
+    cableLoom: new THREE.Group(),
+    driveBelt: new THREE.Group(),
+    rotorDetail: new THREE.Group(),
+    rotorSignal: new THREE.Group(),
+    cameraAnchor: new THREE.Group(),
+  };
+  detailGroups.frontControlDeck.name = 'front-control-deck';
+  detailGroups.indicatorBank.name = 'indicator-bank';
+  detailGroups.serviceHatches.name = 'service-hatches';
+  detailGroups.cableLoom.name = 'cable-loom';
+  detailGroups.driveBelt.name = 'drive-belt';
+  detailGroups.rotorDetail.name = 'rotor-detail';
+  detailGroups.rotorSignal.name = 'rotor-signal';
+  detailGroups.cameraAnchor.name = 'camera-anchor';
+  frame.add(detailGroups.frontControlDeck, detailGroups.indicatorBank, detailGroups.serviceHatches);
+  board.add(detailGroups.cableLoom);
+  drive.add(detailGroups.driveBelt);
+  drums.add(detailGroups.rotorDetail, detailGroups.rotorSignal, detailGroups.cameraAnchor);
   const batches = new Map();
   function batch(group, geometry, mat, position = [0, 0, 0], rotation = [0, 0, 0]) {
     if (geometry.index) { const original = geometry; geometry = original.toNonIndexed(); original.dispose(); }
@@ -74,6 +99,39 @@ export function createProduct({ textures = {} } = {}) {
     box(frame, [.25, .22, .26], mats.metal, [x, .17, z], .025);
     cylinder(frame, .165, .13, mats.dark, [x, .12, z], [0, 0, Math.PI / 2]);
   }
+  // Small operator-facing controls make the cabinet read as a machine, not a flat drum wall.
+  const control = detailGroups.frontControlDeck;
+  box(control, [6.72, .34, .12], mats.edge, [0, .76, 1.055], .035);
+  box(control, [6.36, .08, .035], mats.bronze, [0, .96, 1.12], .015);
+  for (let col = 0; col < 12; col++) {
+    const x = (col - 5.5) * DIM.columnPitch;
+    box(control, [.39, .18, .045], col % 2 ? mats.dark : mats.bakelite, [x, .87, 1.14], .018);
+    cylinder(control, .066, .055, mats.bronze, [x, .91, 1.18], [Math.PI / 2, 0, 0], 16);
+    box(control, [.16, .025, .025], mats.metal, [x, 1.01, 1.18], .006);
+  }
+  for (const x of [-3.22, 3.22]) {
+    box(control, [.18, .26, .08], mats.metal, [x, .84, 1.13], .02);
+    cylinder(control, .035, .11, mats.dark, [x, .91, 1.19], [Math.PI / 2, 0, 0], 12);
+  }
+  // Three status lamps sit above the array and make the machine state legible at a glance.
+  const lampPositions = [-2.55, 0, 2.55].map(x => ({ position: [x, 6.12, 1.08] }));
+  const lampMeshes = instances(detailGroups.indicatorBank, new THREE.SphereGeometry(.095, 16, 10), mats.lamp, lampPositions);
+  lampMeshes.name = 'status-lamps';
+  const lampBezels = instances(detailGroups.indicatorBank, new THREE.TorusGeometry(.12, .018, 6, 20), mats.metal, lampPositions);
+  lampBezels.name = 'lamp-bezels';
+  for (const x of [-2.55, 0, 2.55]) {
+    box(detailGroups.indicatorBank, [.68, .045, .035], mats.bronze, [x, 5.9, 1.08], .008);
+    box(detailGroups.indicatorBank, [.055, .16, .025], mats.edge, [x - .24, 6.08, 1.08], .005);
+    box(detailGroups.indicatorBank, [.055, .16, .025], mats.edge, [x + .24, 6.08, 1.08], .005);
+  }
+  // Removable service hatches and real fasteners establish scale at the lower corners.
+  for (const x of [-2.75, 2.75]) {
+    box(detailGroups.serviceHatches, [1.18, .58, .045], mats.paint, [x, .92, 1.075], .028);
+    box(detailGroups.serviceHatches, [1.02, .035, .02], mats.edge, [x, 1.13, 1.11], .008);
+    for (const dx of [-.46, .46]) for (const y of [.75, 1.09]) {
+      cylinder(detailGroups.serviceHatches, .027, .025, mats.metal, [x + dx, y, 1.115], [Math.PI / 2, 0, 0], 10);
+    }
+  }
   // 3 banks × 3 rows × 12 columns. Shared instancing keeps the drum detail inexpensive.
   const positions = [], colorTransforms = { red: [], green: [], gold: [] }, rowColors = ['red', 'green', 'gold'];
   for (let bank = 0; bank < DIM.banks; bank++) {
@@ -89,12 +147,28 @@ export function createProduct({ textures = {} } = {}) {
   }
   for (const [color, transforms] of Object.entries(colorTransforms)) instances(drums, new THREE.CylinderGeometry(DIM.drumRadius, DIM.drumRadius, .235, 40), mats[color], transforms);
   const faceMesh = instances(drums, new THREE.CircleGeometry(.202, 40), mats.face, positions.map(p => ({ position: [p.position[0], p.position[1], .964] })));
-  instances(drums, new THREE.TorusGeometry(.205, .012, 6, 40), mats.bronze, positions.map(p => ({ position: [p.position[0], p.position[1], .97] })));
-  instances(drums, new THREE.CylinderGeometry(.055, .068, .06, 12), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.005], rotation: [Math.PI / 2, 0, 0] })));
-  const handles = instances(drums, new RoundedBoxGeometry(.122, .026, .032, 2, .009), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.045] })));
+  faceMesh.name = 'rotor-faces';
+  const faceRingGroup = new THREE.Group(); faceRingGroup.name = 'rotor-face-rings'; detailGroups.rotorDetail.add(faceRingGroup);
+  const hubGroup = new THREE.Group(); hubGroup.name = 'rotor-hubs'; detailGroups.rotorDetail.add(hubGroup);
+  const contactGroup = new THREE.Group(); contactGroup.name = 'rotor-contact-rings'; detailGroups.rotorDetail.add(contactGroup);
+  const indexGroup = new THREE.Group(); indexGroup.name = 'rotor-index-markers'; detailGroups.rotorDetail.add(indexGroup);
+  const fastenerGroup = new THREE.Group(); fastenerGroup.name = 'rotor-fasteners'; detailGroups.rotorDetail.add(fastenerGroup);
+  const signalGroup = new THREE.Group(); signalGroup.name = 'signal-layer'; detailGroups.rotorSignal.add(signalGroup);
+  const faceRings = instances(faceRingGroup, new THREE.TorusGeometry(.205, .012, 6, 40), mats.bronze, positions.map(p => ({ position: [p.position[0], p.position[1], .97] })));
+  faceRings.name = 'face-ring-instances';
+  const hubs = instances(hubGroup, new THREE.CylinderGeometry(.055, .068, .06, 12), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.005], rotation: [Math.PI / 2, 0, 0] })));
+  hubs.name = 'hub-instances';
+  const contactRings = instances(contactGroup, new THREE.TorusGeometry(.184, .006, 6, 24), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.012] })));
+  contactRings.name = 'contact-ring-instances';
+  const handles = instances(indexGroup, new RoundedBoxGeometry(.122, .026, .032, 2, .009), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.045] })));
+  handles.name = 'index-marker-instances';
   const screws = [];
   for (const p of positions) for (let a = 0; a < 8; a++) screws.push({ position: [p.position[0] + Math.cos(a * Math.PI / 4) * .127, p.position[1] + Math.sin(a * Math.PI / 4) * .127, .973], rotation: [Math.PI / 2, 0, 0] });
-  instances(drums, new THREE.CylinderGeometry(.009, .009, .01, 6), mats.dark, screws);
+  const fasteners = instances(fastenerGroup, new THREE.CylinderGeometry(.009, .009, .01, 6), mats.dark, screws);
+  fasteners.name = 'fastener-instances';
+  const signalPulse = instances(signalGroup, new THREE.TorusGeometry(.238, .009, 6, 28), mats.signalAmber, positions.map(p => ({ position: [p.position[0], p.position[1], 1.02] })));
+  signalPulse.name = 'signal-pulse';
+  signalPulse.visible = false;
   // Simplified transmission.
   cylinder(drive, .075, 5.3, mats.metal, [3.13, 3.2, -.27], [0, 0, 0]);
   const gearShape = new THREE.Shape();
@@ -114,6 +188,13 @@ export function createProduct({ textures = {} } = {}) {
     }
   }
   instances(drive, new THREE.ExtrudeGeometry(gearShape, { depth: .045, bevelEnabled: true, bevelSize: .005, bevelThickness: .005, bevelSegments: 1, steps: 1 }), mats.bronze, gears);
+  // Three visible belt loops connect the main shaft to the stepped banks.
+  for (const y of [1.55, 3.49, 5.43]) {
+    torus(detailGroups.driveBelt, .34, .035, mats.wireDark, [3.13, y, -.72], [0, Math.PI / 2, 0]);
+    torus(detailGroups.driveBelt, .285, .018, mats.bronze, [3.13, y, -.72], [0, Math.PI / 2, 0]);
+  }
+  box(detailGroups.driveBelt, [.78, 1.1, .06], mats.dark, [3.13, 3.45, -.72], .02);
+  box(detailGroups.driveBelt, [.57, .04, .025], mats.metal, [3.13, 3.45, -.755], .006);
   // Rear socket strips and menu cables. Connections are illustrative.
   box(board, [6.62, 5.45, .09], mats.paint, [0, 3.35, -.86], .03);
   const sockets = [], pins = [];
@@ -131,6 +212,18 @@ export function createProduct({ textures = {} } = {}) {
     batch(board, new THREE.TubeGeometry(curve, 28, .019, 5, false), i % 3 === 0 ? mats.wireDark : mats.wire);
     for (const [x, y] of [[x1, y1], [x2, y2]]) cylinder(board, .048, .13, mats.bakelite, [x, y, -1.12]);
   }
+  // A restrained loom collects the rear menu cables before they enter the cabinet.
+  for (let i = 0; i < 5; i++) {
+    const x = -2.85 + i * 1.42;
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(x, 5.85, -1.08),
+      new THREE.Vector3(x + .05, 4.8, -1.28),
+      new THREE.Vector3(x - .06, 3.45, -1.34),
+      new THREE.Vector3(x + .04, 2.1, -1.24),
+      new THREE.Vector3(x, .95, -1.08),
+    ]);
+    batch(detailGroups.cableLoom, new THREE.TubeGeometry(curve, 24, .027, 6, false), i % 2 ? mats.wire : mats.wireDark);
+  }
   box(motor, [5.75, .14, 1.54], mats.paint, [0, .53, 0], .04);
   cylinder(motor, .16, 1.18, mats.paint, [.55, .73, 0], [0, 0, Math.PI / 2], 32);
   for (let i = 0; i < 12; i++) cylinder(motor, .18, .028, mats.edge, [.06 + i * .09, .73, 0], [0, 0, Math.PI / 2], 32);
@@ -144,7 +237,7 @@ export function createProduct({ textures = {} } = {}) {
     const mesh = new THREE.Mesh(geometry, mat); mesh.castShadow = mesh.receiveShadow = true; group.add(mesh);
   }
   let disposed = false, phase = 0, explode = 0;
-  const matrix = new THREE.Matrix4(), q = new THREE.Quaternion(), scale = new THREE.Vector3(1, 1, 1), point = new THREE.Vector3(), z = new THREE.Vector3(0, 0, 1);
+  const matrix = new THREE.Matrix4(), rotorQ = new THREE.Quaternion(), hubBaseQ = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)), hubQ = new THREE.Quaternion(), scale = new THREE.Vector3(1, 1, 1), signalScale = new THREE.Vector3(), point = new THREE.Vector3(), z = new THREE.Vector3(0, 0, 1);
   const boardPivot = new THREE.Vector3(0, 3.35, -.86), rotatedPivot = new THREE.Vector3();
   const ramp = (p, start, end) => THREE.MathUtils.smoothstep(p, start, end);
   function setExplode(value) {
@@ -173,19 +266,33 @@ export function createProduct({ textures = {} } = {}) {
   }
   function poseDrums(reset = false) {
     positions.forEach((p, i) => {
-      q.setFromAxisAngle(z, reset ? 0 : phase / [1, 26, 676][p.row] + p.bank * .17);
-      point.set(p.position[0], p.position[1], .964); matrix.compose(point, q, scale); faceMesh.setMatrixAt(i, matrix);
-      point.z = 1.045; matrix.compose(point, q, scale); handles.setMatrixAt(i, matrix);
+      rotorQ.setFromAxisAngle(z, reset ? 0 : phase / [1, 26, 676][p.row] + p.bank * .17);
+      point.set(p.position[0], p.position[1], .964); matrix.compose(point, rotorQ, scale); faceMesh.setMatrixAt(i, matrix);
+      point.z = .97; matrix.compose(point, rotorQ, scale); faceRings.setMatrixAt(i, matrix);
+      point.z = 1.012; matrix.compose(point, rotorQ, scale); contactRings.setMatrixAt(i, matrix);
+      point.z = 1.045; matrix.compose(point, rotorQ, scale); handles.setMatrixAt(i, matrix);
+      hubQ.copy(rotorQ).multiply(hubBaseQ); point.z = 1.005; matrix.compose(point, hubQ, scale); hubs.setMatrixAt(i, matrix);
+      const pulse = reset ? 1 : .8 + .2 * (.5 + .5 * Math.sin(phase * .05 + p.bank * 1.4 + p.row * .7));
+      signalScale.set(pulse, pulse, pulse); point.z = 1.02; matrix.compose(point, rotorQ, signalScale); signalPulse.setMatrixAt(i, matrix);
     });
-    faceMesh.instanceMatrix.needsUpdate = handles.instanceMatrix.needsUpdate = true;
+    faceMesh.instanceMatrix.needsUpdate = handles.instanceMatrix.needsUpdate = faceRings.instanceMatrix.needsUpdate = hubs.instanceMatrix.needsUpdate = contactRings.instanceMatrix.needsUpdate = signalPulse.instanceMatrix.needsUpdate = true;
   }
+  const rotorAnchors = positions.map((position, index) => {
+    const anchor = new THREE.Object3D(); anchor.name = `rotor-anchor-${String(index + 1).padStart(3, '0')}`;
+    anchor.position.set(position.position[0], position.position[1], 1.1); detailGroups.cameraAnchor.add(anchor); return anchor;
+  });
   return {
-    root, parts, drumCount: positions.length, setExplode,
+    root, parts, drumCount: positions.length, rotorCount: positions.length, detailCount: Object.keys(detailGroups).length,
+    detailStats: Object.freeze({ faceRings: positions.length, hubs: positions.length, contactRings: positions.length, indexMarkers: positions.length, fasteners: screws.length, signals: positions.length }), setExplode,
     setFocus(id) { const selected = parts.find(p => p.name === id); parts.forEach(p => { p.visible = !selected || p === selected; }); },
-    update(dt, running) { if (!running || !Number.isFinite(dt) || dt <= 0) return; phase = (phase + Math.min(dt, .1) * .8) % (Math.PI * 2 * 676); poseDrums(); },
-    resetMotion() { phase = 0; poseDrums(true); },
+    update(dt, running) { if (!running || !Number.isFinite(dt) || dt <= 0) return; signalPulse.visible = true; phase = (phase + Math.min(dt, .1) * .8) % (Math.PI * 2 * 676); poseDrums(); },
+    resetMotion() { phase = 0; signalPulse.visible = false; poseDrums(true); },
     get phase() { return phase; }, get explode() { return explode; },
     getAnchor(id) { const i = PARTS.findIndex(p => p.id === id); return i < 0 ? null : parts[i].localToWorld(new THREE.Vector3(...PARTS[i].anchor)); },
+    getRotorAnchor(index = 0) {
+      const anchor = rotorAnchors[THREE.MathUtils.clamp(Math.trunc(index), 0, rotorAnchors.length - 1)];
+      return anchor ? anchor.getWorldPosition(new THREE.Vector3()) : null;
+    },
     getBounds(id) { const part = id ? parts.find(p => p.name === id) : root; return part ? new THREE.Box3().setFromObject(part) : null; },
     dispose() {
       if (disposed) return; disposed = true;

@@ -5,13 +5,14 @@ import { createTextures } from './textures.js';
 import { NOTES } from './notes.js';
 import { createNavigation } from './navigation.js';
 import { createExhibitRuntime } from './exhibit-runtime.js';
+import { createCinematicCamera } from './cinematic-camera.js';
 
 /** Importing this module is inert; bootstrap owns when the application starts.
  * runtime is an explicit dependency seam for DOM tests without WebGL.
  */
 export function createApplication({ initialRoute, historyPage, runtime = {} } = {}) {
 const dependencies = {
-  createNavigation, createStage, createProduct, createTextures,
+  createNavigation, createStage, createProduct, createTextures, createCinematicCamera,
   createRaycaster: () => new THREE.Raycaster(), createPointer: () => new THREE.Vector2(),
   loadLab: () => import('./lab.js'), loadChallenge: () => import('./challenge.js'),
   loadMission: () => import('./mission.js'),
@@ -20,14 +21,14 @@ const dependencies = {
 const $ = selector => document.querySelector(selector);
 const canvas = $('#scene'), viewer = $('#viewer'), status = $('#status');
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
-const state = { target: 0, progress: 0, running: false, selected: null, focus: null, view: 'three-quarter', follow: true };
+const state = { target: 0, progress: 0, running: false, cinematic: false, selected: null, focus: null, view: 'three-quarter', follow: true };
 const cleanups = [];
 function on(el, type, fn, options) { el.addEventListener(type, fn, options); cleanups.push(() => el.removeEventListener(type, fn, options)); }
 const announce = message => { status.textContent = message; };
 const mobileDetail = document.createElement('div'); mobileDetail.className = 'mobile-detail';
 const mobileNote = document.createElement('button'); mobileNote.className = 'part-card note-trigger'; mobileNote.setAttribute('aria-haspopup', 'dialog'); mobileNote.setAttribute('aria-controls', 'note-dialog');
 mobileDetail.append(mobileNote); $('.parts-section').after(mobileDetail);
-let stage, product, stopped = false, raf = 0, previous = performance.now(), contextLost = false;
+let stage, product, cinematic, stopped = false, raf = 0, previous = performance.now(), contextLost = false;
 let currentPage = historyPage?.currentRoute?.page ?? null, lab = null, challenge = null, mission = null, navigation;
 let challengeVisited = false;
 on($('.skip-link'), 'click', event => {
@@ -88,6 +89,8 @@ function sync() {
   $('#explode-range').setAttribute('aria-valuetext', `${exploded ? '拆解程度' : '完整装配'}，${percent}%`);
   $('#explode').setAttribute('aria-pressed', String(exploded)); $('#explode-label').textContent = exploded ? '合拢机器' : '拆解机器';
   $('#run').setAttribute('aria-pressed', String(state.running)); $('#run-label').textContent = motion.matches ? '转动一步' : state.running ? '暂停演示' : '运转演示';
+  const cinematicButton = $('#cinematic');
+  if (cinematicButton) { cinematicButton.setAttribute('aria-pressed', String(state.cinematic)); $('#cinematic-label').textContent = state.cinematic ? '停止运镜' : motion.matches ? '定位转子' : '影院运镜'; }
   $('#view-label').textContent = state.focus && exploded ? '部件特写' : exploded ? '分件总览' : '装配视图';
   $('#simulation').hidden = !state.running && !(motion.matches && product?.phase > 0);
   $('#overview').setAttribute('aria-pressed', String(!state.focus && exploded));
@@ -109,8 +112,15 @@ function run() {
   else { state.running = !state.running; announce(state.running ? '鼓轮示意运转已开始，此动画不执行密码运算。' : '运转演示已暂停。'); }
   sync();
 }
+function cinematicToggle() {
+  if (!cinematic) return;
+  if (state.cinematic) { cinematic.stop(); state.cinematic = false; announce('影院运镜已停止，保留当前观察角度。'); }
+  else { cinematic.start(); state.cinematic = cinematic.isActive; announce(motion.matches ? '已定位到转子特写。' : '影院运镜已开始，镜头将依次经过转子、传动与接线。'); }
+  sync();
+}
 function reset() {
-  Object.assign(state, { target: 0, running: false, focus: null, view: 'three-quarter', follow: true });
+  Object.assign(state, { target: 0, running: false, cinematic: false, focus: null, view: 'three-quarter', follow: true });
+  cinematic?.stop();
   product?.resetMotion(); selectPart(null, false); setExplode(0); readout(); announce('已恢复完整装配，部件标记已隐藏。');
 }
 function openNote() { updateNotes(); $('#note-dialog').showModal(); $('#note-dialog').scrollTop = 0; }
@@ -126,16 +136,16 @@ document.querySelectorAll('[data-view]').forEach(button => on(button, 'click', (
 on($('#overview'), 'click', overview); on($('#clear-selection'), 'click', () => selectPart(null));
 on($('#explode'), 'click', () => { setExplode(state.target > 0 ? 0 : 1); announce(state.target ? '正在按顺序抽离并分区展示五个系统。' : '正在按原路径合拢机器。'); });
 on($('#explode-range'), 'input', event => setExplode(Number(event.target.value) / 100));
-on($('#run'), 'click', run); on($('#reset'), 'click', reset);
+on($('#run'), 'click', run); on($('#cinematic'), 'click', cinematicToggle); on($('#reset'), 'click', reset);
 for (const [id, direction] of [['#zoom-in', 1], ['#zoom-out', -1]]) on($(id), 'click', () => { state.follow = false; stage?.zoom(direction); });
 on(window, 'keydown', event => {
   if (currentPage !== 'exhibit' || navigation?.busy) return;
   if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || document.querySelector('dialog[open]') || event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
   if (event.key === ' ' && event.target.closest('button,a')) return;
-  const action = { e: () => setExplode(state.target > 0 ? 0 : 1), r: reset, ' ': run, escape: () => selectPart(null) }[event.key.toLowerCase()];
+  const action = { e: () => setExplode(state.target > 0 ? 0 : 1), r: reset, c: cinematicToggle, ' ': run, escape: () => selectPart(null) }[event.key.toLowerCase()];
   if (action) { event.preventDefault(); action(); }
 });
-on(motion, 'change', () => { state.running = false; setExplode(state.target); sync(); announce('已应用系统动态效果偏好。'); });
+on(motion, 'change', () => { state.running = false; state.cinematic = false; cinematic?.stop(); setExplode(state.target); sync(); announce('已应用系统动态效果偏好。'); });
 
 // All whole-machine allocations and listeners belong to this lazy transaction.
 const exhibitRuntime = createExhibitRuntime(({ own, check }) => {
@@ -145,14 +155,18 @@ const exhibitRuntime = createExhibitRuntime(({ own, check }) => {
   try { nextProduct = dependencies.createProduct({ textures }); }
   catch (error) { new Set(Object.values(textures)).forEach(texture => texture?.dispose()); throw error; }
   own(nextProduct); nextStage.scene.add(nextProduct.root);
+  const nextCinematic = nextStage.setCinematic && typeof nextProduct.getRotorAnchor === 'function'
+    ? own(dependencies.createCinematicCamera({ camera: nextStage.camera, controls: nextStage.controls, product: nextProduct, getAspect: () => nextStage.camera?.aspect || 1, reduced: () => motion.matches }))
+    : null;
+  nextStage.setCinematic?.(nextCinematic);
   const raycaster = dependencies.createRaycaster(), pointer = dependencies.createPointer();
-  check(); stage = nextStage; product = nextProduct;
-  own(() => { stage = product = null; });
+  check(); stage = nextStage; product = nextProduct; cinematic = nextCinematic;
+  own(() => { stage = product = cinematic = null; });
   function listen(element, type, handler) {
     element.addEventListener(type, handler);
     own(() => element.removeEventListener(type, handler));
   }
-  listen(stage.controls, 'start', () => { state.follow = false; });
+  listen(stage.controls, 'start', () => { state.follow = false; state.cinematic = false; stage.interruptCamera?.(); sync(); });
   let down = null;
   listen(canvas, 'pointerdown', event => { down = { x: event.clientX, y: event.clientY }; });
   listen(canvas, 'pointercancel', () => { down = null; });
@@ -208,7 +222,7 @@ function frame(now) {
     if (Math.abs(state.progress - state.target) < .0001) state.progress = state.target;
     product.setExplode(state.progress); product.setFocus(state.focus);
     if (state.follow) frameCamera();
-    product.update(dt, state.running && !motion.matches); readout(); stage.update(dt, motion.matches);
+    product.update(dt, state.running && !motion.matches); readout(); stage.update(dt, motion.matches, state.running && !motion.matches);
     const p = state.progress;
     $('#assembly-progress').hidden = p === 0 || Boolean(state.focus);
     $('#assembly-step').textContent = p < .28 ? '01' : p < .62 ? '02' : p < .999 ? '03' : '✓';

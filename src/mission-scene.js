@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createMissionModel } from './mission-model.js';
 import { missionFrame } from './mission-animation.js';
-import { MISSION_VIEWS, transitionFrame, advanceTransitionTime } from './mission-transition.js';
+import { MISSION_VIEWS, transitionFrame, advanceTransitionTime, inspectionBlend } from './mission-transition.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { replaceMissionEnvironment } from './mission-environment.js';
 
@@ -14,7 +14,8 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
   // The seven-room layout reaches well beyond the original desk vignette.
   const camera = new THREE.PerspectiveCamera(40, 1, .1, 160);
   const targetPosition = new THREE.Vector3(), targetLook = new THREE.Vector3(); let following = false;
-  let selectedView = 'desk';
+  const fromInspection = new THREE.Vector3(), fromLook = new THREE.Vector3(); let inspectionStarted = 0;
+  let selectedView = 'entry';
   function labelTexture(content, color, background, glyphs = null) {
     if (glyphs) {
       const c = canvas.ownerDocument.createElement('canvas'); c.width = c.height = 512;
@@ -42,14 +43,17 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
     const target = new THREE.Vector3(...t);
     return new THREE.Vector3(...p).sub(target).multiplyScalar(Math.max(1, .95 / camera.aspect)).add(target);
   }
-  function setView(name, immediate = motion?.matches) {
+  function setView(name, immediate = motion?.matches || state?.paused) {
     selectedView = name;
-    const { camera: p, target: t } = MISSION_VIEWS[name] || MISSION_VIEWS.desk; targetPosition.copy(fitPosition(p, t)); targetLook.set(...t);
+    canvas.dataset.cameraView = name; canvas.dataset.cameraSettled = String(Boolean(immediate));
+    controls.maxDistance = name === 'floor' ? 90 : 40;
+    const { camera: p, target: t } = MISSION_VIEWS[name] || MISSION_VIEWS.entry; targetPosition.copy(fitPosition(p, t)); targetLook.set(...t);
     following = !immediate;
+    fromInspection.copy(camera.position); fromLook.copy(controls.target); inspectionStarted = view.performance.now();
     if (immediate) { camera.position.copy(targetPosition); controls.target.copy(targetLook); controls.update(); }
     draw();
   }
-  function setZone(name, immediate = motion?.matches) {
+  function setZone(name, immediate = motion?.matches || state?.paused) {
     model?.setZone(name);
     setView(name, immediate);
     return model?.zones?.find(zone => zone.id === name) || null;
@@ -59,10 +63,12 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
     const reduced = Boolean(motion?.matches);
     const projection = missionFrame(state, clock, { searchStart, decodeStart, reduced });
     if (!state.paused) model.update(state, clock, { reduced, ...projection, lidOpen: transition?.projection?.lidOpen ?? 1 });
+    model.setZone(selectedView);
     onSignal(projection);
     renderer.render(scene, camera);
     const stats = `${renderer.info.render.calls} calls / ${renderer.info.render.triangles} triangles`;
     if (canvas.dataset.renderStats !== stats) canvas.dataset.renderStats = stats;
+    canvas.dataset.renderResources = `${renderer.info.memory.geometries} geometries / ${renderer.info.memory.textures} textures`;
   }
   function frame(now) {
     raf = 0;
@@ -73,8 +79,9 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
     } else clock += dt;
     last = now;
     if (following && !transition) {
-      camera.position.lerp(targetPosition, .055); controls.target.lerp(targetLook, .055);
-      if (camera.position.distanceTo(targetPosition) < .015) following = false;
+      const blend = inspectionBlend(now, inspectionStarted);
+      camera.position.lerpVectors(fromInspection, targetPosition, blend); controls.target.lerpVectors(fromLook, targetLook, blend);
+      if (blend === 1) { following = false; canvas.dataset.cameraSettled = 'true'; }
     }
     if (!transition) controls.update(); draw();
     if (transition?.projection.done) {
@@ -116,17 +123,18 @@ export function createMissionScene(canvas, { motion, onUnavailable = () => {}, o
     renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     rebuildEnvironment(); scene.environmentIntensity = .3;
-    scene.add(new THREE.HemisphereLight('#bdcfda', '#49392b', 1.25));
-    const key = new THREE.DirectionalLight('#d9e7ec', 2.5); key.position.set(-3, 6, 1); key.castShadow = true;
-    key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -22, right: 22, top: 14, bottom: -12, far: 80 }); key.shadow.bias = -.00015; key.shadow.normalBias = .018; scene.add(key);
-    const fill = new THREE.DirectionalLight('#e8ceab', 1.2); fill.position.set(3, 3, 5); scene.add(fill);
+    scene.add(new THREE.HemisphereLight('#bdcfda', '#6a4d32', 1.55));
+    const key = new THREE.DirectionalLight('#d9e7ec', 2.5); key.position.set(-12, 22, 14); key.target.position.set(2, 0, -3); key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -29, right: 29, top: 19, bottom: -19, far: 85 }); key.shadow.bias = -.00015; key.shadow.normalBias = .018; scene.add(key, key.target);
+    const fill = new THREE.DirectionalLight('#f3d6a8', 1.55); fill.position.set(5, 12, 18); scene.add(fill);
     model = createMissionModel({ labelTexture }); scene.add(model.root);
+    for (const anchor of model.practicals) anchor.add(new THREE.PointLight('#ffc786', 9, 7, 2));
     const lamp = new THREE.PointLight('#ffd091', 3.4, 3.5, 2); model.lampAnchor.add(lamp);
     controls = new OrbitControls(camera, canvas); controls.enableDamping = !motion?.matches; controls.enablePan = false;
     controls.minDistance = 2; controls.maxDistance = 40; controls.minPolarAngle = .2; controls.maxPolarAngle = Math.PI / 2.04;
     controls.minAzimuthAngle = -Math.PI * .92; controls.maxAzimuthAngle = Math.PI * .92;
     controls.addEventListener('start', stopFollowing); controls.addEventListener('change', draw);
-    setView('desk', true);
+    setView('entry', true);
     observer = new view.ResizeObserver(resize); observer.observe(canvas);
     canvas.addEventListener('webglcontextlost', contextLost); canvas.addEventListener('webglcontextrestored', restored);
     canvas.ownerDocument.addEventListener('visibilitychange', visibility);

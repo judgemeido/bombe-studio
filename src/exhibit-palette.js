@@ -12,4 +12,6 @@ export const EXHIBIT_PALETTE = Object.freeze({
   blue: '#698595',
   outbound: '#D3AA66',
   returning: '#9DBECF',
+  signalAmber: '#F2B45C',
+  signalCyan: '#89D7E0',
 });

@@ -28,6 +28,9 @@ body[data-page="mission"] #application-shell>.site-header .chapter-nav a[aria-cu
 #mission-page .mission-world { min-width:0; height:630px; max-height:calc(100svh - 65px); position:sticky; top:18px; overflow:hidden; background:var(--archive-sea); }
 #mission-page #mission-canvas { display:block; width:100%; height:100%; touch-action:none; cursor:grab; }
 #mission-page #mission-canvas:active { cursor:grabbing; }
+#mission-page .mission-floorplan { position:absolute; top:84px; right:18px; z-index:1; padding:0 11px; border:1px solid var(--archive-muted); background:rgba(var(--archive-sea-rgb),.9); color:var(--archive-paper); font:11px/1.4 Consolas,"Microsoft YaHei",monospace; }
+#mission-page .mission-floorplan[aria-pressed="true"] { border-color:var(--archive-brass); color:var(--archive-brass); }
+#mission-page .is-transitioning .mission-floorplan { visibility:hidden; }
 #mission-page #mission-machine-readout { position:absolute; z-index:1; top:58px; left:24px; font:11px/1.7 Consolas,monospace; color:var(--archive-on-sea); background:rgba(var(--archive-sea-rgb), 0.855); padding:4px 8px; pointer-events:none; }
 #mission-page .mission-scene-top { position:absolute; z-index:1; top:22px; left:24px; right:24px; display:flex; align-items:center; gap:9px; color:var(--archive-paper); text-shadow:0 1px 4px var(--archive-ink); font-size:11px; pointer-events:none; }
 #mission-page .mission-live-dot { width:5px; height:5px; background:var(--archive-brass); border-radius:50%; flex-shrink:0; }
@@ -159,6 +162,7 @@ body[data-page="mission"] #application-shell>.site-header .chapter-nav a[aria-cu
 #mission-page .mission-cinema-progress { width:100%; height:100%; background:var(--archive-brass); transform-origin:left; }
 #mission-page .is-transitioning .mission-camera, #mission-page .is-transitioning .mission-scene-top, #mission-page .is-transitioning #mission-machine-readout, #mission-page .is-transitioning .mission-scene-caption { visibility:hidden; }
 @media(max-width:760px) {
+  #mission-page .mission-floorplan { top:8px; right:10px; font-size:10px; }
   #mission-page .mission-cinema-top { padding:8px 12px; }
   #mission-page .mission-cinema-top>span { max-width:95px; font-size:9px; }
   #mission-page .mission-cinema-bottom { padding:15px 18px; }

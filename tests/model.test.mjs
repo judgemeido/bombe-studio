@@ -18,6 +18,52 @@ test('108 drums and five systems form a finite, grounded cabinet', () => {
   product.dispose();
 });
 
+test('the cabinet exposes a readable front detail kit', () => {
+  const product = createProduct();
+  const names = new Set();
+  product.root.traverse(object => { if (object.name) names.add(object.name); });
+  for (const name of ['front-control-deck', 'indicator-bank', 'service-hatches', 'cable-loom', 'drive-belt']) {
+    assert.ok(names.has(name), `missing detail component: ${name}`);
+  }
+  assert.ok(product.detailCount >= 5);
+  product.dispose();
+});
+
+test('the rotor contract exposes named motion layers and camera anchors', () => {
+  const product = createProduct();
+  const names = new Set();
+  product.root.traverse(object => { if (object.name) names.add(object.name); });
+  for (const name of ['rotor-detail', 'rotor-signal', 'camera-anchor']) {
+    assert.ok(names.has(name), `missing rotor contract group: ${name}`);
+  }
+  assert.equal(product.rotorCount, 108);
+  assert.ok(product.getRotorAnchor(0).isVector3);
+  assert.ok(product.getRotorAnchor(107).isVector3);
+  product.dispose();
+});
+
+test('rotor details expose component counts and animate as one phase', () => {
+  const product = createProduct();
+  const names = new Set();
+  product.root.traverse(object => { if (object.name) names.add(object.name); });
+  for (const name of ['rotor-face-rings', 'rotor-hubs', 'rotor-contact-rings', 'rotor-index-markers', 'rotor-fasteners', 'signal-pulse']) {
+    assert.ok(names.has(name), `missing rotor detail component: ${name}`);
+  }
+  assert.deepEqual(product.detailStats, { faceRings: 108, hubs: 108, contactRings: 108, indexMarkers: 108, fasteners: 864, signals: 108 });
+  const signal = product.parts.find(part => part.name === 'drums').getObjectByName('signal-pulse');
+  const before = signal.instanceMatrix.array.slice();
+  product.update(.05, true);
+  assert.notDeepEqual(signal.instanceMatrix.array, before);
+  const phase = product.phase;
+  const running = signal.instanceMatrix.array.slice();
+  product.update(1, false);
+  assert.equal(product.phase, phase);
+  assert.deepEqual(signal.instanceMatrix.array, running);
+  product.resetMotion();
+  assert.deepEqual(signal.instanceMatrix.array, before);
+  product.dispose();
+});
+
 test('repeated explode and restore preserve base transforms without drift', () => {
   const product = createProduct();
   const base = product.parts.map(p => p.position.clone());

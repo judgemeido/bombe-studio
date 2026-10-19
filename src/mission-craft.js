@@ -73,7 +73,7 @@ export function createMissionCraft(labelTexture) {
     for (const child of [...parent.children]) if (child.isGroup) batch(child);
     const buckets = new Map();
     for (const child of parent.children) {
-      if (!child.isMesh || child.name || child.userData.dynamic || !child.visible) continue;
+      if (!child.isMesh || child.isInstancedMesh || child.name || child.userData.dynamic || !child.visible) continue;
       if (!buckets.has(child.material)) buckets.set(child.material, []);
       buckets.get(child.material).push(child);
     }

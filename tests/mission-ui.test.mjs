@@ -33,6 +33,51 @@ test('mission shell uses a diegetic record instead of progress chrome', () => {
   assert.doesNotMatch(missionShell, /7 个行动节点|约 15 分钟解密游戏|第 \d+ (关|阶段)|任务 \d+ \/ 07/);
 });
 
+test('camera controls map directly to the seven visible rooms', () => {
+  const expected = [['entry', '入口'], ['radio', '无线电'], ['archive', '档案'], ['analysis', '分析'], ['machine', '机房'], ['map', '地图'], ['handoff', '交接']];
+  const controls = [...missionShell.matchAll(/data-action="view" data-value="([^"]+)"[^>]*>([^<]+)/g)].map(match => [match[1], match[2]]);
+  assert.deepEqual(controls, expected);
+  assert.doesNotMatch(missionShell, /data-value="(?:desk|rotors|plugs|bombe)"/);
+});
+
+test('a floor overview exposes the corridor while retaining the seven room buttons', () => {
+  const f = fixture();
+  try {
+    f.game.setActive(true);
+    f.click('[data-action="floorplan"]');
+    assert.equal(f.game.inspect().view, 'floor');
+    assert.equal(f.root.querySelector('[data-action="floorplan"]').getAttribute('aria-pressed'), 'true');
+    assert.match(f.root.querySelector('#mission-location-world').textContent, /连通走廊/);
+    f.click('[data-action="view"][data-value="radio"]');
+    assert.equal(f.root.querySelector('[data-action="floorplan"]').getAttribute('aria-pressed'), 'false');
+  } finally { f.game.dispose(); }
+});
+
+test('camera buttons keep the visible location copy aligned with the selected room', () => {
+  const f = fixture();
+  try {
+    f.game.setActive(true);
+    f.click('[data-action="view"][data-value="machine"]');
+    assert.equal(f.root.querySelector('#mission-location').textContent, '机房 · 接线工作台');
+    assert.equal(f.root.querySelector('#mission-location-world').textContent, '机房 · 接线工作台');
+    assert.equal(f.root.querySelector('[data-action="view"][data-value="machine"]').getAttribute('aria-pressed'), 'true');
+  } finally {
+    f.game.dispose();
+  }
+});
+
+test('an evidence update preserves the manually inspected room in the scene caption', () => {
+  const f = fixture();
+  try {
+    f.game.setActive(true); f.click('[data-action="start"]');
+    f.click('[data-action="view"][data-value="machine"]');
+    f.click('[data-action="checkin"][data-value="ready"]');
+    assert.equal(f.game.inspect().view, 'machine');
+    assert.equal(f.root.querySelector('#mission-location-world').textContent, '机房 · 接线工作台');
+    assert.match(f.root.querySelector('#mission-scene-caption').textContent, /Bombe/);
+  } finally { f.game.dispose(); }
+});
+
 test('every internal beat exposes a current action and primary control without leaking its id', () => {
   assert.equal(MISSION.stages.length, 15);
   for (let stage = 0; stage < 15; stage++) {

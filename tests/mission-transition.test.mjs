@@ -1,12 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { transitionFrame, advanceTransitionTime } from '../src/mission-transition.js';
+import { MISSION } from '../src/mission-engine.js';
 
-test('arrival ends in the radio task with an open machine and clamped time', () => {
+test('arrival ends at reception with an open machine and clamped time', () => {
   const start = transitionFrame({ kind: 'arrival', stage: 0 }, -2);
   assert.equal(start.progress, 0); assert.equal(start.done, false);
   const end = transitionFrame({ kind: 'arrival', stage: 0 }, 100);
   assert.equal(end.progress, 1); assert.equal(end.done, true); assert.equal(end.lidOpen, 1);
+  assert.equal(end.zone, 'entry');
   assert.ok(end.camera.every(Number.isFinite));
 });
 
@@ -51,4 +53,20 @@ test('world rails cover the seven spaces and the fifteen internal beats', async 
     assert.equal(frame.done, true);
   }
   assert.equal(transitionFrame({ kind: 'handoff' }, 4).zone, 'handoff');
+});
+
+test('each beat camera names the same room as its evidence and controls', async () => {
+  const { STAGE_VIEWS } = await import('../src/mission-transition.js');
+  MISSION.stages.forEach((beat, i) => {
+    assert.equal(STAGE_VIEWS[i], beat.zone === 'entrance' ? 'entry' : beat.zone, beat.id);
+  });
+});
+
+test('manual camera changes finish in bounded wall time at slow and fast frame rates', async () => {
+  const { inspectionBlend } = await import('../src/mission-transition.js');
+  assert.equal(typeof inspectionBlend, 'function');
+  assert.equal(inspectionBlend(1000, 1000), 0);
+  assert.ok(inspectionBlend(1300, 1000) > 0 && inspectionBlend(1300, 1000) < 1);
+  assert.equal(inspectionBlend(1700, 1000), 1);
+  assert.equal(inspectionBlend(3000, 1000), 1);
 });

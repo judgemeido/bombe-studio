@@ -24,5 +24,18 @@ export function createTextures() {
     c.fillStyle = P.mist; c.fillRect(0, 0, 256, 256);
     for (let i = 0; i < 5000; i++) { c.fillStyle = i % 3 ? 'rgba(35,54,65,.025)' : 'rgba(255,255,255,.12)'; c.fillRect((i * 53.321) % 256, (i * 37.231) % 256, 1, 2); }
   });
-  paint.wrapS = paint.wrapT = THREE.RepeatWrapping; paint.repeat.set(3, 3); return { drum, plaque, paint };
+  paint.wrapS = paint.wrapT = THREE.RepeatWrapping; paint.repeat.set(3, 3);
+  const metal = texture(256, 256, c => {
+    c.fillStyle = '#bfc8c8'; c.fillRect(0, 0, 256, 256);
+    for (let y = 0; y < 256; y += 3) {
+      const alpha = .035 + ((y * 17) % 11) / 260;
+      c.fillStyle = `rgba(35,54,65,${alpha.toFixed(3)})`; c.fillRect(0, y, 256, 1);
+    }
+    for (let i = 0; i < 160; i++) {
+      c.fillStyle = i % 3 ? 'rgba(255,255,255,.08)' : 'rgba(35,54,65,.07)';
+      c.fillRect((i * 71.3) % 256, (i * 43.7) % 256, 1 + (i % 3), 1);
+    }
+  });
+  metal.wrapS = metal.wrapT = THREE.RepeatWrapping; metal.repeat.set(2, 3);
+  return { drum, rotorFace: drum, plaque, paint, metal };
 }

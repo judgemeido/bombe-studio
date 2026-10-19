@@ -31,6 +31,7 @@ test('application prepares without revealing; exhibit is lazy, retryable and sta
   try {
     const { createApplication } = await import('../src/main.js');
     app = createApplication({ initialRoute: { page: 'lab', topic: 'drums' }, historyPage, runtime });
+    assert.equal(window.__BOMBE_INSPECT__().cinematic, false);
     assert.deepEqual(options.currentRoute, historyPage.currentRoute); assert.equal(options.initialScrolls.history, 317);
     assert.equal(stageCalls, 0);
     const roots = [...window.document.querySelectorAll('#exhibit-page,#lab-page,#challenge-page')];
@@ -76,5 +77,31 @@ test('dispose while a module loads prevents its constructor; late controllers ar
     resolveController({ dispose() { released++; } });
     await assert.rejects(late, /disposed/); assert.equal(constructors, 1); assert.equal(released, 1);
     assert.equal(window.__BOMBE_INSPECT__, undefined);
+  } finally { app?.dispose(); Object.assign(globalThis, saved); await window.happyDOM.close(); }
+});
+
+test('exhibit cinematic control shares state, keyboard action, and manual interruption', async () => {
+  const window = new Window({ url: 'http://localhost/#/' }); window.document.write(html);
+  const saved = Object.fromEntries(['window', 'document', 'matchMedia', 'requestAnimationFrame', 'cancelAnimationFrame'].map(k => [k, globalThis[k]]));
+  Object.assign(globalThis, { window, document: window.document, matchMedia: () => Object.assign(new window.EventTarget(), { matches: false }), requestAnimationFrame: () => 1, cancelAnimationFrame() {} });
+  let options, controls, controller;
+  const runtime = {
+    createNavigation(value) { options = value; return { go() {}, dispose() {} }; },
+    createStage() { controls = new window.EventTarget(); controls.target = { toArray() { return []; } }; return { camera: { aspect: 1, position: { toArray() { return []; } } }, scene: { add() {} }, controls, setCinematic(value) { controller = value; }, interruptCamera() { controller?.interrupt(); }, resize() {}, frameBounds() {}, dispose() {} }; },
+    createCinematicCamera() { return { active: false, start() { this.active = true; }, stop() { this.active = false; }, interrupt() { this.active = false; }, update() {}, dispose() {}, get isActive() { return this.active; } }; },
+    createTextures: () => ({}),
+    createProduct() { return { root: {}, getBounds() {}, getRotorAnchor() {}, getAnchor() {}, dispose() {} }; },
+    createRaycaster: () => ({}), createPointer: () => ({}),
+  };
+  let app;
+  try {
+    const { createApplication } = await import('../src/main.js');
+    app = createApplication({ initialRoute: { page: 'exhibit' }, runtime });
+    await options.prepare({ page: 'exhibit' }); options.activate({ page: 'exhibit' });
+    const button = window.document.querySelector('#cinematic');
+    assert.ok(button, 'cinematic control must exist');
+    button.click(); assert.equal(window.__BOMBE_INSPECT__().cinematic, true); assert.equal(button.getAttribute('aria-pressed'), 'true');
+    controls.dispatchEvent(new window.Event('start'));
+    assert.equal(window.__BOMBE_INSPECT__().cinematic, false); assert.equal(button.getAttribute('aria-pressed'), 'false');
   } finally { app?.dispose(); Object.assign(globalThis, saved); await window.happyDOM.close(); }
 });

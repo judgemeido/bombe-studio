@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { fitCamera } from './framing.js';
+import { createPostStack } from './post.js';
 export function createStage(canvas, container) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.23;
@@ -34,11 +35,12 @@ export function createStage(canvas, container) {
   gradient.addColorStop(0, 'rgba(35,54,65,.22)'); gradient.addColorStop(.5, 'rgba(35,54,65,.11)'); gradient.addColorStop(1, 'rgba(35,54,65,0)'); c.fillStyle = gradient; c.fillRect(0, 0, 128, 128);
   const contactTexture = new THREE.CanvasTexture(shadowCanvas), contact = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), new THREE.MeshBasicMaterial({ map: contactTexture, transparent: true, depthWrite: false }));
   contact.rotation.x = -Math.PI / 2; contact.position.y = -.055; scene.add(contact);
-  let pose = null; const orbit = new THREE.Spherical(), nextOrbit = new THREE.Spherical(), offset = new THREE.Vector3();
+  const post = createPostStack({ renderer, scene, camera, container });
+  let pose = null, cinematic = null; const orbit = new THREE.Spherical(), nextOrbit = new THREE.Spherical(), offset = new THREE.Vector3();
   controls.addEventListener('start', () => { pose = null; });
   function resize() {
     const { width, height } = container.getBoundingClientRect(); if (!width || !height) return;
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, width < 600 ? 1.5 : 1.75)); renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix();
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, width < 600 ? 1.5 : 1.75)); renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix(); post.resize();
   }
   const observer = new ResizeObserver(resize); observer.observe(container); resize(); controls.update();
   return {
@@ -48,7 +50,10 @@ export function createStage(canvas, container) {
       if (immediate) { camera.position.copy(pose.position); controls.target.copy(pose.target); controls.update(); pose = null; }
     },
     zoom(direction) { pose = null; const radius = camera.position.distanceTo(controls.target), next = THREE.MathUtils.clamp(radius * (direction > 0 ? .85 : 1.18), 3, 140); camera.position.sub(controls.target).multiplyScalar(next / radius).add(controls.target); controls.update(); },
-    update(dt, immediate) {
+    setCinematic(controller) { cinematic = controller || null; },
+    interruptCamera() { cinematic?.interrupt(); },
+    update(dt, immediate, running = false) {
+      cinematic?.update(dt);
       if (pose) {
         const t = immediate ? 1 : 1 - Math.exp(-7 * dt);
         orbit.setFromVector3(offset.copy(camera.position).sub(controls.target));
@@ -58,8 +63,9 @@ export function createStage(canvas, container) {
         controls.target.lerp(pose.target, t); camera.position.setFromSpherical(orbit).add(controls.target);
         if (camera.position.distanceTo(pose.position) < .005) { camera.position.copy(pose.position); controls.target.copy(pose.target); pose = null; }
       }
-      controls.update(dt); renderer.render(scene, camera);
+      controls.update(dt); post.setRunning(running); rim.intensity = running ? 2.1 : 1.6; post.render(dt);
     },
-    dispose() { observer.disconnect(); canvas.removeEventListener('webglcontextrestored', restoreEnvironment); controls.dispose(); key.shadow.map?.dispose(); environment.dispose(); floor.geometry.dispose(); floor.material.dispose(); contact.geometry.dispose(); contact.material.dispose(); contactTexture.dispose(); renderer.dispose(); },
+    inspect() { return { post: post.inspect(), calls: renderer.info.render.calls, triangles: renderer.info.render.triangles }; },
+    dispose() { observer.disconnect(); canvas.removeEventListener('webglcontextrestored', restoreEnvironment); cinematic = null; post.dispose(); controls.dispose(); key.shadow.map?.dispose(); environment.dispose(); floor.geometry.dispose(); floor.material.dispose(); contact.geometry.dispose(); contact.material.dispose(); contactTexture.dispose(); renderer.dispose(); },
   };
 }

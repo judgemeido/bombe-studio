@@ -153,6 +153,10 @@ body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #appl
 #exhibit-page .primary-button { min-width: 160px; background: var(--archive-sea); color: var(--archive-paper); }
 #exhibit-page .primary-button:hover { background: var(--archive-slate); }
 #exhibit-page .run-button { border: 1px solid var(--archive-rule); color: var(--archive-ink); }
+#exhibit-page .cinematic-button { border-color: var(--archive-brass); color: var(--archive-sea); background: linear-gradient(135deg, var(--archive-raised), var(--archive-brass-wash)); }
+#exhibit-page .cinematic-button[aria-pressed="true"] { color: var(--archive-paper); background: var(--archive-sea); border-color: var(--archive-sea); box-shadow: 0 0 0 1px var(--archive-brass), 0 0 22px rgba(182,154,103,.24); }
+#exhibit-page .cinematic-button svg { color: var(--archive-brass); }
+#exhibit-page .cinematic-button[aria-pressed="true"] svg { color: var(--archive-paper); }
 #exhibit-page .key { font-size: 11px; opacity: .7; }
 #exhibit-page .site-footer { font-size: 12px; min-height: 76px; }
 #exhibit-page .site-footer > div { font-size: 12px; letter-spacing: 1px; }
@@ -434,8 +438,8 @@ body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #appl
   #exhibit-page .control-caption { font-size: 14px; }
   #exhibit-page .control-caption > span:last-child { font-size: 12px; }
   #exhibit-page .explode-section { grid-column: 1; grid-row: 2; border: 0; padding: 0; }
-  #exhibit-page .action-section { grid-column: 1; grid-row: 3; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 20px; }
-  #exhibit-page .primary-button, #exhibit-page .run-button { min-width: 0; height: 52px; font-size: 14px; padding: 0 10px; }
+  #exhibit-page .action-section { grid-column: 1; grid-row: 3; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding-top: 20px; }
+  #exhibit-page .primary-button, #exhibit-page .run-button { min-width: 0; height: 52px; font-size: 14px; padding: 0 8px; }
   #exhibit-page .key { display: none; }
   #exhibit-page .mobile-detail { grid-column: 1; grid-row: 4; border: 0; border-top: 1px solid var(--archive-rule); padding: 22px 0 0; }
   #exhibit-page .mobile-detail .part-card { padding: 0; border: 0; box-shadow: none; background: transparent; }
@@ -549,4 +553,154 @@ body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #appl
   #exhibit-page, #lab-page, #challenge-page { padding-inline: 14px; }
   #exhibit-page h1 { font-size: 56px; }
   #challenge-page .quest-option strong { font-size: 17px; }
+}
+
+/* Desktop workspaces share the available window, rather than a fixed stage height.
+   Text panels keep their own scrollbars; short/narrow windows use document flow. */
+@media (min-width: 1000px) and (min-height: 680px) {
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"], [data-page="mission"]) #application-shell > .site-header {
+    height:64px; min-height:0; flex-wrap:nowrap; padding:0 3%; gap:18px;
+  }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"], [data-page="mission"]) #application-shell > .site-header .brand { font-size:18px; white-space:nowrap; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"], [data-page="mission"]) #application-shell > .site-header .brand small { font-size:8px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"], [data-page="mission"]) #application-shell > .site-header .header-center { display:none; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"], [data-page="mission"]) #application-shell > .site-header nav { width:auto; min-width:0; gap:18px; }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"], [data-page="mission"]) #application-shell > .site-header .chapter-nav { width:auto; gap:clamp(10px,1.6vw,24px); }
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"], [data-page="mission"]) #application-shell > .site-header .chapter-nav a { font-size:12px; min-height:44px; gap:6px; }
+  #exhibit-page, #lab-page, #challenge-page, #mission-page {
+    height:calc(100dvh - 64px); min-height:0; padding:12px 3%;
+  }
+  #exhibit-page :is(.exhibit,.intro,.viewer), #lab-page :is(.lab-workspace,.lab-model-panel,.lab-viewer,.lab-desk),
+  #challenge-page :is(.quest-workspace,.quest-model-panel,.quest-viewer,.quest-task-panel),
+  #mission-page :is(.mission-wrap,.mission-layout,.mission-world,.mission-dossier) { min-width:0; min-height:0; }
+  #exhibit-page .intro, #lab-page .lab-desk, #challenge-page .quest-task-panel, #mission-page .mission-dossier {
+    overflow:auto; scrollbar-width:thin; scrollbar-gutter:stable; overscroll-behavior:contain;
+  }
+
+  #exhibit-page { display:grid; grid-template-rows:minmax(0,1fr) auto auto; gap:12px; }
+  #exhibit-page .exhibit { height:100%; max-height:none; grid-template-columns:clamp(240px,22vw,310px) minmax(0,1fr); gap:24px; }
+  #exhibit-page .viewer { height:100%; }
+  #exhibit-page .intro { padding:0 8px 0 0; }
+  #exhibit-page h1 { font-size:clamp(58px,8dvh,90px); margin:12px 0; }
+  #exhibit-page .title-dot { top:65%; }
+  #exhibit-page .byline { margin-bottom:12px; font-size:10px; }
+  #exhibit-page .intro h2 { font-size:20px; margin-bottom:10px; }
+  #exhibit-page .intro-copy { font-size:14px; line-height:1.7; }
+  #exhibit-page .archive-link { font-size:13px; margin:8px 0 12px; flex-shrink:0; }
+  #exhibit-page .part-card { padding:14px; flex-shrink:0; }
+  #exhibit-page .note-heading { margin:8px 0; }
+  #exhibit-page .note-heading strong { font-size:17px; }
+  #exhibit-page .note-summary { font-size:13px; }
+  #exhibit-page .note-cta { font-size:12px; padding-top:8px; margin-top:8px; }
+  #exhibit-page .viewer-top { top:16px; left:18px; right:18px; flex-direction:row; align-items:center; }
+  #exhibit-page .viewer-tools { top:50%; transform:translateY(-50%); }
+  #exhibit-page .console { margin:0; min-height:0; padding:12px 16px; grid-template-columns:minmax(330px,1.2fr) minmax(150px,.7fr) auto; gap:18px; }
+  #exhibit-page .control-caption { font-size:12px; margin-bottom:6px; }
+  #exhibit-page .control-caption > span:last-child { font-size:11px; }
+  #exhibit-page .parts-list button { font-size:12px; padding:6px 8px; gap:5px; }
+  #exhibit-page .parts-list button span { font-size:10px; }
+  #exhibit-page .explode-section { padding-left:18px; }
+  #exhibit-page .action-section { grid-column:auto; border:0; padding:0; gap:8px; }
+  #exhibit-page .primary-button, #exhibit-page .run-button { min-width:0; height:44px; padding:0 12px; font-size:13px; }
+  #exhibit-page .key { margin-left:0; }
+  #exhibit-page .site-footer { min-height:30px; font-size:10px; }
+  #exhibit-page .site-footer > div, #exhibit-page .site-footer button { font-size:11px; }
+
+  #lab-page { display:grid; grid-template-rows:auto minmax(0,1fr) auto; gap:10px; }
+  #lab-page .lab-heading-row, #challenge-page .quest-heading-row { min-height:48px; }
+  #lab-page .lab-title h1, #challenge-page .quest-heading-row h1 { font-size:28px; }
+  #lab-page .lab-workspace { height:100%; grid-template-columns:minmax(0,1fr) clamp(290px,27vw,350px); grid-template-rows:minmax(0,1fr); gap:18px; }
+  #lab-page .lab-model-panel { height:100%; }
+  #lab-page .lab-walkthrough { padding:10px 16px; max-height:45%; overflow:auto; flex-shrink:0; }
+  #lab-page .lab-walkthrough-top, #lab-page #lab-walkthrough-observe { font-size:11px; }
+  #lab-page .lab-walkthrough-steps { margin:6px 0; gap:16px; }
+  #lab-page .lab-walkthrough-steps li { font-size:11px; }
+  #lab-page .lab-walkthrough-steps li > span { width:18px; height:18px; font-size:10px; }
+  #lab-page .lab-walkthrough-body { flex-direction:row; align-items:center; gap:12px; }
+  #lab-page .lab-walkthrough h2 { font-size:15px; margin-bottom:3px; }
+  #lab-page .lab-walkthrough p { font-size:12px; line-height:1.65; }
+  #lab-page .lab-walkthrough-action { align-self:center; min-height:40px; padding:8px 12px; font-size:12px; }
+  #lab-page .lab-model-top { flex-basis:40px; min-height:40px; padding:0 16px; }
+  #lab-page .lab-model-footer { flex-basis:36px; min-height:36px; font-size:12px; }
+  #lab-page .lab-viewer { flex:1 1 0; }
+  #lab-page .lab-desk { display:flex; height:100%; padding:14px; gap:12px; }
+  #lab-page .lab-desk > * { flex-shrink:0; }
+  #lab-page .lab-result { min-height:92px; padding:10px 14px; }
+  #lab-page .lab-result output { font-size:40px; }
+  #lab-page .lab-result > i { margin-top:5px; font-size:11px; }
+  #lab-page .lab-keyboard-field { padding:8px; }
+  #lab-page .lab-keyboard button { height:34px; font-size:16px; }
+  #lab-page .lab-play-controls button { height:42px; font-size:13px; }
+  #lab-page .lab-settings-open { min-height:44px; padding:10px; font-size:12px; }
+  #lab-page .lab-trace { margin:0; padding:10px 16px; }
+  #lab-page .lab-trace-heading { margin-bottom:6px; }
+  #lab-page .lab-trace-heading h2 { font-size:14px; }
+  #lab-page .lab-trace-stages { grid-template-columns:repeat(9,minmax(0,1fr)); overflow:visible; padding:0; gap:6px; }
+  #lab-page .lab-trace-stages button { height:38px; padding:4px 6px; }
+  #lab-page .lab-trace-stages b { font-size:11px; }
+  #lab-page .lab-trace-narration { padding-top:6px; min-height:28px; }
+  #lab-page .lab-trace-narration p { font-size:13px; line-height:1.6; }
+  #lab-page .lab-annotations > span { font-size:13px; }
+  #lab-page .lab-annotations small { font-size:10px; }
+
+  #challenge-page { display:grid; grid-template-rows:auto auto minmax(0,1fr) auto; gap:10px; }
+  #challenge-page .quest-journey { margin:0; gap:16px; }
+  #challenge-page .quest-journey li { padding-top:6px; font-size:12px; }
+  #challenge-page .quest-workspace { height:100%; max-height:none; grid-template-columns:minmax(0,1fr) clamp(340px,34vw,430px); gap:18px; }
+  #challenge-page .quest-model-panel, #challenge-page .quest-model-panel[data-level="0"] { height:100%; min-height:0; }
+  #challenge-page .quest-model-top { padding:12px 16px 0; }
+  #challenge-page .quest-model-meta .quest-wheel-readout { margin-top:5px; }
+  #challenge-page .quest-observation { padding:12px 16px; max-height:48%; overflow:auto; }
+  #challenge-page .quest-narration { margin-top:8px; }
+  #challenge-page .quest-narration p { font-size:13px; line-height:1.7; }
+  #challenge-page .quest-task-panel { padding:20px; }
+  #challenge-page .quest-task-panel h2 { font-size:24px; margin:14px 0 10px; }
+  #challenge-page .quest-footnote { padding:0; margin:0; font-size:11px; }
+
+  #mission-page .mission-wrap { height:100%; display:grid; grid-template-rows:auto minmax(0,1fr) auto auto; gap:10px; }
+  #mission-page .mission-header { padding:4px 0 10px; gap:20px; }
+  #mission-page .mission-kicker { margin-bottom:6px; font-size:10px; }
+  #mission-page #mission-heading { font-size:36px; }
+  #mission-page #mission-heading span { display:inline-block; margin:0 0 0 14px; font-size:19px; }
+  #mission-page .mission-header-note { gap:6px; max-width:55%; }
+  #mission-page .mission-header-copy { font-size:12px; }
+  #mission-page .mission-status { gap:14px; }
+  #mission-page .mission-layout { height:100%; grid-template-columns:minmax(0,1.2fr) minmax(340px,1fr); align-items:stretch; }
+  #mission-page .mission-world { position:relative; top:0; height:100%; max-height:none; }
+  #mission-page .mission-dossier { height:100%; padding:22px 24px; }
+  #mission-page .mission-camera { bottom:74px; width:calc(100% - 24px); max-width:440px; }
+  #mission-page .mission-camera button { flex:1; min-width:0; padding:0 4px; font-size:11px; }
+  #mission-page .mission-scene-caption { padding:12px 18px; font-size:11px; }
+  #mission-page .mission-floorplan { top:14px; right:16px; }
+  #mission-page .mission-scene-top { right:116px; }
+  #mission-page .mission-year { display:none; }
+  #mission-page .mission-afterword { margin:0; gap:24px; max-height:24dvh; overflow:auto; }
+  #mission-page .mission-afterword summary { padding:8px 0; }
+  #mission-page .mission-footer { padding:0; font-size:11px; }
+}
+
+/* Half-screen desktop windows and high zoom retain every section in normal flow. */
+@media (min-width: 761px) and (max-width: 999px), (min-width: 761px) and (max-height: 679px) {
+  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"], [data-page="mission"]) { height:auto; overflow-y:auto; }
+  #exhibit-page, #lab-page, #challenge-page, #mission-page { height:auto; padding:20px 3%; }
+  #exhibit-page .exhibit { height:auto; min-height:0; grid-template-columns:minmax(220px,.75fr) minmax(0,1.5fr); }
+  #exhibit-page .viewer { height:clamp(340px,65dvh,620px); min-height:0; }
+  #exhibit-page h1 { font-size:64px; margin:16px 0; }
+  #exhibit-page .intro { padding-top:0; }
+  #exhibit-page .intro h2 { font-size:20px; }
+  #exhibit-page .intro-copy { font-size:14px; }
+  #exhibit-page .part-card { padding:14px; }
+  #exhibit-page .note-heading strong { font-size:17px; }
+  #exhibit-page .note-summary { font-size:13px; }
+  #exhibit-page .console { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; }
+  #exhibit-page .action-section { grid-column:1 / -1; }
+  #lab-page .lab-workspace, #challenge-page .quest-workspace, #mission-page .mission-layout { height:auto; min-height:0; max-height:none; grid-template-columns:minmax(0,1fr); }
+  #lab-page .lab-model-panel, #challenge-page .quest-model-panel, #challenge-page .quest-model-panel[data-level="0"] { min-height:0; }
+  #lab-page .lab-viewer, #challenge-page .quest-viewer { height:clamp(300px,55dvh,480px); min-height:0; flex:0 0 auto; }
+  #lab-page .lab-workspace { grid-template-rows:auto auto; }
+  #lab-page .lab-desk { display:grid; grid-template-columns:1fr 1fr; }
+  #challenge-page .quest-task-panel { overflow:visible; }
+  #mission-page .mission-world { position:relative; top:0; height:clamp(340px,65dvh,600px); max-height:none; }
+  #mission-page .mission-dossier { min-height:0; border-left:0; border-top:1px solid var(--archive-muted); }
+  #mission-page .mission-header { flex-wrap:wrap; }
 }

@@ -14,6 +14,7 @@
     <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 19 19 5M5 5h14v14"/></symbol>
     <symbol id="reset-icon" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
     <symbol id="play-icon" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+    <symbol id="cinematic-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4"/><path d="M12 3.5v3M20.5 12h-3M12 20.5v-3M3.5 12h3"/></symbol>
     <symbol id="cube" viewBox="0 0 24 24"><path d="m12 3 9 5v8l-9 5-9-5V8Zm0 9v9M3 8l9 5 9-5M7 5.8l9 5.4"/></symbol>
     <symbol id="expand-icon" viewBox="0 0 24 24"><path d="m3 8 9-5 9 5-9 5Zm0 5 9 5 9-5M3 18l9 5 9-5"/></symbol>
     <symbol id="drag" viewBox="0 0 24 24"><path d="M8 11V5a2 2 0 0 1 4 0v6-7a2 2 0 0 1 4 0v8-4a2 2 0 0 1 4 0v7c0 4-2 6-6 6h-2c-2 0-3-1-4-2l-5-6a2 2 0 0 1 3-2l2 2"/></symbol>
@@ -63,7 +64,7 @@
         <button data-part="frame" aria-pressed="false"><span>01</span>机架</button><button data-part="drums" aria-pressed="false"><span>02</span>鼓轮</button><button data-part="drive" aria-pressed="false"><span>03</span>传动</button><button data-part="board" aria-pressed="false"><span>04</span>接线</button><button data-part="motor" aria-pressed="false"><span>05</span>电机</button>
       </div></div>
       <div class="explode-section"><div class="control-caption"><label for="explode-range">拆解程度</label><output id="explode-output" for="explode-range">000%</output></div><div class="range-row"><svg><use href="#cube"/></svg><input id="explode-range" type="range" min="0" max="100" value="0" aria-valuetext="完整装配，0%"><svg><use href="#expand-icon"/></svg></div></div>
-      <div class="action-section"><button class="primary-button" id="explode" aria-pressed="false"><svg><use href="#expand-icon"/></svg><span id="explode-label">拆解机器</span><span class="key">E</span></button><button class="run-button" id="run" aria-pressed="false"><svg><use href="#play-icon"/></svg><span id="run-label">运转演示</span></button></div>
+      <div class="action-section"><button class="primary-button" id="explode" aria-pressed="false"><svg><use href="#expand-icon"/></svg><span id="explode-label">拆解机器</span><span class="key">E</span></button><button class="run-button" id="run" aria-pressed="false"><svg><use href="#play-icon"/></svg><span id="run-label">运转演示</span></button><button class="run-button cinematic-button" id="cinematic" aria-pressed="false"><svg><use href="#cinematic-icon"/></svg><span id="cinematic-label">影院运镜</span><span class="key">C</span></button></div>
     </section>
 
     <footer class="site-footer"><span>以结构理解历史<span class="footer-divider">/</span>教学性三维重建</span><div><span>THREE BANKS.</span><span>108 DRUMS.</span><span>ONE IDEA.</span></div><button id="help-open">操作指南 <span>?</span></button></footer>
