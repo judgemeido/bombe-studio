@@ -10,14 +10,15 @@ async function page() {
   return window.document;
 }
 
-test('standalone preview ships approved hero and Turing copy in initial HTML', async () => {
+test('standalone preview opens with the signal problem and preserves Turing’s historical distinction', async () => {
   const doc = await page();
   assert.equal(doc.documentElement.lang, 'zh-CN');
-  assert.equal(doc.querySelector('h1').textContent.replace(/\s/g, ''), '在机器之前，先读懂那场无声的较量。');
+  assert.match(doc.querySelector('h1').textContent, /电报.*海面/);
   assert.match(doc.body.textContent, /18节档案/);
   assert.match(doc.body.textContent, /艾伦·图灵/);
-  assert.match(doc.body.textContent, /1936 年，他在关于可计算性的研究中提出抽象机器模型/);
-  assert.match(doc.body.textContent, /但它们不是同一台“图灵机器”/);
+  assert.match(doc.querySelector('#turing').textContent, /1936 年.*可计算性研究/);
+  assert.match(doc.querySelector('#turing').textContent, /Bombe.*设计作出关键贡献/);
+  assert.match(doc.body.textContent, /理论图灵机/);
   assert.ok(doc.querySelector('#turing'));
   assert.ok(doc.querySelector('a[href="#turing"]'));
   assert.ok(doc.querySelector('a[href="/#/"]'));
@@ -99,11 +100,11 @@ test('eighteen chapter index links resolve and hero belongs to lifeline', async 
   for (const scene of scenes) assert.ok(scene.querySelector('h2'));
 });
 
-test('complete approved narrative and expandable background ship without controllers', async () => {
+test('complete sourced narrative and expandable background ship without controllers', async () => {
   const doc = await page();
   for (const name of ['马里安·雷耶夫斯基', '耶日·鲁日茨基', '亨里克·齐加尔斯基', 'Marian Rejewski', 'Jerzy Różycki', 'Henryk Zygalski']) assert.ok(doc.querySelector('#pioneers').textContent.includes(name));
   assert.match(doc.querySelector('#pioneers').textContent, /1932[\s\S]*1939 年 7 月/);
-  assert.match(doc.querySelector('#constraints').textContent, /韦尔奇曼[\s\S]*BTM[\s\S]*候选仍需检查/);
+  assert.match(doc.querySelector('#constraints').textContent, /韦尔奇曼[\s\S]*BTM[\s\S]*候选还要交给人继续检查/);
   for (const step of ['截收', '分析', '搜索', '检查', '解读', '传递', '判断']) assert.ok(doc.querySelector('#intelligence').textContent.includes(step));
   for (const id of ['lifeline', 'polish-methods', 'turing', 'constraints', 'intelligence']) assert.ok(doc.querySelector(`#${id} details summary`));
   for (const href of ['/#/', '/#/lab/drums', '/#/challenge']) assert.ok(doc.querySelector(`#onward a[href="${href}"]`));

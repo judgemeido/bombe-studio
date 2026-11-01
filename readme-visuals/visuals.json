@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "project": "Bombe Studio",
+  "tagline": "把科学结构、实验和故事变成可操作的数字展馆",
+  "diagrams": [
+    {
+      "type": "overview",
+      "title": "从科学主题到可操作体验",
+      "nodes": [
+        {
+          "id": "theme",
+          "label": "课程主题",
+          "detail": "以 Bombe、Enigma 和密码破译历史为示例，也可替换为其他科学与工程主题。",
+          "evidence": [
+            {
+              "path": "README.md",
+              "start": 7,
+              "end": 9
+            }
+          ]
+        },
+        {
+          "id": "interactive",
+          "label": "模型、实验与任务",
+          "detail": "三维模型、虚拟实验和角色任务把结构、规律与故事转成学生可操作的过程。",
+          "evidence": [
+            {
+              "path": "README.md",
+              "start": 11,
+              "end": 33
+            }
+          ]
+        },
+        {
+          "id": "learning",
+          "label": "学生学习体验",
+          "detail": "学生观察、操作、验证和推演，在同一展馆中完成从理解到应用的学习过程。",
+          "evidence": [
+            {
+              "path": "README.md",
+              "start": 35,
+              "end": 41
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "architecture",
+      "title": "统一导航连接五类学习入口",
+      "nodes": [
+        {
+          "id": "navigation",
+          "label": "展馆导航",
+          "detail": "学生可从导航自由选择历史、展品、实验、挑战或故事任务。",
+          "evidence": [
+            {
+              "path": "history-preview.html",
+              "start": 6,
+              "end": 8
+            }
+          ]
+        },
+        {
+          "id": "history",
+          "label": "战时序章",
+          "detail": "提供历史背景、人物接力和科技发展线索。",
+          "evidence": [
+            {
+              "path": "history-preview.html",
+              "start": 6,
+              "end": 8
+            }
+          ]
+        },
+        {
+          "id": "exhibit",
+          "label": "机械全貌",
+          "detail": "展示 Bombe 的整机、部件和可拆解结构。",
+          "evidence": [
+            {
+              "path": "src/model.js",
+              "start": 6,
+              "end": 17
+            }
+          ]
+        },
+        {
+          "id": "lab",
+          "label": "信号实验室",
+          "detail": "让学生操作轮位、接线和字母输入，逐段观察信号路径。",
+          "evidence": [
+            {
+              "path": "src/lab.js",
+              "start": 9,
+              "end": 25
+            }
+          ]
+        },
+        {
+          "id": "challenge",
+          "label": "解密挑战",
+          "detail": "通过分关任务练习观察、操作和推理。",
+          "evidence": [
+            {
+              "path": "src/challenge.js",
+              "start": 8,
+              "end": 19
+            }
+          ]
+        },
+        {
+          "id": "mission",
+          "label": "黎明之前",
+          "detail": "以夜班分析员身份，在连续任务中完成证据判断和情报交接。",
+          "evidence": [
+            {
+              "path": "src/mission.js",
+              "start": 7,
+              "end": 25
+            }
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "navigation",
+          "to": "history"
+        },
+        {
+          "from": "navigation",
+          "to": "exhibit"
+        },
+        {
+          "from": "navigation",
+          "to": "lab"
+        },
+        {
+          "from": "navigation",
+          "to": "challenge"
+        },
+        {
+          "from": "navigation",
+          "to": "mission"
+        }
+      ]
+    },
+    {
+      "type": "quickstart",
+      "title": "三步打开项目",
+      "nodes": [
+        {
+          "id": "runtime",
+          "label": "准备运行环境",
+          "detail": "项目要求 Node.js 22 或更新版本。",
+          "command": "node --version",
+          "evidence": [
+            {
+              "path": "package.json",
+              "start": 6,
+              "end": 8
+            }
+          ]
+        },
+        {
+          "id": "install",
+          "label": "安装项目依赖",
+          "detail": "在项目根目录安装锁定版本的依赖。",
+          "command": "npm.cmd ci",
+          "evidence": [
+            {
+              "path": "README.md",
+              "start": 66,
+              "end": 71
+            }
+          ]
+        },
+        {
+          "id": "open",
+          "label": "启动并打开展馆",
+          "detail": "启动本地开发服务后，在浏览器打开项目首页。",
+          "command": "npm.cmd run dev",
+          "evidence": [
+            {
+              "path": "package.json",
+              "start": 9,
+              "end": 13
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
