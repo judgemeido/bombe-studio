@@ -167,7 +167,7 @@ function reduceEvent(state, action) {
   const historyEntry = { depth: state.depth, nodeId: state.currentNode.id, choiceId: option.id, success: option.success };
   return {
     ...state,
-    phase: 'event-complete',
+    phase: reserve === 0 && cost > 0 ? 'dead' : 'event-complete',
     evidence: [...state.evidence, gainedEvidence],
     inventory: option.item ? addTool(state.inventory, option.item) : state.inventory,
     resources: { ...state.resources, reserve },
@@ -192,6 +192,7 @@ function resolveFinal(state, action) {
     const abilityUsed = state.abilityUsed || waive;
     return {
       ...state,
+      phase: reserve === 0 && !waive ? 'dead' : state.phase,
       attempts,
       mistakes: state.mistakes + 1,
       resources: { ...state.resources, reserve },

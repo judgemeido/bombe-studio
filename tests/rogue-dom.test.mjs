@@ -50,6 +50,28 @@ test('roguelite views expose a game HUD and inline icon language', () => {
   assert.match(final, /rogue-letter/);
 });
 
+test('briefing explains the full run for first-time players', () => {
+  const html = renderRogueView(createRogueRun('help-contract', { role: 'intercept' }));
+
+  assert.match(html, /怎么玩/);
+  assert.match(html, /四层路线/);
+  assert.match(html, /余裕归零/);
+  assert.match(html, /右轮/);
+  assert.match(html, /crib/);
+});
+
+test('route and final screens keep contextual instructions visible', () => {
+  const run = createRogueRun('context-help', { role: 'intercept' });
+  const route = renderRogueView({ ...run, phase: 'route' });
+  const final = renderRogueView({ ...run, phase: 'final' });
+
+  assert.match(route, /rogue-context-help/);
+  assert.match(route, /每层只选一个现场/);
+  assert.match(final, /rogue-context-help/);
+  assert.match(final, /已知词形/);
+  assert.match(final, /逐个尝试右轮字母/);
+});
+
 test('roguelite screens read as a playable game surface', () => {
   const run = createRogueRun('playfield-contract', { role: 'intercept' });
   const html = renderRogueView(run);
@@ -57,6 +79,19 @@ test('roguelite screens read as a playable game surface', () => {
   assert.match(html, /rogue-avatar/);
   assert.match(html, /rogue-action-bar/);
   assert.match(html, /rogue-mission-objective/);
+});
+
+test('reserve depletion renders a terminal death screen without continuation controls', () => {
+  const run = { ...createRogueRun('dead-view', { role: 'archive' }), phase: 'dead', resources: { reserve: 0 }, mistakes: 2 };
+  const html = renderRogueView(run);
+
+  assert.match(html, /本班结束了/);
+  assert.match(html, /余裕已耗尽/);
+  assert.match(html, /data-rogue-action="replay"/);
+  assert.match(html, /data-rogue-action="new-run"/);
+  assert.match(html, /data-rogue-action="close"/);
+  assert.doesNotMatch(html, /data-rogue-action="continue"/);
+  assert.doesNotMatch(html, /data-rogue-action="right"/);
 });
 
 test('role select, start, event choice, pause and close restore focus', async () => {

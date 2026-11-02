@@ -31,17 +31,39 @@ test('event choices add floor evidence and apply bounded reserve and tool reward
   assert.ok(run.inventory.length <= 2);
 });
 
-test('reserve depletion unlocks assistance but never blocks the remaining route', () => {
+test('mechanic ability waives one mistake, then reserve depletion ends the run', () => {
   let run = { ...createRogueRun('no-soft-lock', { role: 'mechanic' }), phase: 'route' };
-  run = { ...run, resources: { reserve: 0 } };
-  for (let depth = 0; depth < 4; depth++) {
-    run = selectRogueNode(run, run.route[depth].nodes[0].id);
-    run = reduceRogueRun(run, { type: 'resolve', choiceId: run.currentNode.options.find(item => !item.success).id });
-    assert.equal(run.resources.reserve, 0);
-    assert.equal(run.assistance, true);
-    run = reduceRogueRun(run, { type: 'continue' });
-  }
-  assert.equal(run.phase, 'final');
+  run = selectRogueNode(run, run.route[0].nodes[0].id);
+  run = reduceRogueRun(run, { type: 'resolve', choiceId: run.currentNode.options.find(item => !item.success).id });
+  assert.equal(run.resources.reserve, 3);
+  assert.equal(run.phase, 'event-complete');
+  run = reduceRogueRun(run, { type: 'continue' });
+  run = { ...run, resources: { reserve: 1 } };
+  run = selectRogueNode(run, run.route[1].nodes[0].id);
+  run = reduceRogueRun(run, { type: 'resolve', choiceId: run.currentNode.options.find(item => !item.success).id });
+  assert.equal(run.resources.reserve, 0);
+  assert.equal(run.assistance, true);
+  assert.equal(run.phase, 'dead');
+});
+
+test('spending the last reserve ends the run immediately', () => {
+  let run = { ...createRogueRun('death-on-zero', { role: 'archive' }), phase: 'route', resources: { reserve: 1 } };
+  run = selectRogueNode(run, run.route[0].nodes[0].id);
+  const wrongChoice = run.currentNode.options.find(item => !item.success);
+  run = reduceRogueRun(run, { type: 'resolve', choiceId: wrongChoice.id });
+
+  assert.equal(run.resources.reserve, 0);
+  assert.equal(run.phase, 'dead');
+});
+
+test('a wrong final rotor guess that spends the last reserve ends the run', () => {
+  let run = { ...createRogueRun('final-death', { role: 'archive' }), phase: 'final', resources: { reserve: 1 } };
+  const wrongRight = (run.caseFile.solutionRight + 1) % 26;
+  run = reduceRogueRun(run, { type: 'submit-right', value: String.fromCharCode(65 + wrongRight) });
+
+  assert.equal(run.resources.reserve, 0);
+  assert.equal(run.phase, 'dead');
+  assert.equal(run.attempts, 1);
 });
 
 test('tools are consumed once and inventory stays capped at two', () => {
