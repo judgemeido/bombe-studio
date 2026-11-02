@@ -17,17 +17,21 @@ export function createProduct({ textures = {} } = {}) {
   const root = new THREE.Group(); root.name = 'Turing–Welchman Bombe';
   const geometries = new Set(), materials = new Set();
   const material = (o) => { const m = new THREE.MeshStandardMaterial(o); materials.add(m); return m; };
+  const enamel = new THREE.MeshPhysicalMaterial({ color: P.paint, metalness: .28, roughness: .44,
+    clearcoat: .24, clearcoatRoughness: .36, map: textures.paint || null,
+    bumpMap: textures.paintBump || null, bumpScale: .006 });
+  materials.add(enamel);
   const mats = {
-    paint: material({ color: P.paint, metalness: .55, roughness: .4, map: textures.paint || null }),
-    edge: material({ color: P.edge, metalness: .72, roughness: .34 }),
-    bronze: material({ color: P.brass, metalness: .8, roughness: .4 }),
-    metal: material({ color: P.steel, metalness: .9, roughness: .33, map: textures.metal || null }),
+    paint: enamel,
+    edge: material({ color: P.edge, metalness: .52, roughness: .43 }),
+    bronze: material({ color: P.brass, metalness: .62, roughness: .48 }),
+    metal: material({ color: P.steel, metalness: .82, roughness: .48, map: textures.metal || null, roughnessMap: textures.metalRoughness || null }),
     dark: material({ color: P.sea, metalness: .55, roughness: .5 }),
     bakelite: material({ color: P.ink, metalness: .12, roughness: .55 }),
     red: material({ color: P.bronze, metalness: .42, roughness: .37 }),
     green: material({ color: P.blue, metalness: .4, roughness: .39 }),
     gold: material({ color: P.brass, metalness: .5, roughness: .36 }),
-    face: material({ color: P.paper, metalness: .45, roughness: .4, map: textures.rotorFace || textures.drum || null }),
+    face: material({ color: '#ffffff', metalness: .25, roughness: .56, map: textures.rotorFace || textures.drum || null }),
     wire: material({ color: P.brass, metalness: .15, roughness: .65 }),
     wireDark: material({ color: P.edge, roughness: .75 }),
     lamp: material({ color: '#d9b86f', emissive: '#7b3f18', emissiveIntensity: .9, metalness: .18, roughness: .3 }),
@@ -49,6 +53,8 @@ export function createProduct({ textures = {} } = {}) {
     rotorDetail: new THREE.Group(),
     rotorSignal: new THREE.Group(),
     cameraAnchor: new THREE.Group(),
+    cabinetCraft: new THREE.Group(),
+    bankLabels: new THREE.Group(),
   };
   detailGroups.frontControlDeck.name = 'front-control-deck';
   detailGroups.indicatorBank.name = 'indicator-bank';
@@ -58,10 +64,13 @@ export function createProduct({ textures = {} } = {}) {
   detailGroups.rotorDetail.name = 'rotor-detail';
   detailGroups.rotorSignal.name = 'rotor-signal';
   detailGroups.cameraAnchor.name = 'camera-anchor';
+  detailGroups.cabinetCraft.name = 'cabinet-craft';
+  detailGroups.bankLabels.name = 'bank-labels';
   frame.add(detailGroups.frontControlDeck, detailGroups.indicatorBank, detailGroups.serviceHatches);
   board.add(detailGroups.cableLoom);
   drive.add(detailGroups.driveBelt);
   drums.add(detailGroups.rotorDetail, detailGroups.rotorSignal, detailGroups.cameraAnchor);
+  frame.add(detailGroups.cabinetCraft); drums.add(detailGroups.bankLabels);
   const batches = new Map();
   function batch(group, geometry, mat, position = [0, 0, 0], rotation = [0, 0, 0]) {
     if (geometry.index) { const original = geometry; geometry = original.toNonIndexed(); original.dispose(); }
@@ -70,9 +79,9 @@ export function createProduct({ textures = {} } = {}) {
     if (!batches.has(key)) batches.set(key, { group, mat, geometries: [] });
     batches.get(key).geometries.push(geometry);
   }
-  function box(g, size, mat, pos, radius = .035) { batch(g, new RoundedBoxGeometry(...size, 2, radius), mat, pos); }
-  function cylinder(g, radius, height, mat, pos, rot = [Math.PI / 2, 0, 0], segments = 20) { batch(g, new THREE.CylinderGeometry(radius, radius, height, segments), mat, pos, rot); }
-  function torus(g, radius, tube, mat, pos, rot = [0, 0, 0]) { batch(g, new THREE.TorusGeometry(radius, tube, 6, 32), mat, pos, rot); }
+  function box(g, size, mat, pos, radius = .035, rotation = [0, 0, 0]) { batch(g, new RoundedBoxGeometry(...size, 3, Math.min(radius, Math.min(...size) / 2)), mat, pos, rotation); }
+  function cylinder(g, radius, height, mat, pos, rot = [Math.PI / 2, 0, 0], segments = 32) { batch(g, new THREE.CylinderGeometry(radius, radius, height, segments), mat, pos, rot); }
+  function torus(g, radius, tube, mat, pos, rot = [0, 0, 0]) { batch(g, new THREE.TorusGeometry(radius, tube, 10, 64), mat, pos, rot); }
   function instances(g, geometry, mat, transforms) {
     geometries.add(geometry); const mesh = new THREE.InstancedMesh(geometry, mat, transforms.length);
     mesh.castShadow = mesh.receiveShadow = true;
@@ -85,7 +94,7 @@ export function createProduct({ textures = {} } = {}) {
   for (const x of [-3.62, 3.62]) {
     box(frame, [.36, 5.95, 2.05], mats.paint, [x, 3.34, 0], .05);
     box(frame, [.075, 5.8, .09], mats.edge, [x + Math.sign(x) * .17, 3.35, 1.03], .018);
-    for (let y = .7; y < 6.4; y += .42) cylinder(frame, .034, .03, mats.metal, [x, y, 1.042], undefined, 8);
+    for (let y = .7; y < 6.4; y += .42) cylinder(frame, .034, .03, mats.metal, [x, y, 1.042], undefined, 16);
     for (const y of [1.3, 4.6]) {
       box(frame, [.09, .08, .66], mats.metal, [x + Math.sign(x) * .22, y, 0]);
       for (const z of [-.29, .29]) box(frame, [.09, .32, .08], mats.metal, [x + Math.sign(x) * .22, y, z]);
@@ -99,81 +108,117 @@ export function createProduct({ textures = {} } = {}) {
     box(frame, [.25, .22, .26], mats.metal, [x, .17, z], .025);
     cylinder(frame, .165, .13, mats.dark, [x, .12, z], [0, 0, Math.PI / 2]);
   }
+  // Recessed side-panel seams, hinge barrels and thin inset ventilation slots.
+  // These stay inside the cabinet envelope and move with the frame.
+  const craft = detailGroups.cabinetCraft;
+  for (const side of [-1, 1]) {
+    const x = side * 3.806;
+    box(craft, [.008, 5.47, 1.61], mats.dark, [x, 3.34, -.05], .003);
+    box(craft, [.02, 5.38, 1.52], mats.paint, [x + side * .005, 3.34, -.05], .009);
+    for (let slot = 0; slot < 15; slot++) box(craft, [.008, .026, .62], mats.dark, [x + side * .021, 5.15 + slot * .047, -.18], .003);
+    for (const y of [1.18, 3.34, 5.5]) cylinder(craft, .043, .18, mats.metal, [x + side * .03, y, -.83], [0, 0, 0], 20);
+    for (const y of [.72, 5.96]) for (const z of [-.69, .59]) cylinder(craft, .021, .018, mats.metal, [x + side * .025, y, z], [0, 0, Math.PI / 2], 12);
+    // Diagonal gussets make the cabinet read as a braced machine frame and
+    // echo the 45° presentation used by the exploded view.
+    for (const y of [1.65, 3.95]) {
+      box(craft, [.018, .18, .018], mats.edge, [x - side * .13, y, .76], .006, [0, 0, side > 0 ? Math.PI / 4 : -Math.PI / 4]);
+      box(craft, [.018, .18, .018], mats.edge, [x - side * .13, y, -.76], .006, [0, 0, side > 0 ? -Math.PI / 4 : Math.PI / 4]);
+    }
+  }
+  for (const x of [-.87, .87]) cylinder(craft, .02, .012, mats.metal, [x, 6.43, 1.06], undefined, 16);
   // Small operator-facing controls make the cabinet read as a machine, not a flat drum wall.
   const control = detailGroups.frontControlDeck;
-  box(control, [6.72, .34, .12], mats.edge, [0, .76, 1.055], .035);
-  box(control, [6.36, .08, .035], mats.bronze, [0, .96, 1.12], .015);
+  box(control, [6.72, .25, .12], mats.edge, [0, .6, 1.055], .035);
+  box(control, [6.36, .025, .035], mats.bronze, [0, .742, 1.12], .01);
   for (let col = 0; col < 12; col++) {
     const x = (col - 5.5) * DIM.columnPitch;
-    box(control, [.39, .18, .045], col % 2 ? mats.dark : mats.bakelite, [x, .87, 1.14], .018);
-    cylinder(control, .066, .055, mats.bronze, [x, .91, 1.18], [Math.PI / 2, 0, 0], 16);
-    box(control, [.16, .025, .025], mats.metal, [x, 1.01, 1.18], .006);
+    box(control, [.39, .16, .045], col % 2 ? mats.dark : mats.bakelite, [x, .61, 1.14], .018);
+    cylinder(control, .046, .055, mats.bakelite, [x, .61, 1.18], [Math.PI / 2, 0, 0], 32);
+    torus(control, .048, .008, mats.metal, [x, .61, 1.204]);
+    box(control, [.012, .034, .008], mats.bronze, [x, .62, 1.212], .003);
   }
   for (const x of [-3.22, 3.22]) {
-    box(control, [.18, .26, .08], mats.metal, [x, .84, 1.13], .02);
-    cylinder(control, .035, .11, mats.dark, [x, .91, 1.19], [Math.PI / 2, 0, 0], 12);
+    box(control, [.18, .18, .08], mats.metal, [x, .61, 1.13], .02);
+    cylinder(control, .035, .07, mats.dark, [x, .61, 1.19], [Math.PI / 2, 0, 0], 24);
   }
   // Three status lamps sit above the array and make the machine state legible at a glance.
-  const lampPositions = [-2.55, 0, 2.55].map(x => ({ position: [x, 6.12, 1.08] }));
-  const lampMeshes = instances(detailGroups.indicatorBank, new THREE.SphereGeometry(.095, 16, 10), mats.lamp, lampPositions);
+  const lampPositions = [-2.55, -2.22, -1.89].map(x => ({ position: [x, 6.43, 1.07] }));
+  const lampMeshes = instances(detailGroups.indicatorBank, new THREE.SphereGeometry(.045, 24, 16), mats.lamp, lampPositions);
   lampMeshes.name = 'status-lamps';
-  const lampBezels = instances(detailGroups.indicatorBank, new THREE.TorusGeometry(.12, .018, 6, 20), mats.metal, lampPositions);
+  const lampBezels = instances(detailGroups.indicatorBank, new THREE.TorusGeometry(.06, .012, 10, 32), mats.metal, lampPositions);
   lampBezels.name = 'lamp-bezels';
-  for (const x of [-2.55, 0, 2.55]) {
-    box(detailGroups.indicatorBank, [.68, .045, .035], mats.bronze, [x, 5.9, 1.08], .008);
-    box(detailGroups.indicatorBank, [.055, .16, .025], mats.edge, [x - .24, 6.08, 1.08], .005);
-    box(detailGroups.indicatorBank, [.055, .16, .025], mats.edge, [x + .24, 6.08, 1.08], .005);
+  for (const x of [-2.55, -2.22, -1.89]) {
+    box(detailGroups.indicatorBank, [.12, .012, .016], mats.bronze, [x, 6.34, 1.061], .005);
   }
   // Removable service hatches and real fasteners establish scale at the lower corners.
   for (const x of [-2.75, 2.75]) {
-    box(detailGroups.serviceHatches, [1.18, .58, .045], mats.paint, [x, .92, 1.075], .028);
-    box(detailGroups.serviceHatches, [1.02, .035, .02], mats.edge, [x, 1.13, 1.11], .008);
-    for (const dx of [-.46, .46]) for (const y of [.75, 1.09]) {
-      cylinder(detailGroups.serviceHatches, .027, .025, mats.metal, [x + dx, y, 1.115], [Math.PI / 2, 0, 0], 10);
+    box(detailGroups.serviceHatches, [1.18, .15, .02], mats.paint, [x, .365, 1.04], .009);
+    box(detailGroups.serviceHatches, [1.02, .016, .016], mats.edge, [x, .395, 1.054], .006);
+    for (const dx of [-.46, .46]) for (const y of [.32, .41]) {
+      cylinder(detailGroups.serviceHatches, .027, .025, mats.metal, [x + dx, y, 1.115], [Math.PI / 2, 0, 0], 20);
     }
   }
   // 3 banks × 3 rows × 12 columns. Shared instancing keeps the drum detail inexpensive.
   const positions = [], colorTransforms = { red: [], green: [], gold: [] }, rowColors = ['red', 'green', 'gold'];
+  const scaleMaterial = material({ color: '#ffffff', metalness: .15, roughness: .7, map: textures.bankScale || null });
+  const carrierScrews = [];
   for (let bank = 0; bank < DIM.banks; bank++) {
     const bottom = 1.01 + bank * 1.94;
-    box(drums, [6.75, 1.72, .105], mats.bakelite, [0, bottom + .54, .66], .025);
+    box(drums, [6.75, 1.66, .105], mats.bakelite, [0, bottom + .54, .66], .025);
+    for (const y of [bottom - .285, bottom + 1.365]) {
+      box(drums, [6.7, .03, .018], mats.edge, [0, y, .729], .007);
+      for (const x of [-3.29, 3.29]) carrierScrews.push({ position: [x, y, .744], rotation: [Math.PI / 2, 0, 0] });
+    }
     for (let row = 0; row < DIM.rows; row++) for (let col = 0; col < DIM.columns; col++) {
       const p = [(col - 5.5) * DIM.columnPitch, bottom + row * .535, .935]; positions.push({ position: p, row, bank });
       colorTransforms[rowColors[(row + bank) % 3]].push({ position: [p[0], p[1], .84], rotation: [Math.PI / 2, 0, 0] });
       cylinder(drive, .045, 1.35, mats.metal, [p[0], p[1], .04]);
-      cylinder(drums, .245, .035, mats.dark, [p[0], p[1], .73]);
+      cylinder(drums, .245, .035, mats.dark, [p[0], p[1], .73], undefined, 64);
     }
-    for (let col = 0; col < 12; col++) box(drums, [.17, .055, .015], mats.bronze, [(col - 5.5) * DIM.columnPitch, bottom - .31, .725], .008);
+    batch(detailGroups.bankLabels, new THREE.PlaneGeometry(12 * DIM.columnPitch, .13), scaleMaterial, [0, bottom + 1.372, .75]);
   }
-  for (const [color, transforms] of Object.entries(colorTransforms)) instances(drums, new THREE.CylinderGeometry(DIM.drumRadius, DIM.drumRadius, .235, 40), mats[color], transforms);
-  const faceMesh = instances(drums, new THREE.CircleGeometry(.202, 40), mats.face, positions.map(p => ({ position: [p.position[0], p.position[1], .964] })));
+  instances(drums, new THREE.CylinderGeometry(.02, .02, .018, 16), mats.metal, carrierScrews).name = 'carrier-fasteners';
+  for (const [color, transforms] of Object.entries(colorTransforms)) instances(drums, new THREE.CylinderGeometry(DIM.drumRadius, DIM.drumRadius, .235, 64, 2), mats[color], transforms);
+  const faceMesh = instances(drums, new THREE.CircleGeometry(.202, 64), mats.face, positions.map(p => ({ position: [p.position[0], p.position[1], .964] })));
   faceMesh.name = 'rotor-faces';
+  // The flat UV disc has no thickness. Prevent shadow acne from its own rings
+  // while the solid drums, carriers and hubs retain physical occlusion.
+  faceMesh.receiveShadow = false;
   const faceRingGroup = new THREE.Group(); faceRingGroup.name = 'rotor-face-rings'; detailGroups.rotorDetail.add(faceRingGroup);
   const hubGroup = new THREE.Group(); hubGroup.name = 'rotor-hubs'; detailGroups.rotorDetail.add(hubGroup);
   const contactGroup = new THREE.Group(); contactGroup.name = 'rotor-contact-rings'; detailGroups.rotorDetail.add(contactGroup);
   const indexGroup = new THREE.Group(); indexGroup.name = 'rotor-index-markers'; detailGroups.rotorDetail.add(indexGroup);
   const fastenerGroup = new THREE.Group(); fastenerGroup.name = 'rotor-fasteners'; detailGroups.rotorDetail.add(fastenerGroup);
   const signalGroup = new THREE.Group(); signalGroup.name = 'signal-layer'; detailGroups.rotorSignal.add(signalGroup);
-  const faceRings = instances(faceRingGroup, new THREE.TorusGeometry(.205, .012, 6, 40), mats.bronze, positions.map(p => ({ position: [p.position[0], p.position[1], .97] })));
+  const faceRings = instances(faceRingGroup, new THREE.TorusGeometry(.205, .012, 10, 64), mats.bronze, positions.map(p => ({ position: [p.position[0], p.position[1], .97] })));
   faceRings.name = 'face-ring-instances';
-  const hubs = instances(hubGroup, new THREE.CylinderGeometry(.055, .068, .06, 12), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.005], rotation: [Math.PI / 2, 0, 0] })));
+  const hubs = instances(hubGroup, new THREE.CylinderGeometry(.055, .068, .06, 32, 2), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.005], rotation: [Math.PI / 2, 0, 0] })));
   hubs.name = 'hub-instances';
-  const contactRings = instances(contactGroup, new THREE.TorusGeometry(.184, .006, 6, 24), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.012] })));
+  const contactRings = instances(contactGroup, new THREE.TorusGeometry(.184, .006, 8, 48), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.012] })));
   contactRings.name = 'contact-ring-instances';
   const handles = instances(indexGroup, new RoundedBoxGeometry(.122, .026, .032, 2, .009), mats.metal, positions.map(p => ({ position: [p.position[0], p.position[1], 1.045] })));
   handles.name = 'index-marker-instances';
   const screws = [];
   for (const p of positions) for (let a = 0; a < 8; a++) screws.push({ position: [p.position[0] + Math.cos(a * Math.PI / 4) * .127, p.position[1] + Math.sin(a * Math.PI / 4) * .127, .973], rotation: [Math.PI / 2, 0, 0] });
-  const fasteners = instances(fastenerGroup, new THREE.CylinderGeometry(.009, .009, .01, 6), mats.dark, screws);
+  const fasteners = instances(fastenerGroup, new THREE.CylinderGeometry(.009, .009, .01, 10), mats.dark, screws);
   fasteners.name = 'fastener-instances';
-  const signalPulse = instances(signalGroup, new THREE.TorusGeometry(.238, .009, 6, 28), mats.signalAmber, positions.map(p => ({ position: [p.position[0], p.position[1], 1.02] })));
+  const rimCollars = instances(detailGroups.rotorDetail, new THREE.CylinderGeometry(.226, .226, .025, 64), mats.bronze,
+    positions.map(p => ({ position: [p.position[0], p.position[1], .95], rotation: [Math.PI / 2, 0, 0] })));
+  rimCollars.name = 'rotor-rim-collars';
+  const indexPointers = positions.map(p => ({ position: [p.position[0], p.position[1] + .239, .775] }));
+  const pointerShape = new THREE.Shape().moveTo(-.026, .027).lineTo(.026, .027).lineTo(0, -.014).closePath();
+  instances(detailGroups.rotorDetail, new THREE.ShapeGeometry(pointerShape), mats.bronze, indexPointers).name = 'fixed-index-pointers';
+  const hubSlots = instances(detailGroups.rotorDetail, new RoundedBoxGeometry(.055, .008, .005, 2, .002), mats.dark,
+    positions.map(p => ({ position: [p.position[0], p.position[1], 1.037] })));
+  hubSlots.name = 'hub-lock-slots';
+  const signalPulse = instances(signalGroup, new THREE.TorusGeometry(.238, .009, 8, 56), mats.signalAmber, positions.map(p => ({ position: [p.position[0], p.position[1], 1.02] })));
   signalPulse.name = 'signal-pulse';
   signalPulse.visible = false;
   // Simplified transmission.
   cylinder(drive, .075, 5.3, mats.metal, [3.13, 3.2, -.27], [0, 0, 0]);
   const gearShape = new THREE.Shape();
-  for (let i = 0; i <= 64; i++) {
-    const a = i / 64 * Math.PI * 2, r = i % 4 === 1 || i % 4 === 2 ? .17 : .143;
+  for (let i = 0; i <= 128; i++) {
+    const a = i / 128 * Math.PI * 2, r = i % 8 >= 2 && i % 8 <= 5 ? .17 : .143;
     if (i === 0) gearShape.moveTo(Math.cos(a) * r, Math.sin(a) * r); else gearShape.lineTo(Math.cos(a) * r, Math.sin(a) * r);
   }
   gearShape.closePath(); const gears = [];
@@ -203,8 +248,8 @@ export function createProduct({ textures = {} } = {}) {
     box(board, [.53, 5.03, .1], col % 3 === 0 ? mats.bakelite : mats.dark, [x, 3.35, -.96], .025);
     for (let row = 0; row < 26; row++) { const p = [x, 1.04 + row * .183, -1.043]; sockets.push({ position: p }); pins.push({ position: [p[0], p[1], -1.058], rotation: [0, Math.PI, 0] }); }
   }
-  instances(board, new THREE.TorusGeometry(.05, .011, 6, 12), mats.metal, sockets);
-  instances(board, new THREE.CircleGeometry(.036, 12), mats.dark, pins);
+  instances(board, new THREE.TorusGeometry(.05, .011, 8, 24), mats.metal, sockets);
+  instances(board, new THREE.CircleGeometry(.036, 24), mats.dark, pins);
   for (let i = 0; i < 25; i++) {
     const x1 = ((i % 9) - 4) * .7, x2 = (((i * 4 + 2) % 9) - 4) * .7;
     const y1 = 1.25 + ((i * 7) % 24) * .183, y2 = 1.25 + ((i * 11 + 3) % 24) * .183, d = .25 + (i % 4) * .08;
@@ -243,23 +288,36 @@ export function createProduct({ textures = {} } = {}) {
   function setExplode(value) {
     explode = Number.isFinite(value) ? THREE.MathUtils.clamp(value, 0, 1) : 0;
     for (const part of parts) { part.position.copy(part.userData.basePosition); part.rotation.set(0, 0, 0); }
-    // Reversible choreography: extract along clear axes before rearranging.
-    // 1. Front drums and rear wiring leave the cabinet without lateral motion.
-    drums.position.z = 3 * ramp(explode, 0, .28);
-    board.position.z = -4 * ramp(explode, 0, .28);
-    // 2. Lift the extracted drums; move the drive out through the open back.
-    drums.position.y = 9 * ramp(explode, .28, .62);
-    drive.position.z = -3 * ramp(explode, .28, .58) * (1 - ramp(explode, .9, 1));
-    drive.position.y = 2.5 * ramp(explode, .62, .9);
-    motor.position.z = 6 * ramp(explode, .4, .62);
-    // 3. Park the frame and connections in separate display bays.
-    frame.position.set(-9 * ramp(explode, .62, .88), 3 * ramp(explode, .62, .88), 0);
-    board.position.x = 9 * ramp(explode, .4, .74);
-    board.position.y = 3 * ramp(explode, .62, .88);
-    board.position.z += 4 * ramp(explode, .76, 1);
-    // Rotation starts only after the board is outside the cabinet; its own
-    // centre is the pivot, so it never sweeps through the drive or frame.
-    board.rotation.y = Math.PI * ramp(explode, .76, 1);
+    // Reversible 45° layered choreography. Every system first clears the
+    // cabinet on its own depth axis, then travels along a diagonal shelf.
+    // Keeping equal X/Y components makes the exploded view read as one
+    // deliberate axonometric system instead of five unrelated translations.
+    const extract = ramp(explode, 0, .22);
+    const layer = ramp(explode, .22, .72);
+    const park = ramp(explode, .82, 1);
+    const diag = Math.SQRT1_2;
+    drums.position.z = 3.05 * extract;
+    board.position.z = -4.05 * extract;
+    drums.position.x = 2.7 * diag * layer + 2.7 * diag * park;
+    drums.position.y = 7.6 * layer + 1.8 * park;
+    drums.position.z += 1.25 * layer + 2.35 * park;
+    board.position.x = 9 * layer + 1.3 * park;
+    board.position.y = -2.4 * layer - 1.5 * park;
+    board.position.z += 3.5 * park;
+    drive.position.x = .8 * layer + .8 * park;
+    drive.position.y = -1.2 * layer - 1.2 * park;
+    drive.position.z = -3.4 * layer - 2.6 * park;
+    motor.position.x = -1.2 * layer - 5.8 * park;
+    motor.position.y = -1.2 * layer - 3.8 * park;
+    motor.position.z = 6.8 * layer + 1.2 * park;
+    frame.position.x = -7.2 * park;
+    frame.position.y = 2.4 * park;
+    frame.position.z = -.4 * park;
+    // The connection board presents its copper face at a readable 45° angle
+    // only after it has cleared the other layers. Its pivot correction keeps
+    // the hinge edge stationary during the turn.
+    board.rotation.y = Math.PI * park;
+    board.rotation.z = THREE.MathUtils.degToRad(45) * park;
     rotatedPivot.copy(boardPivot).applyAxisAngle(new THREE.Vector3(0, 1, 0), board.rotation.y);
     board.position.add(boardPivot).sub(rotatedPivot);
     root.updateMatrixWorld(true);
@@ -272,10 +330,11 @@ export function createProduct({ textures = {} } = {}) {
       point.z = 1.012; matrix.compose(point, rotorQ, scale); contactRings.setMatrixAt(i, matrix);
       point.z = 1.045; matrix.compose(point, rotorQ, scale); handles.setMatrixAt(i, matrix);
       hubQ.copy(rotorQ).multiply(hubBaseQ); point.z = 1.005; matrix.compose(point, hubQ, scale); hubs.setMatrixAt(i, matrix);
+      point.z = 1.037; matrix.compose(point, rotorQ, scale); hubSlots.setMatrixAt(i, matrix);
       const pulse = reset ? 1 : .8 + .2 * (.5 + .5 * Math.sin(phase * .05 + p.bank * 1.4 + p.row * .7));
       signalScale.set(pulse, pulse, pulse); point.z = 1.02; matrix.compose(point, rotorQ, signalScale); signalPulse.setMatrixAt(i, matrix);
     });
-    faceMesh.instanceMatrix.needsUpdate = handles.instanceMatrix.needsUpdate = faceRings.instanceMatrix.needsUpdate = hubs.instanceMatrix.needsUpdate = contactRings.instanceMatrix.needsUpdate = signalPulse.instanceMatrix.needsUpdate = true;
+    faceMesh.instanceMatrix.needsUpdate = handles.instanceMatrix.needsUpdate = faceRings.instanceMatrix.needsUpdate = hubs.instanceMatrix.needsUpdate = contactRings.instanceMatrix.needsUpdate = signalPulse.instanceMatrix.needsUpdate = hubSlots.instanceMatrix.needsUpdate = true;
   }
   const rotorAnchors = positions.map((position, index) => {
     const anchor = new THREE.Object3D(); anchor.name = `rotor-anchor-${String(index + 1).padStart(3, '0')}`;
@@ -292,6 +351,14 @@ export function createProduct({ textures = {} } = {}) {
     getRotorAnchor(index = 0) {
       const anchor = rotorAnchors[THREE.MathUtils.clamp(Math.trunc(index), 0, rotorAnchors.length - 1)];
       return anchor ? anchor.getWorldPosition(new THREE.Vector3()) : null;
+    },
+    // Frame a representative centre rotor so the precision view shows the
+    // engraved face and surrounding rim instead of drifting to a corner.
+    getRotorBounds(index = 53) {
+      const anchor = rotorAnchors[THREE.MathUtils.clamp(Math.trunc(index), 0, rotorAnchors.length - 1)];
+      if (!anchor) return null;
+      root.updateMatrixWorld(true);
+      return new THREE.Box3().setFromCenterAndSize(anchor.position, new THREE.Vector3(1.04, .88, .48)).applyMatrix4(drums.matrixWorld);
     },
     getBounds(id) { const part = id ? parts.find(p => p.name === id) : root; return part ? new THREE.Box3().setFromObject(part) : null; },
     dispose() {

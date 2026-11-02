@@ -27,10 +27,15 @@ test('home composes exactly one readable history with an inert app and shared ov
 });
 test('both page headers expose five chapters and brand returns to 00', async () => {
   const doc = document(await home());
+  const expected = [['00', '战时序章'], ['01', '机械全貌'], ['02', '信号实验室'], ['03', '解密挑战'], ['04', '黎明之前']];
   for (const root of ['#application-shell', '#history-page']) {
     assert.equal(doc.querySelector(`${root} .brand`).getAttribute('href'), '#/history');
     assert.deepEqual([...doc.querySelectorAll(`${root} header [data-chapter]`)].map(el => el.dataset.page), ['history', 'exhibit', 'lab', 'challenge', 'mission']);
+    const links = [...doc.querySelectorAll(`${root} header [data-chapter]`)];
+    assert.deepEqual(links.map(link => [link.querySelector('small')?.textContent, link.textContent.replace(link.querySelector('small')?.textContent || '', '').trim()]), expected);
+    assert.ok(links.every(link => !link.querySelector('svg')), `${root} navigation should not add one-off icons`);
   }
+  assert.equal(doc.querySelector('#application-shell #archive-open'), null, 'duplicate archive entry should not appear in the chapter switcher');
   for (const link of doc.querySelectorAll('[data-scene-link]')) assert.equal(link.hasAttribute('data-page'), false);
 });
 test('composition rejects missing or duplicate explicit boundaries rather than guessing at HTML', async () => {

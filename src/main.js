@@ -21,7 +21,7 @@ const dependencies = {
 const $ = selector => document.querySelector(selector);
 const canvas = $('#scene'), viewer = $('#viewer'), status = $('#status');
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
-const state = { target: 0, progress: 0, running: false, cinematic: false, selected: null, focus: null, view: 'three-quarter', follow: true };
+const state = { target: 0, progress: 0, running: false, cinematic: false, precision: false, selected: null, focus: null, view: 'three-quarter', follow: true };
 const cleanups = [];
 function on(el, type, fn, options) { el.addEventListener(type, fn, options); cleanups.push(() => el.removeEventListener(type, fn, options)); }
 const announce = message => { status.textContent = message; };
@@ -63,11 +63,16 @@ function updateNotes() {
 function frameCamera(immediate = motion.matches) {
   if (!stage || !product) return;
   const focus = state.focus;
+  if (state.precision && product.getRotorBounds) {
+    stage.frameBounds(product.getRotorBounds(53), stage.camera?.aspect < 1 ? 'front' : 'three-quarter', state.progress, true, immediate);
+    return;
+  }
   stage.frameBounds(product.getBounds(focus), state.view, state.progress, Boolean(focus), immediate);
 }
 function selectPart(id, navigate = true) {
   const record = id ? PARTS.find(p => p.id === id) : null; if (id && !record) return;
   state.selected = id;
+  if (navigate || !id) state.precision = false;
   if (navigate || !id) {
     state.focus = id && state.target > .01 ? id : null;
     state.follow = true; state.view = id === 'board' && state.target === 0 ? 'back' : 'three-quarter';
@@ -91,18 +96,29 @@ function sync() {
   $('#run').setAttribute('aria-pressed', String(state.running)); $('#run-label').textContent = motion.matches ? '转动一步' : state.running ? '暂停演示' : '运转演示';
   const cinematicButton = $('#cinematic');
   if (cinematicButton) { cinematicButton.setAttribute('aria-pressed', String(state.cinematic)); $('#cinematic-label').textContent = state.cinematic ? '停止运镜' : motion.matches ? '定位转子' : '影院运镜'; }
-  $('#view-label').textContent = state.focus && exploded ? '部件特写' : exploded ? '分件总览' : '装配视图';
+  $('#view-label').textContent = state.precision ? '鼓轮细节' : state.focus && exploded ? '部件特写' : exploded ? '分件总览' : '装配视图';
+  $('#precision-view')?.setAttribute('aria-pressed', String(state.precision));
+  if ($('#precision-label')) $('#precision-label').textContent = state.precision ? '返回整机' : '近看鼓轮';
+  viewer.classList.toggle('is-precision', state.precision);
   $('#simulation').hidden = !state.running && !(motion.matches && product?.phase > 0);
   $('#overview').setAttribute('aria-pressed', String(!state.focus && exploded));
   document.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === state.view)));
   if (stage) stage.controls.enableDamping = !motion.matches;
 }
 function setExplode(value) {
-  state.target = THREE.MathUtils.clamp(Number(value) || 0, 0, 1); state.focus = null; state.follow = true; sync();
+  state.target = THREE.MathUtils.clamp(Number(value) || 0, 0, 1); state.focus = null; state.precision = false; state.follow = true; sync();
   if (motion.matches && product && stage) { state.progress = state.target; product.setExplode(state.progress); frameCamera(true); }
 }
-function setView(view) { state.view = view; state.follow = true; frameCamera(); sync(); }
-function overview() { state.focus = null; state.view = 'three-quarter'; state.follow = true; frameCamera(); sync(); }
+function setView(view) { state.precision = false; state.view = view; state.follow = true; frameCamera(); sync(); }
+function overview() { state.precision = false; state.focus = null; state.view = 'three-quarter'; state.follow = true; frameCamera(); sync(); }
+function precisionToggle() {
+  if (!product || !stage) return;
+  const precision = !state.precision;
+  cinematic?.stop(); state.cinematic = false;
+  selectPart(null, false); state.precision = precision; state.follow = true;
+  frameCamera(); sync();
+  announce(precision ? '已进入鼓轮近观，可检查字母刻度、定位指针与金属轮毂。' : '已返回完整结构总览。');
+}
 function readout() {
   if (product) $('#rotor-readout').textContent = [1, 26, 676].map(d => String.fromCharCode(65 + Math.floor(product.phase / d / (Math.PI * 2) * 26) % 26)).join(' ');
 }
@@ -115,16 +131,16 @@ function run() {
 function cinematicToggle() {
   if (!cinematic) return;
   if (state.cinematic) { cinematic.stop(); state.cinematic = false; announce('影院运镜已停止，保留当前观察角度。'); }
-  else { cinematic.start(); state.cinematic = cinematic.isActive; announce(motion.matches ? '已定位到转子特写。' : '影院运镜已开始，镜头将依次经过转子、传动与接线。'); }
+  else { state.precision = false; state.follow = false; stage?.stopCamera?.(); cinematic.start(); state.cinematic = cinematic.isActive; announce(motion.matches ? '已定位到转子特写。' : '影院运镜已开始，镜头将依次经过转子、传动与接线。'); }
   sync();
 }
 function reset() {
-  Object.assign(state, { target: 0, running: false, cinematic: false, focus: null, view: 'three-quarter', follow: true });
+  Object.assign(state, { target: 0, running: false, cinematic: false, precision: false, focus: null, view: 'three-quarter', follow: true });
   cinematic?.stop();
   product?.resetMotion(); selectPart(null, false); setExplode(0); readout(); announce('已恢复完整装配，部件标记已隐藏。');
 }
 function openNote() { updateNotes(); $('#note-dialog').showModal(); $('#note-dialog').scrollTop = 0; }
-for (const [button, dialog] of [['#archive-open', '#archive-dialog'], ['#story-open', '#archive-dialog'], ['#help-open', '#help-dialog']]) on($(button), 'click', () => $(dialog).showModal());
+for (const [button, dialog] of [['#story-open', '#archive-dialog'], ['#help-open', '#help-dialog']]) on($(button), 'click', () => $(dialog).showModal());
 document.querySelectorAll('dialog').forEach(dialog => {
   on(dialog.querySelector('[data-close]'), 'click', () => dialog.close());
   on(dialog, 'click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
@@ -137,6 +153,7 @@ on($('#overview'), 'click', overview); on($('#clear-selection'), 'click', () => 
 on($('#explode'), 'click', () => { setExplode(state.target > 0 ? 0 : 1); announce(state.target ? '正在按顺序抽离并分区展示五个系统。' : '正在按原路径合拢机器。'); });
 on($('#explode-range'), 'input', event => setExplode(Number(event.target.value) / 100));
 on($('#run'), 'click', run); on($('#cinematic'), 'click', cinematicToggle); on($('#reset'), 'click', reset);
+if ($('#precision-view')) on($('#precision-view'), 'click', precisionToggle);
 for (const [id, direction] of [['#zoom-in', 1], ['#zoom-out', -1]]) on($(id), 'click', () => { state.follow = false; stage?.zoom(direction); });
 on(window, 'keydown', event => {
   if (currentPage !== 'exhibit' || navigation?.busy) return;
@@ -226,7 +243,7 @@ function frame(now) {
     const p = state.progress;
     $('#assembly-progress').hidden = p === 0 || Boolean(state.focus);
     $('#assembly-step').textContent = p < .28 ? '01' : p < .62 ? '02' : p < .999 ? '03' : '✓';
-    $('#assembly-caption').textContent = p < .28 ? '前后抽离 · 释放安装空间' : p < .62 ? '依次取出 · 保留安全间距' : p < .999 ? '独立分区 · 在空位中翻面' : '五系统独立陈列 · 点击目录进入特写';
+    $('#assembly-caption').textContent = p < .22 ? '轴向抽离 · 释放安装空间' : p < .72 ? '45° 分层 · 沿斜向轨道展开' : p < .999 ? '独立分区 · 连接板转正展示' : '五系统斜向陈列 · 点击目录进入特写';
     if (state.selected && !$('#hotspot').hidden) {
       const anchor = product.getAnchor(state.selected).project(stage.camera), width = viewer.clientWidth, height = viewer.clientHeight;
       const visible = anchor.z > -1 && anchor.z < 1 && Math.abs(anchor.x) < .94 && Math.abs(anchor.y) < .92;
@@ -243,7 +260,7 @@ function dispose() {
   cleanups.forEach(fn => fn()); mobileDetail.remove(); delete window.__BOMBE_INSPECT__;
 }
 on(window, 'pagehide', event => { if (!event.persisted) dispose(); });
-window.__BOMBE_INSPECT__ = () => ({ ...state, page: currentPage, navigating: navigation?.busy || false, phase: product?.phase, drums: product?.drumCount, reducedMotion: motion.matches, calls: stage?.renderer?.info.render.calls, triangles: stage?.renderer?.info.render.triangles, geometries: stage?.renderer?.info.memory.geometries, textures: stage?.renderer?.info.memory.textures, camera: stage?.camera?.position.toArray(), cameraTarget: stage?.controls.target?.toArray(), ready: Boolean(stage && product), contextLost });
+window.__BOMBE_INSPECT__ = () => ({ ...state, page: currentPage, navigating: navigation?.busy || false, phase: product?.phase, drums: product?.drumCount, reducedMotion: motion.matches, rendering: stage?.inspect?.(), calls: stage?.renderer?.info.render.calls, triangles: stage?.renderer?.info.render.triangles, geometries: stage?.renderer?.info.memory.geometries, textures: stage?.renderer?.info.memory.textures, camera: stage?.camera?.position.toArray(), cameraTarget: stage?.controls.target?.toArray(), ready: Boolean(stage && product), contextLost });
 updateNotes(); sync(); raf = requestAnimationFrame(frame);
 navigation = dependencies.createNavigation({
   initialRoute,
@@ -277,7 +294,6 @@ navigation = dependencies.createNavigation({
     currentPage = route.page;
     if (route.page === 'history') historyPage?.activate(); else historyPage?.deactivate();
     // Root visibility/inert belongs exclusively to navigation, never preparation.
-    $('#archive-open').hidden = route.page !== 'exhibit';
     const skip = $('.skip-link');
     skip.href = route.page === 'history' ? '#hero-title' : route.page === 'challenge' ? '#quest-question' : route.page === 'lab' ? '#lab-keyboard' : '#controls';
     skip.textContent = route.page === 'history' ? '跳至战时序章' : route.page === 'challenge' ? '跳至本关任务' : route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';

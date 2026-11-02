@@ -17,6 +17,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   await cp('assets/history', 'dist/assets/history', { recursive: true });
   await copyFile('palette.css', 'dist/palette.css');
   await copyFile('exhibition-ui.css', 'dist/exhibition-ui.css');
+  await copyFile('exhibit-precision.css', 'dist/exhibit-precision.css');
   await copyFile('styles.css', 'dist/styles.css');
   await copyFile('lab.css', 'dist/lab.css');
   await copyFile('challenge.css', 'dist/challenge.css');

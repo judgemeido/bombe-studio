@@ -25,8 +25,9 @@ body[data-page="history"], body[data-history-preview] { margin: 0; background: #
 :where([data-history-preview]) .brand small { display: block; font: 10px/1.6 var(--sans); letter-spacing: 1px; color: #BDC6C8; margin-top: 3px; }
 :where([data-history-preview]) .archive-mark { display: flex; gap: 3px; padding: 9px 7px; border: 1px solid #83918D; border-radius: 2px; }
 :where([data-history-preview]) .archive-mark i { height: 24px; width: 8px; border: 1px solid var(--brass); border-radius: 50%; }
-:where([data-history-preview]) .archive-chapters { display: flex; align-items: center; gap: 30px; }
-:where([data-history-preview]) .archive-chapters a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-size: 13px; color: #C2CBCB; position: relative; }
+:where([data-history-preview]) .archive-chapters { display: flex; align-items: center; gap: 24px; }
+:where([data-history-preview]) .archive-chapters a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; text-decoration: none; font-size: 12px; color: #C2CBCB; position: relative; }
+:where([data-history-preview]) .archive-chapters a small { font: 9px monospace; color: #C2CBCB; }
 :where([data-history-preview]) .archive-chapters a[aria-current="page"] { color: #F0EFE8; }
 :where([data-history-preview]) .archive-chapters a[aria-current="page"]::after { content: ''; position: absolute; height: 2px; background: var(--brass); bottom: 2px; left: 0; right: 0; }
 :where([data-history-preview]) .masthead a:focus-visible, :where([data-history-preview]) .archive-cover a:focus-visible, :where([data-history-preview]) .archive-cover summary:focus-visible, :where([data-history-preview]) .closing a:focus-visible { outline-color: var(--brass); }

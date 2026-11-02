@@ -1,0 +1,56 @@
+/* Chapter 01 only. Keep the archive palette; sharpen the instrument vocabulary. */
+#exhibit-page .exhibit-facts {
+  display: grid; width: 100%; grid-template-columns: repeat(3, 1fr); margin: 8px 0 28px;
+  padding: 18px 0; border-block: 1px solid var(--archive-rule);
+}
+#exhibit-page .exhibit-facts div { display: flex; flex-direction: column-reverse; gap: 6px; }
+#exhibit-page .exhibit-facts div + div { padding-left: 18px; border-left: 1px solid var(--archive-rule); }
+#exhibit-page .exhibit-facts dt { font-size: 11px; color: var(--archive-muted); letter-spacing: 1px; }
+#exhibit-page .exhibit-facts dd { margin: 0; font: 28px/1.15 Georgia, serif; font-variant-numeric: lining-nums; color: var(--archive-ink); }
+#exhibit-page .part-card { border-radius: 8px; box-shadow: none; background: linear-gradient(130deg, var(--archive-raised), var(--archive-paper)); }
+#exhibit-page .viewer { border-radius: 10px; border-color: #536b7555; box-shadow: 0 12px 32px #1426330a, inset 0 0 0 1px #e4e7e206; }
+#exhibit-page .viewer-grid { opacity: .2; }
+#exhibit-page .background-type { font-size: clamp(100px, 14vw, 190px); opacity: .022; }
+#exhibit-page .precision-view {
+  position: absolute; z-index: 3; left: 24px; bottom: 68px;
+  display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 7px 12px;
+  border: 1px solid #b69a6755; border-radius: 5px; background: #142633cc;
+  color: var(--archive-paper); font-size: 12px; letter-spacing: .5px;
+  transition: background .2s, border-color .2s;
+}
+#exhibit-page .precision-view:hover { background: #29414fe6; border-color: var(--archive-brass); }
+#exhibit-page .precision-view[aria-pressed="true"] { color: var(--archive-sea); background: var(--archive-brass); }
+#exhibit-page .precision-view svg { width: 12px; height: 12px; margin-left: 4px; }
+#exhibit-page .precision-cross { font-size: 21px; line-height: 1; color: var(--archive-brass); }
+#exhibit-page .precision-view[aria-pressed="true"] .precision-cross { color: var(--archive-sea); }
+#exhibit-page .precision-caption { position: absolute; right: 24px; bottom: 80px; color: #f0efe867; font: 10px/1.4 Consolas, monospace; letter-spacing: 1.7px; pointer-events: none; }
+#exhibit-page .precision-caption i { font-style: normal; color: var(--archive-brass); margin: 0 7px; }
+#exhibit-page .console { border-radius: 8px; box-shadow: none; }
+#exhibit-page .parts-list button { border: 1px solid transparent; font-size: 13px; }
+#exhibit-page .parts-list button span { font-family: Consolas, monospace; color: var(--archive-copper-ink); font-size: 10px; }
+#exhibit-page .parts-list button:hover { border-color: var(--archive-rule); }
+#exhibit-page .range-row input { accent-color: var(--archive-copper-ink); }
+#exhibit-page .clear-selection { bottom: 122px; }
+@media (min-width: 1000px) and (min-height: 680px) {
+  #exhibit-page .console { grid-template-columns: minmax(280px, 1fr) minmax(150px, .65fr) auto; gap: 14px; }
+  #exhibit-page .exhibit-facts { padding: 15px 0; margin-bottom: 24px; }
+  #exhibit-page .intro { scrollbar-gutter: auto; }
+  #exhibit-page .primary-button, #exhibit-page .run-button { padding-inline: 12px; white-space: nowrap; }
+}
+@media (min-width: 1000px) and (max-width: 1199px) and (min-height: 680px) {
+  #exhibit-page .console { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  #exhibit-page .parts-section { grid-column: 1 / -1; }
+  #exhibit-page .explode-section { grid-column: 1; border-left: 0; padding-left: 0; }
+  #exhibit-page .action-section { grid-column: 2; justify-content: flex-end; }
+  #exhibit-page .exhibit-facts { padding-block: 10px; margin-block: 0 16px; }
+}
+@media (max-width: 760px) {
+  #exhibit-page .exhibit-facts { grid-column: 1 / -1; margin: 4px 0 0; padding: 12px 0; }
+  #exhibit-page .exhibit-facts div { align-items: center; }
+  #exhibit-page .exhibit-facts div + div { padding-left: 0; }
+  #exhibit-page .exhibit-facts dd { font-size: 25px; }
+  #exhibit-page .precision-view { left: 16px; bottom: 54px; font-size: 11px; }
+  #exhibit-page .precision-caption { display: none; }
+  #exhibit-page .clear-selection { bottom: 99px; }
+  #exhibit-page .viewer.is-precision .gesture { font-size: 10px; }
+}

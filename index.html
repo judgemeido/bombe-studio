@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#142633"><meta name="description" content="18节历史档案，从海上通信、波兰先驱到Bombe的诞生；走进可拆解的三维展品、信号实验室与六关解密挑战。">
   <title>00 战时序章 · 译码档案</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23142633'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23F0EFE8' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23B69A67'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="palette.css"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="history-preview.css"><link rel="stylesheet" href="lab.css"><link rel="stylesheet" href="challenge.css"><link rel="stylesheet" href="mission.css"><link rel="stylesheet" href="exhibition-ui.css"><script type="module" src="dist/bootstrap.js"></script>
+  <link rel="stylesheet" href="palette.css"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="history-preview.css"><link rel="stylesheet" href="lab.css"><link rel="stylesheet" href="challenge.css"><link rel="stylesheet" href="mission.css"><link rel="stylesheet" href="exhibition-ui.css"><link rel="stylesheet" href="exhibit-precision.css"><script type="module" src="dist/bootstrap.js"></script>
 </head>
 <body data-page="history">
 <!-- APP-SHELL:START -->
@@ -22,7 +22,7 @@
   <header class="site-header">
     <a class="brand" href="#/history" data-page="history" aria-label="译码档案首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>译码档案<small>DECODED ARCHIVE</small></span></a>
     <div class="header-center"><span class="live-dot"></span> 机械的记忆，逻辑的形状。</div>
-    <nav aria-label="展馆导航"><div class="chapter-nav"><a href="#/history" data-page="history" data-chapter="history" aria-current="page"><small>00</small>战时序章</a><a href="#/" data-page="exhibit" data-chapter="exhibit"><small>01</small>机械全貌</a><a href="#/lab/drums" data-page="lab" data-topic="drums" data-chapter="lab"><small>02</small>信号实验室</a><a href="#/challenge" data-page="challenge" data-chapter="challenge"><small>03</small>解密挑战 <svg><use href="#arrow"/></svg></a><a href="#/mission" data-page="mission" data-chapter="mission"><small>04</small>黎明之前</a></div><button id="archive-open" class="text-button">展品档案 <svg><use href="#arrow"/></svg></button></nav>
+    <nav aria-label="展馆导航"><div class="chapter-nav"><a href="#/history" data-page="history" data-chapter="history" aria-current="page"><small>00</small>战时序章</a><a href="#/" data-page="exhibit" data-chapter="exhibit"><small>01</small>机械全貌</a><a href="#/lab/drums" data-page="lab" data-topic="drums" data-chapter="lab"><small>02</small>信号实验室</a><a href="#/challenge" data-page="challenge" data-chapter="challenge"><small>03</small>解密挑战</a><a href="#/mission" data-page="mission" data-chapter="mission"><small>04</small>黎明之前</a></div></nav>
   </header>
 
   <main id="exhibit-page">
@@ -34,6 +34,7 @@
         <h2>拆开机器，看见逻辑。</h2>
         <p class="intro-copy">当逻辑成为齿轮，推理开始旋转。<br>走近二战时期的机电破译机，<br>看见藏在钢铁与接线之间的智慧。</p>
         <button class="archive-link" id="story-open">读懂它的故事 <span>↗</span></button>
+        <dl class="exhibit-facts" aria-label="展品结构概览"><div><dt>鼓轮</dt><dd>108</dd></div><div><dt>转子组</dt><dd>36</dd></div><div><dt>可拆系统</dt><dd>05</dd></div></dl>
 
         <button class="part-card note-trigger" id="note-open" aria-haspopup="dialog" aria-controls="note-dialog">
           <span class="part-kicker"><span><i id="part-swatch"></i>结构笔记</span><span><b id="part-number">00</b> / 05</span></span>
@@ -55,6 +56,8 @@
         <button class="clear-selection" id="clear-selection" hidden aria-label="取消部件选择">取消选择 <span>×</span></button>
         <div class="viewer-tools" role="group" aria-label="视图工具"><button id="zoom-in" aria-label="放大模型">+</button><button id="zoom-out" aria-label="缩小模型">−</button><span></span><button id="reset" aria-label="重置全部状态" title="重置（R）"><svg><use href="#reset-icon"/></svg></button></div>
         <div class="viewer-bottom"><span class="gesture"><svg><use href="#drag"/></svg>拖动旋转 <i>·</i> 滚轮缩放 <i>·</i> 点击部件</span><span class="render-badge"><span></span>实时 3D</span></div>
+        <button id="precision-view" class="precision-view" aria-pressed="false"><span class="precision-cross" aria-hidden="true">⌖</span><span id="precision-label">近看鼓轮</span><svg><use href="#arrow"/></svg></button>
+        <span class="precision-caption" aria-hidden="true">B–01 <i>/</i> STRUCTURAL STUDY</span>
         <div class="simulation" id="simulation" hidden><span class="live-dot"></span><span>示意转位</span><b id="rotor-readout">A A A</b><small>非实际密码运算</small></div>
       </div>
     </section>

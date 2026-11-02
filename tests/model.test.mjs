@@ -64,6 +64,17 @@ test('rotor details expose component counts and animate as one phase', () => {
   product.dispose();
 });
 
+test('precision bounds target a representative centre rotor at close range', () => {
+  const product = createProduct();
+  const bounds = product.getRotorBounds();
+  const center = bounds.getCenter(new THREE.Vector3());
+  const rotor = product.getRotorAnchor(53);
+  assert.ok(center.distanceTo(rotor) < .001);
+  assert.ok(bounds.getSize(new THREE.Vector3()).x < 1.1);
+  assert.ok(bounds.getSize(new THREE.Vector3()).y < .9);
+  product.dispose();
+});
+
 test('repeated explode and restore preserve base transforms without drift', () => {
   const product = createProduct();
   const base = product.parts.map(p => p.position.clone());
