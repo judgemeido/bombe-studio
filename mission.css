@@ -188,8 +188,6 @@ body[data-page="mission"] #application-shell>.site-header .chapter-nav a[aria-cu
   #application-shell>.site-header nav { min-width:0; flex-basis:100%; width:100%; }
   #application-shell>.site-header .chapter-nav { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); width:100%; gap:4px; }
   #application-shell>.site-header .chapter-nav a { flex-direction:column; align-items:center; justify-content:center; gap:3px; min-height:48px; padding:5px 0; font-size:10px; white-space:nowrap; }
-  #application-shell>.site-header .chapter-nav a svg { display:none; }
-  #application-shell>.site-header #archive-open { display:none; }
   #mission-page { padding:0 5%; }
   #mission-page .mission-header { flex-direction:column; padding:26px 0 21px; align-items:stretch; gap:16px; }
   #mission-page #mission-heading { font-size:35px; }

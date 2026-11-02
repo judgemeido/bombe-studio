@@ -43,14 +43,9 @@ export function createMissionProps(craft, mats) {
   }
   function deskLamp(name, pos, parent, scale = 1) {
     const g = group(name, pos, parent); g.scale.setScalar(scale);
-    cylinder(.19, .05, [0, 0, 0], dark, g);
-    cylinder(.035, .66, [0, .35, 0], brass, g, 20);
-    const arm = cylinder(.024, .38, [0, .68, -.16], brass, g, 20); arm.rotation.x = Math.PI / 2;
-    mesh(new THREE.SphereGeometry(.3, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), green, [0, .75, -.23], g).scale.set(1.25, .63, .75);
-    ring(.3, .012, [0, .75, -.23], brass, g).rotation.x = Math.PI / 2;
-    const glow = craft.material('#ffe6b1', .4); glow.emissive.set('#ffd18b'); glow.emissiveIntensity = 1.2;
-    mesh(new THREE.SphereGeometry(.045, 12, 8), glow, [0, .72, -.23], g);
-    cable([[0, 0, .1], [.3, -.02, .23], [.57, -.05, .2], [.65, -.38, .15]], .012, rubber, g);
+    // Keep the named anchor for room layout and interaction contracts, but do
+    // not ship the low-detail bulb/shade assembly in the 04 scene.
+    g.userData.removedFixture = true;
     return g;
   }
   function phone(name, pos, parent) {

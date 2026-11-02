@@ -5,8 +5,9 @@ import { fitCamera } from './framing.js';
 import { createPostStack } from './post.js';
 export function createStage(canvas, container) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.23;
+  renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.08;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.info.autoReset = false;
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(33, 1, .1, 220), target = new THREE.Vector3(0, 3.2, 0);
   camera.position.set(9.2, 6.6, 16.5);
   const controls = new OrbitControls(camera, canvas); controls.target.copy(target); controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = .07;
@@ -19,15 +20,15 @@ export function createStage(canvas, container) {
       scene.environment = next.texture; environment = next; previous?.dispose();
     } finally { envScene.dispose(); pmrem.dispose(); }
   }
-  restoreEnvironment(); scene.environmentIntensity = .85;
+  restoreEnvironment(); scene.environmentIntensity = .62;
   // Render-target contents are lost with the context; regenerate the reflection
   // environment after Three.js restores its renderer, before the next frame.
   canvas.addEventListener('webglcontextrestored', restoreEnvironment);
-  scene.add(new THREE.HemisphereLight(0xf0efe8, 0x56616a, 2));
-  const key = new THREE.DirectionalLight(0xfff4de, 3.5); key.position.set(-6, 12, 10); key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+  scene.add(new THREE.HemisphereLight(0xf0efe8, 0x56616a, .95));
+  const key = new THREE.DirectionalLight(0xfff4de, 3.1); key.position.set(-6, 12, 10); key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
   Object.assign(key.shadow.camera, { left: -22, right: 22, top: 22, bottom: -22, near: .1, far: 70 }); key.shadow.normalBias = .025; key.shadow.bias = -.0002; key.shadow.radius = 4; scene.add(key);
-  const fill = new THREE.DirectionalLight(0xe4e7e2, 2.2); fill.position.set(8, 6, -4); scene.add(fill);
-  const rim = new THREE.DirectionalLight(0xffefd2, 1.6); rim.position.set(-4, 7, -6); scene.add(rim);
+  const fill = new THREE.DirectionalLight(0xe4e7e2, .95); fill.position.set(8, 6, -4); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffefd2, 1.05); rim.position.set(-4, 7, -6); scene.add(rim);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.ShadowMaterial({ color: 0x233641, opacity: .13 }));
   floor.rotation.x = -Math.PI / 2; floor.position.y = -.07; floor.receiveShadow = true; scene.add(floor);
   const shadowCanvas = document.createElement('canvas'); shadowCanvas.width = shadowCanvas.height = 128;
@@ -40,7 +41,7 @@ export function createStage(canvas, container) {
   controls.addEventListener('start', () => { pose = null; });
   function resize() {
     const { width, height } = container.getBoundingClientRect(); if (!width || !height) return;
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, width < 600 ? 1.5 : 1.75)); renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix(); post.resize();
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, width < 600 ? 1.5 : 2)); renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix(); post.resize();
   }
   const observer = new ResizeObserver(resize); observer.observe(container); resize(); controls.update();
   return {
@@ -51,6 +52,7 @@ export function createStage(canvas, container) {
     },
     zoom(direction) { pose = null; const radius = camera.position.distanceTo(controls.target), next = THREE.MathUtils.clamp(radius * (direction > 0 ? .85 : 1.18), 3, 140); camera.position.sub(controls.target).multiplyScalar(next / radius).add(controls.target); controls.update(); },
     setCinematic(controller) { cinematic = controller || null; },
+    stopCamera() { pose = null; },
     interruptCamera() { cinematic?.interrupt(); },
     update(dt, immediate, running = false) {
       cinematic?.update(dt);
@@ -63,7 +65,7 @@ export function createStage(canvas, container) {
         controls.target.lerp(pose.target, t); camera.position.setFromSpherical(orbit).add(controls.target);
         if (camera.position.distanceTo(pose.position) < .005) { camera.position.copy(pose.position); controls.target.copy(pose.target); pose = null; }
       }
-      controls.update(dt); post.setRunning(running); rim.intensity = running ? 2.1 : 1.6; post.render(dt);
+      controls.update(dt); post.setRunning(running); rim.intensity = running ? 1.25 : 1.05; post.render(dt);
     },
     inspect() { return { post: post.inspect(), calls: renderer.info.render.calls, triangles: renderer.info.render.triangles }; },
     dispose() { observer.disconnect(); canvas.removeEventListener('webglcontextrestored', restoreEnvironment); cinematic = null; post.dispose(); controls.dispose(); key.shadow.map?.dispose(); environment.dispose(); floor.geometry.dispose(); floor.material.dispose(); contact.geometry.dispose(); contact.material.dispose(); contactTexture.dispose(); renderer.dispose(); },

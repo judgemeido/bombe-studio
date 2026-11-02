@@ -12,7 +12,7 @@ export function createMissionArchitecture(craft, root, mats) {
   const trim = material('#343f38', .66, .08, 'paint');
   const glass = material('#718f9a', .31, .16);
   glass.emissive.set('#7593a0'); glass.emissiveIntensity = .42;
-  const warm = material('#ffe0a2', .35); warm.emissive.set('#ffc778'); warm.emissiveIntensity = 1.1;
+    const warm = material('#ffe0a2', .35); warm.emissive.set('#ffc778'); warm.emissiveIntensity = 1.1;
   function group(name, pos, parent = root) {
     const g = new THREE.Group(); g.name = name; g.position.set(...pos); parent.add(g); return g;
   }
@@ -85,10 +85,9 @@ export function createMissionArchitecture(craft, root, mats) {
     anchors[spec.id] = anchor;
     zones.push({ ...spec, index, name: spec.id, label: spec.title, position: spec.pos.slice(), size: spec.size.slice(), group: g, anchor, doorway });
     const fixture = group(`fixture-${spec.id}`, [-1.9, 3.1, -.9], g);
-    cylinder(.012, .43, [0, .23, 0], brass, fixture, 12);
-    const shade = craft.mesh(new THREE.ConeGeometry(.38, .2, 32, 1, true), trim, [0, 0, 0], fixture);
-    shade.material.side = THREE.DoubleSide;
-    cylinder(.22, .025, [0, -.105, 0], warm, fixture, 24);
+    // Preserve a light anchor for illumination, while removing the visible
+    // bulb/shade geometry that made every room read like a low-detail prop set.
+    fixture.userData.removedFixture = true;
     practicals.push(group(`light-${spec.id}`, [0, -.16, 0], fixture));
     // Back windows have their own reveal, sill and mullions. Archive/analysis
     // reserve the centre for the rear connecting doors.

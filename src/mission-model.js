@@ -9,11 +9,13 @@ export function createMissionModel({ labelTexture } = {}) {
   const root = new THREE.Group();
   const craft = createMissionCraft(labelTexture);
   const { material, box, cylinder, ring, cable, text, screw, mesh } = craft;
-  const wood = material('#65402c', .51, 0, 'wood'), walnut = material('#35271d', .6, 0, 'wood');
-  const dark = material('#111b1c', .47, .3, 'paint'), steel = material('#8c9691', .32, .78);
-  const brass = material('#ac8650', .37, .76), ivory = material('#e3d7af', .59), green = material('#3b5145', .48, .35, 'paint');
-  const wall = material('#21333a', .88, 0, 'paint'), rubber = material('#1b2020', .92), copper = material('#98714c', .52, .55);
-  const paperMat = material('#cfc4a1', .96), leather = material('#273e36', .93, 0, 'paint');
+  // A restrained night-shift palette: cooler painted steel, deep green panels,
+  // aged brass and paper accents. The materials are shared and batched by craft.
+  const wood = material('#4d3b30', .56, 0, 'wood'), walnut = material('#202b2b', .62, 0, 'wood');
+  const dark = material('#0d171b', .5, .32, 'paint'), steel = material('#71888b', .3, .82);
+  const brass = material('#b4915f', .4, .72), ivory = material('#d7cfb0', .62), green = material('#2f5148', .45, .38, 'paint');
+  const wall = material('#17272d', .9, 0, 'paint'), rubber = material('#131a1b', .94), copper = material('#8b6648', .55, .52);
+  const paperMat = material('#c8bea1', .97), leather = material('#213b3a', .92, 0, 'paint');
   function group(name, pos, parent = root) { const g = new THREE.Group(); g.name = name; g.position.set(...pos); parent.add(g); return g; }
   function frontCylinder(r, depth, pos, mat, parent, segments = 32) { const c = cylinder(r, depth, pos, mat, parent, segments); c.rotation.x = Math.PI / 2; return c; }
 
@@ -83,6 +85,16 @@ export function createMissionModel({ labelTexture } = {}) {
     text(['I', 'II', 'III'][i], .17, .07, [x, .333, -.22], enigma, { flat: true });
   }
   for (const x of [-.98, .98]) for (const z of [-.87, .13, .89]) screw(x, .252, z, steel, rubber, enigma, true);
+  // Precision kit: recessed face seams, panel fasteners and a rigid keyboard
+  // rail give the teaching machine a manufactured, serviceable construction.
+  const enigmaPrecision = group('enigma-precision', [0, 0, 0], enigma);
+  box([1.84, .018, .018], [0, .335, -.9], brass, enigmaPrecision, .004, 'upper-face-rail');
+  box([1.84, .018, .018], [0, .335, .62], brass, enigmaPrecision, .004, 'lower-face-rail');
+  for (const x of [-.88, .88]) for (const z of [-.82, .55]) screw(x, .35, z, brass, dark, enigmaPrecision, true, .021);
+  for (const x of [-.92, -.46, 0, .46, .92]) box([.018, .018, .33], [x, .35, -.13], steel, enigmaPrecision, .003, 'keyboard-divider');
+  box([.06, .34, .035], [-1.03, .16, -.05], steel, enigmaPrecision, .008, 'left-side-seam');
+  box([.06, .34, .035], [1.03, .16, -.05], steel, enigmaPrecision, .008, 'right-side-seam');
+  text('M3  /  FIELD UNIT', .58, .09, [0, .355, -.77], enigmaPrecision, { background: '#b4915f', color: '#17272d' });
   const rows = ['QWERTZUIO', 'ASDFGHJK', 'PYXCVBNML'], keys = [], lamps = [], sockets = new Map();
   box([1.94, .016, .43], [0, .253, -.012], dark, enigma, .022);
   const plugboard = group('plugboard', [0, -.025, 1.062], enigma);
@@ -157,16 +169,11 @@ export function createMissionModel({ labelTexture } = {}) {
   for (const x of [-.35, 0, .35]) frontCylinder(.022, .014, [x, -.87, .348], x ? brass : ivory, checker, 16);
   for (let i = 0; i < 6; i++) cable([[.7, .75 - i * .19, -.27], [.85 + i * .014, .5 - i * .19, -.37], [.83, -.75, -.32]], .009, i % 2 ? copper : rubber, checker);
 
-  // The open shade owns its light anchor; no opaque disk blocks the bulb.
+  // Lighting remains available through an invisible anchor; the old bulb,
+  // shade and stem are intentionally removed from the 04 exhibit model.
   const lamp = group('desk-lamp', [1.18, .98, .74]);
-  cylinder(.24, .045, [0, 0, 0], dark, lamp); cylinder(.205, .031, [0, .034, 0], brass, lamp);
-  cylinder(.027, .87, [0, .47, 0], brass, lamp);
-  const arm = cylinder(.02, .38, [0, .88, -.17], brass, lamp); arm.rotation.x = Math.PI / 2;
-  const shade = mesh(new THREE.SphereGeometry(.33, 40, 20, 0, Math.PI * 2, 0, Math.PI / 2), green, [0, .98, -.21], lamp); shade.scale.set(1.32, .65, .68);
-  const rim = ring(.33, .012, [0, .98, -.21], brass, lamp); rim.rotation.x = Math.PI / 2; rim.scale.set(1.32, .68, 1);
-  const bulbMat = material('#fff1c5', .25); bulbMat.emissive.set('#ffc77c'); bulbMat.emissiveIntensity = 2;
-  const bulb = mesh(new THREE.SphereGeometry(.055, 16, 12), bulbMat, [0, .962, -.21], lamp); bulb.scale.x = 2.1;
   const lampAnchor = group('lamp-light', [0, .91, -.21], lamp);
+  lamp.userData.removedFixture = true;
   cable([[0, .015, .13], [.23, -.02, .29], [.63, -.02, .15], [.76, -.3, -.15]], .011, rubber, lamp);
   const papers = group('intercept-papers', [2.02, .987, .73]); papers.rotation.y = -.13;
   for (let n = 0; n < 4; n++) { const p = box([.8, .003, .97], [n * .009, n * .004, n * .008], paperMat, papers); p.rotation.y = n * .014; }
@@ -209,6 +216,7 @@ export function createMissionModel({ labelTexture } = {}) {
   }
   return {
     root, rotors, drums, keys, lamps, lid, lampAnchor, zones, anchors, interactives, bounds, layout: MISSION_WORLD_LAYOUT, portals, architectureWalls, practicals,
+    precisionStats: Object.freeze({ enigmaFasteners: 4, keyboardDividers: 5, faceRails: 2, visibleBulbs: 0, visibleDeskLamps: 0 }),
     get activeZone() { return activeZone; },
     getBounds, setZone,
     update(s, time, { reduced = false, searchProgress = null, positions = s.positions, inputLetter = null, outputLetter = null, lidOpen = 1 } = {}) {

@@ -48,7 +48,6 @@ body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #appl
   color: var(--archive-paper);
   border-bottom-color: var(--archive-brass);
 }
-body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell #archive-open { font-size: 14px; color: var(--archive-paper); }
 
 /* An identical navy stage frames the machine in all three chapters. */
 #exhibit-page .viewer, #lab-page .lab-model-panel, #challenge-page .quest-model-panel {
@@ -356,7 +355,6 @@ body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #appl
 body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell :is(.lab-position-controls label small, .lab-fieldset legend small, .lab-plugs label > span, .lab-wire-meta, .lab-wire-meta button) { font-size: 13px; }
 
 @media (max-width: 1280px) {
-  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell #archive-open { display: none; }
   body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav { gap: 20px; }
   #exhibit-page .exhibit { grid-template-columns: 300px minmax(0, 1fr); gap: 24px; }
   #exhibit-page h1 { font-size: 90px; }
@@ -406,7 +404,6 @@ body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #appl
   body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
   body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav a { display: flex; flex-direction: column; justify-content: center; gap: 4px; min-height: 56px; padding: 6px 0; font-size: 13px; letter-spacing: -.25px; }
   body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav small { font-size: 12px; }
-  body:is([data-page="exhibit"], [data-page="lab"], [data-page="challenge"]) #application-shell .chapter-nav svg { display: none; }
   #exhibit-page, #lab-page, #challenge-page { padding: 24px 20px; }
   #exhibit-page .exhibit { display: flex; flex-direction: column; height: auto; min-height: 0; max-height: none; gap: 26px; }
   #exhibit-page .intro { display: flex; flex-direction: column; align-items: flex-start; padding: 0; }
