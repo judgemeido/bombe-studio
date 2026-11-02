@@ -22,6 +22,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   await copyFile('lab.css', 'dist/lab.css');
   await copyFile('challenge.css', 'dist/challenge.css');
   await copyFile('mission.css', 'dist/mission.css');
+  await copyFile('rogue.css', 'dist/rogue.css');
   // Retire only the former generated film copies; authoring originals stay in assets/mission.
   await rm('dist/assets/mission/arrival.mp4', { force: true });
   await rm('dist/assets/mission/README.md', { force: true });

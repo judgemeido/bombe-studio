@@ -1,0 +1,40 @@
+#mission-page .rogue-overlay { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px; background:rgba(12,26,35,.76); backdrop-filter:blur(9px); }
+#mission-page .rogue-frame { width:min(980px,100%); max-height:min(880px,calc(100svh - 48px)); overflow:auto; background:var(--archive-paper); color:var(--archive-ink); border:1px solid var(--archive-brass); box-shadow:0 22px 70px rgba(0,0,0,.35); }
+#mission-page .rogue-sheet { padding:clamp(24px,4vw,52px); min-height:500px; }
+#mission-page .rogue-kicker { color:var(--archive-copper-ink); font:11px/1.5 Consolas,monospace; letter-spacing:1.8px; text-transform:uppercase; }
+#mission-page .rogue-sheet h2 { margin:12px 0 16px; font-size:clamp(28px,4vw,48px); font-weight:400; }
+#mission-page .rogue-sheet p { max-width:690px; line-height:1.8; }
+#mission-page .rogue-sheet-head { display:flex; justify-content:space-between; align-items:start; gap:20px; border-bottom:1px solid var(--archive-rule); padding-bottom:16px; }
+#mission-page .rogue-button { min-height:44px; margin-top:18px; padding:10px 16px; border:1px solid var(--archive-border); background:transparent; color:inherit; cursor:pointer; }
+#mission-page .rogue-button:hover, #mission-page .rogue-button:focus-visible { border-color:var(--archive-copper-ink); background:var(--archive-mist); }
+#mission-page .rogue-button.is-primary { background:var(--archive-sea); color:var(--archive-paper); border-color:var(--archive-sea); width:100%; text-align:left; }
+#mission-page .rogue-roles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:30px 0 18px; }
+#mission-page .rogue-role, #mission-page .rogue-choice { min-height:92px; padding:15px; border:1px solid var(--archive-border); background:transparent; text-align:left; display:flex; flex-direction:column; gap:6px; cursor:pointer; }
+#mission-page .rogue-role.is-selected { border-color:var(--archive-copper-ink); background:var(--archive-mist); box-shadow:inset 3px 0 var(--archive-copper-ink); }
+#mission-page .rogue-role span, #mission-page .rogue-choice small, #mission-page .rogue-node small { color:var(--archive-muted); line-height:1.5; }
+#mission-page .rogue-route { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; padding:0; list-style:none; margin:28px 0; }
+#mission-page .rogue-route-layer { border-top:2px solid var(--archive-border); padding-top:9px; }
+#mission-page .rogue-route-layer.is-current { border-color:var(--archive-copper-ink); }
+#mission-page .rogue-route-depth { display:block; color:var(--archive-muted); font:11px Consolas,monospace; margin-bottom:8px; }
+#mission-page .rogue-node { width:100%; min-height:95px; padding:10px; margin-bottom:8px; border:1px solid var(--archive-border); background:var(--archive-paper); text-align:left; display:flex; flex-direction:column; gap:6px; cursor:pointer; }
+#mission-page .rogue-node:disabled { opacity:.44; cursor:default; }
+#mission-page .rogue-node:not(:disabled):hover { border-color:var(--archive-copper-ink); background:var(--archive-mist); }
+#mission-page .rogue-story { border-left:3px solid var(--archive-copper-ink); padding-left:15px; margin:20px 0; }
+#mission-page .rogue-reserve { color:var(--archive-copper-ink); font:12px Consolas,monospace; }
+#mission-page .rogue-choices { display:grid; gap:10px; margin-top:20px; }
+#mission-page .rogue-choice { min-height:70px; }
+#mission-page .rogue-choice:hover { border-color:var(--archive-copper-ink); background:var(--archive-mist); }
+#mission-page .rogue-case-slip { display:grid; gap:9px; padding:18px; margin:20px 0; background:var(--archive-mist); border:1px dashed var(--archive-border); }
+#mission-page .rogue-case-slip strong { font:32px Georgia,serif; letter-spacing:5px; }
+#mission-page .rogue-case-slip code, #mission-page .rogue-status code { font-family:Consolas,monospace; letter-spacing:2px; }
+#mission-page .rogue-letter-pad { display:grid; grid-template-columns:repeat(13,1fr); gap:5px; margin-top:18px; }
+#mission-page .rogue-letter { min-height:44px; border:1px solid var(--archive-border); background:transparent; cursor:pointer; }
+#mission-page .rogue-letter:hover, #mission-page .rogue-letter:focus-visible { background:var(--archive-copper-ink); color:var(--archive-paper); }
+#mission-page .rogue-feedback { margin-top:15px; padding:12px; border-left:3px solid var(--archive-copper-ink); background:var(--archive-mist); }
+#mission-page .rogue-decoded { margin-top:20px; padding:17px; background:var(--archive-sea); color:var(--archive-paper); display:grid; gap:6px; }
+#mission-page .rogue-tools { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+#mission-page .rogue-status { display:flex; flex-wrap:wrap; gap:18px; margin-top:28px; padding-top:14px; border-top:1px solid var(--archive-rule); color:var(--archive-muted); font-size:12px; }
+#mission-page .rogue-status strong { color:var(--archive-ink); }
+#mission-page .rogue-record { margin:22px 0 30px; padding-left:20px; line-height:2; }
+@media (max-width:760px) { #mission-page .rogue-overlay { padding:10px; } #mission-page .rogue-frame { max-height:calc(100svh - 20px); } #mission-page .rogue-sheet { padding:22px 18px; } #mission-page .rogue-roles, #mission-page .rogue-route { grid-template-columns:1fr; } #mission-page .rogue-route-layer:not(.is-current) { display:none; } #mission-page .rogue-letter-pad { grid-template-columns:repeat(7,1fr); } }
+@media (prefers-reduced-motion:reduce) { #mission-page .rogue-overlay, #mission-page .rogue-button, #mission-page .rogue-node { transition:none; } }

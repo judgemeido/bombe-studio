@@ -53,6 +53,8 @@ body[data-page="mission"] #application-shell>.site-header .chapter-nav a[aria-cu
 #mission-page .mission-primary { width:100%; padding:13px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px; background:var(--archive-sea); color:var(--archive-paper); font-size:14px; margin-top:20px; text-align:left; }
 #mission-page .mission-primary:hover { background:var(--archive-slate); }
 #mission-page .mission-primary>span { font-size:23px; line-height:1; }
+#mission-page .mission-secondary { display:block; width:100%; margin-top:10px; padding:11px 16px; border:1px solid var(--archive-border); background:transparent; color:var(--archive-copper-ink); text-align:left; font-size:13px; }
+#mission-page .mission-secondary:hover, #mission-page .mission-secondary:focus-visible { background:var(--archive-mist); border-color:var(--archive-copper-ink); }
 #mission-page .mission-mini-note { margin-top:14px; font-size:11px; color:var(--archive-muted); line-height:1.75; }
 #mission-page .mission-task-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid var(--archive-rule); padding-bottom:10px; color:var(--archive-copper-ink); font:11px/1.5 Consolas,"Microsoft YaHei",monospace; letter-spacing:1px; }
 #mission-page .mission-text-button { border:1px solid var(--archive-border); padding:5px 13px; font-size:12px; letter-spacing:0; }

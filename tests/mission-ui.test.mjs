@@ -109,6 +109,22 @@ test('briefing, pause, resume and completion retain stable focus targets', async
   }
 });
 
+test('briefing opens the optional random night shift and closing returns to the main mission', async () => {
+  const f = fixture();
+  try {
+    f.game.setActive(true);
+    f.click('[data-action="open-rogue"]');
+    assert.ok(f.root.querySelector('.rogue-overlay'));
+    assert.equal(f.game.inspect().active, false);
+    f.root.querySelector('[data-rogue-action="close"]').click();
+    assert.equal(f.game.inspect().active, true);
+    assert.equal(f.root.querySelector('.rogue-overlay'), null);
+  } finally {
+    f.game.dispose();
+    await f.w.happyDOM.close();
+  }
+});
+
 test('no WebGL keeps the text record and all beat controls available', async () => {
   const f = fixture(true);
   try {

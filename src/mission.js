@@ -3,6 +3,7 @@ import { missionShell, renderTask, renderEvidence } from './mission-template.js'
 import { createMissionScene } from './mission-scene.js';
 import { ALPHABET } from './cipher.js';
 import { STAGE_VIEWS } from './mission-transition.js';
+import { createRogueRunView } from './rogue-run.js';
 
 export function createMission(root, { motion, progress = () => {}, sceneFactory = createMissionScene } = {}) {
   const view = root.ownerDocument.defaultView, doc = root.ownerDocument;
@@ -12,6 +13,15 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
   let state = initialMission(), active = false, disposed = false, scene, cinematic = false, selectedView = 'entry';
   let transitionId = 0, transitionPaused = false, pendingAction = null, unavailable = false;
   const cleanups = [], on = (el, name, fn) => { el.addEventListener(name, fn); cleanups.push(() => el.removeEventListener(name, fn)); };
+  const rogueRoot = doc.createElement('div'); rogueRoot.id = 'rogue-night-shift-root'; root.append(rogueRoot);
+  const rogue = createRogueRunView(rogueRoot, { returnFocus: null, onClose: () => { if (!disposed) setMissionActive(true); }, onZone: zone => chooseView(zone === 'radio' ? 'radio' : zone === 'archive' ? 'archive' : zone === 'analysis' ? 'analysis' : 'machine'), motion });
+  function setMissionActive(value) {
+    if (disposed) return;
+    active = value;
+    if (!value) { scene?.cancelTransition?.(); clearTransition(); pendingAction = null; dispatch({ type: 'pause' }); }
+    scene?.setActive(value);
+    if (value) render();
+  }
   const formatElapsed = seconds => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
   const beatIndex = value => Number.isInteger(value?.beat) ? value.beat : Number.isInteger(value?.stage) ? value.stage : 0;
   const currentBeat = value => MISSION.stages?.[beatIndex(value)] || {};
@@ -156,6 +166,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
     if (action === 'skip-intro') { scene?.skipTransition?.(); finishTransition(); return; }
     if (action === 'pause-intro') { pauseTransition(!transitionPaused); return; }
     if (cinematic) return;
+    if (action === 'open-rogue') { setMissionActive(false); rogue.open(); return; }
     if (action === 'start') { beginTransition({ type: 'start' }); return; }
     if (action === 'next' && state.cleared && !state.paused) { beginTransition({ type: 'next' }); return; }
     if (action === 'view') { chooseView(value); return; }
@@ -181,12 +192,8 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
   const inspect = () => ({ state: structuredClone(state), active, cinematic, transitionPaused, view: selectedView, scene: scene?.inspect() || { ready: false } });
   view.__BOMBE_MISSION__ = inspect;
   return {
-    setActive(value) {
-      if (disposed) return; active = value;
-      if (!value) { scene?.cancelTransition?.(); clearTransition(); pendingAction = null; dispatch({ type: 'pause' }); }
-      scene?.setActive(value); if (value) render();
-    },
+    setActive: setMissionActive,
     inspect,
-    dispose() { if (disposed) return; disposed = true; active = false; transitionId++; view.clearInterval(timer); cleanups.forEach(fn => fn()); scene?.dispose(); if (view.__BOMBE_MISSION__ === inspect) delete view.__BOMBE_MISSION__; root.replaceChildren(); },
+    dispose() { if (disposed) return; disposed = true; active = false; transitionId++; view.clearInterval(timer); cleanups.forEach(fn => fn()); rogue.destroy(); scene?.dispose(); if (view.__BOMBE_MISSION__ === inspect) delete view.__BOMBE_MISSION__; root.replaceChildren(); },
   };
 }
