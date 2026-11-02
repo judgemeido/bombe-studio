@@ -37,6 +37,19 @@ test('start, route, event, final decode and handoff render semantic controls', (
   assert.match(renderRogueView(selected), /data-rogue-action="resolve"/);
 });
 
+test('roguelite views expose a game HUD and inline icon language', () => {
+  const run = createRogueRun('hud-contract', { role: 'intercept' });
+  const briefing = renderRogueView(run);
+  assert.match(briefing, /rogue-run-kicker/);
+  assert.match(briefing, /rogue-role-icon/);
+  const route = renderRogueView({ ...run, phase: 'route' });
+  assert.match(route, /rogue-route-map/);
+  assert.match(route, /data-node-icon/);
+  const final = renderRogueView({ ...run, phase: 'final' });
+  assert.match(final, /rogue-cipher-console/);
+  assert.match(final, /rogue-letter/);
+});
+
 test('role select, start, event choice, pause and close restore focus', async () => {
   const f = fixture();
   try {
