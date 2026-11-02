@@ -53,6 +53,16 @@ npm.cmd run build
 
 `dist/` 是完整静态发布目录，可交给任意静态托管服务。通过 HTTP 预览，避免直接双击 HTML。项目没有在线字体、远程图片或运行时 CDN 依赖，网页不需要密钥。没有执行公开发布。
 
+### Cloudflare Workers 部署
+
+本项目使用 Wrangler 的 Workers Static Assets 部署。Cloudflare GitHub 构建设置应使用：
+
+- 构建命令：`npm run build`
+- 部署命令：`npx wrangler deploy`
+- 根目录：仓库根目录（`bombe-studio`）
+
+仓库中的 `wrangler.toml` 将 assets 目录固定为 `dist/`。也可以在本地运行 `npm run deploy` 一步完成构建和上传。不要把仓库根目录配置为 assets 目录，否则 `node_modules` 中的构建工具二进制会被当成网站文件上传并触发 Cloudflare 的 25 MiB 单文件限制。
+
 ## 已实现的体验
 
 - 108 个实例化鼓轮，5 个功能分组，前面阵列与后部接线。
