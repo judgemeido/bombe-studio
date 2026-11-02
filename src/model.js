@@ -79,7 +79,7 @@ export function createProduct({ textures = {} } = {}) {
     if (!batches.has(key)) batches.set(key, { group, mat, geometries: [] });
     batches.get(key).geometries.push(geometry);
   }
-  function box(g, size, mat, pos, radius = .035) { batch(g, new RoundedBoxGeometry(...size, 3, Math.min(radius, Math.min(...size) / 2)), mat, pos); }
+  function box(g, size, mat, pos, radius = .035, rotation = [0, 0, 0]) { batch(g, new RoundedBoxGeometry(...size, 3, Math.min(radius, Math.min(...size) / 2)), mat, pos, rotation); }
   function cylinder(g, radius, height, mat, pos, rot = [Math.PI / 2, 0, 0], segments = 32) { batch(g, new THREE.CylinderGeometry(radius, radius, height, segments), mat, pos, rot); }
   function torus(g, radius, tube, mat, pos, rot = [0, 0, 0]) { batch(g, new THREE.TorusGeometry(radius, tube, 10, 64), mat, pos, rot); }
   function instances(g, geometry, mat, transforms) {
@@ -118,6 +118,12 @@ export function createProduct({ textures = {} } = {}) {
     for (let slot = 0; slot < 15; slot++) box(craft, [.008, .026, .62], mats.dark, [x + side * .021, 5.15 + slot * .047, -.18], .003);
     for (const y of [1.18, 3.34, 5.5]) cylinder(craft, .043, .18, mats.metal, [x + side * .03, y, -.83], [0, 0, 0], 20);
     for (const y of [.72, 5.96]) for (const z of [-.69, .59]) cylinder(craft, .021, .018, mats.metal, [x + side * .025, y, z], [0, 0, Math.PI / 2], 12);
+    // Diagonal gussets make the cabinet read as a braced machine frame and
+    // echo the 45° presentation used by the exploded view.
+    for (const y of [1.65, 3.95]) {
+      box(craft, [.018, .18, .018], mats.edge, [x - side * .13, y, .76], .006, [0, 0, side > 0 ? Math.PI / 4 : -Math.PI / 4]);
+      box(craft, [.018, .18, .018], mats.edge, [x - side * .13, y, -.76], .006, [0, 0, side > 0 ? -Math.PI / 4 : Math.PI / 4]);
+    }
   }
   for (const x of [-.87, .87]) cylinder(craft, .02, .012, mats.metal, [x, 6.43, 1.06], undefined, 16);
   // Small operator-facing controls make the cabinet read as a machine, not a flat drum wall.
@@ -282,23 +288,36 @@ export function createProduct({ textures = {} } = {}) {
   function setExplode(value) {
     explode = Number.isFinite(value) ? THREE.MathUtils.clamp(value, 0, 1) : 0;
     for (const part of parts) { part.position.copy(part.userData.basePosition); part.rotation.set(0, 0, 0); }
-    // Reversible choreography: extract along clear axes before rearranging.
-    // 1. Front drums and rear wiring leave the cabinet without lateral motion.
-    drums.position.z = 3 * ramp(explode, 0, .28);
-    board.position.z = -4 * ramp(explode, 0, .28);
-    // 2. Lift the extracted drums; move the drive out through the open back.
-    drums.position.y = 9 * ramp(explode, .28, .62);
-    drive.position.z = -3 * ramp(explode, .28, .58) * (1 - ramp(explode, .9, 1));
-    drive.position.y = 2.5 * ramp(explode, .62, .9);
-    motor.position.z = 6 * ramp(explode, .4, .62);
-    // 3. Park the frame and connections in separate display bays.
-    frame.position.set(-9 * ramp(explode, .62, .88), 3 * ramp(explode, .62, .88), 0);
-    board.position.x = 9 * ramp(explode, .4, .74);
-    board.position.y = 3 * ramp(explode, .62, .88);
-    board.position.z += 4 * ramp(explode, .76, 1);
-    // Rotation starts only after the board is outside the cabinet; its own
-    // centre is the pivot, so it never sweeps through the drive or frame.
-    board.rotation.y = Math.PI * ramp(explode, .76, 1);
+    // Reversible 45° layered choreography. Every system first clears the
+    // cabinet on its own depth axis, then travels along a diagonal shelf.
+    // Keeping equal X/Y components makes the exploded view read as one
+    // deliberate axonometric system instead of five unrelated translations.
+    const extract = ramp(explode, 0, .22);
+    const layer = ramp(explode, .22, .72);
+    const park = ramp(explode, .82, 1);
+    const diag = Math.SQRT1_2;
+    drums.position.z = 3.05 * extract;
+    board.position.z = -4.05 * extract;
+    drums.position.x = 2.7 * diag * layer + 2.7 * diag * park;
+    drums.position.y = 7.6 * layer + 1.8 * park;
+    drums.position.z += 1.25 * layer + 2.35 * park;
+    board.position.x = 9 * layer + 1.3 * park;
+    board.position.y = -2.4 * layer - 1.5 * park;
+    board.position.z += 3.5 * park;
+    drive.position.x = .8 * layer + .8 * park;
+    drive.position.y = -1.2 * layer - 1.2 * park;
+    drive.position.z = -3.4 * layer - 2.6 * park;
+    motor.position.x = -1.2 * layer - 5.8 * park;
+    motor.position.y = -1.2 * layer - 3.8 * park;
+    motor.position.z = 6.8 * layer + 1.2 * park;
+    frame.position.x = -7.2 * park;
+    frame.position.y = 2.4 * park;
+    frame.position.z = -.4 * park;
+    // The connection board presents its copper face at a readable 45° angle
+    // only after it has cleared the other layers. Its pivot correction keeps
+    // the hinge edge stationary during the turn.
+    board.rotation.y = Math.PI * park;
+    board.rotation.z = THREE.MathUtils.degToRad(45) * park;
     rotatedPivot.copy(boardPivot).applyAxisAngle(new THREE.Vector3(0, 1, 0), board.rotation.y);
     board.position.add(boardPivot).sub(rotatedPivot);
     root.updateMatrixWorld(true);

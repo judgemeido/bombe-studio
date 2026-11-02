@@ -243,7 +243,7 @@ function frame(now) {
     const p = state.progress;
     $('#assembly-progress').hidden = p === 0 || Boolean(state.focus);
     $('#assembly-step').textContent = p < .28 ? '01' : p < .62 ? '02' : p < .999 ? '03' : '✓';
-    $('#assembly-caption').textContent = p < .28 ? '前后抽离 · 释放安装空间' : p < .62 ? '依次取出 · 保留安全间距' : p < .999 ? '独立分区 · 在空位中翻面' : '五系统独立陈列 · 点击目录进入特写';
+    $('#assembly-caption').textContent = p < .22 ? '轴向抽离 · 释放安装空间' : p < .72 ? '45° 分层 · 沿斜向轨道展开' : p < .999 ? '独立分区 · 连接板转正展示' : '五系统斜向陈列 · 点击目录进入特写';
     if (state.selected && !$('#hotspot').hidden) {
       const anchor = product.getAnchor(state.selected).project(stage.camera), width = viewer.clientWidth, height = viewer.clientHeight;
       const visible = anchor.z > -1 && anchor.z < 1 && Math.abs(anchor.x) < .94 && Math.abs(anchor.y) < .92;

@@ -24,6 +24,19 @@ test('extraction clears the cabinet before lifting, parking or turning', () => {
   product.dispose();
 });
 
+test('display phase uses a readable 45 degree layered presentation', () => {
+  const product = createProduct();
+  product.setExplode(.9);
+  const board = product.parts.find(part => part.name === 'board');
+  assert.ok(board.position.x > product.parts.find(part => part.name === 'drive').position.x);
+  product.setExplode(1);
+  assert.ok(Math.abs(board.rotation.z - Math.PI / 4) < .00001);
+  assert.ok(Math.abs(board.rotation.y - Math.PI) < .00001);
+  assert.ok(product.parts.find(part => part.name === 'drums').position.y > product.parts.find(part => part.name === 'drive').position.y);
+  assert.ok(product.parts.find(part => part.name === 'board').position.x > product.parts.find(part => part.name === 'drive').position.x);
+  product.dispose();
+});
+
 test('all five systems have disjoint volumes throughout the display phase', () => {
   const product = createProduct();
   for (let sample = 62; sample <= 100; sample++) {
