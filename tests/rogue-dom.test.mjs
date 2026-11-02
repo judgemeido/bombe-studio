@@ -50,6 +50,15 @@ test('roguelite views expose a game HUD and inline icon language', () => {
   assert.match(final, /rogue-letter/);
 });
 
+test('roguelite screens read as a playable game surface', () => {
+  const run = createRogueRun('playfield-contract', { role: 'intercept' });
+  const html = renderRogueView(run);
+  assert.match(html, /rogue-game-stage/);
+  assert.match(html, /rogue-avatar/);
+  assert.match(html, /rogue-action-bar/);
+  assert.match(html, /rogue-mission-objective/);
+});
+
 test('role select, start, event choice, pause and close restore focus', async () => {
   const f = fixture();
   try {

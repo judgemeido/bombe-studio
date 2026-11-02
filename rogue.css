@@ -188,3 +188,31 @@
 #rogue-page .rogue-archive-actions { display:flex;flex-wrap:wrap;justify-content:center;gap:10px; }
 @media (max-width:900px) { #rogue-page .rogue-game-grid{grid-template-columns:1fr}#rogue-page .rogue-aside{border-left:0;border-top:1px solid var(--rogue-line);padding:20px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:22px}#rogue-page .rogue-aside-note{grid-column:1/-1} }
 @media (max-width:700px) { #rogue-page .rogue-screen{padding:22px 17px}#rogue-page .rogue-start-grid{grid-template-columns:1fr;padding:38px 0 40px;gap:32px}#rogue-page .rogue-start-copy h2{font-size:39px}#rogue-page .rogue-roles{grid-template-columns:1fr}#rogue-page .rogue-role-heading{align-items:start;flex-direction:column;gap:8px}#rogue-page .rogue-start-actions{align-items:stretch;flex-direction:column}#rogue-page .rogue-start-actions .rogue-button{width:100%}#rogue-page .rogue-hud{grid-template-columns:repeat(2,1fr)}#rogue-page .rogue-hud-seed{grid-column:1/-1;min-height:55px;border-top:0}#rogue-page .rogue-route-nodes{grid-template-columns:1fr;padding-left:0}#rogue-page .rogue-letter-pad{grid-template-columns:repeat(7,1fr)}#rogue-page .rogue-screen-head{align-items:flex-start;flex-direction:column}#rogue-page .rogue-screen-head>.rogue-button{align-self:stretch}#rogue-page .rogue-aside{grid-template-columns:1fr}#rogue-page .rogue-aside-note{grid-column:auto}#rogue-page .rogue-score-grid{grid-template-columns:1fr}#rogue-page .rogue-score-grid div{border-right:0;border-bottom:1px solid var(--rogue-line)} }
+#rogue-page .rogue-game-stage { background:linear-gradient(180deg,#142b36 0,#203d47 40%,#f0eee5 40.1%,#f0eee5 100%); color:#fff; }
+#rogue-page .rogue-game-stage .rogue-run-kicker { color:#a9c0bd; border-color:#ffffff2b; }
+#rogue-page .rogue-game-stage .rogue-seed { color:#f5e9cf; }
+#rogue-page .rogue-game-scene { position:relative; display:grid; grid-template-columns:140px minmax(0,1fr) 260px; gap:28px; align-items:center; min-height:300px; padding:38px 0 42px; overflow:hidden; }
+#rogue-page .rogue-game-scene:after { content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:#ffffff26; }
+#rogue-page .rogue-game-scene-glow { position:absolute; width:420px; height:420px; left:24%; top:-160px; background:radial-gradient(circle,#d0a86633 0,#d0a86600 70%); pointer-events:none; }
+#rogue-page .rogue-avatar { position:relative; display:grid; justify-items:center; gap:9px; text-align:center; z-index:1; }
+#rogue-page .rogue-avatar-ring { display:grid; place-items:center; width:92px; height:92px; border:1px solid #d6b879; border-radius:50%; color:#d6b879; box-shadow:0 0 0 10px #d6b87912,0 0 35px #d6b87924; }
+#rogue-page .rogue-avatar-ring .rogue-icon { width:36px; height:36px; }
+#rogue-page .rogue-avatar strong { color:#fffdf7; font-size:14px; font-weight:600; }
+#rogue-page .rogue-avatar small { color:#9eb2b0; font-size:10px; }
+#rogue-page .rogue-scene-copy { position:relative; z-index:1; }
+#rogue-page .rogue-scene-copy h2 { margin:0; color:#fffdf7; font:400 clamp(34px,5vw,66px)/1.02 Georgia,serif; letter-spacing:-1.5px; }
+#rogue-page .rogue-scene-copy h2 em { color:#d6b879; font-style:normal; }
+#rogue-page .rogue-scene-copy .rogue-lead { color:#b7c7c3; }
+#rogue-page .rogue-mission-objective { display:flex; align-items:center; gap:12px; max-width:430px; margin-top:22px; padding:12px 14px; border:1px solid #ffffff2e; background:#10242d99; }
+#rogue-page .rogue-mission-objective>span { display:grid; place-items:center; width:30px; height:30px; color:#d6b879; border:1px solid #d6b87966; }
+#rogue-page .rogue-mission-objective small { display:block; color:#8fa7a4; font:9px ui-monospace,monospace; letter-spacing:1px; }
+#rogue-page .rogue-mission-objective strong { display:block; color:#fffdf7; margin-top:4px; font-size:12px; font-weight:500; }
+#rogue-page .rogue-game-stage .rogue-briefing-card { position:relative; z-index:1; background:#fffdf7ee; }
+#rogue-page .rogue-game-stage .rogue-eyebrow { color:#d6b879; }
+#rogue-page .rogue-game-stage .rogue-run-facts { border-color:#ffffff2b; color:#a9c0bd; }
+#rogue-page .rogue-game-stage .rogue-run-facts b { color:#fffdf7; }
+#rogue-page .rogue-action-bar { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 0 0; border-top:1px solid var(--rogue-line); }
+#rogue-page .rogue-action-hint { color:var(--rogue-muted); font:10px ui-monospace,monospace; letter-spacing:1px; }
+#rogue-page .rogue-game-stage .rogue-start-actions { margin:0; }
+@media (max-width:900px) { #rogue-page .rogue-game-scene { grid-template-columns:100px minmax(0,1fr); } #rogue-page .rogue-game-scene .rogue-briefing-card { grid-column:1/-1; } }
+@media (max-width:700px) { #rogue-page .rogue-game-scene { grid-template-columns:1fr; gap:18px; padding:28px 0 34px; } #rogue-page .rogue-avatar { justify-items:start; grid-template-columns:66px 1fr; text-align:left; } #rogue-page .rogue-avatar-ring { width:66px; height:66px; grid-row:span 2; } #rogue-page .rogue-avatar-ring .rogue-icon { width:27px; height:27px; } #rogue-page .rogue-action-bar { align-items:stretch; flex-direction:column; } #rogue-page .rogue-action-hint { display:none; } }
