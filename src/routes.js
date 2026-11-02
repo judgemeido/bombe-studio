@@ -10,6 +10,7 @@ export function parseRoute(hash = '') {
   if (!hash || hash === '#/history' || historyAnchors.has(hash.slice(1))) page = 'history';
   else if (hash === '#/challenge') page = 'challenge';
   else if (hash === '#/mission') page = 'mission';
+  else if (hash === '#/rogue') page = 'rogue';
   else if (hash === '#/lab' || hash === '#/lab/drums' || hash === '#/lab/wiring') {
     page = 'lab';
     if (hash === '#/lab/wiring') topic = 'wiring';
@@ -21,6 +22,7 @@ export function routeKey(route) {
   if (route.page === 'history') return '#/history';
   if (route.page === 'challenge') return '#/challenge';
   if (route.page === 'mission') return '#/mission';
+  if (route.page === 'rogue') return '#/rogue';
   if (route.page === 'lab') return `#/lab/${route.topic === 'wiring' ? 'wiring' : 'drums'}`;
   return '#/';
 }

@@ -15,7 +15,7 @@ const dependencies = {
   createNavigation, createStage, createProduct, createTextures, createCinematicCamera,
   createRaycaster: () => new THREE.Raycaster(), createPointer: () => new THREE.Vector2(),
   loadLab: () => import('./lab.js'), loadChallenge: () => import('./challenge.js'),
-  loadMission: () => import('./mission.js'),
+  loadMission: () => import('./mission.js'), loadRogue: () => import('./rogue.js'),
   ...runtime,
 };
 const $ = selector => document.querySelector(selector);
@@ -29,11 +29,11 @@ const mobileDetail = document.createElement('div'); mobileDetail.className = 'mo
 const mobileNote = document.createElement('button'); mobileNote.className = 'part-card note-trigger'; mobileNote.setAttribute('aria-haspopup', 'dialog'); mobileNote.setAttribute('aria-controls', 'note-dialog');
 mobileDetail.append(mobileNote); $('.parts-section').after(mobileDetail);
 let stage, product, cinematic, stopped = false, raf = 0, previous = performance.now(), contextLost = false;
-let currentPage = historyPage?.currentRoute?.page ?? null, lab = null, challenge = null, mission = null, navigation;
+let currentPage = historyPage?.currentRoute?.page ?? null, lab = null, challenge = null, mission = null, rogue = null, navigation;
 let challengeVisited = false;
 on($('.skip-link'), 'click', event => {
   event.preventDefault();
-  const target = currentPage === 'mission' ? $('#mission-task-title') : currentPage === 'history' ? historyPage?.element : currentPage === 'challenge' ? $('#quest-question') : currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
+  const target = currentPage === 'rogue' ? $('#rogue-heading') : currentPage === 'mission' ? $('#mission-task-title') : currentPage === 'history' ? historyPage?.element : currentPage === 'challenge' ? $('#quest-question') : currentPage === 'lab' ? $('#lab-keyboard [data-letter="A"]') : $('#controls');
   target?.focus({ preventScroll: true }); target?.scrollIntoView({ block: 'nearest' });
 });
 
@@ -229,7 +229,12 @@ const missionRuntime = createExhibitRuntime(async ({ own, check }) => {
   const instance = own(await module.createMission($('#mission-page'), { motion, progress: (...args) => { if (!stopped) missionReport(...args); } }));
   check(); mission = instance; return instance;
 });
-let labReport = () => {}, challengeReport = () => {}, missionReport = () => {};
+const rogueRuntime = createExhibitRuntime(async ({ own, check }) => {
+  const module = await dependencies.loadRogue(); check();
+  const instance = own(await module.createRogue($('#rogue-page'), { motion, progress: (...args) => { if (!stopped) rogueReport(...args); } }));
+  check(); rogue = instance; return instance;
+});
+let labReport = () => {}, challengeReport = () => {}, missionReport = () => {}, rogueReport = () => {};
 
 function frame(now) {
   if (stopped) return;
@@ -256,7 +261,7 @@ function frame(now) {
 }
 function dispose() {
   if (stopped) return; stopped = true; cancelAnimationFrame(raf); navigation?.dispose();
-  labRuntime.dispose(); challengeRuntime.dispose(); missionRuntime.dispose(); exhibitRuntime.dispose();
+  labRuntime.dispose(); challengeRuntime.dispose(); missionRuntime.dispose(); rogueRuntime.dispose(); exhibitRuntime.dispose();
   cleanups.forEach(fn => fn()); mobileDetail.remove(); delete window.__BOMBE_INSPECT__;
 }
 on(window, 'pagehide', event => { if (!event.persisted) dispose(); });
@@ -267,7 +272,7 @@ navigation = dependencies.createNavigation({
   currentRoute: historyPage?.currentRoute ?? null,
   initialScrolls: { history: historyPage?.scrollY ?? 0 },
   motion,
-  pause() { lab?.setActive(false); challenge?.setActive(false); mission?.setActive(false); },
+  pause() { lab?.setActive(false); challenge?.setActive(false); mission?.setActive(false); rogue?.setActive(false); },
   async prepare(route, report = () => {}) {
     if (stopped) return;
     if (route.page === 'history') return;
@@ -283,6 +288,10 @@ navigation = dependencies.createNavigation({
       report(26, '载入黎明之前的连续行动'); missionReport = report;
       await missionRuntime.ensure();
       if (!stopped) report(78, '工作室与任务已准备');
+    } else if (route.page === 'rogue') {
+      report(26, '载入随机夜班行动'); rogueReport = report;
+      await rogueRuntime.ensure();
+      if (!stopped) report(78, '路线与案件设置已准备');
     } else {
       report(52, '准备展品与拆解状态'); await ensureExhibit();
       if (!stopped) report(78, '准备整机视角');
@@ -295,15 +304,15 @@ navigation = dependencies.createNavigation({
     if (route.page === 'history') historyPage?.activate(); else historyPage?.deactivate();
     // Root visibility/inert belongs exclusively to navigation, never preparation.
     const skip = $('.skip-link');
-    skip.href = route.page === 'history' ? '#hero-title' : route.page === 'challenge' ? '#quest-question' : route.page === 'lab' ? '#lab-keyboard' : '#controls';
-    skip.textContent = route.page === 'history' ? '跳至战时序章' : route.page === 'challenge' ? '跳至本关任务' : route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';
+    skip.href = route.page === 'rogue' ? '#rogue-heading' : route.page === 'history' ? '#hero-title' : route.page === 'challenge' ? '#quest-question' : route.page === 'lab' ? '#lab-keyboard' : '#controls';
+    skip.textContent = route.page === 'rogue' ? '跳至随机夜班' : route.page === 'history' ? '跳至战时序章' : route.page === 'challenge' ? '跳至本关任务' : route.page === 'lab' ? '跳至实验键盘' : '跳至展品控制';
     if (route.page === 'mission') { skip.href = '#mission-task-title'; skip.textContent = '跳至穿越任务'; }
     if (route.page === 'lab') lab?.setTopic(route.topic);
     if (route.page === 'challenge') {
       if (challengeVisited && previousPage !== 'challenge') challenge?.startNewRound();
       challengeVisited = true;
     }
-    lab?.setActive(route.page === 'lab'); challenge?.setActive(route.page === 'challenge'); mission?.setActive(route.page === 'mission');
+    lab?.setActive(route.page === 'lab'); challenge?.setActive(route.page === 'challenge'); mission?.setActive(route.page === 'mission'); rogue?.setActive(route.page === 'rogue');
     if (route.page === 'exhibit') { stage?.resize(); frameCamera(true); sync(); }
   },
 });

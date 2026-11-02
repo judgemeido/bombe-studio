@@ -13,6 +13,22 @@ function fixture() {
   return { window, root, overlay };
 }
 
+test('standalone mode mounts a page shell and can be activated independently', () => {
+  const window = new Window();
+  window.document.body.innerHTML = '<main id="rogue-page"></main>';
+  const root = window.document.querySelector('#rogue-page');
+  const view = createRogueRunView(root, { seed: 'standalone-qa', standalone: true });
+  try {
+    view.setActive(true);
+    assert.ok(root.querySelector('.rogue-page-shell'));
+    assert.ok(root.querySelector('.rogue-page-header'));
+    assert.equal(root.querySelector('.rogue-overlay'), null);
+    assert.equal(view.inspect().visible, true);
+    view.setActive(false);
+    assert.equal(root.hidden, true);
+  } finally { view.destroy(); window.happyDOM.close(); }
+});
+
 test('start, route, event, final decode and handoff render semantic controls', () => {
   const run = createRogueRun('view-contract', { role: 'intercept' });
   assert.match(renderRogueView(run), /截收员/);

@@ -109,16 +109,14 @@ test('briefing, pause, resume and completion retain stable focus targets', async
   }
 });
 
-test('briefing opens the optional random night shift and closing returns to the main mission', async () => {
+test('briefing exposes random night shift as a chapter link', async () => {
   const f = fixture();
   try {
     f.game.setActive(true);
-    f.click('[data-action="open-rogue"]');
-    assert.ok(f.root.querySelector('.rogue-overlay'));
-    assert.equal(f.game.inspect().active, false);
-    f.root.querySelector('[data-rogue-action="close"]').click();
-    assert.equal(f.game.inspect().active, true);
-    assert.equal(f.root.querySelector('.rogue-overlay'), null);
+    const link = f.root.querySelector('a[data-page="rogue"]');
+    assert.ok(link);
+    assert.equal(link.getAttribute('href'), '#/rogue');
+    assert.equal(f.root.querySelector('[data-action="open-rogue"]'), null);
   } finally {
     f.game.dispose();
     await f.w.happyDOM.close();

@@ -1,13 +1,13 @@
 import { applyRogueEnding, createRogueRun, reduceRogueRun, scoreRogueRun } from './rogue-engine.js';
 import { renderRogueView } from './rogue-template.js';
 
-export function createRogueRunView(root, { seed = `night-${Date.now()}`, role = 'intercept', returnFocus = null, onZone = () => {}, onClose = () => {}, motion = null, storage = null } = {}) {
+export function createRogueRunView(root, { seed = `night-${Date.now()}`, role = 'intercept', returnFocus = null, onZone = () => {}, onClose = () => {}, motion = null, storage = null, standalone = false } = {}) {
   const doc = root.ownerDocument;
   storage ||= doc.defaultView?.localStorage || null;
   const readArchives = () => { try { const data = JSON.parse(storage?.getItem('bombe-rogue-archives') || '[]'); return Array.isArray(data) ? data.filter(item => item && item.version === 1).slice(-20) : []; } catch { return []; } };
   let archives = readArchives();
   let state = createRogueRun(seed, { role });
-  let visible = false, disposed = false, archiveSaved = false;
+  let visible = standalone, active = standalone, disposed = false, archiveSaved = false;
   const cleanups = [];
   const viewCleanups = [];
   const on = (el, event, handler) => { el.addEventListener(event, handler); cleanups.push(() => el.removeEventListener(event, handler)); };
@@ -15,7 +15,8 @@ export function createRogueRunView(root, { seed = `night-${Date.now()}`, role = 
   function focusHeading() { root.querySelector('#rogue-heading')?.focus({ preventScroll: true }); }
   function render(focus = false) {
     viewCleanups.splice(0).forEach(fn => fn());
-    root.innerHTML = visible ? `<div class="rogue-overlay" role="dialog" aria-modal="true" aria-label="随机夜班"><div class="rogue-frame">${renderRogueView(state)}</div></div>` : '';
+    root.hidden = !active;
+    root.innerHTML = visible ? (standalone ? `<div class="rogue-page-shell"><header class="rogue-page-header"><div><span>05 / ROGUELITE NIGHT SHIFT</span><strong>随机夜班</strong></div><a href="#/mission" data-page="mission">04 黎明之前 ↗</a></header><div class="rogue-page-content">${renderRogueView(state)}</div></div>` : `<div class="rogue-overlay" role="dialog" aria-modal="true" aria-label="随机夜班"><div class="rogue-frame">${renderRogueView(state)}</div></div>`) : '';
     if (!visible) return;
     root.querySelectorAll('[data-rogue-action]').forEach(el => onView(el, 'click', () => el.dataset.rogueAction === 'close' ? close() : dispatch(el.dataset.rogueAction, el.dataset.value)));
     if (focus) focusHeading();
@@ -43,13 +44,14 @@ export function createRogueRunView(root, { seed = `night-${Date.now()}`, role = 
     }
     render(true);
   }
-  function open() { visible = true; render(true); }
-  function close() { visible = false; viewCleanups.splice(0).forEach(fn => fn()); root.innerHTML = ''; returnFocus?.focus?.({ preventScroll: true }); onClose(); }
+  function open() { visible = true; active = true; render(true); }
+  function close() { if (standalone) { doc.defaultView.location.hash = '#/mission'; return; } visible = false; viewCleanups.splice(0).forEach(fn => fn()); root.innerHTML = ''; returnFocus?.focus?.({ preventScroll: true }); onClose(); }
+  function setActive(value) { active = Boolean(value); if (standalone) { visible = active; render(false); } }
   function start() { if (!visible) open(); dispatch('start'); }
   function pause() { dispatch('pause'); }
   function resume() { dispatch('resume'); }
-  function destroy() { disposed = true; close(); cleanups.splice(0).forEach(fn => fn()); }
+  function destroy() { disposed = true; viewCleanups.splice(0).forEach(fn => fn()); if (standalone) { root.replaceChildren(); root.hidden = true; } else close(); cleanups.splice(0).forEach(fn => fn()); }
   function inspect() { return { state, visible, disposed, archives: [...archives] }; }
   if (motion?.addEventListener) on(motion, 'change', () => render());
-  return { open, close, start, pause, resume, destroy, inspect };
+  return { open, close, start, pause, resume, setActive, destroy, inspect };
 }
