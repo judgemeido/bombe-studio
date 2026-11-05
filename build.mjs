@@ -1,3 +1,4 @@
+import {buildChapters} from './chapters/build.mjs';
 import { renderHome } from './page-shell.mjs';
 import { build } from 'esbuild';
 import { resolve } from 'node:path';
@@ -11,6 +12,8 @@ export const options = {
 };
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   await build(options);
+  await buildChapters();
+  await copyFile('chapters.css', 'dist/chapters.css');
   await writeFile('dist/index.html', renderHome({ appHtml: await readFile('index.html', 'utf8'), historyHtml: await readFile('history-preview.html', 'utf8') }).replace('src="dist/bootstrap.js"', 'src="bootstrap.js"'));
   await writeFile('dist/history-preview.html', (await readFile('history-preview.html', 'utf8')).replace('src="dist/historyPreview.js"', 'src="historyPreview.js"'));
   await copyFile('history-preview.css', 'dist/history-preview.css');

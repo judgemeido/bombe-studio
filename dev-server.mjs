@@ -1,3 +1,4 @@
+import {buildChapters} from './chapters/build.mjs';
 import { createServer } from 'node:http';
 import { readFile, realpath, stat } from 'node:fs/promises';
 import { dirname, resolve, relative, isAbsolute, extname } from 'node:path';
@@ -20,10 +21,11 @@ const ctx = await context({
     });
   } }],
 });
+await buildChapters();
 await ctx.rebuild();
 await ctx.watch();
 const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.map': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' };
-const publicFiles = new Set(['index.html', 'palette.css', 'exhibition-ui.css', 'exhibit-precision.css', 'styles.css', 'lab.css', 'challenge.css', 'mission.css', 'history-preview.html', 'history-preview.css']);
+const publicFiles = new Set(['index.html', 'chapters.css', 'palette.css', 'exhibition-ui.css', 'exhibit-precision.css', 'styles.css', 'lab.css', 'challenge.css', 'mission.css', 'history-preview.html', 'history-preview.css']);
 const imageExtensions = new Set(['.svg', '.png', '.jpg', '.jpeg', '.webp']);
 const server = createServer(async (req, res) => {
   if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405).end(); return; }
@@ -33,6 +35,10 @@ const server = createServer(async (req, res) => {
     if (!requested.startsWith('/') || requested.includes('\0') || parts.some(p => p === '..' || p.startsWith('.'))) { res.writeHead(403).end('Forbidden'); return; }
     const normalized = parts.join('/') || 'index.html';
     const extension = extname(normalized).toLowerCase();
+    if (/^chapters\/(01|02|03)\.html$/.test(normalized)) {
+      const bytes=await readFile(resolve(root,'dist',normalized));
+      res.writeHead(200,{'Content-Type':mime['.html'],'Cache-Control':'no-store'});res.end(req.method==='HEAD'?undefined:bytes);return;
+    }
     if (parts[0] === 'dist') {
       if (!['.js', '.map'].includes(extension)) { res.writeHead(403).end('Forbidden'); return; }
       const output = outputs.get(resolve(root, normalized));

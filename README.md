@@ -76,6 +76,24 @@ npm.cmd run dev
 
 ![快速开始](readme-visuals/quickstart.light.svg)
 
+## Teardown 版 01–03
+
+01 已替换为 Bombe Atelier：108 个多层鼓轮、36 组三轮组合、五个可独立观察的系统、连续拆解与 56 秒导览。02、03 使用共同的转子剖视模型，提供触点、内部接线、外壳切换、信号逐段播放、隔离与 48 秒导览。
+
+02 与 03 的计算直接复用 `src/cipher.js` 和 `src/challenge-engine.js`：Enigma I 的 I/II/III 转子、反射器 B、环位 AAA、双步进与双向跳线。01 的 26³ 轮位计数为教学示意；整机是照片结构重建，实验台是放大的电路剖视，均不是生产 CAD，也不是完整 Bombe 破译器。
+
+```powershell
+npm.cmd ci
+npm.cmd run build
+npm.cmd test
+```
+
+构建输出 `dist/chapters/01.html`、`02.html`、`03.html`，每页约 0.75 MB，Three.js、字体与样式全部内嵌，可单独离线打开。整站通过现有开发服务器或静态托管访问。修改 `chapters/` 后重新执行 `node chapters/build.mjs` 即可更新开发预览。
+
+章节源码位于 `chapters/atelier` 和 `chapters/bench`。父页面只负责导航与生命周期；未展示章节停止动画帧，实验进度在切换章节后保留。独立 Three.js 版本通过构建别名隔离，04、05 使用其现有依赖版本。
+
+Teardown 技能来源：<https://github.com/elvarofficial/teardown>，基于 `a91262ac1109051e014662d42ecb0b7bc1f113b1`。`chapters/kit/warm.js` 保留上游 MIT 许可；完整第三方许可随每个离线 HTML 内嵌。验收清单与结果见 `docs/teardown-qa.md` 和 `docs/teardown-results.md`。
+
 ## 视觉说明
 
 仓库中的 `readme-visuals/` 提供项目概览、简化架构和快速开始的明暗主题 SVG，可在离线环境中查看和编辑。图示只用于帮助理解项目入口和学习流程，不替代源码与实际课程设计。

@@ -6,6 +6,7 @@
   <title>00 战时序章 · 译码档案</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23142633'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23F0EFE8' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23B69A67'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="palette.css"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="history-preview.css"><link rel="stylesheet" href="lab.css"><link rel="stylesheet" href="challenge.css"><link rel="stylesheet" href="mission.css"><link rel="stylesheet" href="exhibition-ui.css"><link rel="stylesheet" href="exhibit-precision.css"><script type="module" src="dist/bootstrap.js"></script>
+  <link rel="stylesheet" href="chapters.css">
 </head>
 <body data-page="history">
 <!-- APP-SHELL:START -->
@@ -25,57 +26,9 @@
     <nav aria-label="展馆导航"><div class="chapter-nav"><a href="#/history" data-page="history" data-chapter="history" aria-current="page"><small>00</small>战时序章</a><a href="#/" data-page="exhibit" data-chapter="exhibit"><small>01</small>机械全貌</a><a href="#/lab/drums" data-page="lab" data-topic="drums" data-chapter="lab"><small>02</small>信号实验室</a><a href="#/challenge" data-page="challenge" data-chapter="challenge"><small>03</small>解密挑战</a><a href="#/mission" data-page="mission" data-chapter="mission"><small>04</small>黎明之前</a></div></nav>
   </header>
 
-  <main id="exhibit-page">
-    <section class="exhibit" aria-label="Bombe 三维交互展品">
-      <div class="intro">
-        <div class="eyebrow"><span>01 / THE BOMBE</span><span class="date">1940 — 1945</span></div>
-        <h1 id="exhibit-heading" tabindex="-1">The<br><em>Bombe.</em><span class="title-dot">✳</span></h1>
-        <p class="byline">TURING–WELCHMAN</p>
-        <h2>拆开机器，看见逻辑。</h2>
-        <p class="intro-copy">当逻辑成为齿轮，推理开始旋转。<br>走近二战时期的机电破译机，<br>看见藏在钢铁与接线之间的智慧。</p>
-        <button class="archive-link" id="story-open">读懂它的故事 <span>↗</span></button>
-        <dl class="exhibit-facts" aria-label="展品结构概览"><div><dt>鼓轮</dt><dd>108</dd></div><div><dt>转子组</dt><dd>36</dd></div><div><dt>可拆系统</dt><dd>05</dd></div></dl>
-
-        <button class="part-card note-trigger" id="note-open" aria-haspopup="dialog" aria-controls="note-dialog">
-          <span class="part-kicker"><span><i id="part-swatch"></i>结构笔记</span><span><b id="part-number">00</b> / 05</span></span>
-          <span class="note-heading"><strong id="part-name">从整机，读到每个系统</strong><span class="part-english" id="part-english">START EXPLORING</span></span>
-          <span class="note-summary" id="part-description">点击目录或模型，选择一个结构。</span>
-          <span class="note-cta">展开结构笔记<svg><use href="#arrow"/></svg></span>
-        </button>
-      </div>
-
-      <div class="viewer" id="viewer">
-        <div class="viewer-grid" aria-hidden="true"></div>
-        <div class="viewer-top"><span class="view-label"><i></i><span id="view-label">装配视图</span><span class="view-no"> / 01</span></span><div class="view-options" role="group" aria-label="相机视角"><button id="overview" aria-label="返回全部结构总览">总览</button><button data-view="front" aria-pressed="false">正面</button><button data-view="three-quarter" aria-pressed="true">斜视</button><button data-view="back" aria-pressed="false">背面</button></div></div>
-        <div class="assembly-progress" id="assembly-progress" hidden><span id="assembly-step">01</span><span id="assembly-caption">轴向抽离</span></div>
-        <div class="background-type" aria-hidden="true">B–01</div>
-        <canvas id="scene" aria-label="Bombe 破译机三维模型，可拖动旋转、滚轮缩放，也可使用下方按钮操作" tabindex="0"></canvas>
-        <div class="loading" id="loading"><span></span>正在布置展品…</div>
-        <div class="error-state" id="error-state" hidden><h3>暂时无法打开三维展品</h3><p>浏览器未能初始化 WebGL。你仍可使用部件目录与展品档案阅读结构说明。</p></div>
-        <button id="hotspot" class="hotspot" aria-label="展开部件结构笔记" hidden><span id="hotspot-number">02</span><span id="hotspot-label">鼓轮阵列</span><svg><use href="#arrow"/></svg></button>
-        <button class="clear-selection" id="clear-selection" hidden aria-label="取消部件选择">取消选择 <span>×</span></button>
-        <div class="viewer-tools" role="group" aria-label="视图工具"><button id="zoom-in" aria-label="放大模型">+</button><button id="zoom-out" aria-label="缩小模型">−</button><span></span><button id="reset" aria-label="重置全部状态" title="重置（R）"><svg><use href="#reset-icon"/></svg></button></div>
-        <div class="viewer-bottom"><span class="gesture"><svg><use href="#drag"/></svg>拖动旋转 <i>·</i> 滚轮缩放 <i>·</i> 点击部件</span><span class="render-badge"><span></span>实时 3D</span></div>
-        <button id="precision-view" class="precision-view" aria-pressed="false"><span class="precision-cross" aria-hidden="true">⌖</span><span id="precision-label">近看鼓轮</span><svg><use href="#arrow"/></svg></button>
-        <span class="precision-caption" aria-hidden="true">B–01 <i>/</i> STRUCTURAL STUDY</span>
-        <div class="simulation" id="simulation" hidden><span class="live-dot"></span><span>示意转位</span><b id="rotor-readout">A A A</b><small>非实际密码运算</small></div>
-      </div>
-    </section>
-
-    <section class="console" id="controls" tabindex="-1" aria-label="拆解与运转控制">
-      <div class="parts-section"><div class="control-caption"><span>结构目录</span><span>选择一个部件探索</span></div><div class="parts-list" role="group" aria-label="选择部件">
-        <button data-part="frame" aria-pressed="false"><span>01</span>机架</button><button data-part="drums" aria-pressed="false"><span>02</span>鼓轮</button><button data-part="drive" aria-pressed="false"><span>03</span>传动</button><button data-part="board" aria-pressed="false"><span>04</span>接线</button><button data-part="motor" aria-pressed="false"><span>05</span>电机</button>
-      </div></div>
-      <div class="explode-section"><div class="control-caption"><label for="explode-range">拆解程度</label><output id="explode-output" for="explode-range">000%</output></div><div class="range-row"><svg><use href="#cube"/></svg><input id="explode-range" type="range" min="0" max="100" value="0" aria-valuetext="完整装配，0%"><svg><use href="#expand-icon"/></svg></div></div>
-      <div class="action-section"><button class="primary-button" id="explode" aria-pressed="false"><svg><use href="#expand-icon"/></svg><span id="explode-label">拆解机器</span><span class="key">E</span></button><button class="run-button" id="run" aria-pressed="false"><svg><use href="#play-icon"/></svg><span id="run-label">运转演示</span></button><button class="run-button cinematic-button" id="cinematic" aria-pressed="false"><svg><use href="#cinematic-icon"/></svg><span id="cinematic-label">影院运镜</span><span class="key">C</span></button></div>
-    </section>
-
-    <footer class="site-footer"><span>以结构理解历史<span class="footer-divider">/</span>教学性三维重建</span><div><span>THREE BANKS.</span><span>108 DRUMS.</span><span>ONE IDEA.</span></div><button id="help-open">操作指南 <span>?</span></button></footer>
-    <p class="sr-only" role="status" id="status">展品正在加载</p>
-  </main>
-
-  <main id="lab-page" hidden></main>
-  <main id="challenge-page" hidden></main>
+  <main id="exhibit-page" class="teardown-chapter" hidden><h1 class="chapter-access-heading" id="exhibit-heading" tabindex="-1">机械全貌</h1></main>
+  <main id="lab-page" class="teardown-chapter" hidden><h1 class="chapter-access-heading" id="lab-heading" tabindex="-1">信号实验室</h1></main>
+  <main id="challenge-page" class="teardown-chapter" hidden><h1 class="chapter-access-heading" id="challenge-heading" tabindex="-1">解密挑战</h1></main>
   <main id="mission-page" hidden></main>
   <dialog id="note-dialog" class="note-dialog" aria-labelledby="note-title">
     <div class="dialog-top"><span class="eyebrow">STRUCTURE NOTES <span id="note-index">00 / 05</span></span><button class="dialog-close" data-close aria-label="关闭结构笔记">×</button></div>
