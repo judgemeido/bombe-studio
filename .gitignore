@@ -21,3 +21,14 @@ output/home-redesign/before/
 output/home-redesign/render.mjs
 output/home-redesign/style.mjs
 output/home-redesign/update-tests.mjs
+
+# Teardown draft captures; retain the final review evidence.
+output/teardown-tests*.txt
+output/teardown/*
+!output/teardown/01-final.png
+!output/teardown/02-final.png
+!output/teardown/03-final.png
+!output/teardown/03-complete-final.png
+!output/teardown/mobile-final.png
+!output/teardown/review-sheet-01.jpg
+!output/teardown/review-sheet-02-03.jpg

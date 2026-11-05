@@ -39,4 +39,9 @@ export const BEATS=[
   {at:31,title:'返程使用同一套接线的逆映射。',focus:null,spread:1,cut:true,stage:7},
   {at:40,title:'锁住轮位，反向输入便能回到 A。',focus:null,spread:.55,cut:true,stage:8}
 ];
-export function tourState(t){const beat=[...BEATS].reverse().find(b=>t>=b.at)||BEATS[0];const trace=pressKey('A',[0,0,0],[['A','C']]);return {...beat,trace,positions:trace.positions,pairs:[['A','C']],progress:Math.min(9,beat.stage+Math.min(1,Math.max(0,(t-beat.at)/4)))};}
+export function tourState(t){
+  const beat=[...BEATS].reverse().find(b=>t>=b.at)||BEATS[0],pairs=[['A','C']],forward=pressKey('A',[0,0,0],pairs);
+  const trace=t>=40?traceLetter(forward.output,forward.positions,pairs):forward;
+  const progress=t>=40?Math.min(9,Math.max(0,(t-40)*1.5)):t>=31?Math.min(9,7+(t-31)/3):Math.min(9,beat.stage+Math.min(1,Math.max(0,(t-beat.at)/4)));
+  return {...beat,trace,positions:trace.positions,pairs,progress};
+}

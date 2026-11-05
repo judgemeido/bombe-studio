@@ -21,6 +21,9 @@ export function createApplication({initialRoute,historyPage,runtime={}}={}){
     check();controllers[page]=controller;return controller;
   });
   const pause=()=>Object.values(controllers).forEach(controller=>controller.setActive(false));
+  const skipLink=document.querySelector('.skip-link');
+  function onSkip(event){event.preventDefault();const target=document.getElementById(skipLink.getAttribute('href').slice(1));target?.focus({preventScroll:true});target?.scrollIntoView({block:'nearest'});}
+  skipLink?.addEventListener('click',onSkip);
   navigation=dependencies.createNavigation({initialRoute,currentRoute:historyPage?.currentRoute??null,initialScrolls:{history:historyPage?.scrollY??0},motion,pause,
     async prepare(route,report=()=>{}){
       if(disposed||route.page==='history')return;
@@ -30,13 +33,13 @@ export function createApplication({initialRoute,historyPage,runtime={}}={}){
     activate(route){
       if(disposed)return;currentPage=route.page;
       if(route.page==='history')historyPage?.activate();else historyPage?.deactivate();
-      controllers.lab?.setTopic(route.topic);
+      if(route.page==='lab')controllers.lab?.setTopic(route.topic);
       for(const [page,controller]of Object.entries(controllers))controller.setActive(route.page===page);
       const skip=document.querySelector('.skip-link');
       if(skip){skip.href=route.page==='history'?'#hero-title':route.page==='mission'?'#mission-task-title':`#${route.page}-heading`;skip.textContent='跳至当前章节';}
     }
   });
-  function dispose(){if(disposed)return;disposed=true;pause();navigation.dispose();Object.values(transactions).forEach(t=>t.dispose());window.removeEventListener('pagehide',onHide);delete window.__BOMBE_INSPECT__;}
+  function dispose(){if(disposed)return;disposed=true;pause();navigation.dispose();Object.values(transactions).forEach(t=>t.dispose());skipLink?.removeEventListener('click',onSkip);window.removeEventListener('pagehide',onHide);delete window.__BOMBE_INSPECT__;}
   function onHide(event){if(!event.persisted)dispose();}
   window.addEventListener('pagehide',onHide);
   window.__BOMBE_INSPECT__=()=>({page:currentPage,navigating:navigation.busy,chapters:Object.fromEntries(Object.entries(controllers).map(([p,c])=>[p,c.inspect?.()??{ready:true}]))});

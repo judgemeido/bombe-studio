@@ -14,7 +14,7 @@ export function createBench(){
   function disk(parent,r,h,pos,mat){const m=mesh(parent,new T.CylinderGeometry(r,r,h,64),mat,pos);m.rotation.z=Math.PI/2;return m;}
   function ring(parent,r,t,pos,mat=brass){const m=mesh(parent,new T.TorusGeometry(r,t,8,80),mat,pos);m.rotation.y=Math.PI/2;return m;}
   function instances(parent,geo,mat,poses){geometries.add(geo);const m=new T.InstancedMesh(geo,mat,poses.length);const o=new T.Object3D();poses.forEach((p,i)=>{o.position.set(...p);o.updateMatrix();m.setMatrixAt(i,o.matrix);});m.castShadow=true;parent.add(m);return m;}
-  function label(parent,text,pos,size=[.5,.2],color='#343d37',orient=false){const c=document.createElement('canvas');c.width=512;c.height=160;const ctx=c.getContext('2d');ctx.fillStyle=color;ctx.font='500 78px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,80);const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;textures.add(tex);const mat=new T.MeshBasicMaterial({map:tex,transparent:true,side:T.DoubleSide,depthWrite:false});const m=mesh(parent,new T.PlaneGeometry(...size),mat,pos);if(orient)m.rotation.y=Math.PI/2;return m;}
+  function label(parent,text,pos,size=[.5,.2],color='#343d37',orient=false){const c=document.createElement('canvas');c.width=512;c.height=160;const ctx=c.getContext('2d');ctx.fillStyle=color;ctx.font='500 78px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,80);const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;textures.add(tex);const mat=new T.MeshBasicMaterial({map:tex,transparent:true,side:T.DoubleSide,depthWrite:false});const m=mesh(parent,new T.PlaneGeometry(...size),mat,pos);m.castShadow=false;m.receiveShadow=false;if(orient)m.rotation.y=Math.PI/2;return m;}
   box(chassis,[8.9,.14,3.4],[0,.13,.3],base);box(chassis,[8.6,.07,3.15],[0,.24,.3],ink);
   for(const x of [-3.9,3.9])for(const z of [-.9,1.5])box(chassis,[.38,.12,.4],[x,.025,z],ink);
   for(const z of [-.83,.83])disk(chassis,.035,7.4,[0,.53,z],metal);
@@ -40,7 +40,7 @@ export function createBench(){
     instances(g,new T.SphereGeometry(.034,8,6),brass,points);instances(g,new T.BoxGeometry(.15,.035,.035),metal,teeth);instances(g,new T.SphereGeometry(.043,8,6),metal,bolts);
     const c=document.createElement('canvas');c.width=c.height=1024;const ctx=c.getContext('2d');ctx.translate(512,512);ctx.font='bold 43px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#303930';
     for(let n=0;n<26;n++){const a=n*TAU/26;ctx.save();ctx.translate(-Math.sin(a)*444,-Math.cos(a)*444);ctx.rotate(-a);ctx.fillText(ALPHABET[n],0,0);ctx.restore();}
-    const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;textures.add(tex);const m=mesh(g,new T.PlaneGeometry(1.88,1.88),new T.MeshBasicMaterial({map:tex,transparent:true,side:T.DoubleSide,depthWrite:false}),[.345,0,0]);m.rotation.y=Math.PI/2;
+    const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;textures.add(tex);const m=mesh(g,new T.PlaneGeometry(1.88,1.88),new T.MeshBasicMaterial({map:tex,transparent:true,side:T.DoubleSide,depthWrite:false}),[.345,0,0]);m.rotation.y=Math.PI/2;m.castShadow=false;m.receiveShadow=false;
     label(carrier,`${ROTORS[i].name} / ${['SLOW','MID','FAST'][i]}`,[0,.37,1.0],[1.1,.18]);
     box(carrier,[.13,.09,.2],[.3,CY+.98,0],accent);
   }

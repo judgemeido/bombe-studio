@@ -36,3 +36,8 @@ test('disposing during chapter preparation releases the pending frame and preven
   const env=setup();let nav,app,resolveReady,released=0,active=0;
   try{app=createApplication({runtime:{createNavigation(options){nav=options;return {go(){},dispose(){}};},createChapterFrame(){return {ready:new Promise(r=>resolveReady=r),setActive(){active++;},dispose(){released++;}};}}});const pending=nav.prepare({page:'lab'});await tick();app.dispose();resolveReady();await assert.rejects(pending,/disposed/);nav.activate({page:'lab'});assert.equal(active,0);assert.equal(released,1);}finally{app?.dispose();await env.close();}
 });
+
+test('chapter 05 retains its destroy lifecycle and is released exactly once',async()=>{
+ const env=setup();let nav,app,destroyed=0;
+ try{app=createApplication({runtime:{createNavigation(options){nav=options;return {go(){},dispose(){}};},loadRogue:async()=>({createRogue(){return {setActive(){},destroy(){destroyed++;}};}})}});await nav.prepare({page:'rogue'});nav.activate({page:'rogue'});app.dispose();app.dispose();assert.equal(destroyed,1);}finally{app?.dispose();await env.close();}
+});

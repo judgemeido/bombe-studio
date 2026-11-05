@@ -11,15 +11,15 @@ export async function createExperience(mode){
   try{stage=createStage(ui.canvas);}catch(error){$('loading').textContent='无法初始化三维模型。请启用浏览器硬件加速后重新载入。';throw error;}
   let state={positions:[0,0,0],pairs:[],spread:.65,cut:true,focus:null,trace:null,progress:0};
   let active=parent===window,ready=false,raf=0,last=performance.now(),clock=0,running=false,speed=1,limit=9,view='overview',tour=false,tourTime=0,autoTour=!reduced.matches,lastInput=performance.now(),lastPaint='',contextLost=false;
-  let session=createSession(createChallengeSet(freshSeed())),mission=createMissionState(),pressCount=0,log=[],toastTimer;
-  const bridge=connectChapter({activate(value){active=value;last=performance.now();lastInput=last;if(active){stage.resize();schedule();}else{cancelAnimationFrame(raf);raf=0;}},topic(value){if(!quest&&value==='wiring'){state.focus='wiring';stage.model.update(state);stage.setView('overview','wiring');paint(true);}}});
+  let session=createSession(createChallengeSet(capture?'teardown-capture-03':freshSeed())),mission=createMissionState(),pressCount=0,log=[],toastTimer,currentTopic='drums';
+  const bridge=connectChapter({activate(value){active=value;last=performance.now();lastInput=last;if(active){stage.resize();schedule();}else{cancelAnimationFrame(raf);raf=0;}},topic(value){if(!quest&&value!==currentTopic){currentTopic=value;state.focus=value==='wiring'?'wiring':null;stage.model.update(state);stage.setView('overview',state.focus);paint(true);}}});
   const q=()=>session.round.questions[session.index];
   const display=()=>tour?{...state,...tourState(tourTime)}:state;
   const on=(id,event,fn)=>$(id).addEventListener(event,fn);
   function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,3000);}
-  function stopTour(manual=false){if(tour){tour=false;stage.model.update(state);stage.setView(view,state.focus);lastPaint='';}if(manual)autoTour=false;$('tour-caption').hidden=true;$('tour').innerHTML='▷ 自动导览 <small>48 SEC</small>';}
+  function stopTour(manual=false){if(tour){tour=false;document.body.classList.remove('tour-mode');syncSettings();stage.model.update(state);stage.setView(view,state.focus);lastPaint='';}if(manual)autoTour=false;$('tour-caption').hidden=true;$('tour').innerHTML='▷ 自动导览 <small>48 SEC</small>';}
   function interact(){lastInput=performance.now();stopTour();if(quest)autoTour=false;}
-  function syncSettings(){state.positions.forEach((n,i)=>$(`rotor-${i}`).value=n);$('plug-a').value=state.pairs[0]?.[0]??'';$('plug-b').value=state.pairs[0]?.[1]??'';}
+  function syncSettings(s=state){s.positions.forEach((n,i)=>$(`rotor-${i}`).value=n);$('plug-a').value=s.pairs[0]?.[0]??'';$('plug-b').value=s.pairs[0]?.[1]??'';}
   function resetTrace(){running=false;state.trace=null;state.progress=0;limit=9;paint(true);}
   function positionsFromUI(){return [0,1,2].map(i=>Number($(`rotor-${i}`).value));}
   function apply(){
@@ -68,6 +68,7 @@ export async function createExperience(mode){
     const s=display(),tr=s.trace,idx=tr?Math.min(8,Math.max(0,Math.ceil(s.progress)-1)):0,segment=tr?.stages[idx];
     const key=JSON.stringify([s.positions,s.pairs,s.focus,s.cut,s.spread,tr,Math.ceil(s.progress),running,tour,tour?Math.floor(tourTime/2):0,mission.output]);
     if(!force&&key===lastPaint)return;lastPaint=key;
+    document.body.classList.toggle('tour-mode',tour);if(tour)syncSettings(s);$('footer-note').textContent=tour?'导览示范 · 任意操作返回当前实验':'真实置换计算 · 确定性信号追踪';
     $('position-display').textContent=s.positions.map(letter).join(' ');$('input-letter').textContent=tr?.input??(quest?q().input??'—':'—');
     const end=tour?9:limit;
     $('output-letter').textContent=tr&&s.progress>=end?(end===1?letter(tr.stages[0].output):tr.output):'—';
@@ -99,7 +100,7 @@ export async function createExperience(mode){
   on('play','click',()=>{interact();autoTour=false;if(!state.trace)return;if(state.progress>=limit)state.progress=0;running=!running;paint(true);});
   on('step','click',()=>{interact();running=false;autoTour=false;state.progress=Math.min(limit,Math.floor(state.progress+.00001)+1);paint(true);});
   on('trace','click',e=>{const b=e.target.closest('[data-segment]');if(!b||b.disabled)return;interact();running=false;state.progress=Number(b.dataset.segment)+1;paint(true);});
-  on('tour','click',()=>{if(tour){stopTour(true);paint(true);}else{tour=true;tourTime=0;running=false;lastPaint='';$('tour').innerHTML='□ 结束导览';}});
+  on('tour','click',()=>{if(tour){stopTour(true);paint(true);}else{tour=true;tourTime=0;running=false;stage.tourBeat=null;lastPaint='';$('tour').innerHTML='□ 结束导览';}});
   on('observe','click',observe);
   on('answers','click',e=>{
     const b=e.target.closest('[data-answer]');if(!b||session.correct||session.finished)return;interact();
@@ -124,7 +125,7 @@ export async function createExperience(mode){
   function schedule(){if(ready&&active&&!document.hidden&&!raf&&!capture)raf=requestAnimationFrame(frame);}
   function frame(now){
     raf=0;if(!active||document.hidden)return;const dt=Math.max(0,Math.min(.08,(now-last)/1000));last=now;clock+=dt;
-    if(tour){tourTime+=dt;if(tourTime>=48){stopTour(true);paint(true);}}else if(autoTour&&performance.now()-lastInput>25000){tour=true;tourTime=0;running=false;$('tour').innerHTML='□ 结束导览';}
+    if(tour){tourTime+=dt;if(tourTime>=48){stopTour(true);paint(true);}}else if(autoTour&&performance.now()-lastInput>25000){tour=true;tourTime=0;running=false;stage.tourBeat=null;$('tour').innerHTML='□ 结束导览';}
     if(running&&!tour){state.progress=Math.min(limit,state.progress+dt*speed);if(state.progress>=limit)running=false;}
     const shown=display();if(!contextLost){stage.frame(shown);if(tour){const key=tourState(tourTime).at;if(stage.tourBeat!==key){stage.tourBeat=key;stage.setView('overview',shown.focus);}}}paint();schedule();
   }
@@ -132,6 +133,6 @@ export async function createExperience(mode){
   if(quest)configureQuestion();else{syncSettings();paint(true);}
   stage.model.update(state);stage.resize();await stage.warm();stage.frame(state);$('loading').remove();ready=true;paint(true);bridge.ready();schedule();
   window.BOMBE_BENCH={get state(){return {...structuredClone(state),mode,active,running,ready,tour,limit,session:quest?structuredClone(session):null,mission:quest?structuredClone(mission):null};},get metrics(){return {calls:stage.renderer.info.render.calls,triangles:stage.renderer.info.render.triangles};},stage};
-  window.SIM={ready:true,duration:48,fps:60,render(t){stopTour();running=false;const s={...state,...tourState(t)};state=s;stage.frame(s);stage.setView('overview',s.focus);stage.frame(s);paint(true);$('tour-caption').hidden=false;$('tour-caption').textContent=s.title;}};
+  window.SIM={ready:true,duration:48,fps:60,render(t){tour=true;tourTime=t;running=false;const s=display();stage.model.update(s);paint(true);stage.resize();stage.setView('overview',s.focus);stage.frame(s);}};
   addEventListener('pagehide',e=>{if(e.persisted)return;cancelAnimationFrame(raf);bridge.dispose();stage.dispose();},{once:true});
 }

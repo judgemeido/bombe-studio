@@ -23,3 +23,8 @@ test('known vector and arbitrary-time tour states are reproducible',()=>{
   let pos=[0,0,0],out='';for(let i=0;i<5;i++){const t=pressKey('A',pos,[]);out+=t.output;pos=t.positions;}assert.equal(out,'BDZGO');
   const frames=[0,7.3,14.3,23.3,31.3,40.3].map(t=>tourState(t));tourState(48);assert.deepEqual(frames,[0,7.3,14.3,23.3,31.3,40.3].map(t=>tourState(t)));
 });
+
+
+test('tour ends with a real reciprocal path at the same wheel positions',()=>{
+ const forward=tourState(37.5),back=tourState(46.5);assert.equal(forward.progress,9);assert.equal(back.progress,9);assert.equal(back.trace.input,forward.trace.output);assert.equal(back.trace.output,forward.trace.input);assert.deepEqual(back.positions,forward.positions);
+});

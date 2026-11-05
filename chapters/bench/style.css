@@ -7,3 +7,4 @@
 
 @media(min-width:1101px){h1{font-size:39px;letter-spacing:0}.eyebrow{font-size:9px}.scene-top p,.trace-title h2{font-size:12px}.status-dot{font-size:10px}.trace-stages button{font-size:10px}.trace-stages b{font-size:13px}.trace-caption p{font-size:12px}.playback button{font-size:12px}.source-note{font-size:9px}.bench-header>span{font-size:9px}.desk-note{font-size:10px}.small-status{font-size:10px}.model-controls label{font-size:11px}}
 .scene-readout{padding:9px 11px;background:#eeede8df;border-left:2px solid #a3af8e}.embedded .bench-header>a{font-size:11px}.embedded .bench-header{height:45px}
+.tour-mode #task,.tour-mode #quest-actions{display:none!important}.tour-mode #settings{display:block!important}
