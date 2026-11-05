@@ -9,7 +9,7 @@ test('default/history and whitelisted local anchors stay in history', () => {
   }
 });
 test('legacy interactive deep links round trip without becoming default history', () => {
-  for (const [hash, page, topic] of [['#/', 'exhibit', 'drums'], ['#/lab/drums', 'lab', 'drums'], ['#/lab/wiring', 'lab', 'wiring'], ['#/challenge', 'challenge', 'drums']]) {
+  for (const [hash, page, topic] of [['#/', 'exhibit', 'drums'], ['#/lab/drums', 'lab', 'drums'], ['#/lab/wiring', 'lab', 'wiring'], ['#/challenge', 'challenge', 'drums'], ['#/rogue', 'rogue', 'drums']]) {
     assert.deepEqual(parseRoute(hash), { page, topic });
     assert.equal(routeKey(parseRoute(hash)), hash);
   }

@@ -4,15 +4,16 @@ import {createChapterFrame} from './chapter-frame.js';
 
 /** Inert on import: 00 never allocates a WebGL scene. Each chapter owns its GPU. */
 export function createApplication({initialRoute,historyPage,runtime={}}={}){
-  const dependencies={createNavigation,createChapterFrame,loadMission:()=>import('./mission.js'),...runtime};
+  const dependencies={createNavigation,createChapterFrame,loadMission:()=>import('./mission.js'),loadRogue:()=>import('./rogue.js'),...runtime};
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
   let disposed=false,navigation,currentPage=historyPage?.currentRoute?.page??null;
   const controllers={},transactions={};
-  for(const page of ['exhibit','lab','challenge','mission'])transactions[page]=createExhibitRuntime(async({own,check})=>{
+  for(const page of ['exhibit','lab','challenge','mission','rogue'])transactions[page]=createExhibitRuntime(async({own,check})=>{
     let controller;
-    if(page==='mission'){
-      const module=await dependencies.loadMission();check();
-      controller=own(await module.createMission(document.getElementById('mission-page'),{motion}));
+    if(page==='mission'||page==='rogue'){
+      const module=await (page==='mission'?dependencies.loadMission():dependencies.loadRogue());check();
+      const instance=await (page==='mission'?module.createMission:module.createRogue)(document.getElementById(`${page}-page`),{motion});
+      controller=own(instance.dispose?instance:{...instance,dispose:()=>instance.destroy()});
     }else{
       controller=own(dependencies.createChapterFrame(document.getElementById(`${page}-page`),{page,navigate:route=>navigation?.go(route)}));
       await controller.ready;check();

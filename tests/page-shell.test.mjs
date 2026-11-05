@@ -25,12 +25,12 @@ test('home composes exactly one readable history with an inert app and shared ov
   assert.deepEqual([...doc.querySelectorAll('script[src]')].map(s => s.getAttribute('src')), ['dist/bootstrap.js']);
   for (const name of ['styles.css', 'history-preview.css']) assert.ok(doc.querySelector(`link[href="${name}"]`));
 });
-test('both page headers expose five chapters and brand returns to 00', async () => {
+test('both page headers expose six chapters and brand returns to 00', async () => {
   const doc = document(await home());
-  const expected = [['00', '战时序章'], ['01', '机械全貌'], ['02', '信号实验室'], ['03', '解密挑战'], ['04', '黎明之前']];
+  const expected = [['00', '战时序章'], ['01', '机械全貌'], ['02', '信号实验室'], ['03', '解密挑战'], ['04', '黎明之前'], ['05', '随机夜班']];
   for (const root of ['#application-shell', '#history-page']) {
     assert.equal(doc.querySelector(`${root} .brand`).getAttribute('href'), '#/history');
-    assert.deepEqual([...doc.querySelectorAll(`${root} header [data-chapter]`)].map(el => el.dataset.page), ['history', 'exhibit', 'lab', 'challenge', 'mission']);
+    assert.deepEqual([...doc.querySelectorAll(`${root} header [data-chapter]`)].map(el => el.dataset.page), ['history', 'exhibit', 'lab', 'challenge', 'mission', 'rogue']);
     const links = [...doc.querySelectorAll(`${root} header [data-chapter]`)];
     assert.deepEqual(links.map(link => [link.querySelector('small')?.textContent, link.textContent.replace(link.querySelector('small')?.textContent || '', '').trim()]), expected);
     assert.ok(links.every(link => !link.querySelector('svg')), `${root} navigation should not add one-off icons`);

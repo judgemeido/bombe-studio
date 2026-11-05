@@ -109,6 +109,20 @@ test('briefing, pause, resume and completion retain stable focus targets', async
   }
 });
 
+test('briefing exposes random night shift as a chapter link', async () => {
+  const f = fixture();
+  try {
+    f.game.setActive(true);
+    const link = f.root.querySelector('a[data-page="rogue"]');
+    assert.ok(link);
+    assert.equal(link.getAttribute('href'), '#/rogue');
+    assert.equal(f.root.querySelector('[data-action="open-rogue"]'), null);
+  } finally {
+    f.game.dispose();
+    await f.w.happyDOM.close();
+  }
+});
+
 test('no WebGL keeps the text record and all beat controls available', async () => {
   const f = fixture(true);
   try {

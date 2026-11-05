@@ -12,6 +12,13 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
   let state = initialMission(), active = false, disposed = false, scene, cinematic = false, selectedView = 'entry';
   let transitionId = 0, transitionPaused = false, pendingAction = null, unavailable = false;
   const cleanups = [], on = (el, name, fn) => { el.addEventListener(name, fn); cleanups.push(() => el.removeEventListener(name, fn)); };
+  function setMissionActive(value) {
+    if (disposed) return;
+    active = value;
+    if (!value) { scene?.cancelTransition?.(); clearTransition(); pendingAction = null; dispatch({ type: 'pause' }); }
+    scene?.setActive(value);
+    if (value) render();
+  }
   const formatElapsed = seconds => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
   const beatIndex = value => Number.isInteger(value?.beat) ? value.beat : Number.isInteger(value?.stage) ? value.stage : 0;
   const currentBeat = value => MISSION.stages?.[beatIndex(value)] || {};
@@ -181,11 +188,7 @@ export function createMission(root, { motion, progress = () => {}, sceneFactory 
   const inspect = () => ({ state: structuredClone(state), active, cinematic, transitionPaused, view: selectedView, scene: scene?.inspect() || { ready: false } });
   view.__BOMBE_MISSION__ = inspect;
   return {
-    setActive(value) {
-      if (disposed) return; active = value;
-      if (!value) { scene?.cancelTransition?.(); clearTransition(); pendingAction = null; dispatch({ type: 'pause' }); }
-      scene?.setActive(value); if (value) render();
-    },
+    setActive: setMissionActive,
     inspect,
     dispose() { if (disposed) return; disposed = true; active = false; transitionId++; view.clearInterval(timer); cleanups.forEach(fn => fn()); scene?.dispose(); if (view.__BOMBE_MISSION__ === inspect) delete view.__BOMBE_MISSION__; root.replaceChildren(); },
   };
